@@ -11,35 +11,18 @@
 #pragma once
 #ifndef _INC_CMTTYPE
 #define _INC_CMTTYPE
-#include "CommonCtil.h"
 
 //定义CommonCtil数据类型
 
 //标准整形
-typedef unsigned char         cmtU8;
-typedef unsigned short        cmtU16;
-typedef unsigned int          cmtU32;
-typedef char                  cmtS8;
-typedef short                 cmtS16;
-typedef int                   cmtS32;
-
-//指针
-typedef unsigned char*		  cmtU8ptr;
-typedef unsigned short*       cmtU16ptr;
-typedef unsigned int*         cmtU32ptr;
-typedef char*                 cmtS8ptr;
-typedef short*                cmtS16ptr;
-typedef int*                  cmtS32ptr;
-
-//浮点
-typedef float				  cmt32f;
-typedef double		          cmt64f;
-
+typedef unsigned char         cmtUint8;
+typedef unsigned short        cmtUint16;
+typedef unsigned int          cmtUint32;
+typedef char                  cmtInt8;
+typedef short                 cmtInt16;
+typedef int                   cmtInt32;
 //64位
-typedef unsigned long long    cmtU64;
-typedef long long             cmtS64;
+typedef unsigned long long    cmtUnt64;
+typedef long long             cmtInt64;
 
-//64位指针
-typedef long long*            cmtS64ptr;
-typedef unsigned long long*   cmtU64ptr;
 #endif
