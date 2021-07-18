@@ -41,43 +41,19 @@
 #endif
 
 //常用数据
-#define CMT_FLOAT_TOL		 0.00001
-#define CMT_PI				 3.141592653589793
-#define TRUE 1
-#define FALSE 0
+#define CMT_FLOAT_TOL				0.00001
+#define CMT_PI						3.141592653589793
+#define INIT_BUFFER_SIZE			512
+#define INIT_STACK_BUFFER_SIZE		128
+#define TRUE						1
+#define FALSE						0
 
 //标准库调用
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 
-//定义CommonCtil数据类型
-typedef unsigned char         cmtU8;
-typedef unsigned short        cmtU16;
-typedef unsigned int          cmtU32;
-typedef char                  cmtS8;
-typedef short                 cmtS16;
-typedef int                   cmtS32;
-
-#if defined(CMT_ENV_I386) || defined(CMT_ENV_ARM) || defined(CMT_ENV_WINDOWS)
-typedef unsigned long long    cmtU64;
-typedef long long             cmtS64;
-#else
-typedef unsigned long         cmtU64;
-typedef long                  cmtS64;
-#endif
-typedef unsigned char*		  cmtU8ptr;
-typedef unsigned short*       cmtU16ptr;
-typedef unsigned int*         cmtU32ptr;
-typedef char*				  cmtS8ptr;
-typedef short*				  cmtS16ptr;
-typedef int*                  cmtS32ptr;
-
-#if defined(CMT_ENV_I386) || defined(CMT_ENV_ARM) || defined(CMT_ENV_WINDOWS)
-typedef long long*            cmtS64ptr;
-typedef unsigned long long*   cmtU64ptr;
-#else
-typedef long*                 cmtS64ptr;
-typedef unsigned long*		  cmtU64ptr;
-#endif
+//包含自定义库
+#include "cmtQueue.h"
 #endif
