@@ -478,3 +478,14 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+#for office files 
+*.xlsx
+*.xls
+*.doc
+*.docx
+*.odt
+*.ppt
+*.pptx
+*.pdf
+*.chm
