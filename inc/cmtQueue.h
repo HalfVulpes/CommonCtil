@@ -11,36 +11,32 @@
 #pragma once
 #ifndef _INC_CMTQUEUE
 #define _INC_CMTQUEUE
-#include "cmtType.h"
+#include <cmtType.h>
 #include <stdlib.h>
-#include <string.h>
 
-typedef void (*cmtFree)(void*);
-typedef int (*cmtScan)(void*, void*);
+typedef struct _CMTQUEUE
+{
+	cmtUint8* base;
+	cmtUint64 size;
+	cmtUint64 bgn;
+	cmtUint64 end;
+}cmtQueue;
 
-typedef struct {
-	void** head;
-	void** tail;
-	void** queue;
-	cmtU64            qlen;
-	cmtU64            cmtElement;
-	cmtFree        cmtFreeHandler;
-} cmtQueue;
-
-struct cmtFuncAttr {
-	cmtU64            qlen;
-	cmtFree        cmtFreeHandler;
-};
-
-
-#define CMT_QUEUE_EMPTY(q) (!((q)->cmtElement))
-#define CMT_QUEUE_FULL(q) ((q)->cmtElement >= (q)->qlen)
-#define CMT_QUEUE_LENGH(q) ((q)->qlen)
-#define CMT_QUEUE_ELEMENT(q) ((q)->cmtElement)
-extern cmtQueue* cmtQueueInit(struct cmtFuncAttr* attr);
-extern void cmtQueueClean(cmtQueue* q);
-extern int cmtQueueAppend(cmtQueue* q, void* data);
-extern void* cmtQueueGet(cmtQueue* q);
+/**
+* @brief 初始化一个队列
+* @param[in] size 队列最大大小
+* @return 队列指针
+* @retval 0 失败
+* @retval 非零 队列指针
+* @attention 需要使用cmtQueueFree来释放
+* @date 2021-07-30
+* @author GogeBlue
+* @author Dexnab
+*/
+extern cmtQueue* cmtQueueInit(cmtUint64 size);
+extern void cmtQueueClean(cmtQueue* queue);
+extern cmtUint8 cmtQueueAppend(cmtQueue* queue, cmtUint8* data, cmtUint64 size);
+extern cmtUint8 cmtQueueGet(cmtQueue* queue, cmtUint8* buffer, cmtUint64 size);
 extern void cmtQueueRemove(cmtQueue* q);
 extern void* cmtQueueSearch(cmtQueue* q, cmtU64 index);
 extern void cmtFreeIndex(cmtQueue* q, cmtU64 index);
