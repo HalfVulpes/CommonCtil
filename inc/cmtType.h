@@ -52,4 +52,9 @@ typedef unsigned long long	cmtUint64;
 typedef long long			cmtInt64;
 typedef cmtUint8			cmtBool;
 
+//×Ö·ûÀàĞÍ
+typedef cmtUint8	cmtChar;
+typedef cmtUint16	cmtWchar;
+typedef cmtUint32	cmtFchar;
+
 #endif
