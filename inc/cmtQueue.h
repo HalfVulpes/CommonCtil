@@ -38,7 +38,7 @@ extern void cmtQueueClean(cmtQueue* queue);
 extern cmtUint8 cmtQueueAppend(cmtQueue* queue, cmtUint8* data, cmtUint64 size);
 extern cmtUint8 cmtQueueGet(cmtQueue* queue, cmtUint8* buffer, cmtUint64 size);
 extern void cmtQueueRemove(cmtQueue* q);
-extern void* cmtQueueSearch(cmtQueue* q, cmtU64 index);
-extern void cmtFreeIndex(cmtQueue* q, cmtU64 index);
-extern int cmtScanAll(cmtQueue* q, cmtScan cmtScanHandler, void* udata);
+extern void* cmtQueueSearch(cmtQueue* q, cmtUint64 index);
+extern void cmtFreeIndex(cmtQueue* q, cmtUint64 index);
+extern int cmtScanAll(cmtQueue* q, cmtUint64 cmtScanHandler, void* udata);
 #endif
