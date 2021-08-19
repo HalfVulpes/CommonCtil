@@ -24,6 +24,8 @@ typedef struct _CMTTHREADINFO
 {
 	cmtBool CreateSuspend;//<创建后挂起线程
 	cmtUint64 StackSize;//<初始栈大小
+	cmtUint32 priority;//<优先级
+	cmtBool inherit;//<是否继承句柄
 }cmtThreadInfo;
 
 /**
@@ -36,10 +38,19 @@ typedef struct _CMTPROCESSINFO
 {
 	cmtUint32 priority;//<优先级
 	cmtBool hide;//<是否隐藏窗口并禁用输出
+	cmtBool inherit;//<是否继承句柄
 }cmtProcessInfo;
+
+typedef struct _CMTLOCK
+{
+	cmtUint64 MaxSpin;
+	cmtBool semaphore;
+	cmtUint64 handle;
+}cmtLock;
 
 //进程操作
 extern cmtUint64 cmtCreateProcess(cmtWchar* cmd, cmtProcessInfo* info);
+extern cmtUint8 cmtTerminateProcess(cmtWchar* cmd);
 
 //线程操作
 /**
@@ -119,17 +130,40 @@ extern void cmtAtomDec64(cmtUint64* num);
 
 //锁
 /**
-* @brief 尝试进入自旋锁
-* @param[in] lock 锁
-* @attention lock为0时才允许进入自旋锁，所以第一次调用前请将lock归零
+* @brief 获取自旋锁
+* @param[in] value 锁变量
+* @param[in] MaxSpin 最大自选数（-1为不限）
+* @attention value为0时才允许进入自旋锁，所以第一次调用前请将value归零
+* @par 示例:
+* @code
+* cmtUint8 lock = 0;
+* cmtSpinLockEnter(&lock);
+* //xxxxxx
+* cmtSpinLockLeave(&lock);
+* @endcode
 * @date 2021-08-12
 * @author Dexnab
 */
-extern void __fastcall cmtSpinLockEnter(cmtUint8* lock);
+extern void cmtSpinLockEnter(cmtUint8* value, cmtUint64 MaxSpin);
 /**
-* @brief 退出自旋锁
-* @param[in] lock 锁
+* @brief 释放自旋锁
+* @param[in] value 锁变量
+* @par 示例:
+* @code
+* cmtUint8 lock = 0;
+* cmtSpinLockEnter(&lock);
+* //xxxxxx
+* cmtSpinLockLeave(&lock);
+* @endcode
 * @date 2021-08-12
 * @author Dexnab
 */
-extern void __fastcall cmtSpinLockLeave(cmtUint8* lock);
+#define cmtSpinLockLeave(value) *value = 0
+extern cmtUint64 cmtSysLockInit();
+extern void cmtSysLockEnter(cmtUint64 handle);
+extern void cmtSysLockLeave(cmtUint64 handle);
+extern void cmtSysLockFree(cmtUint64 handle);
+extern void cmtLockInit(cmtLock* lock, cmtUint64 MaxSpin);
+extern void cmtLockEnter(cmtLock* lock);
+extern void cmtLockLeave(cmtLock* lock);
+extern void cmtLockFree(cmtLock* lock);

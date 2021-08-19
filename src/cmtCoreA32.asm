@@ -1,5 +1,6 @@
 .code
 
+;cx dx
 cmtSpinLockEnter proc
 	xor al, al
 	mov ah, 1
@@ -8,10 +9,5 @@ cmtSpinLockEnter proc
 	jnz cSLEcmp
 	ret
 cmtSpinLockEnter endp
-
-cmtSpinLockLeave proc
-	dec byte ptr [rcx]
-	ret
-cmtSpinLockLeave endp
 
 end

@@ -65,4 +65,33 @@ void cmtCloseHandle(cmtUint64 handle)
 {
 	CloseHandle(handle);
 }
+
+cmtUint64 cmtSysLockInit()
+{
+	HANDLE hSmp;
+
+	hSmp = CreateSemaphoreW(NULL, 1, 1, NULL);
+
+	return hSmp;
+}
+
+void cmtSysLockEnter(cmtUint64 handle)
+{
+	WaitForSingleObject(handle, INFINITE);
+}
+
+void cmtSysLockLeave(cmtUint64 handle)
+{
+	ReleaseSemaphore(handle, 1, NULL);
+}
+
+void cmtSysLockFree(cmtUint64 handle)
+{
+	CloseHandle(handle);
+}
+
+void cmtLockInit(cmtLock* lock, cmtUint64 MaxSpin)
+{
+
+}
 #endif
