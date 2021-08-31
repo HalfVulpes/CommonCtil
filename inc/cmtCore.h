@@ -8,11 +8,15 @@
 * @author Dexnab
 */
 #include <cmtType.h>
-#ifdef CMT_ENV_WINDOWS
+#if defined(CMT_ENV_WINDOWS)
 #include <Windows.h>
-#else
+#elif defined(CMT_ENV_LINUX)
 #include <pthread.h>
 #endif
+
+#pragma once
+#ifndef _INC_CMTCORE
+#define _INC_CMTCORE
 
 /**
 * @struct cmtThreadInfo
@@ -41,11 +45,18 @@ typedef struct _CMTPROCESSINFO
 	cmtBool inherit;//<是否继承句柄
 }cmtProcessInfo;
 
+/**
+* @struct cmtLock
+* @brief 自动锁结构体
+* @date 2021-08-20
+* @author Dexnab
+*/
 typedef struct _CMTLOCK
 {
-	cmtUint64 MaxSpin;
-	cmtBool semaphore;
-	cmtUint64 handle;
+	cmtUint64 MaxSpin;//<最大自旋数
+	cmtBool state;//<状态（0：自旋模式；1：信号量模式）
+	cmtUint8 value;//<自旋模式下锁变量
+	cmtUint64 handle;//<信号量模式下句柄
 }cmtLock;
 
 //进程操作
@@ -130,40 +141,78 @@ extern void cmtAtomDec64(cmtUint64* num);
 
 //锁
 /**
-* @brief 获取自旋锁
-* @param[in] value 锁变量
-* @param[in] MaxSpin 最大自选数（-1为不限）
+* @brief 进入自旋锁
+* @param[in] value 锁变量地址
+* @param[in] MaxSpin 最大自旋数（-1为不限）
+* @return 返回原因
+* @retval 0 锁被释放
+* @retval 1 自旋数到达上限
 * @attention value为0时才允许进入自旋锁，所以第一次调用前请将value归零
 * @par 示例:
 * @code
 * cmtUint8 lock = 0;
-* cmtSpinLockEnter(&lock);
+* cmtSpinLockEnter(&lock, -1);
 * //xxxxxx
 * cmtSpinLockLeave(&lock);
 * @endcode
-* @date 2021-08-12
+* @date 2021-08-20
 * @author Dexnab
 */
-extern void cmtSpinLockEnter(cmtUint8* value, cmtUint64 MaxSpin);
+extern BOOL CMT_FASTCALL cmtSpinLockEnter(cmtUint8* value, cmtUint64 MaxSpin);
 /**
-* @brief 释放自旋锁
+* @brief 离开自旋锁
 * @param[in] value 锁变量
 * @par 示例:
 * @code
 * cmtUint8 lock = 0;
 * cmtSpinLockEnter(&lock);
 * //xxxxxx
-* cmtSpinLockLeave(&lock);
+* cmtSpinLockLeave(lock);
 * @endcode
-* @date 2021-08-12
+* @date 2021-08-20
 * @author Dexnab
 */
-#define cmtSpinLockLeave(value) *value = 0
+#define cmtSpinLockLeave(value) value = 0
+/**
+* @brief 初始化重锁
+* @return 锁句柄
+* @retval 0 失败
+* @retval 非零 锁句柄
+* @date 2021-08-20
+* @author Dexnab
+*/
 extern cmtUint64 cmtSysLockInit();
 extern void cmtSysLockEnter(cmtUint64 handle);
 extern void cmtSysLockLeave(cmtUint64 handle);
 extern void cmtSysLockFree(cmtUint64 handle);
+/**
+* @brief 初始化自动锁
+* @param[in] lock 自动锁结构体
+* @param[in] MaxSpin 锁升级前最大自旋数（-1为升级，始终为自旋锁）
+* @date 2021-08-20
+* @author Dexnab
+*/
 extern void cmtLockInit(cmtLock* lock, cmtUint64 MaxSpin);
+/**
+* @brief 进入自动锁
+* @param[in] lock 自动锁结构体
+* @date 2021-08-20
+* @author Dexnab
+*/
 extern void cmtLockEnter(cmtLock* lock);
+/**
+* @brief 离开自动锁
+* @param[in] lock 自动锁结构体
+* @date 2021-08-20
+* @author Dexnab
+*/
 extern void cmtLockLeave(cmtLock* lock);
+/**
+* @brief 释放自动锁
+* @param[in] lock 自动锁结构体core
+* 
+* @date 2021-08-20
+* @author Dexnab
+*/
 extern void cmtLockFree(cmtLock* lock);
+#endif

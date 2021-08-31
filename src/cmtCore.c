@@ -6,8 +6,8 @@
 #include <cmtCore.h>
 
 //Windows版本
-#ifdef CMT_ENV_WINDOWS
-cmtUint64 cmtCreateThread(cmtUint32(*proc)(void*), void* param, cmtThreadInfo* info)
+#if defined(CMT_ENV_WINDOWS)
+cmtUint64 cmtCreateThread(cmtUint32(__stdcall *proc)(void*), void* param, cmtThreadInfo* info)
 {
 	HANDLE hThread;
 
@@ -68,11 +68,7 @@ void cmtCloseHandle(cmtUint64 handle)
 
 cmtUint64 cmtSysLockInit()
 {
-	HANDLE hSmp;
-
-	hSmp = CreateSemaphoreW(NULL, 1, 1, NULL);
-
-	return hSmp;
+	return CreateSemaphoreW(NULL, 1, 1, NULL);
 }
 
 void cmtSysLockEnter(cmtUint64 handle)
@@ -92,6 +88,47 @@ void cmtSysLockFree(cmtUint64 handle)
 
 void cmtLockInit(cmtLock* lock, cmtUint64 MaxSpin)
 {
+	lock->MaxSpin = MaxSpin;
+	lock->state = FALSE;
+	lock->value = 0;
+	lock->handle = 0;
+}
 
+void cmtLockEnter(cmtLock* lock)
+{
+	cmtBool SpinState;
+
+	if (lock->state) cmtSysLockEnter(lock->handle);
+	else
+	{
+		SpinState = cmtSpinLockEnter(&lock->value, lock->MaxSpin);
+		if (SpinState)
+		{
+			//尝试升级锁
+			lock->handle = cmtSysLockInit();
+			//如果升级失败，进入无限自旋锁
+			if (!lock->handle) cmtSpinLockEnter(&lock->value, -1);
+			//如果成功
+			else
+			{
+				//仍然自旋等待
+				cmtSpinLockEnter(&lock->value, -1);
+				//切换状态
+				lock->state = TRUE;
+			}
+		}
+	}
+}
+
+void cmtLockLeave(cmtLock* lock)
+{
+	if (lock->state) cmtSysLockLeave(lock->handle);
+	else cmtSpinLockLeave(lock->value);
+}
+
+void cmtLockFree(cmtLock* lock)
+{
+	if (lock->state) cmtSysLockFree(lock->handle);
+	else cmtSpinLockLeave(lock->value);
 }
 #endif
