@@ -104,17 +104,26 @@ void cmtLockEnter(cmtLock* lock)
 		SpinState = cmtSpinLockEnter(&lock->value, lock->MaxSpin);
 		if (SpinState)
 		{
-			//尝试升级锁
-			lock->handle = cmtSysLockInit();
-			//如果升级失败，进入无限自旋锁
-			if (!lock->handle) cmtSpinLockEnter(&lock->value, -1);
-			//如果成功
+			//先旋完
+			cmtSpinLockEnter(&lock->value, -1);
+			//再次检查锁状态
+			//如果已经升级了，就使用系统锁，停止使用自旋锁
+			if (lock->state)
+			{
+				cmtSysLockEnter(lock->handle);
+				cmtSpinLockLeave(lock->value);
+			}
+			//如果没有升级，就自己升级
 			else
 			{
-				//仍然自旋等待
-				cmtSpinLockEnter(&lock->value, -1);
-				//切换状态
-				lock->state = TRUE;
+				//尝试升级锁
+				lock->handle = cmtSysLockInit();
+				//如果成功，切换状态，停止使用自旋锁
+				if (lock->handle)
+				{
+					lock->state = TRUE;
+					cmtSpinLockLeave(lock->value);
+				}
 			}
 		}
 	}

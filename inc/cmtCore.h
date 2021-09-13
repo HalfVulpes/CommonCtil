@@ -76,7 +76,7 @@ extern cmtUint8 cmtTerminateProcess(cmtWchar* cmd);
 * @date 2021-08-12
 * @author Dexnab
 */
-extern cmtUint64 cmtCreateThread(cmtUint32(*proc)(void*), void* param, cmtThreadInfo* info);
+extern cmtUint64 cmtCreateThread(cmtUint32(__stdcall* proc)(void*), void* param, cmtThreadInfo* info);
 /**
 * @brief 强制终止线程
 * @param[in] handle 线程句柄

@@ -32,7 +32,7 @@ cmtSpinLockEnter proc
 	;	ax=op1;
 	;	rflags.zf=0;
 	;}
-	cmpxchg byte ptr [rcx], ah
+	lock cmpxchg byte ptr [rcx], ah
 	;MaxSpin=0：允许进入
 	jz cSLE_EndNormal
 	;MaxSpin!=0：继续自旋
