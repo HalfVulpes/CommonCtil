@@ -21,7 +21,7 @@ cmtSpinLockEnter proc
 	dec rdx
 	
 	xor al, al
-	;cmpxchg：
+	;cmpxchg（一定要记得加lock）：
 	;if(op1==ax)
 	;{
 	;	op1=op2;
@@ -40,7 +40,7 @@ cmtSpinLockEnter proc
 
 	cSLE_NoCount:
 	xor al, al
-	cmpxchg byte ptr [rcx], ah
+	lock cmpxchg byte ptr [rcx], ah
 	jz cSLE_EndNormal
 	jmp cSLE_NoCount
 

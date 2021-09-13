@@ -48,7 +48,7 @@ typedef struct _CMTPROCESSINFO
 /**
 * @struct cmtLock
 * @brief 自动锁结构体
-* @date 2021-08-20
+* @date 2021-09-13
 * @author Dexnab
 */
 typedef struct _CMTLOCK
@@ -127,7 +127,7 @@ extern cmtUint8 cmtDupHandle(cmtUint64 dst, cmtUint64 src);
 */
 extern void cmtCloseHandle(cmtUint64 handle);
 
-//原子操作
+//原子操作（未实现）
 //INC
 extern void cmtAtomInc8(cmtUint8* num);
 extern void cmtAtomInc16(cmtUint16* num);
@@ -153,23 +153,16 @@ extern void cmtAtomDec64(cmtUint64* num);
 * cmtUint8 lock = 0;
 * cmtSpinLockEnter(&lock, -1);
 * //xxxxxx
-* cmtSpinLockLeave(&lock);
+* cmtSpinLockLeave(lock);
 * @endcode
-* @date 2021-08-20
+* @date 2021-09-13
 * @author Dexnab
 */
 extern BOOL CMT_FASTCALL cmtSpinLockEnter(cmtUint8* value, cmtUint64 MaxSpin);
 /**
 * @brief 离开自旋锁
 * @param[in] value 锁变量
-* @par 示例:
-* @code
-* cmtUint8 lock = 0;
-* cmtSpinLockEnter(&lock);
-* //xxxxxx
-* cmtSpinLockLeave(lock);
-* @endcode
-* @date 2021-08-20
+* @date 2021-09-13
 * @author Dexnab
 */
 #define cmtSpinLockLeave(value) value = 0
@@ -182,14 +175,32 @@ extern BOOL CMT_FASTCALL cmtSpinLockEnter(cmtUint8* value, cmtUint64 MaxSpin);
 * @author Dexnab
 */
 extern cmtUint64 cmtSysLockInit();
+/**
+* @brief 进入重锁
+* @param[in] 锁句柄
+* @date 2021-08-20
+* @author Dexnab
+*/
 extern void cmtSysLockEnter(cmtUint64 handle);
+/**
+* @brief 离开重锁
+* @param[in] 锁句柄
+* @date 2021-08-20
+* @author Dexnab
+*/
 extern void cmtSysLockLeave(cmtUint64 handle);
+/**
+* @brief 释放重锁
+* @param[in] 锁句柄
+* @date 2021-08-20
+* @author Dexnab
+*/
 extern void cmtSysLockFree(cmtUint64 handle);
 /**
 * @brief 初始化自动锁
 * @param[in] lock 自动锁结构体
-* @param[in] MaxSpin 锁升级前最大自旋数（-1为升级，始终为自旋锁）
-* @date 2021-08-20
+* @param[in] MaxSpin 锁升级前最大自旋数（-1为不升级，始终为自旋锁）
+* @date 2021-09-13
 * @author Dexnab
 */
 extern void cmtLockInit(cmtLock* lock, cmtUint64 MaxSpin);
@@ -209,8 +220,7 @@ extern void cmtLockEnter(cmtLock* lock);
 extern void cmtLockLeave(cmtLock* lock);
 /**
 * @brief 释放自动锁
-* @param[in] lock 自动锁结构体core
-* 
+* @param[in] lock 自动锁结构体
 * @date 2021-08-20
 * @author Dexnab
 */
