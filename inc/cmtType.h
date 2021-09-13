@@ -27,7 +27,7 @@
 #elif defined(__x86_64__)
 #define CMT_ENV_x64
 #else
-#define CMT_ENV_x32
+#define CMT_ENV_x86
 #endif
 
 //c/c++
@@ -62,11 +62,16 @@
 typedef unsigned char cmtUint8;
 typedef unsigned short cmtUint16;
 typedef unsigned int cmtUint32;
-typedef unsigned long long cmtUint64;//注意：32位模式下该类型与cmtUint32相同
 typedef char cmtInt8;
 typedef short cmtInt16;
 typedef int cmtInt32;
+#if defined(CMT_ENV_x64)
+typedef unsigned long long cmtUint64;//注意：32位模式下该类型与cmtUint32相同
 typedef long long cmtInt64;//注意：32位模式下该类型与cmtInt32相同
+#else
+typedef cmtUint32 cmtUint64;//注意：32位模式下该类型与cmtUint32相同
+typedef cmtInt32 cmtInt64;//注意：32位模式下该类型与cmtInt32相同
+#endif
 typedef cmtUint8 cmtBool;
 
 //字符类型
