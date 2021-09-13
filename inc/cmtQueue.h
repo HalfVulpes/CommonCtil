@@ -43,14 +43,6 @@ typedef struct _CMTQUEUE
 * @author Dexnab
 */
 extern cmtQueue* cmtQueueInit(cmtUint64 size);
-extern void cmtQueueClean(cmtQueue* queue);
-extern cmtUint8 cmtQueueAppend(cmtQueue* queue, cmtUint8* data, cmtUint64 size);
-extern cmtUint8 cmtQueueGet(cmtQueue* queue, cmtUint8* buffer, cmtUint64 size);
-extern void cmtQueueRemove(cmtQueue* q);
-extern void* cmtQueueSearch(cmtQueue* q, cmtUint64 index);
-extern void cmtFreeIndex(cmtQueue* q, cmtUint64 index);
-extern int cmtScanAll(cmtQueue* q, cmtUint64 cmtScanHandler, void* udata);
-=======
 /**
 * @brief 清空队列
 * @param[in] queue 队列指针
