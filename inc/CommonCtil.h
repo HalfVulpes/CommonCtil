@@ -18,5 +18,6 @@
 #include <cmtCore.h>//核心功能
 #include <cmtString.h>//字符串
 #include <cmtQueue.h>//队列
+#include <cmtCryp.h>//加密库
 
 #endif
