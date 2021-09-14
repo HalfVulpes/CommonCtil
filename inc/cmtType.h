@@ -3,7 +3,7 @@
 * @brief cmtType 库的数据类型标准定义文件，这个文件规定了大多数的数据类型的别名
 * @par Windows 依赖库：
 * @par Linux 依赖库：
-* @data 2021-07-29
+* @date 2021-09-14
 * @author GogeBlue
 * @author Dexnab
 */
