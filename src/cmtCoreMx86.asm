@@ -5,7 +5,7 @@
 
 ;cx dx
 ;void cmtSpinLockEnter(cmtUint8* value, cmtUint64 MaxSpin)
-cmtSpinLockEnter proc
+@cmtSpinLockEnter@8 proc
 	;ah=1
 	xor ah, ah
 	inc ah
@@ -52,6 +52,6 @@ cmtSpinLockEnter proc
 	cSLE_EndNormal:
 	xor eax, eax
 	ret
-cmtSpinLockEnter endp
+@cmtSpinLockEnter@8 endp
 
 end
