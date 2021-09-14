@@ -3,7 +3,7 @@
 * @brief cmtQueue 库的头文件，实现了Queue队列的操作
 * @par Windows 依赖库：
 * @par Linux 依赖库：
-* @data 2021-07-16
+* @date 2021-09-14
 * @author GogeBlue
 * @author Dexnab
 */

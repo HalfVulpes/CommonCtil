@@ -4,7 +4,7 @@
 * 仅提供基本功能，如需调用完整功能，请自行调用系统api
 * @par Windows 依赖库：Kernel32.lib 
 * @par Linux 依赖库：libpthread.a
-* @data 2021-08-11
+* @date 2021-09-14
 * @author Dexnab
 */
 #include <cmtType.h>
