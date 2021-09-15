@@ -12,6 +12,7 @@
 			  SHA-256 is one of the three algorithms in the SHA2
 			  specification. The others, SHA-384 and SHA-512, are not
 			  offered in this implementation.
+			  For SHA-384 and SHA-512, they require a x64 environment
 			  Algorithm specification can be found here:
 			   * http://csrc.nist.gov/publications/fips/fips180-2/fips180-2withchangenotice.pdf
 			  This implementation uses little endian byte order.
