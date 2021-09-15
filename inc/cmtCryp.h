@@ -12,10 +12,13 @@
 #include <cmtType.h>
 #include <cmtCore.h>
 
-/*--------------------------------SHA256宏定义 开始--------------------------------*/
+/*--------------------------------宏定义 开始--------------------------------*/
 
 //SHA256输出摘要长度，32字节（256位）
 #define CMT_SHA256_BLOCK_SIZE 32
+
+//SHA1输出的摘要长度，20字节（160位）
+#define CMT_SHA1_BLOCK_SIZE 20
 
 #define CMT_ROTLEFT(a,b) (((a) << (b)) | ((a) >> (32-(b))))
 #define CMT_ROTRIGHT(a,b) (((a) >> (b)) | ((a) << (32-(b))))
@@ -26,9 +29,10 @@
 #define CMT_EP1(x) (CMT_ROTRIGHT(x,6) ^ CMT_ROTRIGHT(x,11) ^ CMT_ROTRIGHT(x,25))
 #define CMT_SIG0(x) (CMT_ROTRIGHT(x,7) ^ CMT_ROTRIGHT(x,18) ^ ((x) >> 3))
 #define CMT_SIG1(x) (CMT_ROTRIGHT(x,17) ^ CMT_ROTRIGHT(x,19) ^ ((x) >> 10))
-/*--------------------------------SHA256宏定义 结束--------------------------------*/
+/*--------------------------------宏定义 结束--------------------------------*/
 
-/*--------------------------------SHA256变量定义 开始--------------------------------*/
+
+/*--------------------------------常量量定义 开始--------------------------------*/
 
 static const cmtUint32 k[64] = {
 	0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
@@ -40,9 +44,9 @@ static const cmtUint32 k[64] = {
 	0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
 	0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
 };
-/*--------------------------------SHA256变量定义 结束--------------------------------*/
+/*--------------------------------常量量定义 结束--------------------------------*/
 
-/*--------------------------------SHA256结构体定义 开始--------------------------------*/
+/*--------------------------------结构体定义 开始--------------------------------*/
 
 /**
 * @struct cmtSHA256
@@ -57,7 +61,22 @@ typedef struct _CMTSHA256
 	cmtUint64 bitlen;
 	cmtUint32 state[8];
 }cmtSHA256;
-/*--------------------------------SHA256结构体定义 结束--------------------------------*/
+
+/**
+* @struct cmtSHA1
+* @brief SHA1结构体
+* @date 2021-09-15
+* @author GogeBlue
+*/
+typedef struct _CMTSHA1
+{
+	cmtUint8 data[64];
+	cmtUint32 datalen;
+	cmtUint64 bitlen;
+	cmtUint32 state[5];
+	cmtUint32 k[4];
+}cmtSHA1;
+/*--------------------------------结构体定义 结束--------------------------------*/
 
 /*--------------------------------随机数函数 开始--------------------------------*/
 
@@ -71,7 +90,7 @@ typedef struct _CMTSHA256
 void cmtRealRand(cmtUint64* buf, cmtUint64 len);
 /*--------------------------------随机数函数 结束--------------------------------*/
 
-/*--------------------------------SHA256函数 开始--------------------------------*/
+/*--------------------------------函数 开始--------------------------------*/
 
 /**
 * @brief 初始化cmtSHA256结构体
@@ -129,5 +148,64 @@ void cmtSHA256Get(cmtSHA256* ctx, cmtUint8* hash);
 * @author GogeBlue
 */
 void cmtSHA256Transform(cmtSHA256* ctx, cmtUint8* data);
-/*--------------------------------SHA256函数 结束--------------------------------*/
+
+/**
+* @brief 初始化cmtSHA1结构体
+* @param[out] 输出结构体
+* @par 示例:
+* @code
+	//对照：字符串"abcabcabc" 的sha1值为：0b6f5dae7f8d68348f7d56ac05ea20a55f652d91
+	cmtChar str[] = "abcabcabc";
+	cmtUint8 result[CMT_SHA1_BLOCK_SIZE];
+	cmtSHA1 ctx;
+
+	//初始化sha256结构体
+	cmtSHA1Init(&ctx);
+
+	//写入数据，更新sha256结构体
+	cmtSHA1Update(&ctx, str, sizeof(str) - 1);//排除结尾的'\0'
+
+	//获取结果
+	cmtSHA1Get(&ctx, result);
+
+	//输出
+	for (int i = 0; i < 20; i++)
+	{
+		printf("%hhx", result[i]);
+	}
+* @endcode
+* @date 2021-09-15
+* @author GogeBlue
+*/
+void cmtSHA1Init(cmtSHA1* ctx);
+
+/**
+* @brief 写入数据，更新sha1结构体
+* @param[in] sha1结构体
+* @param[in] 数据
+* @param[in] 数据字节数
+* @date 2021-09-15
+* @author GogeBlue
+*/
+void cmtSHA1Update(cmtSHA1* ctx, cmtUint8* data, cmtUint64 size);
+
+/**
+* @brief 计算并取值
+* @param[in] sha1结构体
+* @param[out] 接受缓冲区
+* @attention 接受缓冲区长度不能小于CMT_SHA1_BLOCK_SIZE, 如果第一次的update是abc，第二次的update是123，最后在get则相当于计算abc123的hash1
+* @date 2021-09-15
+* @author GogeBlue
+*/
+void cmtSHA1Get(cmtSHA1* ctx, cmtUint8* hash);
+
+/**
+* @brief 矩阵函数，内部使用
+* @date 2021-09-15
+* @author GogeBlue
+*/
+void cmtSHA1Transform(cmtSHA1* ctx, cmtUint8* data);
+/*--------------------------------函数 结束--------------------------------*/
+
+
 #endif
