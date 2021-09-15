@@ -2,7 +2,29 @@
 * @file cmtCryp.h
 * @brief 用于支持跨平台的简化易用版本密码学库
 * @data 2021-09-13
+* @author Brad Conte
 * @author GogeBlue
+* @disclaimer: This code is presented "as is" without any guarantees.
+* 
+* Details:    
+* 
+			  Implementation of the SHA-256 hashing algorithm.
+			  SHA-256 is one of the three algorithms in the SHA2
+			  specification. The others, SHA-384 and SHA-512, are not
+			  offered in this implementation.
+			  Algorithm specification can be found here:
+			   * http://csrc.nist.gov/publications/fips/fips180-2/fips180-2withchangenotice.pdf
+			  This implementation uses little endian byte order.
+
+			  Implementation of the SHA1 hashing algorithm.
+			  Algorithm specification can be found here:
+			   * http://csrc.nist.gov/publications/fips/fips180-2/fips180-2withchangenotice.pdf
+			  This implementation uses little endian byte order.
+
+			  Implementation of the MD5 hashing algorithm.
+			  Algorithm specification can be found here:
+		       * http://tools.ietf.org/html/rfc1321
+		      This implementation uses little endian byte order.
 */
 
 //防止重复包含
@@ -69,6 +91,7 @@ static const cmtUint32 k[64] = {
 * @struct cmtSHA256
 * @brief SHA256结构体
 * @date 2021-09-14
+* @author Brad Conte
 * @author GogeBlue
 */
 typedef struct _CMTSHA256
@@ -83,6 +106,7 @@ typedef struct _CMTSHA256
 * @struct cmtSHA1
 * @brief SHA1结构体
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 typedef struct _CMTSHA1
@@ -98,6 +122,7 @@ typedef struct _CMTSHA1
 * @struct cmtMD5
 * @brief MD5结构体
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 typedef struct _CMTMD5
@@ -149,6 +174,7 @@ void cmtRealRand(cmtUint64* buf, cmtUint64 len);
 	}
 * @endcode
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 void cmtSHA256Init(cmtSHA256* ctx);
@@ -159,6 +185,7 @@ void cmtSHA256Init(cmtSHA256* ctx);
 * @param[in] 数据
 * @param[in] 数据字节数
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 void cmtSHA256Update(cmtSHA256* ctx, cmtUint8* data, cmtUint64 size);
@@ -169,6 +196,7 @@ void cmtSHA256Update(cmtSHA256* ctx, cmtUint8* data, cmtUint64 size);
 * @param[out] 接受缓冲区
 * @attention 接受缓冲区长度不能小于CMT_SHA256_BLOCK_SIZE, 如果第一次的update是abc，第二次的update是123，最后在get则相当于计算abc123的hash256
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 void cmtSHA256Get(cmtSHA256* ctx, cmtUint8* hash);
@@ -176,6 +204,7 @@ void cmtSHA256Get(cmtSHA256* ctx, cmtUint8* hash);
 /**
 * @brief 矩阵函数，内部使用
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 void cmtSHA256Transform(cmtSHA256* ctx, cmtUint8* data);
@@ -206,6 +235,7 @@ void cmtSHA256Transform(cmtSHA256* ctx, cmtUint8* data);
 	}
 * @endcode
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 void cmtSHA1Init(cmtSHA1* ctx);
@@ -226,6 +256,7 @@ void cmtSHA1Update(cmtSHA1* ctx, cmtUint8* data, cmtUint64 size);
 * @param[out] 接受缓冲区
 * @attention 接受缓冲区长度不能小于CMT_SHA1_BLOCK_SIZE, 如果第一次的update是abc，第二次的update是123，最后在get则相当于计算abc123的hash1
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 void cmtSHA1Get(cmtSHA1* ctx, cmtUint8* hash);
@@ -233,6 +264,7 @@ void cmtSHA1Get(cmtSHA1* ctx, cmtUint8* hash);
 /**
 * @brief 矩阵函数，内部使用
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 void cmtSHA1Transform(cmtSHA1* ctx, cmtUint8* data);
@@ -263,6 +295,7 @@ void cmtSHA1Transform(cmtSHA1* ctx, cmtUint8* data);
 	}
 * @endcode
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 void cmtMD5Init(cmtMD5* ctx);
@@ -273,6 +306,7 @@ void cmtMD5Init(cmtMD5* ctx);
 * @param[in] 数据
 * @param[in] 数据字节数
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 void cmtMD5Update(cmtMD5* ctx, cmtUint8* data, cmtUint64 size);
@@ -283,6 +317,7 @@ void cmtMD5Update(cmtMD5* ctx, cmtUint8* data, cmtUint64 size);
 * @param[out] 接受缓冲区
 * @attention 接受缓冲区长度不能小于CMT_MD5_BLOCK_SIZE, 如果第一次的update是abc，第二次的update是123，最后在get则相当于计算abc123的MD5
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 void cmtMD5Get(cmtMD5* ctx, cmtUint8* hash);
@@ -290,6 +325,7 @@ void cmtMD5Get(cmtMD5* ctx, cmtUint8* hash);
 /**
 * @brief 矩阵函数，内部使用
 * @date 2021-09-15
+* @author Brad Conte
 * @author GogeBlue
 */
 void cmtMD5Transform(cmtMD5* ctx, cmtUint8* data);
