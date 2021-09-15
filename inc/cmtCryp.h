@@ -521,12 +521,63 @@ void cmtMD5Get(cmtMD5* ctx, cmtUint8* hash);
 */
 void cmtMD5Transform(cmtMD5* ctx, cmtUint8* data);
 
+
+/***********************************对称加密函数开始****************************************/
+/***
+* 注意事项
+1，对于所有的AES函数，其密钥设置函数，必须得在加密解密前执行
+2，密钥的位数只能是128位（cmtUint8 key[16]），192位（cmtUint8 key[24]），或者256位（cmtUint8 key[32]）。
+3，对于控制密钥位数，最方便的方法就是对用户的输入进行hash运算，如：keyInit(sha256(userInput)) //生成一个256位AES密钥。
+4，默认的cmtAESKeyInit是最朴素的AES操作方式：ECB模式，这种模式并不是非常的安全，明文中的重复部分在密文中也会重复。推荐使用CBC模式
+5，ECB模式下不需要使用初始化向量（IV），因为ECB模式下明文是以密码本的形式加密的，但是呢，其他模式下IV就变得重要起来了，它可以给文件增加一个随机偏移量，让相同的文件加密得到不同的密文。
+**/
+
 /**
-* @brief 
+* @brief AES密钥初始化函数
+* @param[in] keyChar[] 一个作为密钥的字符串，任意长度，比如12345abc@，不推荐使用弱口令
+* @param[out] w[] 初始化好的计算密钥组矩阵
+* @param[in] keysize 生成的密钥长度 128位就填128，如果是128位密钥则是AES-128加密
+* @attention 其中w矩阵为计算后的密钥组，用来接受的Buffer不能小于60个int。
+* @date 2021-09-15
+* @author Brad Conte
+* @author GogeBlue
 */
-void cmtAESkeyInit(const cmtUint8 key[], cmtUint32 w[], int keysize);
+void cmtAESkeyInit(const cmtUint8 keyChar[], cmtUint32 w[], int keysize);
+
+/**
+* @brief AES-偏移向量生成函数
+* @param[out] iv[] 用来接收iv偏移向量的Buffer，至少一个CMT_AES_BLOCK_SIZE字节大
+* @attention 请务必保存偏移向量，和密钥一样重要，因为在解密的时候需要偏移向量和密钥共同解密。
+* @date 2021-09-15
+* @author Brad Conte
+* @author GogeBlue
+*/
+void cmtAESInitialVectorInit(cmtUint8 *iv);
+
+
+/**
+* @brief AES-ECB模式加密函数，每次可以处理16个Bytes
+* @param[in] in[] 一个长度为16字节的明文
+* @param[out] out[] 用来接收密文的Buffer，至少16个字节大
+* @param[in] key[] 由cmtAESkeyInit所初始化得到的计算密钥组矩阵
+* @param[in] keysize 密钥长度 128位就填128
+* @date 2021-09-15
+* @author Brad Conte
+* @author GogeBlue
+*/
 void cmtAESenc(const cmtUint8 in[], cmtUint8 out[], const cmtUint32 key[], int keysize);
+/**
+* @brief AES-ECB模式解密函数，每次可以处理16个Bytes
+* @param[in] in[] 一个长度为16字节的密文
+* @param[out] out[] 用来接收明文的Buffer，至少16个字节大
+* @param[in] key[] 由cmtAESkeyInit所初始化得到的计算密钥组矩阵
+* @param[in] keysize 密钥长度 128位就填128
+* @date 2021-09-15
+* @author Brad Conte
+* @author GogeBlue
+*/
 void cmtAESdec(const cmtUint8 in[], cmtUint8 out[], const cmtUint32 key[], int keysize);
+
 
 int cmtAESencCBC(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[]);
 int cmtAESencCBCmac(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[]);
@@ -544,7 +595,7 @@ int cmtAESdecCCM(const cmtUint8 ciphertext[], cmtUint32 ciphertext_len, const cm
 	cmtUint32 macLen, int* mac_auth, const cmtUint8 key_str[], int keysize);
 
 /**
-* @brief AES相关函数，仅供内部使用
+* @brief AES相关函数，仅供内部使用，懒得写注释了，const别去掉
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -567,6 +618,9 @@ void cmtInvShiftRows(cmtUint8 state[][4]);
 void cmtMixColumns(cmtUint8 state[][4]);
 void cmtInvMixColumns(cmtUint8 state[][4]);
 
+//rc4 加密函数
+
+//base64 重编码函数
 /*--------------------------------函数 结束--------------------------------*/
 
 

@@ -395,6 +395,23 @@ void cmtMD5Transform(cmtMD5* ctx, cmtUint8* data)
 	ctx->state[3] += d;
 }
 
+void cmtAESInitialVectorInit(cmtUint8* iv) 
+{
+	cmtUint64 random = 0x0, random2 = 0x0;
+	cmtRealRand(&random, 1);
+	cmtRealRand(&random2, 1);
+	cmtUint8 seed[8] = { NULL };
+	for (int i = 0; i < 4; i++)
+	{
+		seed[i] = (cmtUint8)(&random)[7 - i];
+		seed[i + 4] = (cmtUint8)(&random2)[7 - i];
+	}
+	cmtMD5 ctx;
+	cmtMD5Init(&ctx);
+	cmtMD5Update(&ctx, seed, 8);
+	cmtMD5Get(&ctx, iv);
+}
+
 void cmtXorBuffer(const cmtUint8 in[], cmtUint8 out[], cmtUint64 size)
 {
 	cmtUint64 idx;
@@ -700,9 +717,45 @@ cmtUint32 cmtAESSubWord(cmtUint32 word)
 }
 
 
-//生成轮密钥
-void cmtAESkeyInit(const cmtUint8 key[], cmtUint32 w[], int keysize)
+//生成密钥
+void cmtAESkeyInit(const cmtUint8 keyChar[], cmtUint32 w[], int keysize)
 {
+	cmtUint8* key = NULL;
+	if (keysize == 128)
+	{
+		key = (cmtUint8*)malloc(sizeof(cmtUint8) * 16);
+		if (key == NULL) return;
+		cmtMD5 ctx;
+		cmtMD5Init(&ctx);
+		cmtMD5Update(&ctx, keyChar, sizeof(keyChar) - 1);//排除结尾的'\0'
+		cmtMD5Get(&ctx, key);
+	} 
+	else
+	{
+		cmtUint8 tempp[CMT_SHA256_BLOCK_SIZE];
+		int i;
+		cmtSHA256 ctx;
+		cmtSHA256Init(&ctx);
+		cmtSHA256Update(&ctx, keyChar, sizeof(keyChar) - 1);
+		cmtSHA256Get(&ctx, tempp);
+		if (keysize == 256)
+		{
+			key = (cmtUint8*)malloc(sizeof(cmtUint8) * 32);
+			if (key == NULL) return;
+			for (i = 0; i < 32; ++i)
+			{
+				key[i] = tempp[i];
+			}
+		} else if (keysize == 192)
+		{
+			key = (cmtUint8*)malloc(sizeof(cmtUint8) * 24);
+			if (key == NULL) return;
+			for (i = 0; i < 24; ++i)
+			{
+				key[i] = tempp[i];
+			}
+		}
+	}
 	int Nb = 4, Nr, Nk, idx;
 	cmtUint32 temp, Rcon[] = { 0x01000000,0x02000000,0x04000000,0x08000000,0x10000000,0x20000000,
 					  0x40000000,0x80000000,0x1b000000,0x36000000,0x6c000000,0xd8000000,
@@ -715,9 +768,12 @@ void cmtAESkeyInit(const cmtUint8 key[], cmtUint32 w[], int keysize)
 	default: return;
 	}
 
-	for (idx = 0; idx < Nk; ++idx) {
-		w[idx] = ((key[4 * idx]) << 24) | ((key[4 * idx + 1]) << 16) |
-			((key[4 * idx + 2]) << 8) | ((key[4 * idx + 3]));
+	if (key != NULL)
+	{
+		for (idx = 0; idx < Nk; ++idx) {
+			w[idx] = ((key[4 * idx]) << 24) | ((key[4 * idx + 1]) << 16) |
+				((key[4 * idx + 2]) << 8) | ((key[4 * idx + 3]));
+		}
 	}
 
 	for (idx = Nk; idx < Nb * (Nr + 1); ++idx) {
@@ -728,6 +784,7 @@ void cmtAESkeyInit(const cmtUint8 key[], cmtUint32 w[], int keysize)
 			temp = cmtAESSubWord(temp);
 		w[idx] = w[idx - Nk] ^ temp;
 	}
+	free(key);
 }
 
 /////////////////
