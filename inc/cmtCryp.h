@@ -20,6 +20,9 @@
 //SHA1输出的摘要长度，20字节（160位）
 #define CMT_SHA1_BLOCK_SIZE 20
 
+//MD5输出的摘要长度，16字节（128位）
+#define CMT_MD5_BLOCK_SIZE 16 
+
 #define CMT_ROTLEFT(a,b) (((a) << (b)) | ((a) >> (32-(b))))
 #define CMT_ROTRIGHT(a,b) (((a) >> (b)) | ((a) << (32-(b))))
 
@@ -29,6 +32,20 @@
 #define CMT_EP1(x) (CMT_ROTRIGHT(x,6) ^ CMT_ROTRIGHT(x,11) ^ CMT_ROTRIGHT(x,25))
 #define CMT_SIG0(x) (CMT_ROTRIGHT(x,7) ^ CMT_ROTRIGHT(x,18) ^ ((x) >> 3))
 #define CMT_SIG1(x) (CMT_ROTRIGHT(x,17) ^ CMT_ROTRIGHT(x,19) ^ ((x) >> 10))
+
+#define CMT_F(x,y,z) ((x & y) | (~x & z))
+#define CMT_G(x,y,z) ((x & z) | (y & ~z))
+#define CMT_H(x,y,z) (x ^ y ^ z)
+#define CMT_I(x,y,z) (y ^ (x | ~z))
+
+#define CMT_FF(a,b,c,d,m,s,t) { a += CMT_F(b,c,d) + m + t; \
+                            a = b + CMT_ROTLEFT(a,s); }
+#define CMT_GG(a,b,c,d,m,s,t) { a += CMT_G(b,c,d) + m + t; \
+                            a = b + CMT_ROTLEFT(a,s); }
+#define CMT_HH(a,b,c,d,m,s,t) { a += CMT_H(b,c,d) + m + t; \
+                            a = b + CMT_ROTLEFT(a,s); }
+#define CMT_II(a,b,c,d,m,s,t) { a += CMT_I(b,c,d) + m + t; \
+                            a = b + CMT_ROTLEFT(a,s); }
 /*--------------------------------宏定义 结束--------------------------------*/
 
 
@@ -76,6 +93,20 @@ typedef struct _CMTSHA1
 	cmtUint32 state[5];
 	cmtUint32 k[4];
 }cmtSHA1;
+
+/**
+* @struct cmtMD5
+* @brief MD5结构体
+* @date 2021-09-15
+* @author GogeBlue
+*/
+typedef struct _CMTMD5
+{
+	cmtUint8 data[64];
+	cmtUint32 datalen;
+	cmtUint64 bitlen;
+	cmtUint32 state[4];
+}cmtMD5;
 /*--------------------------------结构体定义 结束--------------------------------*/
 
 /*--------------------------------随机数函数 开始--------------------------------*/
@@ -205,6 +236,63 @@ void cmtSHA1Get(cmtSHA1* ctx, cmtUint8* hash);
 * @author GogeBlue
 */
 void cmtSHA1Transform(cmtSHA1* ctx, cmtUint8* data);
+
+/**
+* @brief 初始化cmtMD5结构体
+* @param[out] 输出结构体
+* @par 示例:
+* @code
+	//对照：字符串"abcabcabc" 的MD5值为：97ac82a5b825239e782d0339e2d7b910
+	cmtChar str[] = "abcabcabc";
+	cmtUint8 result[CMT_MD5_BLOCK_SIZE];
+	cmtMD5 ctx;
+
+	//初始化MD5结构体
+	cmtMD5Init(&ctx);
+
+	//写入数据，更新MD5结构体
+	cmtMD5Update(&ctx, str, sizeof(str) - 1);//排除结尾的'\0'
+
+	//获取结果
+	cmtMD5Get(&ctx, result);
+
+	//输出
+	for (int i = 0; i < 16; i++)
+	{
+		printf("%hhx", result[i]);
+	}
+* @endcode
+* @date 2021-09-15
+* @author GogeBlue
+*/
+void cmtMD5Init(cmtMD5* ctx);
+
+/**
+* @brief 写入数据，更新MD5结构体
+* @param[in] MD5结构体
+* @param[in] 数据
+* @param[in] 数据字节数
+* @date 2021-09-15
+* @author GogeBlue
+*/
+void cmtMD5Update(cmtMD5* ctx, cmtUint8* data, cmtUint64 size);
+
+/**
+* @brief 计算并取值
+* @param[in] MD5结构体
+* @param[out] 接受缓冲区
+* @attention 接受缓冲区长度不能小于CMT_MD5_BLOCK_SIZE, 如果第一次的update是abc，第二次的update是123，最后在get则相当于计算abc123的MD5
+* @date 2021-09-15
+* @author GogeBlue
+*/
+void cmtMD5Get(cmtMD5* ctx, cmtUint8* hash);
+
+/**
+* @brief 矩阵函数，内部使用
+* @date 2021-09-15
+* @author GogeBlue
+*/
+void cmtMD5Transform(cmtMD5* ctx, cmtUint8* data);
 /*--------------------------------函数 结束--------------------------------*/
 
 
