@@ -117,7 +117,7 @@ void cmtSHA256Update(cmtSHA256* ctx, cmtUint8* data, cmtUint64 size);
 * @brief 计算并取值
 * @param[in] sha256结构体
 * @param[out] 接受缓冲区
-* @attention 接受缓冲区长度不能小于CMT_SHA256_BLOCK_SIZE
+* @attention 接受缓冲区长度不能小于CMT_SHA256_BLOCK_SIZE, 如果第一次的update是abc，第二次的update是123，最后在get则相当于计算abc123的hash256
 * @date 2021-09-15
 * @author GogeBlue
 */
