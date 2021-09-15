@@ -578,11 +578,49 @@ void cmtAESenc(const cmtUint8 in[], cmtUint8 out[], const cmtUint32 key[], int k
 */
 void cmtAESdec(const cmtUint8 in[], cmtUint8 out[], const cmtUint32 key[], int keysize);
 
-
+/**
+* @brief AES-CBC模式加密函数，每次可以处理n * CMT_AES_BLOCK_SIZE 个字节的数据
+* @param[in] in[] 一个长度为n * CMT_AES_BLOCK_SIZE字节的明文
+* @param[in] in_len 数据的长度，必须是CMT_AES_BLOCK_SIZE的整数倍
+* @param[out] out[] 加密密文，和输入的明文一样的长度
+* @param[in] key[] 由cmtAESkeyInit所初始化得到的计算密钥组矩阵
+* @param[in] keysize 密钥长度 128位就填128
+* @param[in] iv 由cmtAESInitialVectorInit获得的偏移向量
+* @date 2021-09-15
+* @author Brad Conte
+* @author GogeBlue
+*/
 int cmtAESencCBC(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[]);
+/**
+* @brief AES-CBC-输出MAC模式加密函数，每次可以处理n * CMT_AES_BLOCK_SIZE 个字节的数据
+* @param[in] in[] 一个长度为n * CMT_AES_BLOCK_SIZE字节的明文
+* @param[in] in_len 数据的长度，必须是CMT_AES_BLOCK_SIZE的整数倍
+* @param[out] out[] 输出MAC
+* @param[in] key[] 由cmtAESkeyInit所初始化得到的计算密钥组矩阵
+* @param[in] keysize 密钥长度 128位就填128
+* @param[in] iv 由cmtAESInitialVectorInit获得的偏移向量
+* @date 2021-09-15
+* @author Brad Conte
+* @author GogeBlue
+*/
 int cmtAESencCBCmac(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[]);
+/**
+* @brief AES-CBC模式解密函数，每次可以处理n * CMT_AES_BLOCK_SIZE字节的数据
+* @param[in] in[] 一个长度为n * CMT_AES_BLOCK_SIZE字节的密文
+* @param[in] in 数据的长度，必须是CMT_AES_BLOCK_SIZE的整数倍
+* @param[out] out[] 用来接收明文的Buffer，至少n * CMT_AES_BLOCK_SIZE个字节大
+* @param[in] key[] 由cmtAESkeyInit所初始化得到的计算密钥组矩阵
+* @param[in] keysize 密钥长度 128位就填128
+* @param[in] iv 由cmtAESInitialVectorInit获得的偏移向量
+* @date 2021-09-15
+* @author Brad Conte
+* @author GogeBlue
+*/
 int cmtAESdecCBC(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[]);
 
+/*
+* 和CBC模式同理
+*/
 void cmtAESincrIV(cmtUint8 iv[], int counter_size);
 void cmtAESencCTR(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[]);
 void cmtAESdecCTR(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[]);
