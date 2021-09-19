@@ -16,7 +16,7 @@ cmtRealRand proc
 	jae cRR_End
 	;生成随机数
 	cRR_GenRand:
-	rdrand eax
+	rdrand rax
 	;检查结果，失败重来
 	jnc cRR_GenRand
 	;写入数组

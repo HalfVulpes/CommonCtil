@@ -589,14 +589,14 @@ void cmtAESkeyInit(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 
 	{
 		cmtMD5 ctx;
 		cmtMD5Init(&ctx);
-		cmtMD5Update(&ctx, keystr, sKeystr - 1);//排除结尾的'\0'
+		cmtMD5Update(&ctx, keystr, sKeystr);
 		cmtMD5Get(&ctx, key);
 	}
 	else
 	{
 		cmtSHA256 ctx;
 		cmtSHA256Init(&ctx);
-		cmtSHA256Update(&ctx, keystr, sKeystr - 1);
+		cmtSHA256Update(&ctx, keystr, sKeystr);
 		cmtSHA256Get(&ctx, key);
 	}
 
@@ -634,16 +634,19 @@ void cmtAESRestrictkeyInit(cmtUint8* key, cmtUint32* w, cmtUint16 keysize)
 
 void cmtAESInitialVectorInit(cmtUint8* iv)
 {
-	cmtUint64 random = 0x0, random2 = 0x0;
+	cmtUint8 random[8], random2[8];
+	cmtUint8 seed[8];
+	cmtMD5 ctx;
+
 	cmtRealRand(&random, 1);
 	cmtRealRand(&random2, 1);
-	cmtUint8 seed[8] = { NULL };
+
 	for (int i = 0; i < 4; i++)
 	{
-		seed[i] = (cmtUint8)(&random)[7 - i];
-		seed[i + 4] = (cmtUint8)(&random2)[7 - i];
+		seed[i] = random[7 - i];
+		seed[i + 4] = random2[7 - i];
 	}
-	cmtMD5 ctx;
+
 	cmtMD5Init(&ctx);
 	cmtMD5Update(&ctx, seed, 8);
 	cmtMD5Get(&ctx, iv);
@@ -816,7 +819,7 @@ void cmtAESecbDecEx(cmtUint8* in, cmtUint8* out, cmtUint64 size, cmtUint32* key,
 void cmtAEScbcEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
 {
 	cmtUint8 buf_in[CMT_AES_BLOCK_SIZE], buf_out[CMT_AES_BLOCK_SIZE], iv_buf[CMT_AES_BLOCK_SIZE];
-	int blocks, idx;
+	cmtUint64 blocks, idx;
 
 	blocks = size / CMT_AES_BLOCK_SIZE;
 
@@ -831,10 +834,10 @@ void cmtAEScbcEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, c
 	}
 }
 
-void cmtAESencCBCmac(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
+void cmtAEScbcEncMac(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
 {
 	cmtUint8 buf_in[CMT_AES_BLOCK_SIZE], buf_out[CMT_AES_BLOCK_SIZE], iv_buf[CMT_AES_BLOCK_SIZE];
-	int blocks, idx;
+	cmtUint64 blocks, idx;
 
 	blocks = size / CMT_AES_BLOCK_SIZE;
 
@@ -847,13 +850,11 @@ void cmtAESencCBCmac(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key
 		memcpy(iv_buf, buf_out, CMT_AES_BLOCK_SIZE);
 		// 输出所有的块可能会溢出
 	}
-	if (buf_out != NULL)
-	{
-		memcpy(out, buf_out, CMT_AES_BLOCK_SIZE);// 只输出最后的块
-	}
+
+	memcpy(out, buf_out, CMT_AES_BLOCK_SIZE);// 只输出最后的块
 }
 
-void cmtAESdecCBC(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
+void cmtAEScbcDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
 {
 	cmtUint8 buf_in[CMT_AES_BLOCK_SIZE], buf_out[CMT_AES_BLOCK_SIZE], iv_buf[CMT_AES_BLOCK_SIZE];
 	int blocks, idx;
@@ -871,23 +872,18 @@ void cmtAESdecCBC(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, c
 	}
 }
 
-/*******************
-* AES - CTR 实现
-*******************/
-
-// 开始加密
-void cmtAESencCTR(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[])
+void cmtAESctrEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
 {
 	cmtUint64 idx = 0, last_block_length;
 	cmtUint8 iv_buf[CMT_AES_BLOCK_SIZE], out_buf[CMT_AES_BLOCK_SIZE];
 
 	if (in != out)
-		memcpy(out, in, in_len);
+		memcpy(out, in, size);
 
 	memcpy(iv_buf, iv, CMT_AES_BLOCK_SIZE);
-	last_block_length = in_len - CMT_AES_BLOCK_SIZE;
+	last_block_length = size - CMT_AES_BLOCK_SIZE;
 
-	if (in_len > CMT_AES_BLOCK_SIZE) {
+	if (size > CMT_AES_BLOCK_SIZE) {
 		for (idx = 0; idx < last_block_length; idx += CMT_AES_BLOCK_SIZE) {
 			cmtAESecbEnc(iv_buf, out_buf, key, keysize);
 			cmtXorBuffer(out_buf, &out[idx], CMT_AES_BLOCK_SIZE);
@@ -896,126 +892,13 @@ void cmtAESencCTR(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const c
 	}
 
 	cmtAESecbEnc(iv_buf, out_buf, key, keysize);
-	cmtXorBuffer(out_buf, &out[idx], in_len - idx);   // 最有效的字节
+	cmtXorBuffer(out_buf, &out[idx], size - idx);   // 最有效的字节
 }
 
-void cmtAESdecCTR(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[])
+void cmtAESctrDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
 {
 	//CTR的加密就是他自己的反函数
-	cmtAESencCTR(in, in_len, out, key, keysize, iv);
-}
-
-/*******************
-* AES - CCM 加密
-*******************/
-// outLen = payloadLen + assocLen
-int cmtAESencCCM(const cmtUint8 payload[], cmtUint32 payloadLen, const cmtUint8 assoc[], unsigned short assocLen,
-	const cmtUint8 nonce[], unsigned short nonceLen, cmtUint8 out[], cmtUint32* out_len,
-	cmtUint32 macLen, const cmtUint8 key_str[], int keysize)
-{
-	cmtUint8 temp_iv[CMT_AES_BLOCK_SIZE], counter[CMT_AES_BLOCK_SIZE], mac[16], * buf;
-	int endOfBuffer, payloadLenStoreSize;
-	cmtUint32 key[60];
-
-	if (macLen != 4 && macLen != 6 && macLen != 8 && macLen != 10 &&
-		macLen != 12 && macLen != 14 && macLen != 16)
-		return(FALSE);
-
-	if (nonceLen < 7 || nonceLen > 13)
-		return(FALSE);
-
-	if (assocLen > 32768 /* = 2^15 */)
-		return(FALSE);
-
-	buf = (cmtUint8*)malloc(payloadLen + assocLen + 48); //不会溢出
-	if (!buf)
-		return(FALSE);
-
-	// 初始化密钥
-	//cmtAESkeyInit(key_str, key, keysize);
-
-	// 格式化格式化数据的第一个块
-	payloadLenStoreSize = CMT_AES_BLOCK_SIZE - 1 - nonceLen;
-	cmtAESccmPreFirFormatBlock(buf, assocLen, payloadLen, payloadLenStoreSize, macLen, nonce, nonceLen);
-	endOfBuffer = CMT_AES_BLOCK_SIZE;
-
-	// 格式化:
-	cmtCCMdataFormat(buf, &endOfBuffer, assoc, assocLen);
-	cmtCCMdataPreload(buf, &endOfBuffer, payload, payloadLen);
-	cmtAESpreFirCTRblock(counter, nonce, nonceLen, payloadLenStoreSize);
-	memset(temp_iv, 0, CMT_AES_BLOCK_SIZE);
-	cmtAESencCBCmac(buf, endOfBuffer, mac, key, keysize, temp_iv);
-	memcpy(out, payload, payloadLen);
-	memcpy(&out[payloadLen], mac, macLen);
-	memcpy(temp_iv, counter, CMT_AES_BLOCK_SIZE);
-	cmtAESincrIV(temp_iv, CMT_AES_BLOCK_SIZE - 1 - macLen);   // 可能有bug，但是还不是很清楚为什么
-	cmtAESencCTR(out, payloadLen, out, key, keysize, temp_iv);
-	cmtAESencCTR(&out[payloadLen], macLen, &out[payloadLen], key, keysize, counter);
-
-	free(buf);
-	*out_len = payloadLen + macLen;
-
-	return(TRUE);
-}
-
-
-int cmtAESdecCCM(const cmtUint8 ciphertext[], cmtUint32 ciphertext_len, const cmtUint8 assoc[], unsigned short assocLen,
-	const cmtUint8 nonce[], unsigned short nonceLen, cmtUint8 plaintext[], cmtUint32* plaintext_len,
-	cmtUint32 macLen, int* mac_auth, const cmtUint8 key_str[], int keysize)
-{
-	cmtUint8 temp_iv[CMT_AES_BLOCK_SIZE], counter[CMT_AES_BLOCK_SIZE], mac[16], mac_buf[16], * buf;
-	int endOfBuffer, plaintext_len_store_size;
-	cmtUint32 key[60];
-
-	if (ciphertext_len <= macLen)
-		return(FALSE);
-
-	buf = (cmtUint8*)malloc(assocLen + ciphertext_len + 48);
-	if (!buf)
-		return(FALSE);
-
-	// 初始化密钥
-	//cmtAESkeyInit(key_str, key, keysize);
-
-	// 拷贝明文
-	*plaintext_len = ciphertext_len - macLen;
-	plaintext_len_store_size = CMT_AES_BLOCK_SIZE - 1 - nonceLen;
-	memcpy(plaintext, ciphertext, *plaintext_len);
-	memcpy(mac, &ciphertext[*plaintext_len], macLen);
-
-	// 拷贝第一个块入内存，用来解密
-	cmtAESpreFirCTRblock(counter, nonce, nonceLen, plaintext_len_store_size);
-
-	memcpy(temp_iv, counter, CMT_AES_BLOCK_SIZE);
-	cmtAESincrIV(temp_iv, CMT_AES_BLOCK_SIZE - 1 - macLen);
-	cmtAESdecCTR(plaintext, *plaintext_len, plaintext, key, keysize, temp_iv);
-
-	if (mac_auth != NULL) {
-		cmtAESdecCTR(mac, macLen, mac, key, keysize, counter);
-
-		plaintext_len_store_size = CMT_AES_BLOCK_SIZE - 1 - nonceLen;
-		cmtAESccmPreFirFormatBlock(buf, assocLen, *plaintext_len, plaintext_len_store_size, macLen, nonce, nonceLen);
-		endOfBuffer = CMT_AES_BLOCK_SIZE;
-
-		cmtCCMdataFormat(buf, &endOfBuffer, assoc, assocLen);
-
-		cmtCCMdataPreload(buf, &endOfBuffer, plaintext, *plaintext_len);
-
-		memset(temp_iv, 0, CMT_AES_BLOCK_SIZE);
-		cmtAESencCBCmac(buf, endOfBuffer, mac_buf, key, keysize, temp_iv);
-
-		if (!memcmp(mac, mac_buf, macLen)) {
-			*mac_auth = TRUE;
-		}
-		else {
-			*mac_auth = FALSE;
-			memset(plaintext, 0, *plaintext_len);
-		}
-	}
-
-	free(buf);
-
-	return(TRUE);
+	cmtAESctrEnc(in, size, out, key, keysize, iv);
 }
 
 void cmtAESincrIV(cmtUint8 iv[], int counter_size)
@@ -1083,13 +966,6 @@ void cmtCCMdataPreload(cmtUint8 buf[], int* endOfBuffer, const cmtUint8 payload[
 	*endOfBuffer += pad;
 }
 
-/*******************
-* AES
-*******************/
-/////////////////
-// 密钥扩展
-/////////////////
-
 cmtUint32 cmtAESSubWord(cmtUint32 word)
 {
 	unsigned int result;
@@ -1143,10 +1019,6 @@ void cmtAESRoundKeyInit(cmtUint8 state[][4], const cmtUint32 w[])
 	state[3][3] ^= subkey[3];
 }
 
-/////////////////
-//cmtAESSubBytes
-/////////////////
-
 void cmtAESSubBytes(cmtUint8 state[][4])
 {
 	state[0][0] = cmtAESsBox[state[0][0] >> 4][state[0][0] & 0x0F];
@@ -1186,11 +1058,6 @@ void cmtInvSubBytes(cmtUint8 state[][4])
 	state[3][2] = cmtAESinvsbox[state[3][2] >> 4][state[3][2] & 0x0F];
 	state[3][3] = cmtAESinvsbox[state[3][3] >> 4][state[3][3] & 0x0F];
 }
-
-/////////////////
-// (Inv)cmtShiftRows
-/////////////////
-
 
 void cmtShiftRows(cmtUint8 state[][4])
 {
@@ -1242,11 +1109,6 @@ void cmtInvShiftRows(cmtUint8 state[][4])
 	state[3][1] = state[3][2];
 	state[3][2] = t;
 }
-
-/////////////////
-// (Inv)cmtMixColumns
-/////////////////
-
 
 void cmtMixColumns(cmtUint8 state[][4])
 {
