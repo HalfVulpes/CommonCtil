@@ -152,7 +152,7 @@ typedef struct _CMTMD5
 * @date 2021-09-19
 * @author Dexnab
 */
-void cmtRealRand(cmtUint64* buf, cmtUint64 len);
+void CMT_FASTCALL cmtRealRand(cmtUint64* buf, cmtUint64 len);
 /*--------------------------------随机数函数 结束--------------------------------*/
 
 /*--------------------------------散列函数 开始--------------------------------*/
