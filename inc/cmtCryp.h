@@ -421,7 +421,7 @@ void cmtAESecbDec(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize
 * @date 2021-09-19
 * @arthur dexnab
 */
-void cmtAESecbEncEx(cmtUint8* in, cmtUint8* out, cmtUint64 size, cmtUint32* key, cmtUint16 keysize);
+void cmtAESecbEncEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);
 
 /**
 * @brief AES-ECB模式解密函数，每次可以处理任意字节
@@ -433,7 +433,7 @@ void cmtAESecbEncEx(cmtUint8* in, cmtUint8* out, cmtUint64 size, cmtUint32* key,
 * @date 2021-09-19
 * @arthur dexnab
 */
-void cmtAESecbDecEx(cmtUint8* in, cmtUint8* out, cmtUint64 size, cmtUint32* key, cmtUint16 keysize);
+void cmtAESecbDecEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);
 
 /**
 * @brief AES-CBC模式加密函数，每次可以处理n * CMT_AES_BLOCK_SIZE个字节的数据

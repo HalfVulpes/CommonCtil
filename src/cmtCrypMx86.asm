@@ -6,6 +6,7 @@
 ;cx dx
 ;void cmtRealRand(cmtUint64* buf, cmtUint64 len)
 @cmtRealRand@8 proc
+	push rbx
 	mov ebx, ecx
 	xor ecx, ecx
 
@@ -27,6 +28,7 @@
 	jmp cRR_GenLoopStart
 	
 	cRR_End:
+	pop rbx
 	ret
 @cmtRealRand@8 endp
 

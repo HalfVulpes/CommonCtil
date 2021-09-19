@@ -440,7 +440,7 @@ void cmtMD5Init(cmtMD5* ctx)
 void cmtMD5Update(cmtMD5* ctx, cmtUint8* data, cmtUint64 size) {
 	cmtUint64 i;
 
-	for (i = 0; i < size; ++i) {
+	for (i = 0; i < size; i++) {
 		ctx->data[ctx->datalen] = data[i];
 		ctx->datalen++;
 		if (ctx->datalen == 64) {
@@ -782,7 +782,7 @@ void cmtAESecbDec(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize
 	out[15] = state[3][3];
 }
 
-void cmtAESecbEncEx(cmtUint8* in, cmtUint8* out, cmtUint64 size, cmtUint32* key, cmtUint16 keysize)
+void cmtAESecbEncEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize)
 {
 	cmtUint64 ExBlockOffset;//不完整块（如果存在）首偏移
 	cmtUint8 ExBlockTemp[CMT_AES_BLOCK_SIZE];//填充完整的不完整块
@@ -808,7 +808,7 @@ void cmtAESecbEncEx(cmtUint8* in, cmtUint8* out, cmtUint64 size, cmtUint32* key,
 	}
 }
 
-void cmtAESecbDecEx(cmtUint8* in, cmtUint8* out, cmtUint64 size, cmtUint32* key, cmtUint16 keysize)
+void cmtAESecbDecEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize)
 {
 	cmtUint64 r;
 
