@@ -580,6 +580,58 @@ void cmtMD5Transform(cmtMD5* ctx, cmtUint8* data)
 	ctx->state[3] += d;
 }
 
+void cmtAESkeyInit(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 keysize)
+{
+	cmtUint8 key[256];
+
+	//字符串标准化为定长密钥数组
+	if (keysize == 128)
+	{
+		cmtMD5 ctx;
+		cmtMD5Init(&ctx);
+		cmtMD5Update(&ctx, keystr, sKeystr - 1);//排除结尾的'\0'
+		cmtMD5Get(&ctx, key);
+	}
+	else
+	{
+		cmtSHA256 ctx;
+		cmtSHA256Init(&ctx);
+		cmtSHA256Update(&ctx, keystr, sKeystr - 1);
+		cmtSHA256Get(&ctx, key);
+	}
+
+	//计算密钥组矩阵
+	cmtAESRestrictkeyInit(key, w, keysize);
+}
+
+void cmtAESRestrictkeyInit(cmtUint8* key, cmtUint32* w, cmtUint16 keysize)
+{
+	cmtUint32 temp, Rcon[] = { 0x01000000,0x02000000,0x04000000,0x08000000,0x10000000,0x20000000,
+						   0x40000000,0x80000000,0x1b000000,0x36000000,0x6c000000,0xd8000000,
+						   0xab000000,0x4d000000,0x9a000000 };
+	cmtInt32 Nb = 4, Nr, Nk, idx;
+
+	switch (keysize) {
+	case 128: Nr = 10; Nk = 4; break;
+	case 192: Nr = 12; Nk = 6; break;
+	case 256: Nr = 14; Nk = 8; break;
+	default: return;
+	}
+
+	for (idx = 0; idx < Nk; ++idx) {
+		w[idx] = ((key[4 * idx]) << 24) | ((key[4 * idx + 1]) << 16) | ((key[4 * idx + 2]) << 8) | ((key[4 * idx + 3]));
+	}
+
+	for (idx = Nk; idx < Nb * (Nr + 1); ++idx) {
+		temp = w[idx - 1];
+		if ((idx % Nk) == 0)
+			temp = cmtAESSubWord(CMT_KE_ROTWORD(temp)) ^ Rcon[(idx - 1) / Nk];
+		else if (Nk > 6 && (idx % Nk) == 4)
+			temp = cmtAESSubWord(temp);
+		w[idx] = w[idx - Nk] ^ temp;
+	}
+}
+
 void cmtAESInitialVectorInit(cmtUint8* iv)
 {
 	cmtUint64 random = 0x0, random2 = 0x0;
@@ -597,26 +649,176 @@ void cmtAESInitialVectorInit(cmtUint8* iv)
 	cmtMD5Get(&ctx, iv);
 }
 
-void cmtXorBuffer(const cmtUint8 in[], cmtUint8 out[], cmtUint64 size)
+void cmtAESecbEnc(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize)
 {
-	cmtUint64 idx;
+	cmtUint8 state[4][4];
 
-	for (idx = 0; idx < size; idx++)
-		out[idx] ^= in[idx];
+	state[0][0] = in[0];
+	state[1][0] = in[1];
+	state[2][0] = in[2];
+	state[3][0] = in[3];
+	state[0][1] = in[4];
+	state[1][1] = in[5];
+	state[2][1] = in[6];
+	state[3][1] = in[7];
+	state[0][2] = in[8];
+	state[1][2] = in[9];
+	state[2][2] = in[10];
+	state[3][2] = in[11];
+	state[0][3] = in[12];
+	state[1][3] = in[13];
+	state[2][3] = in[14];
+	state[3][3] = in[15];
+
+	cmtAESRoundKeyInit(state, &key[0]);
+	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[4]);
+	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[8]);
+	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[12]);
+	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[16]);
+	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[20]);
+	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[24]);
+	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[28]);
+	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[32]);
+	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[36]);
+	if (keysize != 128) {
+		cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[40]);
+		cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[44]);
+		if (keysize != 192) {
+			cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[48]);
+			cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[52]);
+			cmtAESSubBytes(state); cmtShiftRows(state); cmtAESRoundKeyInit(state, &key[56]);
+		}
+		else {
+			cmtAESSubBytes(state); cmtShiftRows(state); cmtAESRoundKeyInit(state, &key[48]);
+		}
+	}
+	else {
+		cmtAESSubBytes(state); cmtShiftRows(state); cmtAESRoundKeyInit(state, &key[40]);
+	}
+
+	out[0] = state[0][0];
+	out[1] = state[1][0];
+	out[2] = state[2][0];
+	out[3] = state[3][0];
+	out[4] = state[0][1];
+	out[5] = state[1][1];
+	out[6] = state[2][1];
+	out[7] = state[3][1];
+	out[8] = state[0][2];
+	out[9] = state[1][2];
+	out[10] = state[2][2];
+	out[11] = state[3][2];
+	out[12] = state[0][3];
+	out[13] = state[1][3];
+	out[14] = state[2][3];
+	out[15] = state[3][3];
 }
 
-/*******************
-* AES - CBC 实现
-*******************/
-int cmtAESencCBC(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[])
+void cmtAESecbDec(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize)
+{
+	cmtUint8 state[4][4];
+
+	state[0][0] = in[0];
+	state[1][0] = in[1];
+	state[2][0] = in[2];
+	state[3][0] = in[3];
+	state[0][1] = in[4];
+	state[1][1] = in[5];
+	state[2][1] = in[6];
+	state[3][1] = in[7];
+	state[0][2] = in[8];
+	state[1][2] = in[9];
+	state[2][2] = in[10];
+	state[3][2] = in[11];
+	state[0][3] = in[12];
+	state[1][3] = in[13];
+	state[2][3] = in[14];
+	state[3][3] = in[15];
+
+	if (keysize > 128) {
+		if (keysize > 192) {
+			cmtAESRoundKeyInit(state, &key[56]);
+			cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[52]); cmtInvMixColumns(state);
+			cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[48]); cmtInvMixColumns(state);
+		}
+		else {
+			cmtAESRoundKeyInit(state, &key[48]);
+		}
+		cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[44]); cmtInvMixColumns(state);
+		cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[40]); cmtInvMixColumns(state);
+	}
+	else {
+		cmtAESRoundKeyInit(state, &key[40]);
+	}
+	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[36]); cmtInvMixColumns(state);
+	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[32]); cmtInvMixColumns(state);
+	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[28]); cmtInvMixColumns(state);
+	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[24]); cmtInvMixColumns(state);
+	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[20]); cmtInvMixColumns(state);
+	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[16]); cmtInvMixColumns(state);
+	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[12]); cmtInvMixColumns(state);
+	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[8]); cmtInvMixColumns(state);
+	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[4]); cmtInvMixColumns(state);
+	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[0]);
+
+	out[0] = state[0][0];
+	out[1] = state[1][0];
+	out[2] = state[2][0];
+	out[3] = state[3][0];
+	out[4] = state[0][1];
+	out[5] = state[1][1];
+	out[6] = state[2][1];
+	out[7] = state[3][1];
+	out[8] = state[0][2];
+	out[9] = state[1][2];
+	out[10] = state[2][2];
+	out[11] = state[3][2];
+	out[12] = state[0][3];
+	out[13] = state[1][3];
+	out[14] = state[2][3];
+	out[15] = state[3][3];
+}
+
+void cmtAESecbEncEx(cmtUint8* in, cmtUint8* out, cmtUint64 size, cmtUint32* key, cmtUint16 keysize)
+{
+	cmtUint64 ExBlockOffset;//不完整块（如果存在）首偏移
+	cmtUint8 ExBlockTemp[CMT_AES_BLOCK_SIZE];//填充完整的不完整块
+	cmtUint64 r;
+
+	ExBlockOffset = size - size % CMT_AES_BLOCK_SIZE;
+
+	//完整块
+	for (r = 0; r < ExBlockOffset; r += CMT_AES_BLOCK_SIZE)
+		cmtAESecbEnc(in + r, out + r, key, keysize);
+
+	//不完整块
+	if (ExBlockOffset != size)
+	{
+		//低字节复制
+		for (; r < size; r++)
+			ExBlockTemp[r - ExBlockOffset] = in[r];
+		//高字节填0
+		for (r = size - ExBlockOffset; r < CMT_AES_BLOCK_SIZE; r++)
+			ExBlockTemp[r] = 0;
+		//加密
+		cmtAESecbEnc(ExBlockTemp, out + ExBlockOffset, key, keysize);
+	}
+}
+
+void cmtAESecbDecEx(cmtUint8* in, cmtUint8* out, cmtUint64 size, cmtUint32* key, cmtUint16 keysize)
+{
+	cmtUint64 r;
+
+	for (r = 0; r < size; r += CMT_AES_BLOCK_SIZE)
+		cmtAESecbDec(in + r, out + r, key, keysize);
+}
+
+void cmtAEScbcEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
 {
 	cmtUint8 buf_in[CMT_AES_BLOCK_SIZE], buf_out[CMT_AES_BLOCK_SIZE], iv_buf[CMT_AES_BLOCK_SIZE];
 	int blocks, idx;
 
-	if (in_len % CMT_AES_BLOCK_SIZE != 0)
-		return(FALSE);
-
-	blocks = in_len / CMT_AES_BLOCK_SIZE;
+	blocks = size / CMT_AES_BLOCK_SIZE;
 
 	memcpy(iv_buf, iv, CMT_AES_BLOCK_SIZE);
 
@@ -627,19 +829,14 @@ int cmtAESencCBC(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cm
 		memcpy(&out[idx * CMT_AES_BLOCK_SIZE], buf_out, CMT_AES_BLOCK_SIZE);
 		memcpy(iv_buf, buf_out, CMT_AES_BLOCK_SIZE);
 	}
-
-	return(TRUE);
 }
 
-int cmtAESencCBCmac(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[])
+void cmtAESencCBCmac(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
 {
 	cmtUint8 buf_in[CMT_AES_BLOCK_SIZE], buf_out[CMT_AES_BLOCK_SIZE], iv_buf[CMT_AES_BLOCK_SIZE];
 	int blocks, idx;
 
-	if (in_len % CMT_AES_BLOCK_SIZE != 0)
-		return(FALSE);
-
-	blocks = in_len / CMT_AES_BLOCK_SIZE;
+	blocks = size / CMT_AES_BLOCK_SIZE;
 
 	memcpy(iv_buf, iv, CMT_AES_BLOCK_SIZE);
 
@@ -654,18 +851,14 @@ int cmtAESencCBCmac(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const
 	{
 		memcpy(out, buf_out, CMT_AES_BLOCK_SIZE);// 只输出最后的块
 	}
-	return(TRUE);
 }
 
-int cmtAESdecCBC(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[])
+void cmtAESdecCBC(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
 {
 	cmtUint8 buf_in[CMT_AES_BLOCK_SIZE], buf_out[CMT_AES_BLOCK_SIZE], iv_buf[CMT_AES_BLOCK_SIZE];
 	int blocks, idx;
 
-	if (in_len % CMT_AES_BLOCK_SIZE != 0)
-		return(FALSE);
-
-	blocks = in_len / CMT_AES_BLOCK_SIZE;
+	blocks = size / CMT_AES_BLOCK_SIZE;
 
 	memcpy(iv_buf, iv, CMT_AES_BLOCK_SIZE);
 
@@ -676,24 +869,11 @@ int cmtAESdecCBC(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cm
 		memcpy(&out[idx * CMT_AES_BLOCK_SIZE], buf_out, CMT_AES_BLOCK_SIZE);
 		memcpy(iv_buf, buf_in, CMT_AES_BLOCK_SIZE);
 	}
-
-	return(TRUE);
 }
 
 /*******************
 * AES - CTR 实现
 *******************/
-void cmtAESincrIV(cmtUint8 iv[], int counter_size)
-{
-	int idx;
-
-	// 大端操作
-	for (idx = CMT_AES_BLOCK_SIZE - 1; idx >= CMT_AES_BLOCK_SIZE - counter_size; idx--) {
-		iv[idx]++;
-		if (iv[idx] != 0 || idx == CMT_AES_BLOCK_SIZE - counter_size)
-			break;
-	}
-}
 
 // 开始加密
 void cmtAESencCTR(const cmtUint8 in[], cmtUint64 in_len, cmtUint8 out[], const cmtUint32 key[], int keysize, const cmtUint8 iv[])
@@ -838,6 +1018,26 @@ int cmtAESdecCCM(const cmtUint8 ciphertext[], cmtUint32 ciphertext_len, const cm
 	return(TRUE);
 }
 
+void cmtAESincrIV(cmtUint8 iv[], int counter_size)
+{
+	int idx;
+
+	// 大端操作
+	for (idx = CMT_AES_BLOCK_SIZE - 1; idx >= CMT_AES_BLOCK_SIZE - counter_size; idx--) {
+		iv[idx]++;
+		if (iv[idx] != 0 || idx == CMT_AES_BLOCK_SIZE - counter_size)
+			break;
+	}
+}
+
+void cmtXorBuffer(const cmtUint8 in[], cmtUint8 out[], cmtUint64 size)
+{
+	cmtUint64 idx;
+
+	for (idx = 0; idx < size; idx++)
+		out[idx] ^= in[idx];
+}
+
 void cmtAESpreFirCTRblock(cmtUint8 counter[], const cmtUint8 nonce[], int nonceLen, int payloadLenStoreSize)
 {
 	memset(counter, 0, CMT_AES_BLOCK_SIZE);
@@ -900,65 +1100,6 @@ cmtUint32 cmtAESSubWord(cmtUint32 word)
 	result += (int)cmtAESsBox[(word >> 28) & 0x0000000F][(word >> 24) & 0x0000000F] << 24;
 	return(result);
 }
-
-
-//生成密钥
-void cmtAESkeyInit(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 keysize)
-{
-	cmtUint8 key[256];
-
-	//字符串标准化为定长密钥数组
-	if (keysize == 128)
-	{
-		cmtMD5 ctx;
-		cmtMD5Init(&ctx);
-		cmtMD5Update(&ctx, keystr, sKeystr - 1);//排除结尾的'\0'
-		cmtMD5Get(&ctx, key);
-	}
-	else
-	{
-		cmtSHA256 ctx;
-		cmtSHA256Init(&ctx);
-		cmtSHA256Update(&ctx, keystr, sKeystr - 1);
-		cmtSHA256Get(&ctx, key);
-	}
-
-	//计算密钥组矩阵
-	cmtAESRestrictkeyInit(key, w, keysize);
-}
-
-void cmtAESRestrictkeyInit(cmtUint8* key, cmtUint32* w, cmtUint16 keysize)
-{
-	cmtUint32 temp, Rcon[] = { 0x01000000,0x02000000,0x04000000,0x08000000,0x10000000,0x20000000,
-						   0x40000000,0x80000000,0x1b000000,0x36000000,0x6c000000,0xd8000000,
-						   0xab000000,0x4d000000,0x9a000000 };
-	cmtInt32 Nb = 4, Nr, Nk, idx;
-
-	switch (keysize) {
-	case 128: Nr = 10; Nk = 4; break;
-	case 192: Nr = 12; Nk = 6; break;
-	case 256: Nr = 14; Nk = 8; break;
-	default: return;
-	}
-
-	for (idx = 0; idx < Nk; ++idx) {
-		w[idx] = ((key[4 * idx]) << 24) | ((key[4 * idx + 1]) << 16) | ((key[4 * idx + 2]) << 8) | ((key[4 * idx + 3]));
-	}
-
-	for (idx = Nk; idx < Nb * (Nr + 1); ++idx) {
-		temp = w[idx - 1];
-		if ((idx % Nk) == 0)
-			temp = cmtAESSubWord(CMT_KE_ROTWORD(temp)) ^ Rcon[(idx - 1) / Nk];
-		else if (Nk > 6 && (idx % Nk) == 4)
-			temp = cmtAESSubWord(temp);
-		w[idx] = w[idx - Nk] ^ temp;
-	}
-}
-
-/////////////////
-// 轮密钥扩展
-/////////////////
-
 
 void cmtAESRoundKeyInit(cmtUint8 state[][4], const cmtUint32 w[])
 {
@@ -1285,172 +1426,4 @@ void cmtInvMixColumns(cmtUint8 state[][4])
 	state[3][3] ^= cmtGFMul[col[1]][4];
 	state[3][3] ^= cmtGFMul[col[2]][2];
 	state[3][3] ^= cmtGFMul[col[3]][5];
-}
-
-/////////////////
-// (En/De)Crypt
-/////////////////
-
-void cmtAESecbEnc(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize)
-{
-	cmtUint8 state[4][4];
-
-	state[0][0] = in[0];
-	state[1][0] = in[1];
-	state[2][0] = in[2];
-	state[3][0] = in[3];
-	state[0][1] = in[4];
-	state[1][1] = in[5];
-	state[2][1] = in[6];
-	state[3][1] = in[7];
-	state[0][2] = in[8];
-	state[1][2] = in[9];
-	state[2][2] = in[10];
-	state[3][2] = in[11];
-	state[0][3] = in[12];
-	state[1][3] = in[13];
-	state[2][3] = in[14];
-	state[3][3] = in[15];
-
-	cmtAESRoundKeyInit(state, &key[0]);
-	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[4]);
-	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[8]);
-	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[12]);
-	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[16]);
-	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[20]);
-	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[24]);
-	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[28]);
-	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[32]);
-	cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[36]);
-	if (keysize != 128) {
-		cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[40]);
-		cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[44]);
-		if (keysize != 192) {
-			cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[48]);
-			cmtAESSubBytes(state); cmtShiftRows(state); cmtMixColumns(state); cmtAESRoundKeyInit(state, &key[52]);
-			cmtAESSubBytes(state); cmtShiftRows(state); cmtAESRoundKeyInit(state, &key[56]);
-		}
-		else {
-			cmtAESSubBytes(state); cmtShiftRows(state); cmtAESRoundKeyInit(state, &key[48]);
-		}
-	}
-	else {
-		cmtAESSubBytes(state); cmtShiftRows(state); cmtAESRoundKeyInit(state, &key[40]);
-	}
-
-	out[0] = state[0][0];
-	out[1] = state[1][0];
-	out[2] = state[2][0];
-	out[3] = state[3][0];
-	out[4] = state[0][1];
-	out[5] = state[1][1];
-	out[6] = state[2][1];
-	out[7] = state[3][1];
-	out[8] = state[0][2];
-	out[9] = state[1][2];
-	out[10] = state[2][2];
-	out[11] = state[3][2];
-	out[12] = state[0][3];
-	out[13] = state[1][3];
-	out[14] = state[2][3];
-	out[15] = state[3][3];
-}
-
-void cmtAESecbDec(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize)
-{
-	cmtUint8 state[4][4];
-
-	state[0][0] = in[0];
-	state[1][0] = in[1];
-	state[2][0] = in[2];
-	state[3][0] = in[3];
-	state[0][1] = in[4];
-	state[1][1] = in[5];
-	state[2][1] = in[6];
-	state[3][1] = in[7];
-	state[0][2] = in[8];
-	state[1][2] = in[9];
-	state[2][2] = in[10];
-	state[3][2] = in[11];
-	state[0][3] = in[12];
-	state[1][3] = in[13];
-	state[2][3] = in[14];
-	state[3][3] = in[15];
-
-	if (keysize > 128) {
-		if (keysize > 192) {
-			cmtAESRoundKeyInit(state, &key[56]);
-			cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[52]); cmtInvMixColumns(state);
-			cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[48]); cmtInvMixColumns(state);
-		}
-		else {
-			cmtAESRoundKeyInit(state, &key[48]);
-		}
-		cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[44]); cmtInvMixColumns(state);
-		cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[40]); cmtInvMixColumns(state);
-	}
-	else {
-		cmtAESRoundKeyInit(state, &key[40]);
-	}
-	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[36]); cmtInvMixColumns(state);
-	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[32]); cmtInvMixColumns(state);
-	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[28]); cmtInvMixColumns(state);
-	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[24]); cmtInvMixColumns(state);
-	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[20]); cmtInvMixColumns(state);
-	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[16]); cmtInvMixColumns(state);
-	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[12]); cmtInvMixColumns(state);
-	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[8]); cmtInvMixColumns(state);
-	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[4]); cmtInvMixColumns(state);
-	cmtInvShiftRows(state); cmtInvSubBytes(state); cmtAESRoundKeyInit(state, &key[0]);
-
-	out[0] = state[0][0];
-	out[1] = state[1][0];
-	out[2] = state[2][0];
-	out[3] = state[3][0];
-	out[4] = state[0][1];
-	out[5] = state[1][1];
-	out[6] = state[2][1];
-	out[7] = state[3][1];
-	out[8] = state[0][2];
-	out[9] = state[1][2];
-	out[10] = state[2][2];
-	out[11] = state[3][2];
-	out[12] = state[0][3];
-	out[13] = state[1][3];
-	out[14] = state[2][3];
-	out[15] = state[3][3];
-}
-
-void cmtAESecbEncEx(cmtUint8* in, cmtUint8* out, cmtUint64 size, cmtUint32* key, cmtUint16 keysize)
-{
-	cmtUint64 ExBlockOffset;//不完整块（如果存在）首偏移
-	cmtUint8 ExBlockTemp[CMT_AES_BLOCK_SIZE];//填充完整的不完整块
-	cmtUint64 r;
-
-	ExBlockOffset = size - size % CMT_AES_BLOCK_SIZE;
-
-	//完整块
-	for (r = 0; r < ExBlockOffset; r += CMT_AES_BLOCK_SIZE)
-		cmtAESecbEnc(in + r, out + r, key, keysize);
-
-	//不完整块
-	if (ExBlockOffset != size)
-	{
-		//低字节复制
-		for (; r < size; r++)
-			ExBlockTemp[r - ExBlockOffset] = in[r];
-		//高字节填0
-		for (r = size - ExBlockOffset; r < CMT_AES_BLOCK_SIZE; r++)
-			ExBlockTemp[r] = 0;
-		//加密
-		cmtAESecbEnc(ExBlockTemp, out + ExBlockOffset, key, keysize);
-	}
-}
-
-void cmtAESecbDecEx(cmtUint8* in, cmtUint8* out, cmtUint64 size, cmtUint32* key, cmtUint16 keysize)
-{
-	cmtUint64 r;
-
-	for (r = 0; r < size; r += CMT_AES_BLOCK_SIZE)
-		cmtAESecbDec(in + r, out + r, key, keysize);
 }
