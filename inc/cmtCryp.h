@@ -55,7 +55,10 @@
 #define CMT_SHA1_BLOCK_SIZE 20
 
 //MD5输出的摘要长度，16字节（128位）
-#define CMT_MD5_BLOCK_SIZE 16 
+#define CMT_MD5_BLOCK_SIZE 16
+
+//在电子邮件中，根据 RFC 822 规定，每 76 个字符需要加上一个回车换行，但是呢由于每个base64编码器的实现问题有些是不带换行的
+#define CMT_NEWLINE_INVL 76
 
 #define CMT_ROTLEFT(a,b) (((a) << (b)) | ((a) >> (32-(b))))
 #define CMT_ROTRIGHT(a,b) (((a) >> (b)) | ((a) << (32-(b))))
@@ -533,6 +536,37 @@ void cmtShiftRows(cmtUint8 state[][4]);
 void cmtInvShiftRows(cmtUint8 state[][4]);
 void cmtMixColumns(cmtUint8 state[][4]);
 void cmtInvMixColumns(cmtUint8 state[][4]);
+
+/**
+* @brief Base64加编码函数，返回值为加密后的数据长度，如果out为空则只返回加密后的数据长度。
+* @param[in] in 明文
+* @param[in] size 明文字节数
+* @param[out] out 加编码后的结果
+* @param[in] newLineFlag 如果为TRUE则符合RFC 822规定，FLASE则不符合该规定。该规定规定每76行需要换行
+* @date 2021-09-20
+* @author Brad Conte
+* @author GogeBlue
+*/
+cmtInt64 cmtBase64Encode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size, int newLineFlag);
+
+/**
+* @brief Base64解编码函数，返回值为解密后的数据长度，如果out为空则只返回解密后的数据长度。
+* @param[in] in 加编码后的结果
+* @param[in] size 加编码后的结果字节数
+* @param[out] out 解编码后的结果
+* @date 2021-09-20
+* @author Brad Conte
+* @author GogeBlue
+*/
+cmtInt64 cmtBase64Decode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size);
+
+/**
+* @brief Base相关函数，仅供内部使用
+* @date 2021-09-20
+* @author Brad Conte
+* @author GogeBlue
+*/
+cmtUint8 cmtRevChar(char ch);
 /*--------------------------------对称加密函数 结束--------------------------------*/
 
 

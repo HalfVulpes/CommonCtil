@@ -183,6 +183,9 @@ static const cmtUint8 cmtGFMul[256][6] = {
 	{0xe3,0x1f,0x5d,0xbe,0x80,0x9f},{0xe1,0x1c,0x54,0xb5,0x8d,0x91},
 	{0xe7,0x19,0x4f,0xa8,0x9a,0x83},{0xe5,0x1a,0x46,0xa3,0x97,0x8d}
 };
+
+//用于 URL 的 Base64 非标准 Base64，是一种变种，因此如果你的base64要用于URL编码，请将该对照数组后面的'+' 和 '/' 替换为 '*' 和 '-'来满足URL标准的编码
+static const cmtUint8 cmtCharSet[64] = { "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" };
 /*--------------------------------常量量定义 结束--------------------------------*/
 
 void cmtSHA256Transform(cmtSHA256* ctx, cmtUint8* data)
@@ -1288,4 +1291,119 @@ void cmtInvMixColumns(cmtUint8 state[][4])
 	state[3][3] ^= cmtGFMul[col[1]][4];
 	state[3][3] ^= cmtGFMul[col[2]][2];
 	state[3][3] ^= cmtGFMul[col[3]][5];
+}
+
+cmtUint8 cmtRevChar(char ch)
+{
+	if (ch >= 'A' && ch <= 'Z')
+		ch -= 'A';
+	else if (ch >= 'a' && ch <= 'z')
+		ch = ch - 'a' + 26;
+	else if (ch >= '0' && ch <= '9')
+		ch = ch - '0' + 52;
+	else if (ch == '+')
+		ch = 62;
+	else if (ch == '/')
+		ch = 63;
+
+	return(ch);
+}
+
+cmtInt64 cmtBase64Encode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size, int newLineFlag)
+{
+	cmtInt64 idx, idx2, blks, blkTop, leftOver, newLineCount = 0;
+
+	blks = (size / 3);
+	leftOver = size % 3;
+
+	if (out == NULL) {
+		idx2 = blks * 4;
+		if (leftOver)
+			idx2 += 4;
+		if (newLineFlag)
+			idx2 += size / 57;   // (CMT_NEWLINE_INVL / 4) * 3 = 57. 一行大概57个in[] bytes
+	}
+	else {
+		// 将3个字节的数据编码成4个字节的数据 数据膨胀率33.3% 数据大小约等于原来的133.3%
+		blkTop = blks * 3;
+		for (idx = 0, idx2 = 0; idx < blkTop; idx += 3, idx2 += 4) {
+			out[idx2] = cmtCharSet[in[idx] >> 2];
+			out[idx2 + 1] = cmtCharSet[((in[idx] & 0x03) << 4) | (in[idx + 1] >> 4)];
+			out[idx2 + 2] = cmtCharSet[((in[idx + 1] & 0x0f) << 2) | (in[idx + 2] >> 6)];
+			out[idx2 + 3] = cmtCharSet[in[idx + 2] & 0x3F];
+			// RFC 822 规定每76字节换行一次，如果NewLineFlag为1则换行来满足此规定
+			// 第一行是77字节
+			if (((idx2 - newLineCount + 4) % CMT_NEWLINE_INVL == 0) && newLineFlag) {
+				out[idx2 + 4] = '\n';
+				idx2++;
+				newLineCount++;
+			}
+		}
+
+		if (leftOver == 1) {
+			out[idx2] = cmtCharSet[in[idx] >> 2];
+			out[idx2 + 1] = cmtCharSet[(in[idx] & 0x03) << 4];
+			out[idx2 + 2] = '=';
+			out[idx2 + 3] = '=';
+			idx2 += 4;
+		}
+		else if (leftOver == 2) {
+			out[idx2] = cmtCharSet[in[idx] >> 2];
+			out[idx2 + 1] = cmtCharSet[((in[idx] & 0x03) << 4) | (in[idx + 1] >> 4)];
+			out[idx2 + 2] = cmtCharSet[(in[idx + 1] & 0x0F) << 2];
+			out[idx2 + 3] = '=';
+			idx2 += 4;
+		}
+	}
+
+	return(idx2);
+}
+
+cmtInt64 cmtBase64Decode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size)
+{
+	cmtUint8 ch;
+	cmtInt64 idx, idx2, blks, blkTop, leftOver;
+
+	if (in[size - 1] == '=')
+		size--;
+	if (in[size - 1] == '=')
+		size--;
+
+	blks = size / 4;
+	leftOver = size % 4;
+
+	if (out == NULL) {
+		if (size >= 77 && in[CMT_NEWLINE_INVL] == '\n')   //校验每行
+			size -= size / (CMT_NEWLINE_INVL + 1);
+		blks = size / 4;
+		leftOver = size % 4;
+
+		idx = blks * 3;
+		if (leftOver == 2)
+			idx++;
+		else if (leftOver == 3)
+			idx += 2;
+	}
+	else {
+		blkTop = blks * 4;
+		for (idx = 0, idx2 = 0; idx2 < blkTop; idx += 3, idx2 += 4) {
+			if (in[idx2] == '\n')
+				idx2++;
+			out[idx] = (cmtRevChar(in[idx2]) << 2) | ((cmtRevChar(in[idx2 + 1]) & 0x30) >> 4);
+			out[idx + 1] = (cmtRevChar(in[idx2 + 1]) << 4) | (cmtRevChar(in[idx2 + 2]) >> 2);
+			out[idx + 2] = (cmtRevChar(in[idx2 + 2]) << 6) | cmtRevChar(in[idx2 + 3]);
+		}
+
+		if (leftOver == 2) {
+			out[idx] = (cmtRevChar(in[idx2]) << 2) | ((cmtRevChar(in[idx2 + 1]) & 0x30) >> 4);
+			idx++;
+		}
+		else if (leftOver == 3) {
+			out[idx] = (cmtRevChar(in[idx2]) << 2) | ((cmtRevChar(in[idx2 + 1]) & 0x30) >> 4);
+			out[idx + 1] = (cmtRevChar(in[idx2 + 1]) << 4) | (cmtRevChar(in[idx2 + 2]) >> 2);
+			idx += 2;
+		}
+	}
+
+	return(idx);
 }
