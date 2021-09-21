@@ -7,16 +7,16 @@
 * @date 2021-09-14
 * @author Dexnab
 */
+
+#pragma once
+#ifndef _INC_CMTCORE
+#define _INC_CMTCORE
 #include <cmtType.h>
 #if defined(CMT_ENV_WINDOWS)
 #include <Windows.h>
 #elif defined(CMT_ENV_LINUX)
 #include <pthread.h>
 #endif
-
-#pragma once
-#ifndef _INC_CMTCORE
-#define _INC_CMTCORE
 
 /**
 * @struct cmtThreadInfo
