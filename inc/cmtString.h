@@ -3,7 +3,7 @@
 * @brief 字符串处理库
 * @par Windows 依赖库：
 * @par Linux 依赖库：
-* @date 2021-09-20
+* @date 2021-09-22
 * @author Dexnab
 */
 
@@ -129,6 +129,14 @@ extern cmtUint64 cmtRegexMatch(cmtU8str* src, cmtU8str* regex);
 
 /*--------------------------------json函数 开始--------------------------------*/
 
+extern cmtBool cmtJsonGetBool(cmtU8str* json, cmtU8str* name, cmtBool* ret);
 
+extern cmtBool cmtJsonGetInt(cmtU8str* json, cmtU8str* name, cmtInt64* ret);
+
+extern cmtBool cmtJsonGetDouble(cmtU8str* json, cmtU8str* name, double* ret);
+
+extern cmtBool cmtJsonGetStrSize(cmtU8str* json, cmtU8str* name, cmtUint64* ret);
+
+extern cmtBool cmtJsonGetStr(cmtU8str* json, cmtU8str* name, cmtU8str* ret);
 /*--------------------------------json函数 结束--------------------------------*/
 #endif
