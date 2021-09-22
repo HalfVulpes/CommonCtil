@@ -1,8 +1,8 @@
 /**
 * @file cmtType.h
-* @brief cmtType ¿âµÄÊı¾İÀàĞÍ±ê×¼¶¨ÒåÎÄ¼ş£¬Õâ¸öÎÄ¼ş¹æ¶¨ÁË´ó¶àÊıµÄÊı¾İÀàĞÍµÄ±ğÃû
-* @par Windows ÒÀÀµ¿â£º
-* @par Linux ÒÀÀµ¿â£º
+* @brief cmtType åº“çš„æ•°æ®ç±»å‹æ ‡å‡†å®šä¹‰æ–‡ä»¶ï¼Œè¿™ä¸ªæ–‡ä»¶è§„å®šäº†å¤§å¤šæ•°çš„æ•°æ®ç±»å‹çš„åˆ«å
+* @par Windows ä¾èµ–åº“ï¼š
+* @par Linux ä¾èµ–åº“ï¼š
 * @date 2021-09-14
 * @author GogeBlue
 * @author Dexnab
@@ -12,7 +12,7 @@
 #ifndef _INC_CMTTYPE
 #define _INC_CMTTYPE
 
-//²Ù×÷ÏµÍ³»·¾³
+//æ“ä½œç³»ç»Ÿç¯å¢ƒ
 #if defined(__linux__)
 #define CMT_ENV_LINUX
 #elif defined(_WIN32)
@@ -21,7 +21,7 @@
 #define CMT_ENV_APPLE
 #endif
 
-//³ÌĞòÎ»Êı
+//ç¨‹åºä½æ•°
 #if defined(_WIN64)
 #define CMT_ENV_x64
 #elif defined(__x86_64__)
@@ -35,7 +35,7 @@
 #define CMT_ENV_CPP
 #endif
 
-//µ÷ÓÃÔ¼¶¨
+//è°ƒç”¨çº¦å®š
 #if defined(CMT_ENV_x64)
 #define CMT_CDECL
 #define CMT_STDCALL
@@ -52,13 +52,13 @@
 #endif
 #endif
 
-//³£ÓÃÊı¾İ
+//å¸¸ç”¨æ•°æ®
 #define CMT_FLOAT_TOL 0.00001
 #define CMT_PI 3.141592653589793
 #define TRUE 1
 #define FALSE 0
 
-//Êı¾İÀàĞÍ
+//æ•°æ®ç±»å‹
 typedef unsigned char cmtUint8;
 typedef unsigned short cmtUint16;
 typedef unsigned int cmtUint32;
@@ -66,15 +66,15 @@ typedef char cmtInt8;
 typedef short cmtInt16;
 typedef int cmtInt32;
 #if defined(CMT_ENV_x64)
-typedef unsigned long long cmtUint64;//×¢Òâ£º32Î»Ä£Ê½ÏÂ¸ÃÀàĞÍÓëcmtUint32ÏàÍ¬
-typedef long long cmtInt64;//×¢Òâ£º32Î»Ä£Ê½ÏÂ¸ÃÀàĞÍÓëcmtInt32ÏàÍ¬
+typedef unsigned long long cmtUint64;//æ³¨æ„ï¼š32ä½æ¨¡å¼ä¸‹è¯¥ç±»å‹ä¸cmtUint32ç›¸åŒ
+typedef long long cmtInt64;//æ³¨æ„ï¼š32ä½æ¨¡å¼ä¸‹è¯¥ç±»å‹ä¸cmtInt32ç›¸åŒ
 #else
-typedef cmtUint32 cmtUint64;//×¢Òâ£º32Î»Ä£Ê½ÏÂ¸ÃÀàĞÍÓëcmtUint32ÏàÍ¬
-typedef cmtInt32 cmtInt64;//×¢Òâ£º32Î»Ä£Ê½ÏÂ¸ÃÀàĞÍÓëcmtInt32ÏàÍ¬
+typedef cmtUint32 cmtUint64;//æ³¨æ„ï¼š32ä½æ¨¡å¼ä¸‹è¯¥ç±»å‹ä¸cmtUint32ç›¸åŒ
+typedef cmtInt32 cmtInt64;//æ³¨æ„ï¼š32ä½æ¨¡å¼ä¸‹è¯¥ç±»å‹ä¸cmtInt32ç›¸åŒ
 #endif
 typedef cmtUint8 cmtBool;
 
-//×Ö·ûÀàĞÍ
+//å­—ç¬¦ç±»å‹
 typedef cmtUint8 cmtChar;
 typedef cmtUint16 cmtWchar;
 typedef cmtUint32 cmtFchar;

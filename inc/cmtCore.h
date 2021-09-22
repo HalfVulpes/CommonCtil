@@ -1,12 +1,16 @@
 /**
 * @file cmtCore.h
-* @brief ÓÃÓÚÖ§³Ö¿çÆ½Ì¨µÄºËĞÄ¿â\n
-* ½öÌá¹©»ù±¾¹¦ÄÜ£¬ÈçĞèµ÷ÓÃÍêÕû¹¦ÄÜ£¬Çë×ÔĞĞµ÷ÓÃÏµÍ³api
-* @par Windows ÒÀÀµ¿â£ºKernel32.lib 
-* @par Linux ÒÀÀµ¿â£ºlibpthread.a
+* @brief ç”¨äºæ”¯æŒè·¨å¹³å°çš„æ ¸å¿ƒåº“\n
+* ä»…æä¾›åŸºæœ¬åŠŸèƒ½ï¼Œå¦‚éœ€è°ƒç”¨å®Œæ•´åŠŸèƒ½ï¼Œè¯·è‡ªè¡Œè°ƒç”¨ç³»ç»Ÿapi
+* @par Windows ä¾èµ–åº“ï¼šKernel32.lib 
+* @par Linux ä¾èµ–åº“ï¼šlibpthread.a
 * @date 2021-09-14
 * @author Dexnab
 */
+
+#pragma once
+#ifndef _INC_CMTCORE
+#define _INC_CMTCORE
 #include <cmtType.h>
 #if defined(CMT_ENV_WINDOWS)
 #include <Windows.h>
@@ -14,120 +18,116 @@
 #include <pthread.h>
 #endif
 
-#pragma once
-#ifndef _INC_CMTCORE
-#define _INC_CMTCORE
-
 /**
 * @struct cmtThreadInfo
-* @brief Ïß³Ì¶îÍâĞÅÏ¢
+* @brief çº¿ç¨‹é¢å¤–ä¿¡æ¯
 * @date 2021-08-12
 * @author Dexnab
 */
 typedef struct _CMTTHREADINFO
 {
-	cmtBool CreateSuspend;//<´´½¨ºó¹ÒÆğÏß³Ì
-	cmtUint64 StackSize;//<³õÊ¼Õ»´óĞ¡
-	cmtUint32 priority;//<ÓÅÏÈ¼¶
-	cmtBool inherit;//<ÊÇ·ñ¼Ì³Ğ¾ä±ú
+	cmtBool CreateSuspend;//<åˆ›å»ºåæŒ‚èµ·çº¿ç¨‹
+	cmtUint64 StackSize;//<åˆå§‹æ ˆå¤§å°
+	cmtUint32 priority;//<ä¼˜å…ˆçº§
+	cmtBool inherit;//<æ˜¯å¦ç»§æ‰¿å¥æŸ„
 }cmtThreadInfo;
 
 /**
 * @struct cmtProcessInfo
-* @brief ½ø³Ì¶îÍâĞÅÏ¢
+* @brief è¿›ç¨‹é¢å¤–ä¿¡æ¯
 * @date 2021-08-11
 * @author Dexnab
 */
 typedef struct _CMTPROCESSINFO
 {
-	cmtUint32 priority;//<ÓÅÏÈ¼¶
-	cmtBool hide;//<ÊÇ·ñÒş²Ø´°¿Ú²¢½ûÓÃÊä³ö
-	cmtBool inherit;//<ÊÇ·ñ¼Ì³Ğ¾ä±ú
+	cmtUint32 priority;//<ä¼˜å…ˆçº§
+	cmtBool hide;//<æ˜¯å¦éšè—çª—å£å¹¶ç¦ç”¨è¾“å‡º
+	cmtBool inherit;//<æ˜¯å¦ç»§æ‰¿å¥æŸ„
 }cmtProcessInfo;
 
 /**
 * @struct cmtLock
-* @brief ×Ô¶¯Ëø½á¹¹Ìå
+* @brief è‡ªåŠ¨é”ç»“æ„ä½“
 * @date 2021-09-13
 * @author Dexnab
 */
 typedef struct _CMTLOCK
 {
-	cmtUint64 MaxSpin;//<×î´ó×ÔĞıÊı
-	cmtBool state;//<×´Ì¬£¨0£º×ÔĞıÄ£Ê½£»1£ºĞÅºÅÁ¿Ä£Ê½£©
-	cmtUint8 value;//<×ÔĞıÄ£Ê½ÏÂËø±äÁ¿
-	cmtUint64 handle;//<ĞÅºÅÁ¿Ä£Ê½ÏÂ¾ä±ú
+	cmtUint64 MaxSpin;//<æœ€å¤§è‡ªæ—‹æ•°
+	cmtBool state;//<çŠ¶æ€ï¼ˆ0ï¼šè‡ªæ—‹æ¨¡å¼ï¼›1ï¼šä¿¡å·é‡æ¨¡å¼ï¼‰
+	cmtUint8 value;//<è‡ªæ—‹æ¨¡å¼ä¸‹é”å˜é‡
+	cmtUint64 handle;//<ä¿¡å·é‡æ¨¡å¼ä¸‹å¥æŸ„
 }cmtLock;
 
-//½ø³Ì²Ù×÷
+//è¿›ç¨‹æ“ä½œ
 extern cmtUint64 cmtCreateProcess(cmtWchar* cmd, cmtProcessInfo* info);
 extern cmtUint8 cmtTerminateProcess(cmtWchar* cmd);
 
-//Ïß³Ì²Ù×÷
+//çº¿ç¨‹æ“ä½œ
 /**
-* @brief ´´½¨Ïß³Ì
-* @param[in] proc Ïß³Ìº¯Êı\n
-* º¯Êı¶¨ÒåĞèÒªÎª£ºcmtUint32 __stdcall ThreadProc(void* param);
-* @param[in] param ´«Èë²ÎÊı
-* @param[in] info Ïß³Ì¶îÍâĞÅÏ¢£¬È±Ê¡NULL
-* @return Ïß³Ì¾ä±ú
-* @retval 0 Ê§°Ü
-* @retval ·ÇÁã Ïß³Ì¾ä±ú
+* @brief åˆ›å»ºçº¿ç¨‹
+* @param[in] proc çº¿ç¨‹å‡½æ•°\n
+* å‡½æ•°å®šä¹‰éœ€è¦ä¸ºï¼šcmtUint32 __stdcall ThreadProc(void* param);
+* @param[in] param ä¼ å…¥å‚æ•°
+* @param[in] info çº¿ç¨‹é¢å¤–ä¿¡æ¯ï¼Œç¼ºçœNULL
+* @return çº¿ç¨‹å¥æŸ„
+* @retval 0 å¤±è´¥
+* @retval éé›¶ çº¿ç¨‹å¥æŸ„
 * @date 2021-08-12
 * @author Dexnab
 */
 extern cmtUint64 cmtCreateThread(cmtUint32(__stdcall* proc)(void*), void* param, cmtThreadInfo* info);
 /**
-* @brief Ç¿ÖÆÖÕÖ¹Ïß³Ì
-* @param[in] handle Ïß³Ì¾ä±ú
-* @return ´íÎóÂë
-* @exception 0 ³É¹¦
-* @exception 0xff Ê§°Ü
+* @brief å¼ºåˆ¶ç»ˆæ­¢çº¿ç¨‹
+* @param[in] handle çº¿ç¨‹å¥æŸ„
+* @return é”™è¯¯ç 
+* @exception 0 æˆåŠŸ
+* @exception 0xff å¤±è´¥
 * @date 2021-08-12
 * @author Dexnab
 */
 extern cmtUint8 cmtTerminateThread(cmtUint64 handle);
 /**
-* @brief ¹ÒÆğÏß³Ì
-* @param[in] handle Ïß³Ì¾ä±ú
-* @return ´íÎóÂë
-* @exception 0 ³É¹¦
-* @exception 0xff Ê§°Ü
+* @brief æŒ‚èµ·çº¿ç¨‹
+* @param[in] handle çº¿ç¨‹å¥æŸ„
+* @return é”™è¯¯ç 
+* @exception 0 æˆåŠŸ
+* @exception 0xff å¤±è´¥
 * @date 2021-08-12
 * @author Dexnab
 */
 extern cmtUint8 cmtSuspendThread(cmtUint64 handle);
 /**
-* @brief Æô¶¯Ïß³Ì
-* @param[in] handle Ïß³Ì¾ä±ú
-* @return ´íÎóÂë
-* @exception 0 ³É¹¦
-* @exception 0xff Ê§°Ü
+* @brief å¯åŠ¨çº¿ç¨‹
+* @param[in] handle çº¿ç¨‹å¥æŸ„
+* @return é”™è¯¯ç 
+* @exception 0 æˆåŠŸ
+* @exception 0xff å¤±è´¥
 * @date 2021-08-12
 * @author Dexnab
 */
 extern cmtUint8 cmtResumeThread(cmtUint64 handle);
 /**
-* @brief µÈ´ıÏß³Ì½áÊø
-* @param[in] handle Ïß³Ì¾ä±ú
-* @param[in] time ×î³¤µÈ´ıÊ±¼ä£¬-1ÎªÎŞÏŞ³¤
-* @return Ïß³Ì·µ»ØÖµ
+* @brief ç­‰å¾…çº¿ç¨‹ç»“æŸ
+* @param[in] handle çº¿ç¨‹å¥æŸ„
+* @param[in] time æœ€é•¿ç­‰å¾…æ—¶é—´ï¼Œ-1ä¸ºæ— é™é•¿
+* @return çº¿ç¨‹è¿”å›å€¼
 * @date 2021-08-12
 * @author Dexnab
 */
 extern cmtUint32 cmtWaitForThread(cmtUint64 handle, cmtUint64 time);
 
-//¾ä±ú²Ù×÷
+//å¥æŸ„æ“ä½œ
 extern cmtUint8 cmtDupHandle(cmtUint64 dst, cmtUint64 src);
 /**
-* @brief ¹Ø±Õ¾ä±ú
-* @param[in] handle ¾ä±ú
+* @brief å…³é—­å¥æŸ„
+* @param[in] handle å¥æŸ„
 * @date 2021-08-12
 * @author Dexnab
 */
 extern void cmtCloseHandle(cmtUint64 handle);
 
-//Ô­×Ó²Ù×÷£¨Î´ÊµÏÖ£©
+//åŸå­æ“ä½œï¼ˆæœªå®ç°ï¼‰
 //INC
 extern void cmtAtomInc8(cmtUint8* num);
 extern void cmtAtomInc16(cmtUint16* num);
@@ -139,16 +139,16 @@ extern void cmtAtomDec16(cmtUint16* num);
 extern void cmtAtomDec32(cmtUint32* num);
 extern void cmtAtomDec64(cmtUint64* num);
 
-//Ëø
+//é”
 /**
-* @brief ½øÈë×ÔĞıËø
-* @param[in] value Ëø±äÁ¿µØÖ·
-* @param[in] MaxSpin ×î´ó×ÔĞıÊı£¨-1Îª²»ÏŞ£©
-* @return ·µ»ØÔ­Òò
-* @retval 0 Ëø±»ÊÍ·Å
-* @retval 1 ×ÔĞıÊıµ½´ïÉÏÏŞ
-* @attention valueÎª0Ê±²ÅÔÊĞí½øÈë×ÔĞıËø£¬ËùÒÔµÚÒ»´Îµ÷ÓÃÇ°Çë½«value¹éÁã
-* @par Ê¾Àı:
+* @brief è¿›å…¥è‡ªæ—‹é”
+* @param[in] value é”å˜é‡åœ°å€
+* @param[in] MaxSpin æœ€å¤§è‡ªæ—‹æ•°ï¼ˆ-1ä¸ºä¸é™ï¼‰
+* @return è¿”å›åŸå› 
+* @retval 0 é”è¢«é‡Šæ”¾
+* @retval 1 è‡ªæ—‹æ•°åˆ°è¾¾ä¸Šé™
+* @attention valueä¸º0æ—¶æ‰å…è®¸è¿›å…¥è‡ªæ—‹é”ï¼Œæ‰€ä»¥ç¬¬ä¸€æ¬¡è°ƒç”¨å‰è¯·å°†valueå½’é›¶
+* @par ç¤ºä¾‹:
 * @code
 * cmtUint8 lock = 0;
 * cmtSpinLockEnter(&lock, -1);
@@ -160,67 +160,67 @@ extern void cmtAtomDec64(cmtUint64* num);
 */
 extern BOOL CMT_FASTCALL cmtSpinLockEnter(cmtUint8* value, cmtUint64 MaxSpin);
 /**
-* @brief Àë¿ª×ÔĞıËø
-* @param[in] value Ëø±äÁ¿
+* @brief ç¦»å¼€è‡ªæ—‹é”
+* @param[in] value é”å˜é‡
 * @date 2021-09-13
 * @author Dexnab
 */
 #define cmtSpinLockLeave(value) value = 0
 /**
-* @brief ³õÊ¼»¯ÖØËø
-* @return Ëø¾ä±ú
-* @retval 0 Ê§°Ü
-* @retval ·ÇÁã Ëø¾ä±ú
+* @brief åˆå§‹åŒ–é‡é”
+* @return é”å¥æŸ„
+* @retval 0 å¤±è´¥
+* @retval éé›¶ é”å¥æŸ„
 * @date 2021-08-20
 * @author Dexnab
 */
 extern cmtUint64 cmtSysLockInit();
 /**
-* @brief ½øÈëÖØËø
-* @param[in] Ëø¾ä±ú
+* @brief è¿›å…¥é‡é”
+* @param[in] é”å¥æŸ„
 * @date 2021-08-20
 * @author Dexnab
 */
 extern void cmtSysLockEnter(cmtUint64 handle);
 /**
-* @brief Àë¿ªÖØËø
-* @param[in] Ëø¾ä±ú
+* @brief ç¦»å¼€é‡é”
+* @param[in] é”å¥æŸ„
 * @date 2021-08-20
 * @author Dexnab
 */
 extern void cmtSysLockLeave(cmtUint64 handle);
 /**
-* @brief ÊÍ·ÅÖØËø
-* @param[in] Ëø¾ä±ú
+* @brief é‡Šæ”¾é‡é”
+* @param[in] é”å¥æŸ„
 * @date 2021-08-20
 * @author Dexnab
 */
 extern void cmtSysLockFree(cmtUint64 handle);
 /**
-* @brief ³õÊ¼»¯×Ô¶¯Ëø
-* @param[in] lock ×Ô¶¯Ëø½á¹¹Ìå
-* @param[in] MaxSpin ËøÉı¼¶Ç°×î´ó×ÔĞıÊı£¨-1Îª²»Éı¼¶£¬Ê¼ÖÕÎª×ÔĞıËø£©
+* @brief åˆå§‹åŒ–è‡ªåŠ¨é”
+* @param[in] lock è‡ªåŠ¨é”ç»“æ„ä½“
+* @param[in] MaxSpin é”å‡çº§å‰æœ€å¤§è‡ªæ—‹æ•°ï¼ˆ-1ä¸ºä¸å‡çº§ï¼Œå§‹ç»ˆä¸ºè‡ªæ—‹é”ï¼‰
 * @date 2021-09-13
 * @author Dexnab
 */
 extern void cmtLockInit(cmtLock* lock, cmtUint64 MaxSpin);
 /**
-* @brief ½øÈë×Ô¶¯Ëø
-* @param[in] lock ×Ô¶¯Ëø½á¹¹Ìå
+* @brief è¿›å…¥è‡ªåŠ¨é”
+* @param[in] lock è‡ªåŠ¨é”ç»“æ„ä½“
 * @date 2021-08-20
 * @author Dexnab
 */
 extern void cmtLockEnter(cmtLock* lock);
 /**
-* @brief Àë¿ª×Ô¶¯Ëø
-* @param[in] lock ×Ô¶¯Ëø½á¹¹Ìå
+* @brief ç¦»å¼€è‡ªåŠ¨é”
+* @param[in] lock è‡ªåŠ¨é”ç»“æ„ä½“
 * @date 2021-08-20
 * @author Dexnab
 */
 extern void cmtLockLeave(cmtLock* lock);
 /**
-* @brief ÊÍ·Å×Ô¶¯Ëø
-* @param[in] lock ×Ô¶¯Ëø½á¹¹Ìå
+* @brief é‡Šæ”¾è‡ªåŠ¨é”
+* @param[in] lock è‡ªåŠ¨é”ç»“æ„ä½“
 * @date 2021-08-20
 * @author Dexnab
 */
