@@ -1,6 +1,6 @@
 #include <cmtCryp.h>
 
-/*--------------------------------���������� ��ʼ--------------------------------*/
+/*--------------------------------常量量定义 开始--------------------------------*/
 
 static const cmtUint32 k[64] = {
 	0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
@@ -51,8 +51,8 @@ static const cmtUint8 cmtAESinvsbox[16][16] = {
 	{0x17,0x2B,0x04,0x7E,0xBA,0x77,0xD6,0x26,0xE1,0x69,0x14,0x63,0x55,0x21,0x0C,0x7D}
 };
 
-// ����������ڴ������� GF(2^8) �ļ�������
-// ֻ�� cmtMixColumns ��ʹ��
+// 这个矩阵用于储存所有 GF(2^8) 的计算结果。
+// 只在 cmtMixColumns 中使用
 static const cmtUint8 cmtGFMul[256][6] = {
 	{0x00,0x00,0x00,0x00,0x00,0x00},{0x02,0x03,0x09,0x0b,0x0d,0x0e},
 	{0x04,0x06,0x12,0x16,0x1a,0x1c},{0x06,0x05,0x1b,0x1d,0x17,0x12},
@@ -184,9 +184,9 @@ static const cmtUint8 cmtGFMul[256][6] = {
 	{0xe7,0x19,0x4f,0xa8,0x9a,0x83},{0xe5,0x1a,0x46,0xa3,0x97,0x8d}
 };
 
-//���� URL �� Base64 �Ǳ�׼ Base64����һ�ֱ��֣����������base64Ҫ����URL���룬�뽫�ö�����������'+' �� '/' �滻Ϊ '*' �� '-'������URL��׼�ı���
+//用于 URL 的 Base64 非标准 Base64，是一种变种，因此如果你的base64要用于URL编码，请将该对照数组后面的'+' 和 '/' 替换为 '*' 和 '-'来满足URL标准的编码
 static const cmtUint8 cmtCharSet[64] = { "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" };
-/*--------------------------------���������� ����--------------------------------*/
+/*--------------------------------常量量定义 结束--------------------------------*/
 
 void cmtSHA256Transform(cmtSHA256* ctx, cmtUint8* data)
 {
@@ -292,7 +292,7 @@ void cmtSHA256Get(cmtSHA256* ctx, cmtUint8* hash)
 	ctx->data[56] = ctx->bitlen >> 56;
 	cmtSHA256Transform(ctx, ctx->data);
 
-	// ��ת����
+	// 翻转比特
 	for (i = 0; i < 4; ++i)
 	{
 		hash[i] = (ctx->state[0] >> (24 - i * 8)) & 0x000000ff;
@@ -363,8 +363,8 @@ void cmtSHA1Get(cmtSHA1* ctx, cmtUint8* hash) {
 	ctx->data[56] = ctx->bitlen >> 56;
 	cmtSHA1Transform(ctx, ctx->data);
 
-	// �ڱ�׼�ֲ��е�ʵ������Դ�˻��ģ������������û����ϲ�̫����ʹ�ô�ˣ����������ΪС�λ�ģʽ
-	// �����Ľ������������ʱ��Ա��ؽ��з�ת
+	// 在标准手册中的实现是针对大端机的，但是我们民用基本上不太可能使用大端，所以这里改为小段机模式
+	// 将最后的结果拷贝出来的时候对比特进行翻转
 	for (i = 0; i < 4; ++i) {
 		hash[i] = (ctx->state[0] >> (24 - i * 8)) & 0x000000ff;
 		hash[i + 4] = (ctx->state[1] >> (24 - i * 8)) & 0x000000ff;
@@ -484,8 +484,8 @@ void cmtMD5Get(cmtMD5* ctx, cmtUint8* hash)
 	ctx->data[63] = ctx->bitlen >> 56;
 	cmtMD5Transform(ctx, ctx->data);
 
-	// �ڱ�׼�ֲ��е�ʵ������Դ�˻��ģ������������û����ϲ�̫����ʹ�ô�ˣ����������ΪС�λ�ģʽ
-	// �����Ľ������������ʱ��Ա��ؽ��з�ת
+	// 在标准手册中的实现是针对大端机的，但是我们民用基本上不太可能使用大端，所以这里改为小段机模式
+	// 将最后的结果拷贝出来的时候对比特进行翻转
 	for (i = 0; i < 4; ++i) {
 		hash[i] = (ctx->state[0] >> (i * 8)) & 0x000000ff;
 		hash[i + 4] = (ctx->state[1] >> (i * 8)) & 0x000000ff;
@@ -498,9 +498,9 @@ void cmtMD5Transform(cmtMD5* ctx, cmtUint8* data)
 {
 	cmtUint32 a, b, c, d, m[16], i, j;
 
-	// MD5�ı�׼�ֲ��е�������Ȼ�Ǵ�˻�������ֱ������ʵ�ֳ�С�˻��汾
-	// ��ת����
-	// ��������ʱ�Ӵ�˻������ת��С�˻����
+	// MD5的标准手册中的例子仍然是大端机，这里直接重新实现成小端机版本
+	// 翻转比特
+	// 在最后输出时从大端机结果翻转到小端机结果
 	for (i = 0, j = 0; i < 16; ++i, j += 4)
 		m[i] = (data[j]) + (data[j + 1] << 8) + (data[j + 2] << 16) + (data[j + 3] << 24);
 
@@ -587,7 +587,7 @@ void cmtAESkeyInit(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 
 {
 	cmtUint8 key[256];
 
-	//�ַ�����׼��Ϊ������Կ����
+	//字符串标准化为定长密钥数组
 	if (keysize == 128)
 	{
 		cmtMD5 ctx;
@@ -603,7 +603,7 @@ void cmtAESkeyInit(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 
 		cmtSHA256Get(&ctx, key);
 	}
 
-	//������Կ�����
+	//计算密钥组矩阵
 	cmtAESRestrictkeyInit(key, w, keysize);
 }
 
@@ -787,26 +787,26 @@ void cmtAESecbDec(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize
 
 void cmtAESecbEncEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize)
 {
-	cmtUint64 ExBlockOffset;//�������飨������ڣ���ƫ��
-	cmtUint8 ExBlockTemp[CMT_AES_BLOCK_SIZE];//��������Ĳ�������
+	cmtUint64 ExBlockOffset;//不完整块（如果存在）首偏移
+	cmtUint8 ExBlockTemp[CMT_AES_BLOCK_SIZE];//填充完整的不完整块
 	cmtUint64 r;
 
 	ExBlockOffset = size - size % CMT_AES_BLOCK_SIZE;
 
-	//������
+	//完整块
 	for (r = 0; r < ExBlockOffset; r += CMT_AES_BLOCK_SIZE)
 		cmtAESecbEnc(in + r, out + r, key, keysize);
 
-	//��������
+	//不完整块
 	if (ExBlockOffset != size)
 	{
-		//���ֽڸ���
+		//低字节复制
 		for (; r < size; r++)
 			ExBlockTemp[r - ExBlockOffset] = in[r];
-		//���ֽ���0
+		//高字节填0
 		for (r = size - ExBlockOffset; r < CMT_AES_BLOCK_SIZE; r++)
 			ExBlockTemp[r] = 0;
-		//����
+		//加密
 		cmtAESecbEnc(ExBlockTemp, out + ExBlockOffset, key, keysize);
 	}
 }
@@ -851,10 +851,10 @@ void cmtAEScbcEncMac(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key
 		cmtXorBuffer(iv_buf, buf_in, CMT_AES_BLOCK_SIZE);
 		cmtAESecbEnc(buf_in, buf_out, key, keysize);
 		memcpy(iv_buf, buf_out, CMT_AES_BLOCK_SIZE);
-		// ������еĿ���ܻ����
+		// 输出所有的块可能会溢出
 	}
 
-	memcpy(out, buf_out, CMT_AES_BLOCK_SIZE);// ֻ������Ŀ�
+	memcpy(out, buf_out, CMT_AES_BLOCK_SIZE);// 只输出最后的块
 }
 
 void cmtAEScbcDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
@@ -895,12 +895,12 @@ void cmtAESctrEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, c
 	}
 
 	cmtAESecbEnc(iv_buf, out_buf, key, keysize);
-	cmtXorBuffer(out_buf, &out[idx], size - idx);   // ����Ч���ֽ�
+	cmtXorBuffer(out_buf, &out[idx], size - idx);   // 最有效的字节
 }
 
 void cmtAESctrDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
 {
-	//CTR�ļ��ܾ������Լ��ķ�����
+	//CTR的加密就是他自己的反函数
 	cmtAESctrEnc(in, size, out, key, keysize, iv);
 }
 
@@ -908,7 +908,7 @@ void cmtAESincrIV(cmtUint8 iv[], int counter_size)
 {
 	int idx;
 
-	// ��˲���
+	// 大端操作
 	for (idx = CMT_AES_BLOCK_SIZE - 1; idx >= CMT_AES_BLOCK_SIZE - counter_size; idx--) {
 		iv[idx]++;
 		if (iv[idx] != 0 || idx == CMT_AES_BLOCK_SIZE - counter_size)
@@ -1321,18 +1321,18 @@ cmtInt64 cmtBase64Encode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size, int
 		if (leftOver)
 			idx2 += 4;
 		if (newLineFlag)
-			idx2 += size / 57;   // (CMT_NEWLINE_INVL / 4) * 3 = 57. һ�д��57��in[] bytes
+			idx2 += size / 57;   // (CMT_NEWLINE_INVL / 4) * 3 = 57. 一行大概57个in[] bytes
 	}
 	else {
-		// ��3���ֽڵ����ݱ����4���ֽڵ����� ����������33.3% ���ݴ�СԼ����ԭ����133.3%
+		// 将3个字节的数据编码成4个字节的数据 数据膨胀率33.3% 数据大小约等于原来的133.3%
 		blkTop = blks * 3;
 		for (idx = 0, idx2 = 0; idx < blkTop; idx += 3, idx2 += 4) {
 			out[idx2] = cmtCharSet[in[idx] >> 2];
 			out[idx2 + 1] = cmtCharSet[((in[idx] & 0x03) << 4) | (in[idx + 1] >> 4)];
 			out[idx2 + 2] = cmtCharSet[((in[idx + 1] & 0x0f) << 2) | (in[idx + 2] >> 6)];
 			out[idx2 + 3] = cmtCharSet[in[idx + 2] & 0x3F];
-			// RFC 822 �涨ÿ76�ֽڻ���һ�Σ����NewLineFlagΪ1����������˹涨
-			// ��һ����77�ֽ�
+			// RFC 822 规定每76字节换行一次，如果NewLineFlag为1则换行来满足此规定
+			// 第一行是77字节
 			if (((idx2 - newLineCount + 4) % CMT_NEWLINE_INVL == 0) && newLineFlag) {
 				out[idx2 + 4] = '\n';
 				idx2++;
@@ -1373,7 +1373,7 @@ cmtInt64 cmtBase64Decode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size)
 	leftOver = size % 4;
 
 	if (out == NULL) {
-		if (size >= 77 && in[CMT_NEWLINE_INVL] == '\n')   //У��ÿ��
+		if (size >= 77 && in[CMT_NEWLINE_INVL] == '\n')   //校验每行
 			size -= size / (CMT_NEWLINE_INVL + 1);
 		blks = size / 4;
 		leftOver = size % 4;

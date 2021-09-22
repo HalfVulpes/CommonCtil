@@ -1,6 +1,6 @@
 /**
 * @file cmtCryp.h
-* @brief ÓÃÓÚÖ§³Ö¿çÆ½Ì¨µÄ¼ò»¯Ò×ÓÃ°æ±¾ÃÜÂëÑ§¿â
+* @brief ç”¨äºæ”¯æŒè·¨å¹³å°çš„ç®€åŒ–æ˜“ç”¨ç‰ˆæœ¬å¯†ç å­¦åº“
 * @data 2021-09-13
 * @author Brad Conte
 * @author GogeBlue
@@ -39,25 +39,25 @@
 			   * http://csrc.nist.gov/publications/nistpubs/800-38C/SP800-38C_updated-July20_2007.pdf
 */
 
-//·ÀÖ¹ÖØ¸´°üº¬
+//é˜²æ­¢é‡å¤åŒ…å«
 #pragma once
 #ifndef _INC_CMTCRYP
 #define _INC_CMTCRYP
 #include <cmtType.h>
 #include <cmtCore.h>
 
-/*--------------------------------ºê¶¨Òå ¿ªÊ¼--------------------------------*/
+/*--------------------------------å®å®šä¹‰ å¼€å§‹--------------------------------*/
 
-//SHA256Êä³öÕªÒª³¤¶È£¬32×Ö½Ú£¨256Î»£©
+//SHA256è¾“å‡ºæ‘˜è¦é•¿åº¦ï¼Œ32å­—èŠ‚ï¼ˆ256ä½ï¼‰
 #define CMT_SHA256_BLOCK_SIZE 32
 
-//SHA1Êä³öµÄÕªÒª³¤¶È£¬20×Ö½Ú£¨160Î»£©
+//SHA1è¾“å‡ºçš„æ‘˜è¦é•¿åº¦ï¼Œ20å­—èŠ‚ï¼ˆ160ä½ï¼‰
 #define CMT_SHA1_BLOCK_SIZE 20
 
-//MD5Êä³öµÄÕªÒª³¤¶È£¬16×Ö½Ú£¨128Î»£©
+//MD5è¾“å‡ºçš„æ‘˜è¦é•¿åº¦ï¼Œ16å­—èŠ‚ï¼ˆ128ä½ï¼‰
 #define CMT_MD5_BLOCK_SIZE 16
 
-//ÔÚµç×ÓÓÊ¼şÖĞ£¬¸ù¾İ RFC 822 ¹æ¶¨£¬Ã¿ 76 ¸ö×Ö·ûĞèÒª¼ÓÉÏÒ»¸ö»Ø³µ»»ĞĞ£¬µ«ÊÇÄØÓÉÓÚÃ¿¸öbase64±àÂëÆ÷µÄÊµÏÖÎÊÌâÓĞĞ©ÊÇ²»´ø»»ĞĞµÄ
+//åœ¨ç”µå­é‚®ä»¶ä¸­ï¼Œæ ¹æ® RFC 822 è§„å®šï¼Œæ¯ 76 ä¸ªå­—ç¬¦éœ€è¦åŠ ä¸Šä¸€ä¸ªå›è½¦æ¢è¡Œï¼Œä½†æ˜¯å‘¢ç”±äºæ¯ä¸ªbase64ç¼–ç å™¨çš„å®ç°é—®é¢˜æœ‰äº›æ˜¯ä¸å¸¦æ¢è¡Œçš„
 #define CMT_NEWLINE_INVL 76
 
 #define CMT_ROTLEFT(a,b) (((a) << (b)) | ((a) >> (32-(b))))
@@ -85,22 +85,22 @@
 #define CMT_II(a,b,c,d,m,s,t) { a += CMT_I(b,c,d) + m + t; \
                             a = b + CMT_ROTLEFT(a,s); }
 
-//AES¼ÓÃÜÒ»´Î²Ù×÷16Bytes
+//AESåŠ å¯†ä¸€æ¬¡æ“ä½œ16Bytes
 #define CMT_AES_BLOCK_SIZE 16
 
 #define CMT_AES_128_ROUNDS 10
 #define CMT_AES_192_ROUNDS 12
 #define CMT_AES_256_ROUNDS 14
 
-//¸ù¾İÃ÷ÎÄ´óĞ¡¼ÆËã²¹Æë²¢¼ÓÃÜºóµÄÃÜÎÄ´óĞ¡
+//æ ¹æ®æ˜æ–‡å¤§å°è®¡ç®—è¡¥é½å¹¶åŠ å¯†åçš„å¯†æ–‡å¤§å°
 #define cmtAEScipherSize(PlainSize) ((PlainSize) % CMT_AES_BLOCK_SIZE ? (PlainSize) + CMT_AES_BLOCK_SIZE - (PlainSize) % CMT_AES_BLOCK_SIZE : (PlainSize))
-/*--------------------------------ºê¶¨Òå ½áÊø--------------------------------*/
+/*--------------------------------å®å®šä¹‰ ç»“æŸ--------------------------------*/
 
-/*--------------------------------½á¹¹Ìå¶¨Òå ¿ªÊ¼--------------------------------*/
+/*--------------------------------ç»“æ„ä½“å®šä¹‰ å¼€å§‹--------------------------------*/
 
 /**
 * @struct cmtSHA256
-* @brief SHA256½á¹¹Ìå
+* @brief SHA256ç»“æ„ä½“
 * @date 2021-09-14
 * @author Brad Conte
 * @author GogeBlue
@@ -115,7 +115,7 @@ typedef struct _CMTSHA256
 
 /**
 * @struct cmtSHA1
-* @brief SHA1½á¹¹Ìå
+* @brief SHA1ç»“æ„ä½“
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -131,7 +131,7 @@ typedef struct _CMTSHA1
 
 /**
 * @struct cmtMD5
-* @brief MD5½á¹¹Ìå
+* @brief MD5ç»“æ„ä½“
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -143,43 +143,43 @@ typedef struct _CMTMD5
 	cmtUint64 bitlen;
 	cmtUint32 state[4];
 }cmtMD5;
-/*--------------------------------½á¹¹Ìå¶¨Òå ½áÊø--------------------------------*/
+/*--------------------------------ç»“æ„ä½“å®šä¹‰ ç»“æŸ--------------------------------*/
 
-/*--------------------------------Ëæ»úÊıº¯Êı ¿ªÊ¼--------------------------------*/
+/*--------------------------------éšæœºæ•°å‡½æ•° å¼€å§‹--------------------------------*/
 
 /**
-* @brief Éú³ÉÕæËæ»úÊı
-* @param[out] Êä³ö»º³åÇø
-* @param[in] »º³åÇø³¤¶È£¨Éú³ÉËæ»úÊıµÄÊıÁ¿£©
-* @attention 32Î»Ä£Ê½ÏÂ£¬Ã¿¸öËæ»úÊıÎª32×Ö½Ú£»64Î»Ä£Ê½ÏÂ£¬Ã¿¸öËæ»úÊıÎª64×Ö½Ú
+* @brief ç”ŸæˆçœŸéšæœºæ•°
+* @param[out] è¾“å‡ºç¼“å†²åŒº
+* @param[in] ç¼“å†²åŒºé•¿åº¦ï¼ˆç”Ÿæˆéšæœºæ•°çš„æ•°é‡ï¼‰
+* @attention 32ä½æ¨¡å¼ä¸‹ï¼Œæ¯ä¸ªéšæœºæ•°ä¸º32å­—èŠ‚ï¼›64ä½æ¨¡å¼ä¸‹ï¼Œæ¯ä¸ªéšæœºæ•°ä¸º64å­—èŠ‚
 * @date 2021-09-19
 * @author Dexnab
 */
 void CMT_FASTCALL cmtRealRand(cmtUint64* buf, cmtUint64 len);
-/*--------------------------------Ëæ»úÊıº¯Êı ½áÊø--------------------------------*/
+/*--------------------------------éšæœºæ•°å‡½æ•° ç»“æŸ--------------------------------*/
 
-/*--------------------------------É¢ÁĞº¯Êı ¿ªÊ¼--------------------------------*/
+/*--------------------------------æ•£åˆ—å‡½æ•° å¼€å§‹--------------------------------*/
 
 /**
-* @brief ³õÊ¼»¯cmtSHA256½á¹¹Ìå
-* @param[out] Êä³ö½á¹¹Ìå
-* @par Ê¾Àı:
+* @brief åˆå§‹åŒ–cmtSHA256ç»“æ„ä½“
+* @param[out] è¾“å‡ºç»“æ„ä½“
+* @par ç¤ºä¾‹:
 * @code
-	//¶ÔÕÕ£º×Ö·û´®"abcabcabc" µÄsha256ÖµÎª£º76b99ab4be8521d78b19bcff7d1078aabeb477bd134f404094c92cd39f051c3e
+	//å¯¹ç…§ï¼šå­—ç¬¦ä¸²"abcabcabc" çš„sha256å€¼ä¸ºï¼š76b99ab4be8521d78b19bcff7d1078aabeb477bd134f404094c92cd39f051c3e
 	cmtChar str[] = "abcabcabc";
 	cmtUint8 result[CMT_SHA256_BLOCK_SIZE];
 	cmtSHA256 ctx;
 
-	//³õÊ¼»¯sha256½á¹¹Ìå
+	//åˆå§‹åŒ–sha256ç»“æ„ä½“
 	cmtSHA256Init(&ctx);
 
-	//Ğ´ÈëÊı¾İ£¬¸üĞÂsha256½á¹¹Ìå
-	cmtSHA256Update(&ctx, str, sizeof(str) - 1);//ÅÅ³ı½áÎ²µÄ'\0'
+	//å†™å…¥æ•°æ®ï¼Œæ›´æ–°sha256ç»“æ„ä½“
+	cmtSHA256Update(&ctx, str, sizeof(str) - 1);//æ’é™¤ç»“å°¾çš„'\0'
 
-	//»ñÈ¡½á¹û
+	//è·å–ç»“æœ
 	cmtSHA256Get(&ctx, result);
 
-	//Êä³ö
+	//è¾“å‡º
 	for (int i = 0; i < 32; i++)
 	{
 		printf("%hhx", result[i]);
@@ -192,10 +192,10 @@ void CMT_FASTCALL cmtRealRand(cmtUint64* buf, cmtUint64 len);
 void cmtSHA256Init(cmtSHA256* ctx);
 
 /**
-* @brief Ğ´ÈëÊı¾İ£¬¸üĞÂsha256½á¹¹Ìå
-* @param[in] sha256½á¹¹Ìå
-* @param[in] Êı¾İ
-* @param[in] Êı¾İ×Ö½ÚÊı
+* @brief å†™å…¥æ•°æ®ï¼Œæ›´æ–°sha256ç»“æ„ä½“
+* @param[in] sha256ç»“æ„ä½“
+* @param[in] æ•°æ®
+* @param[in] æ•°æ®å­—èŠ‚æ•°
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -203,10 +203,10 @@ void cmtSHA256Init(cmtSHA256* ctx);
 void cmtSHA256Update(cmtSHA256* ctx, cmtUint8* data, cmtUint64 size);
 
 /**
-* @brief ¼ÆËã²¢È¡Öµ
-* @param[in] sha256½á¹¹Ìå
-* @param[out] ½ÓÊÜ»º³åÇø
-* @attention ½ÓÊÜ»º³åÇø³¤¶È²»ÄÜĞ¡ÓÚCMT_SHA256_BLOCK_SIZE, Èç¹ûµÚÒ»´ÎµÄupdateÊÇabc£¬µÚ¶ş´ÎµÄupdateÊÇ123£¬×îºóÔÚgetÔòÏàµ±ÓÚ¼ÆËãabc123µÄhash256
+* @brief è®¡ç®—å¹¶å–å€¼
+* @param[in] sha256ç»“æ„ä½“
+* @param[out] æ¥å—ç¼“å†²åŒº
+* @attention æ¥å—ç¼“å†²åŒºé•¿åº¦ä¸èƒ½å°äºCMT_SHA256_BLOCK_SIZE, å¦‚æœç¬¬ä¸€æ¬¡çš„updateæ˜¯abcï¼Œç¬¬äºŒæ¬¡çš„updateæ˜¯123ï¼Œæœ€ååœ¨getåˆ™ç›¸å½“äºè®¡ç®—abc123çš„hash256
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -214,7 +214,7 @@ void cmtSHA256Update(cmtSHA256* ctx, cmtUint8* data, cmtUint64 size);
 void cmtSHA256Get(cmtSHA256* ctx, cmtUint8* hash);
 
 /**
-* @brief ¾ØÕóº¯Êı£¬ÄÚ²¿Ê¹ÓÃ
+* @brief çŸ©é˜µå‡½æ•°ï¼Œå†…éƒ¨ä½¿ç”¨
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -222,25 +222,25 @@ void cmtSHA256Get(cmtSHA256* ctx, cmtUint8* hash);
 void cmtSHA256Transform(cmtSHA256* ctx, cmtUint8* data);
 
 /**
-* @brief ³õÊ¼»¯cmtSHA1½á¹¹Ìå
-* @param[out] Êä³ö½á¹¹Ìå
-* @par Ê¾Àı:
+* @brief åˆå§‹åŒ–cmtSHA1ç»“æ„ä½“
+* @param[out] è¾“å‡ºç»“æ„ä½“
+* @par ç¤ºä¾‹:
 * @code
-	//¶ÔÕÕ£º×Ö·û´®"abcabcabc" µÄsha1ÖµÎª£º0b6f5dae7f8d68348f7d56ac05ea20a55f652d91
+	//å¯¹ç…§ï¼šå­—ç¬¦ä¸²"abcabcabc" çš„sha1å€¼ä¸ºï¼š0b6f5dae7f8d68348f7d56ac05ea20a55f652d91
 	cmtChar str[] = "abcabcabc";
 	cmtUint8 result[CMT_SHA1_BLOCK_SIZE];
 	cmtSHA1 ctx;
 
-	//³õÊ¼»¯sha256½á¹¹Ìå
+	//åˆå§‹åŒ–sha256ç»“æ„ä½“
 	cmtSHA1Init(&ctx);
 
-	//Ğ´ÈëÊı¾İ£¬¸üĞÂsha256½á¹¹Ìå
-	cmtSHA1Update(&ctx, str, sizeof(str) - 1);//ÅÅ³ı½áÎ²µÄ'\0'
+	//å†™å…¥æ•°æ®ï¼Œæ›´æ–°sha256ç»“æ„ä½“
+	cmtSHA1Update(&ctx, str, sizeof(str) - 1);//æ’é™¤ç»“å°¾çš„'\0'
 
-	//»ñÈ¡½á¹û
+	//è·å–ç»“æœ
 	cmtSHA1Get(&ctx, result);
 
-	//Êä³ö
+	//è¾“å‡º
 	for (int i = 0; i < 20; i++)
 	{
 		printf("%hhx", result[i]);
@@ -253,20 +253,20 @@ void cmtSHA256Transform(cmtSHA256* ctx, cmtUint8* data);
 void cmtSHA1Init(cmtSHA1* ctx);
 
 /**
-* @brief Ğ´ÈëÊı¾İ£¬¸üĞÂsha1½á¹¹Ìå
-* @param[in] sha1½á¹¹Ìå
-* @param[in] Êı¾İ
-* @param[in] Êı¾İ×Ö½ÚÊı
+* @brief å†™å…¥æ•°æ®ï¼Œæ›´æ–°sha1ç»“æ„ä½“
+* @param[in] sha1ç»“æ„ä½“
+* @param[in] æ•°æ®
+* @param[in] æ•°æ®å­—èŠ‚æ•°
 * @date 2021-09-15
 * @author GogeBlue
 */
 void cmtSHA1Update(cmtSHA1* ctx, cmtUint8* data, cmtUint64 size);
 
 /**
-* @brief ¼ÆËã²¢È¡Öµ
-* @param[in] sha1½á¹¹Ìå
-* @param[out] ½ÓÊÜ»º³åÇø
-* @attention ½ÓÊÜ»º³åÇø³¤¶È²»ÄÜĞ¡ÓÚCMT_SHA1_BLOCK_SIZE, Èç¹ûµÚÒ»´ÎµÄupdateÊÇabc£¬µÚ¶ş´ÎµÄupdateÊÇ123£¬×îºóÔÚgetÔòÏàµ±ÓÚ¼ÆËãabc123µÄhash1
+* @brief è®¡ç®—å¹¶å–å€¼
+* @param[in] sha1ç»“æ„ä½“
+* @param[out] æ¥å—ç¼“å†²åŒº
+* @attention æ¥å—ç¼“å†²åŒºé•¿åº¦ä¸èƒ½å°äºCMT_SHA1_BLOCK_SIZE, å¦‚æœç¬¬ä¸€æ¬¡çš„updateæ˜¯abcï¼Œç¬¬äºŒæ¬¡çš„updateæ˜¯123ï¼Œæœ€ååœ¨getåˆ™ç›¸å½“äºè®¡ç®—abc123çš„hash1
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -274,7 +274,7 @@ void cmtSHA1Update(cmtSHA1* ctx, cmtUint8* data, cmtUint64 size);
 void cmtSHA1Get(cmtSHA1* ctx, cmtUint8* hash);
 
 /**
-* @brief ¾ØÕóº¯Êı£¬ÄÚ²¿Ê¹ÓÃ
+* @brief çŸ©é˜µå‡½æ•°ï¼Œå†…éƒ¨ä½¿ç”¨
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -282,25 +282,25 @@ void cmtSHA1Get(cmtSHA1* ctx, cmtUint8* hash);
 void cmtSHA1Transform(cmtSHA1* ctx, cmtUint8* data);
 
 /**
-* @brief ³õÊ¼»¯cmtMD5½á¹¹Ìå
-* @param[out] Êä³ö½á¹¹Ìå
-* @par Ê¾Àı:
+* @brief åˆå§‹åŒ–cmtMD5ç»“æ„ä½“
+* @param[out] è¾“å‡ºç»“æ„ä½“
+* @par ç¤ºä¾‹:
 * @code
-	//¶ÔÕÕ£º×Ö·û´®"abcabcabc" µÄMD5ÖµÎª£º97ac82a5b825239e782d0339e2d7b910
+	//å¯¹ç…§ï¼šå­—ç¬¦ä¸²"abcabcabc" çš„MD5å€¼ä¸ºï¼š97ac82a5b825239e782d0339e2d7b910
 	cmtChar str[] = "abcabcabc";
 	cmtUint8 result[CMT_MD5_BLOCK_SIZE];
 	cmtMD5 ctx;
 
-	//³õÊ¼»¯MD5½á¹¹Ìå
+	//åˆå§‹åŒ–MD5ç»“æ„ä½“
 	cmtMD5Init(&ctx);
 
-	//Ğ´ÈëÊı¾İ£¬¸üĞÂMD5½á¹¹Ìå
-	cmtMD5Update(&ctx, str, sizeof(str) - 1);//ÅÅ³ı½áÎ²µÄ'\0'
+	//å†™å…¥æ•°æ®ï¼Œæ›´æ–°MD5ç»“æ„ä½“
+	cmtMD5Update(&ctx, str, sizeof(str) - 1);//æ’é™¤ç»“å°¾çš„'\0'
 
-	//»ñÈ¡½á¹û
+	//è·å–ç»“æœ
 	cmtMD5Get(&ctx, result);
 
-	//Êä³ö
+	//è¾“å‡º
 	for (int i = 0; i < 16; i++)
 	{
 		printf("%hhx", result[i]);
@@ -313,10 +313,10 @@ void cmtSHA1Transform(cmtSHA1* ctx, cmtUint8* data);
 void cmtMD5Init(cmtMD5* ctx);
 
 /**
-* @brief Ğ´ÈëÊı¾İ£¬¸üĞÂMD5½á¹¹Ìå
-* @param[in] MD5½á¹¹Ìå
-* @param[in] Êı¾İ
-* @param[in] Êı¾İ×Ö½ÚÊı
+* @brief å†™å…¥æ•°æ®ï¼Œæ›´æ–°MD5ç»“æ„ä½“
+* @param[in] MD5ç»“æ„ä½“
+* @param[in] æ•°æ®
+* @param[in] æ•°æ®å­—èŠ‚æ•°
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -324,10 +324,10 @@ void cmtMD5Init(cmtMD5* ctx);
 void cmtMD5Update(cmtMD5* ctx, cmtUint8* data, cmtUint64 size);
 
 /**
-* @brief ¼ÆËã²¢È¡Öµ
-* @param[in] MD5½á¹¹Ìå
-* @param[out] ½ÓÊÜ»º³åÇø
-* @attention ½ÓÊÜ»º³åÇø³¤¶È²»ÄÜĞ¡ÓÚCMT_MD5_BLOCK_SIZE, Èç¹ûµÚÒ»´ÎµÄupdateÊÇabc£¬µÚ¶ş´ÎµÄupdateÊÇ123£¬×îºóÔÚgetÔòÏàµ±ÓÚ¼ÆËãabc123µÄMD5
+* @brief è®¡ç®—å¹¶å–å€¼
+* @param[in] MD5ç»“æ„ä½“
+* @param[out] æ¥å—ç¼“å†²åŒº
+* @attention æ¥å—ç¼“å†²åŒºé•¿åº¦ä¸èƒ½å°äºCMT_MD5_BLOCK_SIZE, å¦‚æœç¬¬ä¸€æ¬¡çš„updateæ˜¯abcï¼Œç¬¬äºŒæ¬¡çš„updateæ˜¯123ï¼Œæœ€ååœ¨getåˆ™ç›¸å½“äºè®¡ç®—abc123çš„MD5
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -335,32 +335,32 @@ void cmtMD5Update(cmtMD5* ctx, cmtUint8* data, cmtUint64 size);
 void cmtMD5Get(cmtMD5* ctx, cmtUint8* hash);
 
 /**
-* @brief ¾ØÕóº¯Êı£¬ÄÚ²¿Ê¹ÓÃ
+* @brief çŸ©é˜µå‡½æ•°ï¼Œå†…éƒ¨ä½¿ç”¨
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
 */
 void cmtMD5Transform(cmtMD5* ctx, cmtUint8* data);
-/*--------------------------------É¢ÁĞº¯Êı ½áÊø--------------------------------*/
+/*--------------------------------æ•£åˆ—å‡½æ•° ç»“æŸ--------------------------------*/
 
 
-/*--------------------------------¶Ô³Æ¼ÓÃÜº¯Êı ¿ªÊ¼--------------------------------*/
+/*--------------------------------å¯¹ç§°åŠ å¯†å‡½æ•° å¼€å§‹--------------------------------*/
 /*
-* ×¢ÒâÊÂÏî
-1£¬¶ÔÓÚËùÓĞµÄAESº¯Êı£¬ÆäÃÜÔ¿ÉèÖÃº¯Êı£¬±ØĞëµÃÔÚ¼ÓÃÜ½âÃÜÇ°Ö´ĞĞ
-2£¬ÃÜÔ¿µÄÎ»ÊıÖ»ÄÜÊÇ128Î»£¨cmtUint8 key[16]£©£¬192Î»£¨cmtUint8 key[24]£©£¬»òÕß256Î»£¨cmtUint8 key[32]£©¡£
-3£¬¶ÔÓÚ¿ØÖÆÃÜÔ¿Î»Êı£¬×î·½±ãµÄ·½·¨¾ÍÊÇ¶ÔÓÃ»§µÄÊäÈë½øĞĞhashÔËËã£¬Èç£ºkeyInit(sha256(userInput)) //Éú³ÉÒ»¸ö256Î»AESÃÜÔ¿¡£
-4£¬Ä¬ÈÏµÄcmtAESKeyInitÊÇ×îÆÓËØµÄAES²Ù×÷·½Ê½£ºECBÄ£Ê½£¬ÕâÖÖÄ£Ê½²¢²»ÊÇ·Ç³£µÄ°²È«£¬Ã÷ÎÄÖĞµÄÖØ¸´²¿·ÖÔÚÃÜÎÄÖĞÒ²»áÖØ¸´¡£ÍÆ¼öÊ¹ÓÃCBCÄ£Ê½
-5£¬ECBÄ£Ê½ÏÂ²»ĞèÒªÊ¹ÓÃ³õÊ¼»¯ÏòÁ¿£¨IV£©£¬ÒòÎªECBÄ£Ê½ÏÂÃ÷ÎÄÊÇÒÔÃÜÂë±¾µÄĞÎÊ½¼ÓÃÜµÄ£¬µ«ÊÇÄØ£¬ÆäËûÄ£Ê½ÏÂIV¾Í±äµÃÖØÒªÆğÀ´ÁË£¬Ëü¿ÉÒÔ¸øÎÄ¼şÔö¼ÓÒ»¸öËæ»úÆ«ÒÆÁ¿£¬ÈÃÏàÍ¬µÄÎÄ¼ş¼ÓÃÜµÃµ½²»Í¬µÄÃÜÎÄ¡£
+* æ³¨æ„äº‹é¡¹
+1ï¼Œå¯¹äºæ‰€æœ‰çš„AESå‡½æ•°ï¼Œå…¶å¯†é’¥è®¾ç½®å‡½æ•°ï¼Œå¿…é¡»å¾—åœ¨åŠ å¯†è§£å¯†å‰æ‰§è¡Œ
+2ï¼Œå¯†é’¥çš„ä½æ•°åªèƒ½æ˜¯128ä½ï¼ˆcmtUint8 key[16]ï¼‰ï¼Œ192ä½ï¼ˆcmtUint8 key[24]ï¼‰ï¼Œæˆ–è€…256ä½ï¼ˆcmtUint8 key[32]ï¼‰ã€‚
+3ï¼Œå¯¹äºæ§åˆ¶å¯†é’¥ä½æ•°ï¼Œæœ€æ–¹ä¾¿çš„æ–¹æ³•å°±æ˜¯å¯¹ç”¨æˆ·çš„è¾“å…¥è¿›è¡Œhashè¿ç®—ï¼Œå¦‚ï¼škeyInit(sha256(userInput)) //ç”Ÿæˆä¸€ä¸ª256ä½AESå¯†é’¥ã€‚
+4ï¼Œé»˜è®¤çš„cmtAESKeyInitæ˜¯æœ€æœ´ç´ çš„AESæ“ä½œæ–¹å¼ï¼šECBæ¨¡å¼ï¼Œè¿™ç§æ¨¡å¼å¹¶ä¸æ˜¯éå¸¸çš„å®‰å…¨ï¼Œæ˜æ–‡ä¸­çš„é‡å¤éƒ¨åˆ†åœ¨å¯†æ–‡ä¸­ä¹Ÿä¼šé‡å¤ã€‚æ¨èä½¿ç”¨CBCæ¨¡å¼
+5ï¼ŒECBæ¨¡å¼ä¸‹ä¸éœ€è¦ä½¿ç”¨åˆå§‹åŒ–å‘é‡ï¼ˆIVï¼‰ï¼Œå› ä¸ºECBæ¨¡å¼ä¸‹æ˜æ–‡æ˜¯ä»¥å¯†ç æœ¬çš„å½¢å¼åŠ å¯†çš„ï¼Œä½†æ˜¯å‘¢ï¼Œå…¶ä»–æ¨¡å¼ä¸‹IVå°±å˜å¾—é‡è¦èµ·æ¥äº†ï¼Œå®ƒå¯ä»¥ç»™æ–‡ä»¶å¢åŠ ä¸€ä¸ªéšæœºåç§»é‡ï¼Œè®©ç›¸åŒçš„æ–‡ä»¶åŠ å¯†å¾—åˆ°ä¸åŒçš„å¯†æ–‡ã€‚
 */
 
 /**
-* @brief AESÃÜÔ¿³õÊ¼»¯º¯Êı£¨Ê¹ÓÃ×Ö·û´®£©
-* @param[in] keystr ÓÃÓÚÉú³ÉÃÜÔ¿µÄ×Ö·û´®
-* @param[in] sKeystr keystr×Ö½ÚÊı
-* @param[out] w ¼ÆËãÃÜÔ¿×é¾ØÕó£¬´óĞ¡Îª60¸ö32Î»int£¨240×Ö½Ú£©
-* @param[in] keysize Éú³ÉµÄÃÜÔ¿³¤¶È£¨ÈçAES-256¾ÍÌîĞ´256£©
-* @attention keystr´¦Àí¹ı³ÌÖĞ²»»áÊ¶±ğÈÎºÎÖÕÖ¹·û
+* @brief AESå¯†é’¥åˆå§‹åŒ–å‡½æ•°ï¼ˆä½¿ç”¨å­—ç¬¦ä¸²ï¼‰
+* @param[in] keystr ç”¨äºç”Ÿæˆå¯†é’¥çš„å­—ç¬¦ä¸²
+* @param[in] sKeystr keystrå­—èŠ‚æ•°
+* @param[out] w è®¡ç®—å¯†é’¥ç»„çŸ©é˜µï¼Œå¤§å°ä¸º60ä¸ª32ä½intï¼ˆ240å­—èŠ‚ï¼‰
+* @param[in] keysize ç”Ÿæˆçš„å¯†é’¥é•¿åº¦ï¼ˆå¦‚AES-256å°±å¡«å†™256ï¼‰
+* @attention keystrå¤„ç†è¿‡ç¨‹ä¸­ä¸ä¼šè¯†åˆ«ä»»ä½•ç»ˆæ­¢ç¬¦
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -368,10 +368,10 @@ void cmtMD5Transform(cmtMD5* ctx, cmtUint8* data);
 void cmtAESkeyInit(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 keysize);
 
 /**
-* @brief AESÃÜÔ¿³õÊ¼»¯º¯Êı£¨Ê¹ÓÃ¶¨³¤ÃÜÔ¿Êı×é£©
-* @param[in] key ¶¨³¤ÃÜÔ¿Êı×é£¬´óĞ¡Îªkeysize
-* @param[out] w ¼ÆËãÃÜÔ¿×é¾ØÕó£¬´óĞ¡Îª60¸ö32Î»int£¨240×Ö½Ú£©
-* @param[in] keysize ÃÜÔ¿³¤¶È£¨ÈçAES-256¾ÍÌîĞ´256£©
+* @brief AESå¯†é’¥åˆå§‹åŒ–å‡½æ•°ï¼ˆä½¿ç”¨å®šé•¿å¯†é’¥æ•°ç»„ï¼‰
+* @param[in] key å®šé•¿å¯†é’¥æ•°ç»„ï¼Œå¤§å°ä¸ºkeysize
+* @param[out] w è®¡ç®—å¯†é’¥ç»„çŸ©é˜µï¼Œå¤§å°ä¸º60ä¸ª32ä½intï¼ˆ240å­—èŠ‚ï¼‰
+* @param[in] keysize å¯†é’¥é•¿åº¦ï¼ˆå¦‚AES-256å°±å¡«å†™256ï¼‰
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -379,9 +379,9 @@ void cmtAESkeyInit(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 
 void cmtAESRestrictkeyInit(cmtUint8* key, cmtUint32* w, cmtUint16 keysize);
 
 /**
-* @brief AESÆ«ÒÆÏòÁ¿Éú³Éº¯Êı
-* @param[out] iv Æ«ÒÆÏòÁ¿£¬´óĞ¡ÎªCMT_AES_BLOCK_SIZE×Ö½Ú
-* @attention ÇëÎñ±Ø±£´æÆ«ÒÆÏòÁ¿£¬ºÍÃÜÔ¿Ò»ÑùÖØÒª£¬ÒòÎªÔÚ½âÃÜµÄÊ±ºòĞèÒªÆ«ÒÆÏòÁ¿ºÍÃÜÔ¿¹²Í¬½âÃÜ¡£
+* @brief AESåç§»å‘é‡ç”Ÿæˆå‡½æ•°
+* @param[out] iv åç§»å‘é‡ï¼Œå¤§å°ä¸ºCMT_AES_BLOCK_SIZEå­—èŠ‚
+* @attention è¯·åŠ¡å¿…ä¿å­˜åç§»å‘é‡ï¼Œå’Œå¯†é’¥ä¸€æ ·é‡è¦ï¼Œå› ä¸ºåœ¨è§£å¯†çš„æ—¶å€™éœ€è¦åç§»å‘é‡å’Œå¯†é’¥å…±åŒè§£å¯†ã€‚
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -389,12 +389,12 @@ void cmtAESRestrictkeyInit(cmtUint8* key, cmtUint32* w, cmtUint16 keysize);
 void cmtAESInitialVectorInit(cmtUint8* iv);
 
 /**
-* @brief AES-ECBÄ£Ê½¼ÓÃÜº¯Êı£¬Ã¿´Î¿ÉÒÔ´¦Àí16¸öBytes
-* @param[in] in Ã÷ÎÄ
-* @param[out] out ÃÜÎÄ£¬´óĞ¡ÎªCMT_AES_BLOCK_SIZE×Ö½Ú
-* @param[in] key ¼ÆËãÃÜÔ¿×é¾ØÕó
-* @param[in] keysize ÃÜÔ¿³¤¶È
-* @attention Ã÷ÎÄÒ»´ÎÖ»´¦ÀíCMT_AES_BLOCK_SIZE×Ö½Ú
+* @brief AES-ECBæ¨¡å¼åŠ å¯†å‡½æ•°ï¼Œæ¯æ¬¡å¯ä»¥å¤„ç†16ä¸ªBytes
+* @param[in] in æ˜æ–‡
+* @param[out] out å¯†æ–‡ï¼Œå¤§å°ä¸ºCMT_AES_BLOCK_SIZEå­—èŠ‚
+* @param[in] key è®¡ç®—å¯†é’¥ç»„çŸ©é˜µ
+* @param[in] keysize å¯†é’¥é•¿åº¦
+* @attention æ˜æ–‡ä¸€æ¬¡åªå¤„ç†CMT_AES_BLOCK_SIZEå­—èŠ‚
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -402,12 +402,12 @@ void cmtAESInitialVectorInit(cmtUint8* iv);
 void cmtAESecbEnc(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);
 
 /**
-* @brief AES-ECBÄ£Ê½½âÃÜº¯Êı£¬Ã¿´Î¿ÉÒÔ´¦Àí16¸öBytes
-* @param[in] in ÃÜÎÄ
-* @param[out] out Ã÷ÎÄ£¬´óĞ¡ÎªCMT_AES_BLOCK_SIZE×Ö½Ú
-* @param[in] key ¼ÆËãÃÜÔ¿×é¾ØÕó
-* @param[in] keysize ÃÜÔ¿³¤¶È
-* @attention ÃÜÎÄÒ»´ÎÖ»´¦ÀíCMT_AES_BLOCK_SIZE×Ö½Ú
+* @brief AES-ECBæ¨¡å¼è§£å¯†å‡½æ•°ï¼Œæ¯æ¬¡å¯ä»¥å¤„ç†16ä¸ªBytes
+* @param[in] in å¯†æ–‡
+* @param[out] out æ˜æ–‡ï¼Œå¤§å°ä¸ºCMT_AES_BLOCK_SIZEå­—èŠ‚
+* @param[in] key è®¡ç®—å¯†é’¥ç»„çŸ©é˜µ
+* @param[in] keysize å¯†é’¥é•¿åº¦
+* @attention å¯†æ–‡ä¸€æ¬¡åªå¤„ç†CMT_AES_BLOCK_SIZEå­—èŠ‚
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -415,38 +415,38 @@ void cmtAESecbEnc(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize
 void cmtAESecbDec(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);
 
 /**
-* @brief AES-ECBÄ£Ê½¼ÓÃÜº¯Êı£¬Ã¿´Î¿ÉÒÔ´¦ÀíÈÎÒâ×Ö½Ú
-* @param[in] in Ã÷ÎÄ
-* @param[out] out ÃÜÎÄ
-* @param[in] size ÃÜÎÄ´óĞ¡
-* @param[in] key ¼ÆËãÃÜÔ¿×é¾ØÕó
-* @param[in] keysize ÃÜÔ¿³¤¶È
+* @brief AES-ECBæ¨¡å¼åŠ å¯†å‡½æ•°ï¼Œæ¯æ¬¡å¯ä»¥å¤„ç†ä»»æ„å­—èŠ‚
+* @param[in] in æ˜æ–‡
+* @param[out] out å¯†æ–‡
+* @param[in] size å¯†æ–‡å¤§å°
+* @param[in] key è®¡ç®—å¯†é’¥ç»„çŸ©é˜µ
+* @param[in] keysize å¯†é’¥é•¿åº¦
 * @date 2021-09-19
 * @arthur dexnab
 */
 void cmtAESecbEncEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);
 
 /**
-* @brief AES-ECBÄ£Ê½½âÃÜº¯Êı£¬Ã¿´Î¿ÉÒÔ´¦ÀíÈÎÒâ×Ö½Ú
-* @param[in] in ÃÜÎÄ
-* @param[out] out Ã÷ÎÄ
-* @param[in] size ÃÜÎÄ´óĞ¡
-* @param[in] key ¼ÆËãÃÜÔ¿×é¾ØÕó
-* @param[in] keysize ÃÜÔ¿³¤¶È
+* @brief AES-ECBæ¨¡å¼è§£å¯†å‡½æ•°ï¼Œæ¯æ¬¡å¯ä»¥å¤„ç†ä»»æ„å­—èŠ‚
+* @param[in] in å¯†æ–‡
+* @param[out] out æ˜æ–‡
+* @param[in] size å¯†æ–‡å¤§å°
+* @param[in] key è®¡ç®—å¯†é’¥ç»„çŸ©é˜µ
+* @param[in] keysize å¯†é’¥é•¿åº¦
 * @date 2021-09-19
 * @arthur dexnab
 */
 void cmtAESecbDecEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);
 
 /**
-* @brief AES-CBCÄ£Ê½¼ÓÃÜº¯Êı£¬Ã¿´Î¿ÉÒÔ´¦Àín * CMT_AES_BLOCK_SIZE¸ö×Ö½ÚµÄÊı¾İ
-* @param[in] in Ã÷ÎÄ
-* @param[in] size Ã÷ÎÄ×Ö½ÚÊı
-* @param[out] out ÃÜÎÄ£¬´óĞ¡Îªsize
-* @param[in] key ¼ÆËãÃÜÔ¿×é¾ØÕó
-* @param[in] keysize ÃÜÔ¿³¤¶È
-* @param[in] iv Æ«ÒÆÏòÁ¿
-* @attention size±ØĞëÎªCMT_AES_BLOCK_SIZEµÄÕûÊı±¶
+* @brief AES-CBCæ¨¡å¼åŠ å¯†å‡½æ•°ï¼Œæ¯æ¬¡å¯ä»¥å¤„ç†n * CMT_AES_BLOCK_SIZEä¸ªå­—èŠ‚çš„æ•°æ®
+* @param[in] in æ˜æ–‡
+* @param[in] size æ˜æ–‡å­—èŠ‚æ•°
+* @param[out] out å¯†æ–‡ï¼Œå¤§å°ä¸ºsize
+* @param[in] key è®¡ç®—å¯†é’¥ç»„çŸ©é˜µ
+* @param[in] keysize å¯†é’¥é•¿åº¦
+* @param[in] iv åç§»å‘é‡
+* @attention sizeå¿…é¡»ä¸ºCMT_AES_BLOCK_SIZEçš„æ•´æ•°å€
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -454,13 +454,13 @@ void cmtAESecbDecEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key,
 void cmtAEScbcEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);
 
 /**
-* @brief AES-CBC-Êä³öMACÄ£Ê½¼ÓÃÜº¯Êı£¬Ã¿´Î¿ÉÒÔ´¦Àín * CMT_AES_BLOCK_SIZE¸ö×Ö½ÚµÄÊı¾İ
-* @param[in] in Ã÷ÎÄ
-* @param[in] size Ã÷ÎÄ×Ö½ÚÊı
-* @param[out] out Êä³öMAC£¬´óĞ¡ÎªCMT_AES_BLOCK_SIZE
-* @param[in] key ¼ÆËãÃÜÔ¿×é¾ØÕó
-* @param[in] keysize ÃÜÔ¿³¤¶È
-* @param[in] iv Æ«ÒÆÏòÁ¿
+* @brief AES-CBC-è¾“å‡ºMACæ¨¡å¼åŠ å¯†å‡½æ•°ï¼Œæ¯æ¬¡å¯ä»¥å¤„ç†n * CMT_AES_BLOCK_SIZEä¸ªå­—èŠ‚çš„æ•°æ®
+* @param[in] in æ˜æ–‡
+* @param[in] size æ˜æ–‡å­—èŠ‚æ•°
+* @param[out] out è¾“å‡ºMACï¼Œå¤§å°ä¸ºCMT_AES_BLOCK_SIZE
+* @param[in] key è®¡ç®—å¯†é’¥ç»„çŸ©é˜µ
+* @param[in] keysize å¯†é’¥é•¿åº¦
+* @param[in] iv åç§»å‘é‡
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -468,14 +468,14 @@ void cmtAEScbcEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, c
 void cmtAEScbcEncMac(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);
 
 /**
-* @brief AES-CBCÄ£Ê½½âÃÜº¯Êı£¬Ã¿´Î¿ÉÒÔ´¦Àín * CMT_AES_BLOCK_SIZE×Ö½ÚµÄÊı¾İ
-* @param[in] in ÃÜÎÄ
-* @param[in] size ÃÜÎÄ×Ö½ÚÊı
-* @param[out] out Ã÷ÎÄ£¬´óĞ¡Îªsize
-* @param[in] key ¼ÆËãÃÜÔ¿×é¾ØÕó
-* @param[in] keysize ÃÜÔ¿³¤¶È
-* @param[in] iv Æ«ÒÆÏòÁ¿
-* @attention size±ØĞëÎªCMT_AES_BLOCK_SIZEµÄÕûÊı±¶
+* @brief AES-CBCæ¨¡å¼è§£å¯†å‡½æ•°ï¼Œæ¯æ¬¡å¯ä»¥å¤„ç†n * CMT_AES_BLOCK_SIZEå­—èŠ‚çš„æ•°æ®
+* @param[in] in å¯†æ–‡
+* @param[in] size å¯†æ–‡å­—èŠ‚æ•°
+* @param[out] out æ˜æ–‡ï¼Œå¤§å°ä¸ºsize
+* @param[in] key è®¡ç®—å¯†é’¥ç»„çŸ©é˜µ
+* @param[in] keysize å¯†é’¥é•¿åº¦
+* @param[in] iv åç§»å‘é‡
+* @attention sizeå¿…é¡»ä¸ºCMT_AES_BLOCK_SIZEçš„æ•´æ•°å€
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -483,14 +483,14 @@ void cmtAEScbcEncMac(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key
 void cmtAEScbcDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);
 
 /**
-* @brief AES-CTRÄ£Ê½¼ÓÃÜº¯Êı£¬Ã¿´Î¿ÉÒÔ´¦Àín * CMT_AES_BLOCK_SIZE¸ö×Ö½ÚµÄÊı¾İ
-* @param[in] in Ã÷ÎÄ
-* @param[in] size Ã÷ÎÄ×Ö½ÚÊı
-* @param[out] out ÃÜÎÄ£¬´óĞ¡Îªsize
-* @param[in] key ¼ÆËãÃÜÔ¿×é¾ØÕó
-* @param[in] keysize ÃÜÔ¿³¤¶È
-* @param[in] iv Æ«ÒÆÏòÁ¿
-* @attention size±ØĞëÎªCMT_AES_BLOCK_SIZEµÄÕûÊı±¶
+* @brief AES-CTRæ¨¡å¼åŠ å¯†å‡½æ•°ï¼Œæ¯æ¬¡å¯ä»¥å¤„ç†n * CMT_AES_BLOCK_SIZEä¸ªå­—èŠ‚çš„æ•°æ®
+* @param[in] in æ˜æ–‡
+* @param[in] size æ˜æ–‡å­—èŠ‚æ•°
+* @param[out] out å¯†æ–‡ï¼Œå¤§å°ä¸ºsize
+* @param[in] key è®¡ç®—å¯†é’¥ç»„çŸ©é˜µ
+* @param[in] keysize å¯†é’¥é•¿åº¦
+* @param[in] iv åç§»å‘é‡
+* @attention sizeå¿…é¡»ä¸ºCMT_AES_BLOCK_SIZEçš„æ•´æ•°å€
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -498,14 +498,14 @@ void cmtAEScbcDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, c
 void cmtAESctrEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);
 
 /**
-* @brief AES-CBCÄ£Ê½½âÃÜº¯Êı£¬Ã¿´Î¿ÉÒÔ´¦Àín * CMT_AES_BLOCK_SIZE×Ö½ÚµÄÊı¾İ
-* @param[in] in ÃÜÎÄ
-* @param[in] size ÃÜÎÄ×Ö½ÚÊı
-* @param[out] out Ã÷ÎÄ£¬´óĞ¡Îªsize
-* @param[in] key ¼ÆËãÃÜÔ¿×é¾ØÕó
-* @param[in] keysize ÃÜÔ¿³¤¶È
-* @param[in] iv Æ«ÒÆÏòÁ¿
-* @attention size±ØĞëÎªCMT_AES_BLOCK_SIZEµÄÕûÊı±¶
+* @brief AES-CBCæ¨¡å¼è§£å¯†å‡½æ•°ï¼Œæ¯æ¬¡å¯ä»¥å¤„ç†n * CMT_AES_BLOCK_SIZEå­—èŠ‚çš„æ•°æ®
+* @param[in] in å¯†æ–‡
+* @param[in] size å¯†æ–‡å­—èŠ‚æ•°
+* @param[out] out æ˜æ–‡ï¼Œå¤§å°ä¸ºsize
+* @param[in] key è®¡ç®—å¯†é’¥ç»„çŸ©é˜µ
+* @param[in] keysize å¯†é’¥é•¿åº¦
+* @param[in] iv åç§»å‘é‡
+* @attention sizeå¿…é¡»ä¸ºCMT_AES_BLOCK_SIZEçš„æ•´æ•°å€
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -513,7 +513,7 @@ void cmtAESctrEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, c
 void cmtAESctrDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);
 
 /**
-* @brief AESÏà¹Øº¯Êı£¬½ö¹©ÄÚ²¿Ê¹ÓÃ£¬ÀÁµÃĞ´×¢ÊÍÁË£¬const±ğÈ¥µô
+* @brief AESç›¸å…³å‡½æ•°ï¼Œä»…ä¾›å†…éƒ¨ä½¿ç”¨ï¼Œæ‡’å¾—å†™æ³¨é‡Šäº†ï¼Œconståˆ«å»æ‰
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -538,11 +538,11 @@ void cmtMixColumns(cmtUint8 state[][4]);
 void cmtInvMixColumns(cmtUint8 state[][4]);
 
 /**
-* @brief Base64¼Ó±àÂëº¯Êı£¬·µ»ØÖµÎª¼ÓÃÜºóµÄÊı¾İ³¤¶È£¬Èç¹ûoutÎª¿ÕÔòÖ»·µ»Ø¼ÓÃÜºóµÄÊı¾İ³¤¶È¡£
-* @param[in] in Ã÷ÎÄ
-* @param[in] size Ã÷ÎÄ×Ö½ÚÊı
-* @param[out] out ¼Ó±àÂëºóµÄ½á¹û
-* @param[in] newLineFlag Èç¹ûÎªTRUEÔò·ûºÏRFC 822¹æ¶¨£¬FLASEÔò²»·ûºÏ¸Ã¹æ¶¨¡£¸Ã¹æ¶¨¹æ¶¨Ã¿76ĞĞĞèÒª»»ĞĞ
+* @brief Base64åŠ ç¼–ç å‡½æ•°ï¼Œè¿”å›å€¼ä¸ºåŠ å¯†åçš„æ•°æ®é•¿åº¦ï¼Œå¦‚æœoutä¸ºç©ºåˆ™åªè¿”å›åŠ å¯†åçš„æ•°æ®é•¿åº¦ã€‚
+* @param[in] in æ˜æ–‡
+* @param[in] size æ˜æ–‡å­—èŠ‚æ•°
+* @param[out] out åŠ ç¼–ç åçš„ç»“æœ
+* @param[in] newLineFlag å¦‚æœä¸ºTRUEåˆ™ç¬¦åˆRFC 822è§„å®šï¼ŒFLASEåˆ™ä¸ç¬¦åˆè¯¥è§„å®šã€‚è¯¥è§„å®šè§„å®šæ¯76è¡Œéœ€è¦æ¢è¡Œ
 * @date 2021-09-20
 * @author Brad Conte
 * @author GogeBlue
@@ -550,10 +550,10 @@ void cmtInvMixColumns(cmtUint8 state[][4]);
 cmtInt64 cmtBase64Encode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size, int newLineFlag);
 
 /**
-* @brief Base64½â±àÂëº¯Êı£¬·µ»ØÖµÎª½âÃÜºóµÄÊı¾İ³¤¶È£¬Èç¹ûoutÎª¿ÕÔòÖ»·µ»Ø½âÃÜºóµÄÊı¾İ³¤¶È¡£
-* @param[in] in ¼Ó±àÂëºóµÄ½á¹û
-* @param[in] size ¼Ó±àÂëºóµÄ½á¹û×Ö½ÚÊı
-* @param[out] out ½â±àÂëºóµÄ½á¹û
+* @brief Base64è§£ç¼–ç å‡½æ•°ï¼Œè¿”å›å€¼ä¸ºè§£å¯†åçš„æ•°æ®é•¿åº¦ï¼Œå¦‚æœoutä¸ºç©ºåˆ™åªè¿”å›è§£å¯†åçš„æ•°æ®é•¿åº¦ã€‚
+* @param[in] in åŠ ç¼–ç åçš„ç»“æœ
+* @param[in] size åŠ ç¼–ç åçš„ç»“æœå­—èŠ‚æ•°
+* @param[out] out è§£ç¼–ç åçš„ç»“æœ
 * @date 2021-09-20
 * @author Brad Conte
 * @author GogeBlue
@@ -561,13 +561,13 @@ cmtInt64 cmtBase64Encode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size, int
 cmtInt64 cmtBase64Decode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size);
 
 /**
-* @brief BaseÏà¹Øº¯Êı£¬½ö¹©ÄÚ²¿Ê¹ÓÃ
+* @brief Baseç›¸å…³å‡½æ•°ï¼Œä»…ä¾›å†…éƒ¨ä½¿ç”¨
 * @date 2021-09-20
 * @author Brad Conte
 * @author GogeBlue
 */
 cmtUint8 cmtRevChar(char ch);
-/*--------------------------------¶Ô³Æ¼ÓÃÜº¯Êı ½áÊø--------------------------------*/
+/*--------------------------------å¯¹ç§°åŠ å¯†å‡½æ•° ç»“æŸ--------------------------------*/
 
 
 #endif
