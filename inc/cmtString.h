@@ -79,9 +79,9 @@ extern cmtUint64 cmtU8strSize(cmtChar* str);
 
 extern cmtUint64 cmtU8len(cmtU8str* str);
 
-extern cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale);
+extern cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale, cmtBool* err);
 
-extern void cmtU8toANSI(cmtU8str* u8, cmtANSIstr* ansi);
+extern cmtBool cmtU8toANSI(cmtU8str* u8, cmtANSIstr* ansi);
 
 extern cmtUint64 cmtU8toU16size(cmtU8str* u8);
 

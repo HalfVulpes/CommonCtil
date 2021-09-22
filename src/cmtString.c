@@ -174,13 +174,13 @@ void cmtANSItoU8(cmtANSIstr* ansi, cmtU8str* u8)
 		//如果首字在保留区间内，那么绝对有两个字，范围为[0x010000,0x10ffff]
 		else
 		{
-			u16temp[0] = u16temp[0] - 0xd800 + 0x100;
+			u16temp[0] = u16temp[0] - 0xd800 + 0x40;
 			u16temp[1] -= 0xdc00;
 			//u8第四字节
 			u8->data[rU8 + 3] = 0x80 + (cmtUint8)u16temp[1] & 0x3f;
 			//u8第三字节
 			u16temp[1] >>= 6;
-			u8->data[rU8 + 2] = 0x80 + (cmtUint8)u16temp[1] + ((cmtUint8)u16temp[0] & 0x3) << 4;
+			u8->data[rU8 + 2] = 0x80 + (cmtUint8)u16temp[1] + (((cmtUint8)u16temp[0] & 0x3) << 4);
 			//u8第二字节
 			u16temp[0] >>= 2;
 			u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
@@ -313,9 +313,9 @@ void cmtANSItoU32(cmtANSIstr* ansi, cmtU32str* u32)
 		//如果首字在保留区间内，那么绝对有两个字，范围为[0x010000,0x10ffff]
 		else
 		{
-			u16temp[0] = u16temp[0] - 0xd800 + 0x100;
+			u16temp[0] = u16temp[0] - 0xd800 + 0x40;
 			u16temp[1] -= 0xdc00;
-			u32->data[rU32] = u16temp[0] << 16 + u16temp[1];
+			u32->data[rU32] = (u16temp[0] << 16) + u16temp[1];
 			rU32 += 2;
 		}
 		rAs += chsize;
@@ -352,10 +352,12 @@ cmtUint64 cmtU8len(cmtU8str* str)
 	return len;
 }
 
-cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale)
+cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale, cmtBool* err)
 {
-	cmtUint64 rU8 = 0, size = 0;
-	cmtWchar u16temp[2], astemp[MB_LEN_MAX + 1];
+	cmtUint64 rU8 = 0, ASsize = 0;
+	cmtInt8 chsize;
+	cmtWchar u16temp[2];
+	cmtChar AStemp[MB_LEN_MAX];
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
 
 	//保存当前locale
@@ -370,8 +372,8 @@ cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale)
 		//'\0'
 		if (!u8->data[rU8])
 		{
-			size++;
 			rU8++;
+			ASsize++;
 			continue;
 		}
 
@@ -403,17 +405,210 @@ cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale)
 			u16temp[0] += u8->data[rU8 + 1] & 0x3f;
 			u16temp[0] <<= 2;
 			u16temp[0] += u8->data[rU8 + 2] >> 4 & 0x3;
-			u16temp[0] = u16temp[0] - 0x100 + 0xd800;
+			u16temp[0] = u16temp[0] - 0x40 + 0xd800;
 			u16temp[1] = u8->data[rU8 + 2] & 0xf;
 			u16temp[1] <<= 6;
 			u16temp[1] += u8->data[rU8 + 3] & 0x3f;
+			u16temp[1] += 0xdc00;
 			rU8 += 4;
 		}
-		
-		wcstombs(astemp, u16temp, 1);
-		
+
+		chsize = wctomb(AStemp, *u16temp);
+		if (chsize == -1)
+		{
+			//恢复locale
+			setlocale(LC_ALL, CurLocaleCp);
+
+			*err = TRUE;
+			return 0;
+		}
+
+		ASsize += chsize;
 	}
 
 	//恢复locale
 	setlocale(LC_ALL, CurLocaleCp);
+
+	*err = FALSE;
+	return ASsize;
+}
+
+cmtBool cmtU8toANSI(cmtU8str* u8, cmtANSIstr* ansi)
+{
+	cmtUint64 rU8 = 0, rAs = 0;
+	cmtInt8 chsize;
+	cmtWchar u16temp[2];
+	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
+
+	//保存当前locale
+	memset(CurLocaleCp, 0, sizeof(CurLocaleCp));
+	CurLocale = setlocale(LC_ALL, NULL);
+	strncpy(CurLocaleCp, CurLocale, sizeof(CurLocaleCp) - 1);
+	//设置locale
+	setlocale(LC_ALL, ansi->locale);
+
+	while (rU8 < u8->size)
+	{
+		//'\0'
+		if (!u8->data[rU8])
+		{
+			ansi->data[rAs] = 0;
+			rU8++;
+			rAs++;
+			continue;
+		}
+
+		if (u8->data[rU8] < 0x80)
+		{
+			u16temp[0] = u8->data[rU8] & 0x7f;
+			rU8++;
+		}
+		else if (u8->data[rU8] < 0xe0)
+		{
+			u16temp[0] = u8->data[rU8] & 0x1f;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 1] & 0x3f;
+			rU8 += 2;
+		}
+		else if (u8->data[rU8] < 0xf0)
+		{
+			u16temp[0] = u8->data[rU8] & 0xf;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 1] & 0x3f;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 2] & 0x3f;
+			rU8 += 3;
+		}
+		else
+		{
+			u16temp[0] = u8->data[rU8] & 0x7;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 1] & 0x3f;
+			u16temp[0] <<= 2;
+			u16temp[0] += u8->data[rU8 + 2] >> 4 & 0x3;
+			u16temp[0] = u16temp[0] - 0x40 + 0xd800;
+			u16temp[1] = u8->data[rU8 + 2] & 0xf;
+			u16temp[1] <<= 6;
+			u16temp[1] += u8->data[rU8 + 3] & 0x3f;
+			u16temp[1] += 0xdc00;
+			rU8 += 4;
+		}
+
+		chsize = wctomb(ansi->data + rAs, *u16temp);
+		if (chsize == -1)
+		{
+			//恢复locale
+			setlocale(LC_ALL, CurLocaleCp);
+
+			return TRUE;
+		}
+
+		rAs += chsize;
+	}
+
+	//恢复locale
+	setlocale(LC_ALL, CurLocaleCp);
+
+	return FALSE;
+}
+
+cmtUint64 cmtU8toU16size(cmtU8str* u8)
+{
+	cmtUint64 rU8 = 0, u16size = 0;
+
+	while (rU8 < u8->size)
+	{
+		//'\0'
+		if (!u8->data[rU8])
+		{
+			rU8++;
+			u16size += 2;
+			continue;
+		}
+
+		if (u8->data[rU8] < 0x80)
+		{
+			u16size += 2;
+			rU8++;
+		}
+		else if (u8->data[rU8] < 0xe0)
+		{
+			u16size += 2;
+			rU8 += 2;
+		}
+		else if (u8->data[rU8] < 0xf0)
+		{
+			u16size += 2;
+			rU8 += 3;
+		}
+		else
+		{
+			u16size += 4;
+			rU8 += 4;
+		}
+	}
+
+	return u16size;
+}
+
+void cmtU8toU16(cmtU8str* u8, cmtU16str* u16)
+{
+	cmtUint64 rU8 = 0, rU16 = 0;
+	cmtWchar u16temp[2];
+
+	while (rU8 < u8->size)
+	{
+		//'\0'
+		if (!u8->data[rU8])
+		{
+			u16->data[rU16] = 0;
+			rU8++;
+			rU16++;
+			continue;
+		}
+
+		if (u8->data[rU8] < 0x80)
+		{
+			u16->data[rU16] = u8->data[rU8] & 0x7f;
+			rU8++;
+			rU16++;
+		}
+		else if (u8->data[rU8] < 0xe0)
+		{
+			u16temp[0] = u8->data[rU8] & 0x1f;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 1] & 0x3f;
+			u16->data[rU16] = u16temp[0];
+			rU8 += 2;
+			rU16++;
+		}
+		else if (u8->data[rU8] < 0xf0)
+		{
+			u16temp[0] = u8->data[rU8] & 0xf;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 1] & 0x3f;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 2] & 0x3f;
+			u16->data[rU16] = u16temp[0];
+			rU8 += 3;
+			rU16++;
+		}
+		else
+		{
+			u16temp[0] = u8->data[rU8] & 0x7;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 1] & 0x3f;
+			u16temp[0] <<= 2;
+			u16temp[0] += u8->data[rU8 + 2] >> 4 & 0x3;
+			u16temp[0] = u16temp[0] - 0x40 + 0xd800;
+			u16temp[1] = u8->data[rU8 + 2] & 0xf;
+			u16temp[1] <<= 6;
+			u16temp[1] += u8->data[rU8 + 3] & 0x3f;
+			u16temp[1] += 0xdc00;
+			u16->data[rU16] = u16temp[0];
+			u16->data[rU16 + 1] = u16temp[1];
+			rU8 += 4;
+			rU16 += 2;
+		}
+	}
 }
