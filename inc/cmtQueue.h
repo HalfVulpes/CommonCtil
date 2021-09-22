@@ -1,8 +1,8 @@
 /**
 * @file cmtQueue.h
-* @brief cmtQueue ¿âµÄÍ·ÎÄ¼ş£¬ÊµÏÖÁËQueue¶ÓÁĞµÄ²Ù×÷
-* @par Windows ÒÀÀµ¿â£º
-* @par Linux ÒÀÀµ¿â£º
+* @brief cmtQueue åº“çš„å¤´æ–‡ä»¶ï¼Œå®ç°äº†Queueé˜Ÿåˆ—çš„æ“ä½œ
+* @par Windows ä¾èµ–åº“ï¼š
+* @par Linux ä¾èµ–åº“ï¼š
 * @date 2021-09-14
 * @author GogeBlue
 * @author Dexnab
@@ -17,71 +17,71 @@
 
 /**
 * @struct cmtQueue
-* @brief ¶ÓÁĞ½á¹¹Ìå
+* @brief é˜Ÿåˆ—ç»“æ„ä½“
 * @date 2021-07-30
 * @author GogeBlue
 * @author Dexnab
 */
 typedef struct _CMTQUEUE
 {
-	cmtUint8* base;//<»ùÖ·
-	cmtUint64 size;//<Êı¾İ×î´ó´óĞ¡
-	cmtUint64 bgn;//<Êı¾İ»·Ê××Ö½ÚÆ«ÒÆ
-	cmtUint64 end;//<Êı¾İ»·½ØÖ¹×Ö½ÚÆ«ÒÆ£¨²»°üº¬×îºóÒ»¸ö×Ö½Ú£©
-	cmtBool empty;//<ÊÇ·ñÎª¿Õ£¨TRUE£º¿Õ£©
+	cmtUint8* base;//<åŸºå€
+	cmtUint64 size;//<æ•°æ®æœ€å¤§å¤§å°
+	cmtUint64 bgn;//<æ•°æ®ç¯é¦–å­—èŠ‚åç§»
+	cmtUint64 end;//<æ•°æ®ç¯æˆªæ­¢å­—èŠ‚åç§»ï¼ˆä¸åŒ…å«æœ€åä¸€ä¸ªå­—èŠ‚ï¼‰
+	cmtBool empty;//<æ˜¯å¦ä¸ºç©ºï¼ˆTRUEï¼šç©ºï¼‰
 }cmtQueue;
 
 /**
-* @brief ³õÊ¼»¯Ò»¸ö¶ÓÁĞ
-* @param[in] size ¶ÓÁĞ×î´ó´óĞ¡
-* @return ¶ÓÁĞÖ¸Õë
-* @retval 0 Ê§°Ü
-* @retval ·ÇÁã ¶ÓÁĞÖ¸Õë
-* @attention ĞèÒªÊ¹ÓÃcmtQueueFreeÀ´ÊÍ·Å
+* @brief åˆå§‹åŒ–ä¸€ä¸ªé˜Ÿåˆ—
+* @param[in] size é˜Ÿåˆ—æœ€å¤§å¤§å°
+* @return é˜Ÿåˆ—æŒ‡é’ˆ
+* @retval 0 å¤±è´¥
+* @retval éé›¶ é˜Ÿåˆ—æŒ‡é’ˆ
+* @attention éœ€è¦ä½¿ç”¨cmtQueueFreeæ¥é‡Šæ”¾
 * @date 2021-07-30
 * @author GogeBlue
 * @author Dexnab
 */
 extern cmtQueue* cmtQueueInit(cmtUint64 size);
 /**
-* @brief Çå¿Õ¶ÓÁĞ
-* @param[in] queue ¶ÓÁĞÖ¸Õë
-* @attention ´Ëº¯ÊıÖ»Çå¿Õ¶ÓÁĞ£¬²»ÊÍ·Å
+* @brief æ¸…ç©ºé˜Ÿåˆ—
+* @param[in] queue é˜Ÿåˆ—æŒ‡é’ˆ
+* @attention æ­¤å‡½æ•°åªæ¸…ç©ºé˜Ÿåˆ—ï¼Œä¸é‡Šæ”¾
 * @date 2021-07-30
 * @author GogeBlue
 * @author Dexnab
 */
 #define cmtQueueClean(queue) {queue->bgn = queue->end = 0;}
 /**
-* @brief ÊÍ·Å¶ÓÁĞ
-* @param[in] queue ¶ÓÁĞÖ¸Õë
-* @attention queue»á±»ÖÃÁã
+* @brief é‡Šæ”¾é˜Ÿåˆ—
+* @param[in] queue é˜Ÿåˆ—æŒ‡é’ˆ
+* @attention queueä¼šè¢«ç½®é›¶
 * @date 2021-07-30
 * @author GogeBlue
 * @author Dexnab
 */
 #define cmtQueueFree(queue) {free(queue->base);free(queue);}
 /**
-* @brief ¶ÓÁĞ²åÈë
-* @param[in] queue ¶ÓÁĞÖ¸Õë
-* @param[in] data Êı¾İ
-* @param[in] size Êı¾İ´óĞ¡
-* @return ´íÎóÂë
-* @retval 0x00 Õı³£
-* @retval 0xff Êı¾İ¹ı³¤
+* @brief é˜Ÿåˆ—æ’å…¥
+* @param[in] queue é˜Ÿåˆ—æŒ‡é’ˆ
+* @param[in] data æ•°æ®
+* @param[in] size æ•°æ®å¤§å°
+* @return é”™è¯¯ç 
+* @retval 0x00 æ­£å¸¸
+* @retval 0xff æ•°æ®è¿‡é•¿
 * @date 2021-07-30
 * @author GogeBlue
 * @author Dexnab
 */
 extern cmtUint8 cmtQueueIn(cmtQueue* queue, cmtUint8* data, cmtUint64 size);
 /**
-* @brief ¶ÓÁĞ²åÈë
-* @param[in] queue ¶ÓÁĞÖ¸Õë
-* @param[in] data Êı¾İ
-* @param[in] size Êı¾İ´óĞ¡
-* @return ´íÎóÂë
-* @retval 0x00 Õı³£
-* @retval 0xff Êı¾İ¹ı³¤
+* @brief é˜Ÿåˆ—æ’å…¥
+* @param[in] queue é˜Ÿåˆ—æŒ‡é’ˆ
+* @param[in] data æ•°æ®
+* @param[in] size æ•°æ®å¤§å°
+* @return é”™è¯¯ç 
+* @retval 0x00 æ­£å¸¸
+* @retval 0xff æ•°æ®è¿‡é•¿
 * @date 2021-07-30
 * @author GogeBlue
 * @author Dexnab

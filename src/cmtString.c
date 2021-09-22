@@ -11,19 +11,19 @@ cmtUint8 cmtANSIchSize(cmtChar* ch, cmtChar* locale)
 	cmtUint8 chsize;
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
 
-	//±£´æµ±Ç°locale
-	/*µ÷ÊÔ±Ê¼Ç:
-	* Ö®ºósetlocale»á¸Ä±ä´Ë´¦·µ»ØÖµÖ¸ÏòµÄÄÚ´æ,ËùÒÔĞèÒª¸´ÖÆÒ»±é
+	//ä¿å­˜å½“å‰locale
+	/*è°ƒè¯•ç¬”è®°:
+	* ä¹‹åsetlocaleä¼šæ”¹å˜æ­¤å¤„è¿”å›å€¼æŒ‡å‘çš„å†…å­˜,æ‰€ä»¥éœ€è¦å¤åˆ¶ä¸€é
 	*/
 	memset(CurLocaleCp, 0, sizeof(CurLocaleCp));
 	CurLocale = setlocale(LC_ALL, NULL);
 	strncpy(CurLocaleCp, CurLocale, sizeof(CurLocaleCp) - 1);
-	//ÉèÖÃlocale
+	//è®¾ç½®locale
 	setlocale(LC_ALL, locale);
 
 	chsize = mblen(ch, MB_CUR_MAX);
 
-	//»Ö¸´locale
+	//æ¢å¤locale
 	setlocale(LC_ALL, CurLocaleCp);
 
 	return chsize;
@@ -43,22 +43,22 @@ cmtUint64 cmtANSIlen(cmtANSIstr* str)
 	cmtUint64 len = 0, r = 0;
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
 
-	//±£´æµ±Ç°locale
+	//ä¿å­˜å½“å‰locale
 	memset(CurLocaleCp, 0, sizeof(CurLocaleCp));
 	CurLocale = setlocale(LC_ALL, NULL);
 	strncpy(CurLocaleCp, CurLocale, sizeof(CurLocaleCp) - 1);
-	//ÉèÖÃlocale
+	//è®¾ç½®locale
 	setlocale(LC_ALL, str->locale);
 
 	while (r < str->size)
 	{
-		//mblen²»»á°Ñ'\0'Ëã×÷×Ö·û£¬ËùÒÔĞèÒªµ¥¶ÀÀ´´¦Àí
+		//mblenä¸ä¼šæŠŠ'\0'ç®—ä½œå­—ç¬¦ï¼Œæ‰€ä»¥éœ€è¦å•ç‹¬æ¥å¤„ç†
 		if (!str->data[r]) r++;
 		else r += mblen(str->data + r, str->size - r);
 		len++;
 	}
 
-	//»Ö¸´locale
+	//æ¢å¤locale
 	setlocale(LC_ALL, CurLocaleCp);
 
 	return len;
@@ -71,11 +71,11 @@ cmtUint64 cmtANSItoU8size(cmtANSIstr* ansi)
 	cmtWchar u16temp[2];
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
 
-	//±£´æµ±Ç°locale
+	//ä¿å­˜å½“å‰locale
 	memset(CurLocaleCp, 0, sizeof(CurLocaleCp));
 	CurLocale = setlocale(LC_ALL, NULL);
 	strncpy(CurLocaleCp, CurLocale, sizeof(CurLocaleCp) - 1);
-	//ÉèÖÃlocale
+	//è®¾ç½®locale
 	setlocale(LC_ALL, ansi->locale);
 
 	while (rAs < ansi->size)
@@ -85,28 +85,27 @@ cmtUint64 cmtANSItoU8size(cmtANSIstr* ansi)
 		{
 			rAs++;
 			u8size++;
+			continue;
 		}
-		else
+
+		chsize = mblen(ansi->data + rAs, ansi->size - rAs);
+		mbtowc(u16temp, ansi->data + rAs, chsize);
+		//å¦‚æœé¦–å­—åœ¨ä¿ç•™åŒºé—´å¤–ï¼Œé‚£ä¹ˆç»å¯¹åªæœ‰ä¸€ä¸ªå­—
+		if (u16temp[0] < CMT_UNICODE_RSV_START || u16temp[0] > CMT_UNICODE_RSV_END)
 		{
-			chsize = mblen(ansi->data + rAs, ansi->size - rAs);
-			mbtowc(u16temp, ansi->data + rAs, chsize);
-			//Èç¹ûÊ××Ö²»ÎªÁã£¬ÄÇÃ´¾ø¶ÔÓĞÁ½¸ö×Ö£¬·¶Î§Îª[0x010000,0x10ffff]
-			if (u16temp[0]) u8size += 4;
-			//Èç¹ûÊ××ÖÎªÁã£¬ÄÇÃ´¾ø¶ÔÖ»ÓĞÒ»¸ö×Ö£¨µÚ¶ş¸ö×Ö£©
-			else
-			{
-				//[0,0x7f]
-				if (u16temp[1] < 0x80) u8size += 1;
-				//[0x80,0x07ff]
-				else if (u16temp[1] < 0x800) u8size += 2;
-				//[0x0800,0xffff]
-				else u8size += 3;
-			}
-			rAs += chsize;
+			//[0,0x7f]
+			if (u16temp[1] < 0x80) u8size += 1;
+			//[0x80,0x07ff]
+			else if (u16temp[1] < 0x800) u8size += 2;
+			//[0x0800,0xffff]
+			else u8size += 3;
 		}
+		//å¦‚æœé¦–å­—åœ¨ä¿ç•™åŒºé—´å†…ï¼Œé‚£ä¹ˆç»å¯¹æœ‰ä¸¤ä¸ªå­—ï¼ŒèŒƒå›´ä¸º[0x010000,0x10ffff]
+		else u8size += 4;
+		rAs += chsize;
 	}
 
-	//»Ö¸´locale
+	//æ¢å¤locale
 	setlocale(LC_ALL, CurLocaleCp);
 
 	return u8size;
@@ -119,11 +118,11 @@ void cmtANSItoU8(cmtANSIstr* ansi, cmtU8str* u8)
 	cmtWchar u16temp[2];
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
 
-	//±£´æµ±Ç°locale
+	//ä¿å­˜å½“å‰locale
 	memset(CurLocaleCp, 0, sizeof(CurLocaleCp));
 	CurLocale = setlocale(LC_ALL, NULL);
 	strncpy(CurLocaleCp, CurLocale, sizeof(CurLocaleCp) - 1);
-	//ÉèÖÃlocale
+	//è®¾ç½®locale
 	setlocale(LC_ALL, ansi->locale);
 
 	while (rAs < ansi->size)
@@ -134,67 +133,66 @@ void cmtANSItoU8(cmtANSIstr* ansi, cmtU8str* u8)
 			u8->data[rU8] = 0;
 			rAs++;
 			rU8++;
+			continue;
 		}
-		else
+
+		chsize = mblen(ansi->data + rAs, ansi->size - rAs);
+		mbtowc(u16temp, ansi->data + rAs, chsize);
+		//å¦‚æœé¦–å­—åœ¨ä¿ç•™åŒºé—´å¤–ï¼Œé‚£ä¹ˆç»å¯¹åªæœ‰ä¸€ä¸ªå­—
+		if (u16temp[0] < CMT_UNICODE_RSV_START || u16temp[0] > CMT_UNICODE_RSV_END)
 		{
-			chsize = mblen(ansi->data + rAs, ansi->size - rAs);
-			mbtowc(u16temp, ansi->data + rAs, chsize);
-			//Èç¹ûÊ××Ö²»ÎªÁã£¬ÄÇÃ´¾ø¶ÔÓĞÁ½¸ö×Ö£¬·¶Î§Îª[0x010000,0x10ffff]
-			if (u16temp[0])
+			//[0,0x7f]
+			if (u16temp[1] < 0x80)
 			{
-				u16temp[0] = u16temp[0] - 0xd800 + 0x100;
-				u16temp[1] -= 0xdc00;
-				//u8µÚËÄ×Ö½Ú
-				u8->data[rU8 + 3] = 0x80 + (cmtUint8)u16temp[1] & 0x3f;
-				//u8µÚÈı×Ö½Ú
-				u16temp[1] >>= 6;
-				u8->data[rU8 + 2] = 0x80 + (cmtUint8)u16temp[1] + ((cmtUint8)u16temp[0] & 0x3) << 4;
-				//u8µÚ¶ş×Ö½Ú
-				u16temp[0] >>= 2;
-				u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
-				//u8µÚÒ»×Ö½Ú
-				u16temp[0] >>= 6;
-				u8->data[rU8] = 0xf0 + (cmtUint8)u16temp[0];
-				rU8 += 4;
+				u8->data[rU8] = (cmtUint8)u16temp[1];
+				rU8 += 1;
 			}
-			//Èç¹ûÊ××ÖÎªÁã£¬ÄÇÃ´¾ø¶ÔÖ»ÓĞÒ»¸ö×Ö£¨µÚ¶ş¸ö×Ö£©
+			//[0x80,0x07ff]
+			else if (u16temp[1] < 0x800)
+			{
+				//u8ç¬¬äºŒå­—èŠ‚
+				u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[1] & 0x3f;
+				//u8ç¬¬ä¸€å­—èŠ‚
+				u16temp[1] >>= 6;
+				u8->data[rU8] = 0xc0 + (cmtUint8)u16temp[1];
+				rU8 += 2;
+			}
+			//[0x0800,0xffff]
 			else
 			{
-				//[0,0x7f]
-				if (u16temp[1] < 0x80)
-				{
-					u8->data[rU8] = (cmtUint8)u16temp[1];
-					rU8 += 1;
-				}
-				//[0x80,0x07ff]
-				else if (u16temp[1] < 0x800)
-				{
-					//u8µÚ¶ş×Ö½Ú
-					u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[1] & 0x3f;
-					//u8µÚÒ»×Ö½Ú
-					u16temp[1] >>= 6;
-					u8->data[rU8] = 0xc0 + (cmtUint8)u16temp[1];
-					rU8 += 2;
-				}
-				//[0x0800,0xffff]
-				else
-				{
-					//u8µÚÈı×Ö½Ú
-					u8->data[rU8 + 2] = 0x80 + (cmtUint8)u16temp[1] & 0x3f;
-					//u8µÚ¶ş×Ö½Ú
-					u16temp[1] >>= 6;
-					u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[1] & 0x3f;
-					//u8µÚÈı×Ö½Ú
-					u16temp[1] >>= 6;
-					u8->data[rU8] = 0xe0 + (cmtUint8)u16temp[1];
-					rU8 += 3;
-				}
+				//u8ç¬¬ä¸‰å­—èŠ‚
+				u8->data[rU8 + 2] = 0x80 + (cmtUint8)u16temp[1] & 0x3f;
+				//u8ç¬¬äºŒå­—èŠ‚
+				u16temp[1] >>= 6;
+				u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[1] & 0x3f;
+				//u8ç¬¬ä¸‰å­—èŠ‚
+				u16temp[1] >>= 6;
+				u8->data[rU8] = 0xe0 + (cmtUint8)u16temp[1];
+				rU8 += 3;
 			}
-			rAs += chsize;
 		}
+		//å¦‚æœé¦–å­—åœ¨ä¿ç•™åŒºé—´å†…ï¼Œé‚£ä¹ˆç»å¯¹æœ‰ä¸¤ä¸ªå­—ï¼ŒèŒƒå›´ä¸º[0x010000,0x10ffff]
+		else
+		{
+			u16temp[0] = u16temp[0] - 0xd800 + 0x100;
+			u16temp[1] -= 0xdc00;
+			//u8ç¬¬å››å­—èŠ‚
+			u8->data[rU8 + 3] = 0x80 + (cmtUint8)u16temp[1] & 0x3f;
+			//u8ç¬¬ä¸‰å­—èŠ‚
+			u16temp[1] >>= 6;
+			u8->data[rU8 + 2] = 0x80 + (cmtUint8)u16temp[1] + ((cmtUint8)u16temp[0] & 0x3) << 4;
+			//u8ç¬¬äºŒå­—èŠ‚
+			u16temp[0] >>= 2;
+			u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
+			//u8ç¬¬ä¸€å­—èŠ‚
+			u16temp[0] >>= 6;
+			u8->data[rU8] = 0xf0 + (cmtUint8)u16temp[0];
+			rU8 += 4;
+		}
+		rAs += chsize;
 	}
 
-	//»Ö¸´locale
+	//æ¢å¤locale
 	setlocale(LC_ALL, CurLocaleCp);
 }
 
@@ -205,11 +203,11 @@ cmtUint64 cmtANSItoU16size(cmtANSIstr* ansi)
 	cmtWchar u16temp[2];
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
 
-	//±£´æµ±Ç°locale
+	//ä¿å­˜å½“å‰locale
 	memset(CurLocaleCp, 0, sizeof(CurLocaleCp));
 	CurLocale = setlocale(LC_ALL, NULL);
 	strncpy(CurLocaleCp, CurLocale, sizeof(CurLocaleCp) - 1);
-	//ÉèÖÃlocale
+	//è®¾ç½®locale
 	setlocale(LC_ALL, ansi->locale);
 
 	while (rAs < ansi->size)
@@ -219,20 +217,19 @@ cmtUint64 cmtANSItoU16size(cmtANSIstr* ansi)
 		{
 			rAs++;
 			u16size += 2;
+			continue;
 		}
-		else
-		{
-			chsize = mblen(ansi->data + rAs, ansi->size - rAs);
-			mbtowc(u16temp, ansi->data + rAs, chsize);
-			//Èç¹ûÊ××Ö²»ÎªÁã£¬ÄÇÃ´¾ø¶ÔÓĞÁ½¸ö×Ö£¬·¶Î§Îª[0x010000,0x10ffff]
-			if (u16temp[0]) u16size += 4;
-			//Èç¹ûÊ××ÖÎªÁã£¬ÄÇÃ´¾ø¶ÔÖ»ÓĞÒ»¸ö×Ö£¨µÚ¶ş¸ö×Ö£©
-			else u16size += 2;
-			rAs += chsize;
-		}
+
+		chsize = mblen(ansi->data + rAs, ansi->size - rAs);
+		mbtowc(u16temp, ansi->data + rAs, chsize);
+		//å¦‚æœé¦–å­—åœ¨ä¿ç•™åŒºé—´å¤–ï¼Œé‚£ä¹ˆç»å¯¹åªæœ‰ä¸€ä¸ªå­—
+		if (u16temp[0] < CMT_UNICODE_RSV_START || u16temp[0] > CMT_UNICODE_RSV_END) u16size += 2;
+		//å¦‚æœé¦–å­—åœ¨ä¿ç•™åŒºé—´å†…ï¼Œé‚£ä¹ˆç»å¯¹æœ‰ä¸¤ä¸ªå­—ï¼ŒèŒƒå›´ä¸º[0x010000,0x10ffff]
+		else u16size += 4;
+		rAs += chsize;
 	}
 
-	//»Ö¸´locale
+	//æ¢å¤locale
 	setlocale(LC_ALL, CurLocaleCp);
 
 	return u16size;
@@ -244,11 +241,11 @@ void cmtANSItoU16(cmtANSIstr* ansi, cmtU16str* u16)
 	cmtUint8 chsize;
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
 
-	//±£´æµ±Ç°locale
+	//ä¿å­˜å½“å‰locale
 	memset(CurLocaleCp, 0, sizeof(CurLocaleCp));
 	CurLocale = setlocale(LC_ALL, NULL);
 	strncpy(CurLocaleCp, CurLocale, sizeof(CurLocaleCp) - 1);
-	//ÉèÖÃlocale
+	//è®¾ç½®locale
 	setlocale(LC_ALL, ansi->locale);
 
 	while (rAs < ansi->size)
@@ -258,20 +255,165 @@ void cmtANSItoU16(cmtANSIstr* ansi, cmtU16str* u16)
 		{
 			u16->data[rU16] = 0;
 			rAs++;
-			rU16 += 2;
+			rU16++;
+			continue;
+		}
+
+		chsize = mblen(ansi->data + rAs, ansi->size - rAs);
+		mbtowc(u16->data + rU16, ansi->data + rAs, chsize);
+		//å¦‚æœé¦–å­—åœ¨ä¿ç•™åŒºé—´å¤–ï¼Œé‚£ä¹ˆç»å¯¹åªæœ‰ä¸€ä¸ªå­—
+		if (u16->data[rU16] < CMT_UNICODE_RSV_START || u16->data[rU16] > CMT_UNICODE_RSV_END) rU16++;
+		//å¦‚æœé¦–å­—åœ¨ä¿ç•™åŒºé—´å†…ï¼Œé‚£ä¹ˆç»å¯¹æœ‰ä¸¤ä¸ªå­—ï¼ŒèŒƒå›´ä¸º[0x010000,0x10ffff]
+		else rU16 += 2;
+		rAs += chsize;
+	}
+
+	//æ¢å¤locale
+	setlocale(LC_ALL, CurLocaleCp);
+}
+
+cmtUint64 cmtANSItoU32size(cmtANSIstr* ansi)
+{
+	return cmtANSIlen(ansi) * 4;
+}
+
+void cmtANSItoU32(cmtANSIstr* ansi, cmtU32str* u32)
+{
+	cmtUint64 rAs = 0, rU32 = 0;
+	cmtUint8 chsize;
+	cmtWchar u16temp[2];
+	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
+
+	//ä¿å­˜å½“å‰locale
+	memset(CurLocaleCp, 0, sizeof(CurLocaleCp));
+	CurLocale = setlocale(LC_ALL, NULL);
+	strncpy(CurLocaleCp, CurLocale, sizeof(CurLocaleCp) - 1);
+	//è®¾ç½®locale
+	setlocale(LC_ALL, ansi->locale);
+
+	while (rAs < ansi->size)
+	{
+		//'\0'
+		if (!ansi->data[rAs])
+		{
+			u32->data[rU32] = 0;
+			rAs++;
+			rU32++;
+			continue;
+		}
+
+		chsize = mblen(ansi->data + rAs, ansi->size - rAs);
+		mbtowc(u16temp, ansi->data + rAs, chsize);
+		//å¦‚æœé¦–å­—åœ¨ä¿ç•™åŒºé—´å¤–ï¼Œé‚£ä¹ˆç»å¯¹åªæœ‰ä¸€ä¸ªå­—
+		if (u16temp[0] < CMT_UNICODE_RSV_START || u16temp[0] > CMT_UNICODE_RSV_END)
+		{
+			u32->data[rU32] = u16temp[1];
+			rU32++;
+		}
+		//å¦‚æœé¦–å­—åœ¨ä¿ç•™åŒºé—´å†…ï¼Œé‚£ä¹ˆç»å¯¹æœ‰ä¸¤ä¸ªå­—ï¼ŒèŒƒå›´ä¸º[0x010000,0x10ffff]
+		else
+		{
+			u16temp[0] = u16temp[0] - 0xd800 + 0x100;
+			u16temp[1] -= 0xdc00;
+			u32->data[rU32] = u16temp[0] << 16 + u16temp[1];
+			rU32 += 2;
+		}
+		rAs += chsize;
+	}
+
+	//æ¢å¤locale
+	setlocale(LC_ALL, CurLocaleCp);
+}
+
+cmtUint8 cmtU8chSize(cmtChar* ch)
+{
+	if (*ch < 0x80) return 1;
+	if (*ch < 0xe0) return 2;
+	if (*ch < 0xf0) return 3;
+	return 4;
+}
+
+cmtUint64 cmtU8strSize(cmtChar* str)
+{
+	cmtUint64 size = 0;
+
+	while (str[size]) size++;
+
+	return size;
+}
+
+cmtUint64 cmtU8len(cmtU8str* str)
+{
+	cmtUint64 r = 0, len = 0;
+
+	while (r < str->size)
+		if (str->data[r] < 0x80 || str->data[r] >= 0xc0) len++;
+
+	return len;
+}
+
+cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale)
+{
+	cmtUint64 rU8 = 0, size = 0;
+	cmtWchar u16temp[2], astemp[MB_LEN_MAX + 1];
+	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
+
+	//ä¿å­˜å½“å‰locale
+	memset(CurLocaleCp, 0, sizeof(CurLocaleCp));
+	CurLocale = setlocale(LC_ALL, NULL);
+	strncpy(CurLocaleCp, CurLocale, sizeof(CurLocaleCp) - 1);
+	//è®¾ç½®locale
+	setlocale(LC_ALL, locale);
+
+	while (rU8 < u8->size)
+	{
+		//'\0'
+		if (!u8->data[rU8])
+		{
+			size++;
+			rU8++;
+			continue;
+		}
+
+		if (u8->data[rU8] < 0x80)
+		{
+			u16temp[0] = u8->data[rU8] & 0x7f;
+			rU8++;
+		}
+		else if (u8->data[rU8] < 0xe0)
+		{
+			u16temp[0] = u8->data[rU8] & 0x1f;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 1] & 0x3f;
+			rU8 += 2;
+		}
+		else if (u8->data[rU8] < 0xf0)
+		{
+			u16temp[0] = u8->data[rU8] & 0xf;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 1] & 0x3f;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 2] & 0x3f;
+			rU8 += 3;
 		}
 		else
 		{
-			chsize = mblen(ansi->data + rAs, ansi->size - rAs);
-			mbtowc(u16->data + rU16, ansi->data + rAs, chsize);
-			//Èç¹ûÊ××Ö²»ÎªÁã£¬ÄÇÃ´¾ø¶ÔÓĞÁ½¸ö×Ö£¬·¶Î§Îª[0x010000,0x10ffff]
-			if (u16->data[rU16]) rU16 += 4;
-			//Èç¹ûÊ××ÖÎªÁã£¬ÄÇÃ´¾ø¶ÔÖ»ÓĞÒ»¸ö×Ö£¨µÚ¶ş¸ö×Ö£©
-			else rU16 += 2;
-			rAs += chsize;
+			u16temp[0] = u8->data[rU8] & 0x7;
+			u16temp[0] <<= 6;
+			u16temp[0] += u8->data[rU8 + 1] & 0x3f;
+			u16temp[0] <<= 2;
+			u16temp[0] += u8->data[rU8 + 2] >> 4 & 0x3;
+			u16temp[0] = u16temp[0] - 0x100 + 0xd800;
+			u16temp[1] = u8->data[rU8 + 2] & 0xf;
+			u16temp[1] <<= 6;
+			u16temp[1] += u8->data[rU8 + 3] & 0x3f;
+			rU8 += 4;
 		}
+		
+		wcstombs(astemp, u16temp, 1);
+		
 	}
 
-	//»Ö¸´locale
+	//æ¢å¤locale
 	setlocale(LC_ALL, CurLocaleCp);
 }

@@ -9,19 +9,19 @@ cmtSpinLockEnter proc
 	xor ah, ah
 	inc ah
 
-	;¼ì²éMaxSpinÊÇ·ñÎª-1
+	;æ£€æŸ¥MaxSpinæ˜¯å¦ä¸º-1
 	cmp rdx, 0ffffffffffffffffh
 	je cSLE_NoCount
 
 	cSLE_SpinStart:
-	;¼õ·¨Ä£Ê½£¬¿ØÖÆÑ­»·´ÎÊı
+	;å‡æ³•æ¨¡å¼ï¼Œæ§åˆ¶å¾ªç¯æ¬¡æ•°
 	test rdx, rdx
-	;×ÔĞıÊıµ½´ïÉÏÏŞ
+	;è‡ªæ—‹æ•°åˆ°è¾¾ä¸Šé™
 	jz cSLE_EndMaxSpin
 	dec rdx
 	
 	xor al, al
-	;cmpxchg£¨Ò»¶¨Òª¼ÇµÃ¼Ólock£©£º
+	;cmpxchgï¼ˆä¸€å®šè¦è®°å¾—åŠ lockï¼‰ï¼š
 	;if(op1==ax)
 	;{
 	;	op1=op2;
@@ -33,9 +33,9 @@ cmtSpinLockEnter proc
 	;	rflags.zf=0;
 	;}
 	lock cmpxchg byte ptr [rcx], ah
-	;MaxSpin=0£ºÔÊĞí½øÈë
+	;MaxSpin=0ï¼šå…è®¸è¿›å…¥
 	jz cSLE_EndNormal
-	;MaxSpin!=0£º¼ÌĞø×ÔĞı
+	;MaxSpin!=0ï¼šç»§ç»­è‡ªæ—‹
 	jmp cSLE_SpinStart
 
 	cSLE_NoCount:
