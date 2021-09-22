@@ -10,6 +10,7 @@
 #pragma once
 #ifndef _INC_CMTSTRING
 #define _INC_CMTSTRING
+#define _CRT_SECURE_NO_WARNINGS
 #include <cmtType.h>
 #include <string.h>
 #include <locale.h>
@@ -46,6 +47,8 @@ typedef struct _CMTU32STR
 /*--------------------------------宏定义 开始--------------------------------*/
 
 #define CMT_LOCALE_MAX 64
+#define CMT_UNICODE_RSV_START 0xd800
+#define CMT_UNICODE_RSV_END 0xdfff
 
 #define CMT_CONSTSTR(str) {str,sizeof(str)}
 /*--------------------------------宏定义 结束--------------------------------*/
