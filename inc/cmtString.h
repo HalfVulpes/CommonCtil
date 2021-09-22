@@ -11,6 +11,9 @@
 #ifndef _INC_CMTSTRING
 #define _INC_CMTSTRING
 #include <cmtType.h>
+#include <string.h>
+#include <locale.h>
+#include <stdlib.h>
 
 /*--------------------------------结构体定义 开始--------------------------------*/
 
@@ -42,6 +45,8 @@ typedef struct _CMTU32STR
 
 /*--------------------------------宏定义 开始--------------------------------*/
 
+#define CMT_LOCALE_MAX 64
+
 #define CMT_CONSTSTR(str) {str,sizeof(str)}
 /*--------------------------------宏定义 结束--------------------------------*/
 
@@ -49,7 +54,7 @@ typedef struct _CMTU32STR
 
 extern cmtUint8 cmtANSIchSize(cmtChar* ch, cmtChar* locale);
 
-extern cmtUint64 cmtANSIstrSize(cmtChar* str, cmtChar* locale);
+extern cmtUint64 cmtANSIstrSize(cmtChar* str);
 
 extern cmtUint64 cmtANSIlen(cmtANSIstr* str);
 
@@ -138,5 +143,31 @@ extern cmtBool cmtJsonGetDouble(cmtU8str* json, cmtU8str* name, double* ret);
 extern cmtBool cmtJsonGetStrSize(cmtU8str* json, cmtU8str* name, cmtUint64* ret);
 
 extern cmtBool cmtJsonGetStr(cmtU8str* json, cmtU8str* name, cmtU8str* ret);
+
+extern cmtBool cmtJsonGetJsonSize(cmtU8str* json, cmtU8str* name, cmtUint64* ret);
+
+extern cmtBool cmtJsonGetJson(cmtU8str* json, cmtU8str* name, cmtU8str* ret);
+
+extern cmtBool cmtJsonGetArrSize(cmtU8str* json, cmtU8str* name, cmtUint64* ret);
+
+extern cmtBool cmtJsonGetArr(cmtU8str* json, cmtU8str* name, cmtU8str* ret);
+
+extern cmtBool cmtJsonArrGetBool(cmtU8str* arr, cmtU8str* name, cmtBool* ret);
+
+extern cmtBool cmtJsonArrGetInt(cmtU8str* arr, cmtU8str* name, cmtInt64* ret);
+
+extern cmtBool cmtJsonArrGetDouble(cmtU8str* arr, cmtU8str* name, double* ret);
+
+extern cmtBool cmtJsonArrGetStrSize(cmtU8str* arr, cmtU8str* name, cmtUint64* ret);
+
+extern cmtBool cmtJsonArrGetStr(cmtU8str* arr, cmtU8str* name, cmtU8str* ret);
+
+extern cmtBool cmtJsonArrGetJsonSize(cmtU8str* arr, cmtU8str* name, cmtUint64* ret);
+
+extern cmtBool cmtJsonArrGetJson(cmtU8str* arr, cmtU8str* name, cmtU8str* ret);
+
+extern cmtBool cmtJsonArrGetArrSize(cmtU8str* arr, cmtU8str* name, cmtUint64* ret);
+
+extern cmtBool cmtJsonArrGetArr(cmtU8str* arr, cmtU8str* name, cmtU8str* ret);
 /*--------------------------------json函数 结束--------------------------------*/
 #endif
