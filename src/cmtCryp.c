@@ -1,6 +1,6 @@
 #include <cmtCryp.h>
 
-/*--------------------------------³£Á¿Á¿¶¨Òå ¿ªÊ¼--------------------------------*/
+/*--------------------------------å¸¸é‡é‡å®šä¹‰ å¼€å§‹--------------------------------*/
 
 static const cmtUint32 k[64] = {
 	0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
@@ -51,8 +51,8 @@ static const cmtUint8 cmtAESinvsbox[16][16] = {
 	{0x17,0x2B,0x04,0x7E,0xBA,0x77,0xD6,0x26,0xE1,0x69,0x14,0x63,0x55,0x21,0x0C,0x7D}
 };
 
-// Õâ¸ö¾ØÕóÓÃÓÚ´¢´æËùÓĞ GF(2^8) µÄ¼ÆËã½á¹û¡£
-// Ö»ÔÚ cmtMixColumns ÖĞÊ¹ÓÃ
+// è¿™ä¸ªçŸ©é˜µç”¨äºå‚¨å­˜æ‰€æœ‰ GF(2^8) çš„è®¡ç®—ç»“æœã€‚
+// åªåœ¨ cmtMixColumns ä¸­ä½¿ç”¨
 static const cmtUint8 cmtGFMul[256][6] = {
 	{0x00,0x00,0x00,0x00,0x00,0x00},{0x02,0x03,0x09,0x0b,0x0d,0x0e},
 	{0x04,0x06,0x12,0x16,0x1a,0x1c},{0x06,0x05,0x1b,0x1d,0x17,0x12},
@@ -183,7 +183,10 @@ static const cmtUint8 cmtGFMul[256][6] = {
 	{0xe3,0x1f,0x5d,0xbe,0x80,0x9f},{0xe1,0x1c,0x54,0xb5,0x8d,0x91},
 	{0xe7,0x19,0x4f,0xa8,0x9a,0x83},{0xe5,0x1a,0x46,0xa3,0x97,0x8d}
 };
-/*--------------------------------³£Á¿Á¿¶¨Òå ½áÊø--------------------------------*/
+
+//ç”¨äº URL çš„ Base64 éæ ‡å‡† Base64ï¼Œæ˜¯ä¸€ç§å˜ç§ï¼Œå› æ­¤å¦‚æœä½ çš„base64è¦ç”¨äºURLç¼–ç ï¼Œè¯·å°†è¯¥å¯¹ç…§æ•°ç»„åé¢çš„'+' å’Œ '/' æ›¿æ¢ä¸º '*' å’Œ '-'æ¥æ»¡è¶³URLæ ‡å‡†çš„ç¼–ç 
+static const cmtUint8 cmtCharSet[64] = { "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" };
+/*--------------------------------å¸¸é‡é‡å®šä¹‰ ç»“æŸ--------------------------------*/
 
 void cmtSHA256Transform(cmtSHA256* ctx, cmtUint8* data)
 {
@@ -289,7 +292,7 @@ void cmtSHA256Get(cmtSHA256* ctx, cmtUint8* hash)
 	ctx->data[56] = ctx->bitlen >> 56;
 	cmtSHA256Transform(ctx, ctx->data);
 
-	// ·­×ª±ÈÌØ
+	// ç¿»è½¬æ¯”ç‰¹
 	for (i = 0; i < 4; ++i)
 	{
 		hash[i] = (ctx->state[0] >> (24 - i * 8)) & 0x000000ff;
@@ -360,8 +363,8 @@ void cmtSHA1Get(cmtSHA1* ctx, cmtUint8* hash) {
 	ctx->data[56] = ctx->bitlen >> 56;
 	cmtSHA1Transform(ctx, ctx->data);
 
-	// ÔÚ±ê×¼ÊÖ²áÖĞµÄÊµÏÖÊÇÕë¶Ô´ó¶Ë»úµÄ£¬µ«ÊÇÎÒÃÇÃñÓÃ»ù±¾ÉÏ²»Ì«¿ÉÄÜÊ¹ÓÃ´ó¶Ë£¬ËùÒÔÕâÀï¸ÄÎªĞ¡¶Î»úÄ£Ê½
-	// ½«×îºóµÄ½á¹û¿½±´³öÀ´µÄÊ±ºò¶Ô±ÈÌØ½øĞĞ·­×ª
+	// åœ¨æ ‡å‡†æ‰‹å†Œä¸­çš„å®ç°æ˜¯é’ˆå¯¹å¤§ç«¯æœºçš„ï¼Œä½†æ˜¯æˆ‘ä»¬æ°‘ç”¨åŸºæœ¬ä¸Šä¸å¤ªå¯èƒ½ä½¿ç”¨å¤§ç«¯ï¼Œæ‰€ä»¥è¿™é‡Œæ”¹ä¸ºå°æ®µæœºæ¨¡å¼
+	// å°†æœ€åçš„ç»“æœæ‹·è´å‡ºæ¥çš„æ—¶å€™å¯¹æ¯”ç‰¹è¿›è¡Œç¿»è½¬
 	for (i = 0; i < 4; ++i) {
 		hash[i] = (ctx->state[0] >> (24 - i * 8)) & 0x000000ff;
 		hash[i + 4] = (ctx->state[1] >> (24 - i * 8)) & 0x000000ff;
@@ -481,8 +484,8 @@ void cmtMD5Get(cmtMD5* ctx, cmtUint8* hash)
 	ctx->data[63] = ctx->bitlen >> 56;
 	cmtMD5Transform(ctx, ctx->data);
 
-	// ÔÚ±ê×¼ÊÖ²áÖĞµÄÊµÏÖÊÇÕë¶Ô´ó¶Ë»úµÄ£¬µ«ÊÇÎÒÃÇÃñÓÃ»ù±¾ÉÏ²»Ì«¿ÉÄÜÊ¹ÓÃ´ó¶Ë£¬ËùÒÔÕâÀï¸ÄÎªĞ¡¶Î»úÄ£Ê½
-	// ½«×îºóµÄ½á¹û¿½±´³öÀ´µÄÊ±ºò¶Ô±ÈÌØ½øĞĞ·­×ª
+	// åœ¨æ ‡å‡†æ‰‹å†Œä¸­çš„å®ç°æ˜¯é’ˆå¯¹å¤§ç«¯æœºçš„ï¼Œä½†æ˜¯æˆ‘ä»¬æ°‘ç”¨åŸºæœ¬ä¸Šä¸å¤ªå¯èƒ½ä½¿ç”¨å¤§ç«¯ï¼Œæ‰€ä»¥è¿™é‡Œæ”¹ä¸ºå°æ®µæœºæ¨¡å¼
+	// å°†æœ€åçš„ç»“æœæ‹·è´å‡ºæ¥çš„æ—¶å€™å¯¹æ¯”ç‰¹è¿›è¡Œç¿»è½¬
 	for (i = 0; i < 4; ++i) {
 		hash[i] = (ctx->state[0] >> (i * 8)) & 0x000000ff;
 		hash[i + 4] = (ctx->state[1] >> (i * 8)) & 0x000000ff;
@@ -495,9 +498,9 @@ void cmtMD5Transform(cmtMD5* ctx, cmtUint8* data)
 {
 	cmtUint32 a, b, c, d, m[16], i, j;
 
-	// MD5µÄ±ê×¼ÊÖ²áÖĞµÄÀı×ÓÈÔÈ»ÊÇ´ó¶Ë»ú£¬ÕâÀïÖ±½ÓÖØĞÂÊµÏÖ³ÉĞ¡¶Ë»ú°æ±¾
-	// ·­×ª±ÈÌØ
-	// ÔÚ×îºóÊä³öÊ±´Ó´ó¶Ë»ú½á¹û·­×ªµ½Ğ¡¶Ë»ú½á¹û
+	// MD5çš„æ ‡å‡†æ‰‹å†Œä¸­çš„ä¾‹å­ä»ç„¶æ˜¯å¤§ç«¯æœºï¼Œè¿™é‡Œç›´æ¥é‡æ–°å®ç°æˆå°ç«¯æœºç‰ˆæœ¬
+	// ç¿»è½¬æ¯”ç‰¹
+	// åœ¨æœ€åè¾“å‡ºæ—¶ä»å¤§ç«¯æœºç»“æœç¿»è½¬åˆ°å°ç«¯æœºç»“æœ
 	for (i = 0, j = 0; i < 16; ++i, j += 4)
 		m[i] = (data[j]) + (data[j + 1] << 8) + (data[j + 2] << 16) + (data[j + 3] << 24);
 
@@ -584,7 +587,7 @@ void cmtAESkeyInit(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 
 {
 	cmtUint8 key[256];
 
-	//×Ö·û´®±ê×¼»¯Îª¶¨³¤ÃÜÔ¿Êı×é
+	//å­—ç¬¦ä¸²æ ‡å‡†åŒ–ä¸ºå®šé•¿å¯†é’¥æ•°ç»„
 	if (keysize == 128)
 	{
 		cmtMD5 ctx;
@@ -600,7 +603,7 @@ void cmtAESkeyInit(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 
 		cmtSHA256Get(&ctx, key);
 	}
 
-	//¼ÆËãÃÜÔ¿×é¾ØÕó
+	//è®¡ç®—å¯†é’¥ç»„çŸ©é˜µ
 	cmtAESRestrictkeyInit(key, w, keysize);
 }
 
@@ -784,26 +787,26 @@ void cmtAESecbDec(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize
 
 void cmtAESecbEncEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize)
 {
-	cmtUint64 ExBlockOffset;//²»ÍêÕû¿é£¨Èç¹û´æÔÚ£©Ê×Æ«ÒÆ
-	cmtUint8 ExBlockTemp[CMT_AES_BLOCK_SIZE];//Ìî³äÍêÕûµÄ²»ÍêÕû¿é
+	cmtUint64 ExBlockOffset;//ä¸å®Œæ•´å—ï¼ˆå¦‚æœå­˜åœ¨ï¼‰é¦–åç§»
+	cmtUint8 ExBlockTemp[CMT_AES_BLOCK_SIZE];//å¡«å……å®Œæ•´çš„ä¸å®Œæ•´å—
 	cmtUint64 r;
 
 	ExBlockOffset = size - size % CMT_AES_BLOCK_SIZE;
 
-	//ÍêÕû¿é
+	//å®Œæ•´å—
 	for (r = 0; r < ExBlockOffset; r += CMT_AES_BLOCK_SIZE)
 		cmtAESecbEnc(in + r, out + r, key, keysize);
 
-	//²»ÍêÕû¿é
+	//ä¸å®Œæ•´å—
 	if (ExBlockOffset != size)
 	{
-		//µÍ×Ö½Ú¸´ÖÆ
+		//ä½å­—èŠ‚å¤åˆ¶
 		for (; r < size; r++)
 			ExBlockTemp[r - ExBlockOffset] = in[r];
-		//¸ß×Ö½ÚÌî0
+		//é«˜å­—èŠ‚å¡«0
 		for (r = size - ExBlockOffset; r < CMT_AES_BLOCK_SIZE; r++)
 			ExBlockTemp[r] = 0;
-		//¼ÓÃÜ
+		//åŠ å¯†
 		cmtAESecbEnc(ExBlockTemp, out + ExBlockOffset, key, keysize);
 	}
 }
@@ -848,10 +851,10 @@ void cmtAEScbcEncMac(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key
 		cmtXorBuffer(iv_buf, buf_in, CMT_AES_BLOCK_SIZE);
 		cmtAESecbEnc(buf_in, buf_out, key, keysize);
 		memcpy(iv_buf, buf_out, CMT_AES_BLOCK_SIZE);
-		// Êä³öËùÓĞµÄ¿é¿ÉÄÜ»áÒç³ö
+		// è¾“å‡ºæ‰€æœ‰çš„å—å¯èƒ½ä¼šæº¢å‡º
 	}
 
-	memcpy(out, buf_out, CMT_AES_BLOCK_SIZE);// Ö»Êä³ö×îºóµÄ¿é
+	memcpy(out, buf_out, CMT_AES_BLOCK_SIZE);// åªè¾“å‡ºæœ€åçš„å—
 }
 
 void cmtAEScbcDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
@@ -892,12 +895,12 @@ void cmtAESctrEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, c
 	}
 
 	cmtAESecbEnc(iv_buf, out_buf, key, keysize);
-	cmtXorBuffer(out_buf, &out[idx], size - idx);   // ×îÓĞĞ§µÄ×Ö½Ú
+	cmtXorBuffer(out_buf, &out[idx], size - idx);   // æœ€æœ‰æ•ˆçš„å­—èŠ‚
 }
 
 void cmtAESctrDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv)
 {
-	//CTRµÄ¼ÓÃÜ¾ÍÊÇËû×Ô¼ºµÄ·´º¯Êı
+	//CTRçš„åŠ å¯†å°±æ˜¯ä»–è‡ªå·±çš„åå‡½æ•°
 	cmtAESctrEnc(in, size, out, key, keysize, iv);
 }
 
@@ -905,7 +908,7 @@ void cmtAESincrIV(cmtUint8 iv[], int counter_size)
 {
 	int idx;
 
-	// ´ó¶Ë²Ù×÷
+	// å¤§ç«¯æ“ä½œ
 	for (idx = CMT_AES_BLOCK_SIZE - 1; idx >= CMT_AES_BLOCK_SIZE - counter_size; idx--) {
 		iv[idx]++;
 		if (iv[idx] != 0 || idx == CMT_AES_BLOCK_SIZE - counter_size)
@@ -1288,4 +1291,119 @@ void cmtInvMixColumns(cmtUint8 state[][4])
 	state[3][3] ^= cmtGFMul[col[1]][4];
 	state[3][3] ^= cmtGFMul[col[2]][2];
 	state[3][3] ^= cmtGFMul[col[3]][5];
+}
+
+cmtUint8 cmtRevChar(char ch)
+{
+	if (ch >= 'A' && ch <= 'Z')
+		ch -= 'A';
+	else if (ch >= 'a' && ch <= 'z')
+		ch = ch - 'a' + 26;
+	else if (ch >= '0' && ch <= '9')
+		ch = ch - '0' + 52;
+	else if (ch == '+')
+		ch = 62;
+	else if (ch == '/')
+		ch = 63;
+
+	return(ch);
+}
+
+cmtInt64 cmtBase64Encode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size, int newLineFlag)
+{
+	cmtInt64 idx, idx2, blks, blkTop, leftOver, newLineCount = 0;
+
+	blks = (size / 3);
+	leftOver = size % 3;
+
+	if (out == NULL) {
+		idx2 = blks * 4;
+		if (leftOver)
+			idx2 += 4;
+		if (newLineFlag)
+			idx2 += size / 57;   // (CMT_NEWLINE_INVL / 4) * 3 = 57. ä¸€è¡Œå¤§æ¦‚57ä¸ªin[] bytes
+	}
+	else {
+		// å°†3ä¸ªå­—èŠ‚çš„æ•°æ®ç¼–ç æˆ4ä¸ªå­—èŠ‚çš„æ•°æ® æ•°æ®è†¨èƒ€ç‡33.3% æ•°æ®å¤§å°çº¦ç­‰äºåŸæ¥çš„133.3%
+		blkTop = blks * 3;
+		for (idx = 0, idx2 = 0; idx < blkTop; idx += 3, idx2 += 4) {
+			out[idx2] = cmtCharSet[in[idx] >> 2];
+			out[idx2 + 1] = cmtCharSet[((in[idx] & 0x03) << 4) | (in[idx + 1] >> 4)];
+			out[idx2 + 2] = cmtCharSet[((in[idx + 1] & 0x0f) << 2) | (in[idx + 2] >> 6)];
+			out[idx2 + 3] = cmtCharSet[in[idx + 2] & 0x3F];
+			// RFC 822 è§„å®šæ¯76å­—èŠ‚æ¢è¡Œä¸€æ¬¡ï¼Œå¦‚æœNewLineFlagä¸º1åˆ™æ¢è¡Œæ¥æ»¡è¶³æ­¤è§„å®š
+			// ç¬¬ä¸€è¡Œæ˜¯77å­—èŠ‚
+			if (((idx2 - newLineCount + 4) % CMT_NEWLINE_INVL == 0) && newLineFlag) {
+				out[idx2 + 4] = '\n';
+				idx2++;
+				newLineCount++;
+			}
+		}
+
+		if (leftOver == 1) {
+			out[idx2] = cmtCharSet[in[idx] >> 2];
+			out[idx2 + 1] = cmtCharSet[(in[idx] & 0x03) << 4];
+			out[idx2 + 2] = '=';
+			out[idx2 + 3] = '=';
+			idx2 += 4;
+		}
+		else if (leftOver == 2) {
+			out[idx2] = cmtCharSet[in[idx] >> 2];
+			out[idx2 + 1] = cmtCharSet[((in[idx] & 0x03) << 4) | (in[idx + 1] >> 4)];
+			out[idx2 + 2] = cmtCharSet[(in[idx + 1] & 0x0F) << 2];
+			out[idx2 + 3] = '=';
+			idx2 += 4;
+		}
+	}
+
+	return(idx2);
+}
+
+cmtInt64 cmtBase64Decode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size)
+{
+	cmtUint8 ch;
+	cmtInt64 idx, idx2, blks, blkTop, leftOver;
+
+	if (in[size - 1] == '=')
+		size--;
+	if (in[size - 1] == '=')
+		size--;
+
+	blks = size / 4;
+	leftOver = size % 4;
+
+	if (out == NULL) {
+		if (size >= 77 && in[CMT_NEWLINE_INVL] == '\n')   //æ ¡éªŒæ¯è¡Œ
+			size -= size / (CMT_NEWLINE_INVL + 1);
+		blks = size / 4;
+		leftOver = size % 4;
+
+		idx = blks * 3;
+		if (leftOver == 2)
+			idx++;
+		else if (leftOver == 3)
+			idx += 2;
+	}
+	else {
+		blkTop = blks * 4;
+		for (idx = 0, idx2 = 0; idx2 < blkTop; idx += 3, idx2 += 4) {
+			if (in[idx2] == '\n')
+				idx2++;
+			out[idx] = (cmtRevChar(in[idx2]) << 2) | ((cmtRevChar(in[idx2 + 1]) & 0x30) >> 4);
+			out[idx + 1] = (cmtRevChar(in[idx2 + 1]) << 4) | (cmtRevChar(in[idx2 + 2]) >> 2);
+			out[idx + 2] = (cmtRevChar(in[idx2 + 2]) << 6) | cmtRevChar(in[idx2 + 3]);
+		}
+
+		if (leftOver == 2) {
+			out[idx] = (cmtRevChar(in[idx2]) << 2) | ((cmtRevChar(in[idx2 + 1]) & 0x30) >> 4);
+			idx++;
+		}
+		else if (leftOver == 3) {
+			out[idx] = (cmtRevChar(in[idx2]) << 2) | ((cmtRevChar(in[idx2 + 1]) & 0x30) >> 4);
+			out[idx + 1] = (cmtRevChar(in[idx2 + 1]) << 4) | (cmtRevChar(in[idx2 + 2]) >> 2);
+			idx += 2;
+		}
+	}
+
+	return(idx);
 }
