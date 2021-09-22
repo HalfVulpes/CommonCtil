@@ -1,6 +1,6 @@
 /**
 * @file cmtCryp.h
-* @brief ����֧�ֿ�ƽ̨�ļ����ð汾����ѧ��
+* @brief 用于支持跨平台的简化易用版本密码学库
 * @data 2021-09-13
 * @author Brad Conte
 * @author GogeBlue
@@ -39,23 +39,26 @@
 			   * http://csrc.nist.gov/publications/nistpubs/800-38C/SP800-38C_updated-July20_2007.pdf
 */
 
-//��ֹ�ظ�����
+//防止重复包含
 #pragma once
 #ifndef _INC_CMTCRYP
 #define _INC_CMTCRYP
 #include <cmtType.h>
 #include <cmtCore.h>
 
-/*--------------------------------�궨�� ��ʼ--------------------------------*/
+/*--------------------------------宏定义 开始--------------------------------*/
 
-//SHA256���ժҪ���ȣ�32�ֽڣ�256λ��
+//SHA256输出摘要长度，32字节（256位）
 #define CMT_SHA256_BLOCK_SIZE 32
 
-//SHA1�����ժҪ���ȣ�20�ֽڣ�160λ��
+//SHA1输出的摘要长度，20字节（160位）
 #define CMT_SHA1_BLOCK_SIZE 20
 
-//MD5�����ժҪ���ȣ�16�ֽڣ�128λ��
-#define CMT_MD5_BLOCK_SIZE 16 
+//MD5输出的摘要长度，16字节（128位）
+#define CMT_MD5_BLOCK_SIZE 16
+
+//在电子邮件中，根据 RFC 822 规定，每 76 个字符需要加上一个回车换行，但是呢由于每个base64编码器的实现问题有些是不带换行的
+#define CMT_NEWLINE_INVL 76
 
 #define CMT_ROTLEFT(a,b) (((a) << (b)) | ((a) >> (32-(b))))
 #define CMT_ROTRIGHT(a,b) (((a) >> (b)) | ((a) << (32-(b))))
@@ -82,22 +85,22 @@
 #define CMT_II(a,b,c,d,m,s,t) { a += CMT_I(b,c,d) + m + t; \
                             a = b + CMT_ROTLEFT(a,s); }
 
-//AES����һ�β���16Bytes
+//AES加密一次操作16Bytes
 #define CMT_AES_BLOCK_SIZE 16
 
 #define CMT_AES_128_ROUNDS 10
 #define CMT_AES_192_ROUNDS 12
 #define CMT_AES_256_ROUNDS 14
 
-//�������Ĵ�С���㲹�벢���ܺ�����Ĵ�С
+//根据明文大小计算补齐并加密后的密文大小
 #define cmtAEScipherSize(PlainSize) ((PlainSize) % CMT_AES_BLOCK_SIZE ? (PlainSize) + CMT_AES_BLOCK_SIZE - (PlainSize) % CMT_AES_BLOCK_SIZE : (PlainSize))
-/*--------------------------------�궨�� ����--------------------------------*/
+/*--------------------------------宏定义 结束--------------------------------*/
 
-/*--------------------------------�ṹ�嶨�� ��ʼ--------------------------------*/
+/*--------------------------------结构体定义 开始--------------------------------*/
 
 /**
 * @struct cmtSHA256
-* @brief SHA256�ṹ��
+* @brief SHA256结构体
 * @date 2021-09-14
 * @author Brad Conte
 * @author GogeBlue
@@ -112,7 +115,7 @@ typedef struct _CMTSHA256
 
 /**
 * @struct cmtSHA1
-* @brief SHA1�ṹ��
+* @brief SHA1结构体
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -128,7 +131,7 @@ typedef struct _CMTSHA1
 
 /**
 * @struct cmtMD5
-* @brief MD5�ṹ��
+* @brief MD5结构体
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -140,43 +143,43 @@ typedef struct _CMTMD5
 	cmtUint64 bitlen;
 	cmtUint32 state[4];
 }cmtMD5;
-/*--------------------------------�ṹ�嶨�� ����--------------------------------*/
+/*--------------------------------结构体定义 结束--------------------------------*/
 
-/*--------------------------------��������� ��ʼ--------------------------------*/
+/*--------------------------------随机数函数 开始--------------------------------*/
 
 /**
-* @brief �����������
-* @param[out] ���������
-* @param[in] ���������ȣ������������������
-* @attention 32λģʽ�£�ÿ�������Ϊ32�ֽڣ�64λģʽ�£�ÿ�������Ϊ64�ֽ�
+* @brief 生成真随机数
+* @param[out] 输出缓冲区
+* @param[in] 缓冲区长度（生成随机数的数量）
+* @attention 32位模式下，每个随机数为32字节；64位模式下，每个随机数为64字节
 * @date 2021-09-19
 * @author Dexnab
 */
 void CMT_FASTCALL cmtRealRand(cmtUint64* buf, cmtUint64 len);
-/*--------------------------------��������� ����--------------------------------*/
+/*--------------------------------随机数函数 结束--------------------------------*/
 
-/*--------------------------------ɢ�к��� ��ʼ--------------------------------*/
+/*--------------------------------散列函数 开始--------------------------------*/
 
 /**
-* @brief ��ʼ��cmtSHA256�ṹ��
-* @param[out] ����ṹ��
-* @par ʾ��:
+* @brief 初始化cmtSHA256结构体
+* @param[out] 输出结构体
+* @par 示例:
 * @code
-	//���գ��ַ���"abcabcabc" ��sha256ֵΪ��76b99ab4be8521d78b19bcff7d1078aabeb477bd134f404094c92cd39f051c3e
+	//对照：字符串"abcabcabc" 的sha256值为：76b99ab4be8521d78b19bcff7d1078aabeb477bd134f404094c92cd39f051c3e
 	cmtChar str[] = "abcabcabc";
 	cmtUint8 result[CMT_SHA256_BLOCK_SIZE];
 	cmtSHA256 ctx;
 
-	//��ʼ��sha256�ṹ��
+	//初始化sha256结构体
 	cmtSHA256Init(&ctx);
 
-	//д�����ݣ�����sha256�ṹ��
-	cmtSHA256Update(&ctx, str, sizeof(str) - 1);//�ų���β��'\0'
+	//写入数据，更新sha256结构体
+	cmtSHA256Update(&ctx, str, sizeof(str) - 1);//排除结尾的'\0'
 
-	//��ȡ���
+	//获取结果
 	cmtSHA256Get(&ctx, result);
 
-	//���
+	//输出
 	for (int i = 0; i < 32; i++)
 	{
 		printf("%hhx", result[i]);
@@ -189,10 +192,10 @@ void CMT_FASTCALL cmtRealRand(cmtUint64* buf, cmtUint64 len);
 void cmtSHA256Init(cmtSHA256* ctx);
 
 /**
-* @brief д�����ݣ�����sha256�ṹ��
-* @param[in] sha256�ṹ��
-* @param[in] ����
-* @param[in] �����ֽ���
+* @brief 写入数据，更新sha256结构体
+* @param[in] sha256结构体
+* @param[in] 数据
+* @param[in] 数据字节数
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -200,10 +203,10 @@ void cmtSHA256Init(cmtSHA256* ctx);
 void cmtSHA256Update(cmtSHA256* ctx, cmtUint8* data, cmtUint64 size);
 
 /**
-* @brief ���㲢ȡֵ
-* @param[in] sha256�ṹ��
-* @param[out] ���ܻ�����
-* @attention ���ܻ��������Ȳ���С��CMT_SHA256_BLOCK_SIZE, �����һ�ε�update��abc���ڶ��ε�update��123�������get���൱�ڼ���abc123��hash256
+* @brief 计算并取值
+* @param[in] sha256结构体
+* @param[out] 接受缓冲区
+* @attention 接受缓冲区长度不能小于CMT_SHA256_BLOCK_SIZE, 如果第一次的update是abc，第二次的update是123，最后在get则相当于计算abc123的hash256
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -211,7 +214,7 @@ void cmtSHA256Update(cmtSHA256* ctx, cmtUint8* data, cmtUint64 size);
 void cmtSHA256Get(cmtSHA256* ctx, cmtUint8* hash);
 
 /**
-* @brief ���������ڲ�ʹ��
+* @brief 矩阵函数，内部使用
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -219,25 +222,25 @@ void cmtSHA256Get(cmtSHA256* ctx, cmtUint8* hash);
 void cmtSHA256Transform(cmtSHA256* ctx, cmtUint8* data);
 
 /**
-* @brief ��ʼ��cmtSHA1�ṹ��
-* @param[out] ����ṹ��
-* @par ʾ��:
+* @brief 初始化cmtSHA1结构体
+* @param[out] 输出结构体
+* @par 示例:
 * @code
-	//���գ��ַ���"abcabcabc" ��sha1ֵΪ��0b6f5dae7f8d68348f7d56ac05ea20a55f652d91
+	//对照：字符串"abcabcabc" 的sha1值为：0b6f5dae7f8d68348f7d56ac05ea20a55f652d91
 	cmtChar str[] = "abcabcabc";
 	cmtUint8 result[CMT_SHA1_BLOCK_SIZE];
 	cmtSHA1 ctx;
 
-	//��ʼ��sha256�ṹ��
+	//初始化sha256结构体
 	cmtSHA1Init(&ctx);
 
-	//д�����ݣ�����sha256�ṹ��
-	cmtSHA1Update(&ctx, str, sizeof(str) - 1);//�ų���β��'\0'
+	//写入数据，更新sha256结构体
+	cmtSHA1Update(&ctx, str, sizeof(str) - 1);//排除结尾的'\0'
 
-	//��ȡ���
+	//获取结果
 	cmtSHA1Get(&ctx, result);
 
-	//���
+	//输出
 	for (int i = 0; i < 20; i++)
 	{
 		printf("%hhx", result[i]);
@@ -250,20 +253,20 @@ void cmtSHA256Transform(cmtSHA256* ctx, cmtUint8* data);
 void cmtSHA1Init(cmtSHA1* ctx);
 
 /**
-* @brief д�����ݣ�����sha1�ṹ��
-* @param[in] sha1�ṹ��
-* @param[in] ����
-* @param[in] �����ֽ���
+* @brief 写入数据，更新sha1结构体
+* @param[in] sha1结构体
+* @param[in] 数据
+* @param[in] 数据字节数
 * @date 2021-09-15
 * @author GogeBlue
 */
 void cmtSHA1Update(cmtSHA1* ctx, cmtUint8* data, cmtUint64 size);
 
 /**
-* @brief ���㲢ȡֵ
-* @param[in] sha1�ṹ��
-* @param[out] ���ܻ�����
-* @attention ���ܻ��������Ȳ���С��CMT_SHA1_BLOCK_SIZE, �����һ�ε�update��abc���ڶ��ε�update��123�������get���൱�ڼ���abc123��hash1
+* @brief 计算并取值
+* @param[in] sha1结构体
+* @param[out] 接受缓冲区
+* @attention 接受缓冲区长度不能小于CMT_SHA1_BLOCK_SIZE, 如果第一次的update是abc，第二次的update是123，最后在get则相当于计算abc123的hash1
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -271,7 +274,7 @@ void cmtSHA1Update(cmtSHA1* ctx, cmtUint8* data, cmtUint64 size);
 void cmtSHA1Get(cmtSHA1* ctx, cmtUint8* hash);
 
 /**
-* @brief ���������ڲ�ʹ��
+* @brief 矩阵函数，内部使用
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -279,25 +282,25 @@ void cmtSHA1Get(cmtSHA1* ctx, cmtUint8* hash);
 void cmtSHA1Transform(cmtSHA1* ctx, cmtUint8* data);
 
 /**
-* @brief ��ʼ��cmtMD5�ṹ��
-* @param[out] ����ṹ��
-* @par ʾ��:
+* @brief 初始化cmtMD5结构体
+* @param[out] 输出结构体
+* @par 示例:
 * @code
-	//���գ��ַ���"abcabcabc" ��MD5ֵΪ��97ac82a5b825239e782d0339e2d7b910
+	//对照：字符串"abcabcabc" 的MD5值为：97ac82a5b825239e782d0339e2d7b910
 	cmtChar str[] = "abcabcabc";
 	cmtUint8 result[CMT_MD5_BLOCK_SIZE];
 	cmtMD5 ctx;
 
-	//��ʼ��MD5�ṹ��
+	//初始化MD5结构体
 	cmtMD5Init(&ctx);
 
-	//д�����ݣ�����MD5�ṹ��
-	cmtMD5Update(&ctx, str, sizeof(str) - 1);//�ų���β��'\0'
+	//写入数据，更新MD5结构体
+	cmtMD5Update(&ctx, str, sizeof(str) - 1);//排除结尾的'\0'
 
-	//��ȡ���
+	//获取结果
 	cmtMD5Get(&ctx, result);
 
-	//���
+	//输出
 	for (int i = 0; i < 16; i++)
 	{
 		printf("%hhx", result[i]);
@@ -310,10 +313,10 @@ void cmtSHA1Transform(cmtSHA1* ctx, cmtUint8* data);
 void cmtMD5Init(cmtMD5* ctx);
 
 /**
-* @brief д�����ݣ�����MD5�ṹ��
-* @param[in] MD5�ṹ��
-* @param[in] ����
-* @param[in] �����ֽ���
+* @brief 写入数据，更新MD5结构体
+* @param[in] MD5结构体
+* @param[in] 数据
+* @param[in] 数据字节数
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -321,10 +324,10 @@ void cmtMD5Init(cmtMD5* ctx);
 void cmtMD5Update(cmtMD5* ctx, cmtUint8* data, cmtUint64 size);
 
 /**
-* @brief ���㲢ȡֵ
-* @param[in] MD5�ṹ��
-* @param[out] ���ܻ�����
-* @attention ���ܻ��������Ȳ���С��CMT_MD5_BLOCK_SIZE, �����һ�ε�update��abc���ڶ��ε�update��123�������get���൱�ڼ���abc123��MD5
+* @brief 计算并取值
+* @param[in] MD5结构体
+* @param[out] 接受缓冲区
+* @attention 接受缓冲区长度不能小于CMT_MD5_BLOCK_SIZE, 如果第一次的update是abc，第二次的update是123，最后在get则相当于计算abc123的MD5
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -332,32 +335,32 @@ void cmtMD5Update(cmtMD5* ctx, cmtUint8* data, cmtUint64 size);
 void cmtMD5Get(cmtMD5* ctx, cmtUint8* hash);
 
 /**
-* @brief ���������ڲ�ʹ��
+* @brief 矩阵函数，内部使用
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
 */
 void cmtMD5Transform(cmtMD5* ctx, cmtUint8* data);
-/*--------------------------------ɢ�к��� ����--------------------------------*/
+/*--------------------------------散列函数 结束--------------------------------*/
 
 
-/*--------------------------------�ԳƼ��ܺ��� ��ʼ--------------------------------*/
+/*--------------------------------对称加密函数 开始--------------------------------*/
 /*
-* ע������
-1���������е�AES����������Կ���ú�����������ڼ��ܽ���ǰִ��
-2����Կ��λ��ֻ����128λ��cmtUint8 key[16]����192λ��cmtUint8 key[24]��������256λ��cmtUint8 key[32]����
-3�����ڿ�����Կλ�������ķ������Ƕ��û����������hash���㣬�磺keyInit(sha256(userInput)) //����һ��256λAES��Կ��
-4��Ĭ�ϵ�cmtAESKeyInit�������ص�AES������ʽ��ECBģʽ������ģʽ�����Ƿǳ��İ�ȫ�������е��ظ�������������Ҳ���ظ����Ƽ�ʹ��CBCģʽ
-5��ECBģʽ�²���Ҫʹ�ó�ʼ��������IV������ΪECBģʽ�������������뱾����ʽ���ܵģ������أ�����ģʽ��IV�ͱ����Ҫ�����ˣ������Ը��ļ�����һ�����ƫ����������ͬ���ļ����ܵõ���ͬ�����ġ�
+* 注意事项
+1，对于所有的AES函数，其密钥设置函数，必须得在加密解密前执行
+2，密钥的位数只能是128位（cmtUint8 key[16]），192位（cmtUint8 key[24]），或者256位（cmtUint8 key[32]）。
+3，对于控制密钥位数，最方便的方法就是对用户的输入进行hash运算，如：keyInit(sha256(userInput)) //生成一个256位AES密钥。
+4，默认的cmtAESKeyInit是最朴素的AES操作方式：ECB模式，这种模式并不是非常的安全，明文中的重复部分在密文中也会重复。推荐使用CBC模式
+5，ECB模式下不需要使用初始化向量（IV），因为ECB模式下明文是以密码本的形式加密的，但是呢，其他模式下IV就变得重要起来了，它可以给文件增加一个随机偏移量，让相同的文件加密得到不同的密文。
 */
 
 /**
-* @brief AES��Կ��ʼ��������ʹ���ַ�����
-* @param[in] keystr ����������Կ���ַ���
-* @param[in] sKeystr keystr�ֽ���
-* @param[out] w ������Կ����󣬴�СΪ60��32λint��240�ֽڣ�
-* @param[in] keysize ���ɵ���Կ���ȣ���AES-256����д256��
-* @attention keystr���������в���ʶ���κ���ֹ��
+* @brief AES密钥初始化函数（使用字符串）
+* @param[in] keystr 用于生成密钥的字符串
+* @param[in] sKeystr keystr字节数
+* @param[out] w 计算密钥组矩阵，大小为60个32位int（240字节）
+* @param[in] keysize 生成的密钥长度（如AES-256就填写256）
+* @attention keystr处理过程中不会识别任何终止符
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -365,10 +368,10 @@ void cmtMD5Transform(cmtMD5* ctx, cmtUint8* data);
 void cmtAESkeyInit(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 keysize);
 
 /**
-* @brief AES��Կ��ʼ��������ʹ�ö�����Կ���飩
-* @param[in] key ������Կ���飬��СΪkeysize
-* @param[out] w ������Կ����󣬴�СΪ60��32λint��240�ֽڣ�
-* @param[in] keysize ��Կ���ȣ���AES-256����д256��
+* @brief AES密钥初始化函数（使用定长密钥数组）
+* @param[in] key 定长密钥数组，大小为keysize
+* @param[out] w 计算密钥组矩阵，大小为60个32位int（240字节）
+* @param[in] keysize 密钥长度（如AES-256就填写256）
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -376,9 +379,9 @@ void cmtAESkeyInit(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 
 void cmtAESRestrictkeyInit(cmtUint8* key, cmtUint32* w, cmtUint16 keysize);
 
 /**
-* @brief AESƫ���������ɺ���
-* @param[out] iv ƫ����������СΪCMT_AES_BLOCK_SIZE�ֽ�
-* @attention ����ر���ƫ������������Կһ����Ҫ����Ϊ�ڽ��ܵ�ʱ����Ҫƫ����������Կ��ͬ���ܡ�
+* @brief AES偏移向量生成函数
+* @param[out] iv 偏移向量，大小为CMT_AES_BLOCK_SIZE字节
+* @attention 请务必保存偏移向量，和密钥一样重要，因为在解密的时候需要偏移向量和密钥共同解密。
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -386,12 +389,12 @@ void cmtAESRestrictkeyInit(cmtUint8* key, cmtUint32* w, cmtUint16 keysize);
 void cmtAESInitialVectorInit(cmtUint8* iv);
 
 /**
-* @brief AES-ECBģʽ���ܺ�����ÿ�ο��Դ���16��Bytes
-* @param[in] in ����
-* @param[out] out ���ģ���СΪCMT_AES_BLOCK_SIZE�ֽ�
-* @param[in] key ������Կ�����
-* @param[in] keysize ��Կ����
-* @attention ����һ��ֻ����CMT_AES_BLOCK_SIZE�ֽ�
+* @brief AES-ECB模式加密函数，每次可以处理16个Bytes
+* @param[in] in 明文
+* @param[out] out 密文，大小为CMT_AES_BLOCK_SIZE字节
+* @param[in] key 计算密钥组矩阵
+* @param[in] keysize 密钥长度
+* @attention 明文一次只处理CMT_AES_BLOCK_SIZE字节
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -399,12 +402,12 @@ void cmtAESInitialVectorInit(cmtUint8* iv);
 void cmtAESecbEnc(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);
 
 /**
-* @brief AES-ECBģʽ���ܺ�����ÿ�ο��Դ���16��Bytes
-* @param[in] in ����
-* @param[out] out ���ģ���СΪCMT_AES_BLOCK_SIZE�ֽ�
-* @param[in] key ������Կ�����
-* @param[in] keysize ��Կ����
-* @attention ����һ��ֻ����CMT_AES_BLOCK_SIZE�ֽ�
+* @brief AES-ECB模式解密函数，每次可以处理16个Bytes
+* @param[in] in 密文
+* @param[out] out 明文，大小为CMT_AES_BLOCK_SIZE字节
+* @param[in] key 计算密钥组矩阵
+* @param[in] keysize 密钥长度
+* @attention 密文一次只处理CMT_AES_BLOCK_SIZE字节
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -412,38 +415,38 @@ void cmtAESecbEnc(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize
 void cmtAESecbDec(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);
 
 /**
-* @brief AES-ECBģʽ���ܺ�����ÿ�ο��Դ��������ֽ�
-* @param[in] in ����
-* @param[out] out ����
-* @param[in] size ���Ĵ�С
-* @param[in] key ������Կ�����
-* @param[in] keysize ��Կ����
+* @brief AES-ECB模式加密函数，每次可以处理任意字节
+* @param[in] in 明文
+* @param[out] out 密文
+* @param[in] size 密文大小
+* @param[in] key 计算密钥组矩阵
+* @param[in] keysize 密钥长度
 * @date 2021-09-19
 * @arthur dexnab
 */
 void cmtAESecbEncEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);
 
 /**
-* @brief AES-ECBģʽ���ܺ�����ÿ�ο��Դ��������ֽ�
-* @param[in] in ����
-* @param[out] out ����
-* @param[in] size ���Ĵ�С
-* @param[in] key ������Կ�����
-* @param[in] keysize ��Կ����
+* @brief AES-ECB模式解密函数，每次可以处理任意字节
+* @param[in] in 密文
+* @param[out] out 明文
+* @param[in] size 密文大小
+* @param[in] key 计算密钥组矩阵
+* @param[in] keysize 密钥长度
 * @date 2021-09-19
 * @arthur dexnab
 */
 void cmtAESecbDecEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);
 
 /**
-* @brief AES-CBCģʽ���ܺ�����ÿ�ο��Դ���n * CMT_AES_BLOCK_SIZE���ֽڵ�����
-* @param[in] in ����
-* @param[in] size �����ֽ���
-* @param[out] out ���ģ���СΪsize
-* @param[in] key ������Կ�����
-* @param[in] keysize ��Կ����
-* @param[in] iv ƫ������
-* @attention size����ΪCMT_AES_BLOCK_SIZE��������
+* @brief AES-CBC模式加密函数，每次可以处理n * CMT_AES_BLOCK_SIZE个字节的数据
+* @param[in] in 明文
+* @param[in] size 明文字节数
+* @param[out] out 密文，大小为size
+* @param[in] key 计算密钥组矩阵
+* @param[in] keysize 密钥长度
+* @param[in] iv 偏移向量
+* @attention size必须为CMT_AES_BLOCK_SIZE的整数倍
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -451,13 +454,13 @@ void cmtAESecbDecEx(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key,
 void cmtAEScbcEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);
 
 /**
-* @brief AES-CBC-���MACģʽ���ܺ�����ÿ�ο��Դ���n * CMT_AES_BLOCK_SIZE���ֽڵ�����
-* @param[in] in ����
-* @param[in] size �����ֽ���
-* @param[out] out ���MAC����СΪCMT_AES_BLOCK_SIZE
-* @param[in] key ������Կ�����
-* @param[in] keysize ��Կ����
-* @param[in] iv ƫ������
+* @brief AES-CBC-输出MAC模式加密函数，每次可以处理n * CMT_AES_BLOCK_SIZE个字节的数据
+* @param[in] in 明文
+* @param[in] size 明文字节数
+* @param[out] out 输出MAC，大小为CMT_AES_BLOCK_SIZE
+* @param[in] key 计算密钥组矩阵
+* @param[in] keysize 密钥长度
+* @param[in] iv 偏移向量
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -465,14 +468,14 @@ void cmtAEScbcEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, c
 void cmtAEScbcEncMac(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);
 
 /**
-* @brief AES-CBCģʽ���ܺ�����ÿ�ο��Դ���n * CMT_AES_BLOCK_SIZE�ֽڵ�����
-* @param[in] in ����
-* @param[in] size �����ֽ���
-* @param[out] out ���ģ���СΪsize
-* @param[in] key ������Կ�����
-* @param[in] keysize ��Կ����
-* @param[in] iv ƫ������
-* @attention size����ΪCMT_AES_BLOCK_SIZE��������
+* @brief AES-CBC模式解密函数，每次可以处理n * CMT_AES_BLOCK_SIZE字节的数据
+* @param[in] in 密文
+* @param[in] size 密文字节数
+* @param[out] out 明文，大小为size
+* @param[in] key 计算密钥组矩阵
+* @param[in] keysize 密钥长度
+* @param[in] iv 偏移向量
+* @attention size必须为CMT_AES_BLOCK_SIZE的整数倍
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -480,14 +483,14 @@ void cmtAEScbcEncMac(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key
 void cmtAEScbcDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);
 
 /**
-* @brief AES-CTRģʽ���ܺ�����ÿ�ο��Դ���n * CMT_AES_BLOCK_SIZE���ֽڵ�����
-* @param[in] in ����
-* @param[in] size �����ֽ���
-* @param[out] out ���ģ���СΪsize
-* @param[in] key ������Կ�����
-* @param[in] keysize ��Կ����
-* @param[in] iv ƫ������
-* @attention size����ΪCMT_AES_BLOCK_SIZE��������
+* @brief AES-CTR模式加密函数，每次可以处理n * CMT_AES_BLOCK_SIZE个字节的数据
+* @param[in] in 明文
+* @param[in] size 明文字节数
+* @param[out] out 密文，大小为size
+* @param[in] key 计算密钥组矩阵
+* @param[in] keysize 密钥长度
+* @param[in] iv 偏移向量
+* @attention size必须为CMT_AES_BLOCK_SIZE的整数倍
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -495,14 +498,14 @@ void cmtAEScbcDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, c
 void cmtAESctrEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);
 
 /**
-* @brief AES-CBCģʽ���ܺ�����ÿ�ο��Դ���n * CMT_AES_BLOCK_SIZE�ֽڵ�����
-* @param[in] in ����
-* @param[in] size �����ֽ���
-* @param[out] out ���ģ���СΪsize
-* @param[in] key ������Կ�����
-* @param[in] keysize ��Կ����
-* @param[in] iv ƫ������
-* @attention size����ΪCMT_AES_BLOCK_SIZE��������
+* @brief AES-CBC模式解密函数，每次可以处理n * CMT_AES_BLOCK_SIZE字节的数据
+* @param[in] in 密文
+* @param[in] size 密文字节数
+* @param[out] out 明文，大小为size
+* @param[in] key 计算密钥组矩阵
+* @param[in] keysize 密钥长度
+* @param[in] iv 偏移向量
+* @attention size必须为CMT_AES_BLOCK_SIZE的整数倍
 * @date 2021-09-19
 * @author Brad Conte
 * @author GogeBlue
@@ -510,7 +513,7 @@ void cmtAESctrEnc(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, c
 void cmtAESctrDec(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);
 
 /**
-* @brief AES��غ����������ڲ�ʹ�ã�����дע���ˣ�const��ȥ��
+* @brief AES相关函数，仅供内部使用，懒得写注释了，const别去掉
 * @date 2021-09-15
 * @author Brad Conte
 * @author GogeBlue
@@ -533,7 +536,38 @@ void cmtShiftRows(cmtUint8 state[][4]);
 void cmtInvShiftRows(cmtUint8 state[][4]);
 void cmtMixColumns(cmtUint8 state[][4]);
 void cmtInvMixColumns(cmtUint8 state[][4]);
-/*--------------------------------�ԳƼ��ܺ��� ����--------------------------------*/
+
+/**
+* @brief Base64加编码函数，返回值为加密后的数据长度，如果out为空则只返回加密后的数据长度。
+* @param[in] in 明文
+* @param[in] size 明文字节数
+* @param[out] out 加编码后的结果
+* @param[in] newLineFlag 如果为TRUE则符合RFC 822规定，FLASE则不符合该规定。该规定规定每76行需要换行
+* @date 2021-09-20
+* @author Brad Conte
+* @author GogeBlue
+*/
+cmtInt64 cmtBase64Encode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size, int newLineFlag);
+
+/**
+* @brief Base64解编码函数，返回值为解密后的数据长度，如果out为空则只返回解密后的数据长度。
+* @param[in] in 加编码后的结果
+* @param[in] size 加编码后的结果字节数
+* @param[out] out 解编码后的结果
+* @date 2021-09-20
+* @author Brad Conte
+* @author GogeBlue
+*/
+cmtInt64 cmtBase64Decode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size);
+
+/**
+* @brief Base相关函数，仅供内部使用
+* @date 2021-09-20
+* @author Brad Conte
+* @author GogeBlue
+*/
+cmtUint8 cmtRevChar(char ch);
+/*--------------------------------对称加密函数 结束--------------------------------*/
 
 
 #endif

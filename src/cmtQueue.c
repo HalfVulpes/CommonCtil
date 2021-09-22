@@ -11,11 +11,11 @@ cmtQueue* cmtQueueInit(cmtUint64 size)
 {
 	cmtQueue* queue;
 
-	//½á¹¹Ìå
+	//ç»“æ„ä½“
 	queue = malloc(sizeof(cmtQueue));
 	if (!queue) return 0;
 
-	//Êı¾İ¿Õ¼ä
+	//æ•°æ®ç©ºé—´
 	queue->base = malloc(size);
 	if (!queue->base)
 	{
@@ -23,7 +23,7 @@ cmtQueue* cmtQueueInit(cmtUint64 size)
 		return 0;
 	}
 
-	//³õÊ¼»¯Öµ
+	//åˆå§‹åŒ–å€¼
 	queue->size = size;
 	queue->bgn = 0;
 	queue->end = 0;
@@ -36,17 +36,17 @@ cmtUint8 cmtQueueIn(cmtQueue* queue, cmtUint8* data, cmtUint64 size)
 {
 	cmtUint64 rData;
 
-	//ÕıĞò
+	//æ­£åº
 	if (queue->end > queue->bgn || queue->empty)
 	{
-		//Ê£Óà¿Õ¼ä
+		//å‰©ä½™ç©ºé—´
 		if (queue->end - queue->bgn + size > queue->size) return 0xff;
 
-		//²»ĞèÒª·´×ª
+		//ä¸éœ€è¦åè½¬
 		if (size <= queue->size - queue->end)
 			for (rData = 0; rData < size; rData++, queue->end++)
 				queue->base[queue->end] = data[rData];
-		//ĞèÒª·´×ª
+		//éœ€è¦åè½¬
 		else
 		{
 			for (rData = 0; queue->end <= queue->size; rData++, queue->end++)
@@ -55,13 +55,13 @@ cmtUint8 cmtQueueIn(cmtQueue* queue, cmtUint8* data, cmtUint64 size)
 				queue->base[queue->end] = data[rData];
 		}
 	}
-	//ÄæĞò
+	//é€†åº
 	else
 	{
-		//Ê£Óà¿Õ¼ä
+		//å‰©ä½™ç©ºé—´
 		if (size > queue->bgn - queue->end) return 0xff;
 
-		//¾ø¶Ô²»¿ÉÄÜ·´×ª
+		//ç»å¯¹ä¸å¯èƒ½åè½¬
 		for (rData = 0; rData < size; rData++, queue->end++)
 			queue->base[queue->end] = data[rData];
 	}
