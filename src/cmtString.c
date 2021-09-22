@@ -612,3 +612,63 @@ void cmtU8toU16(cmtU8str* u8, cmtU16str* u16)
 		}
 	}
 }
+
+cmtUint64 cmtU8toU32size(cmtU8str* u8)
+{
+	return cmtU8len(u8) * 4;
+}
+
+void cmtU8toU32(cmtU8str* u8, cmtU32str* u32)
+{
+	cmtUint64 rU8 = 0, rU32 = 0;
+	cmtFchar u32temp;
+
+	while (rU8 < u8->size)
+	{
+		//'\0'
+		if (!u8->data[rU8])
+		{
+			u32->data[rU32] = 0;
+			rU8++;
+			rU32++;
+			continue;
+		}
+
+		if (u8->data[rU8] < 0x80)
+		{
+			u32->data[rU32] = u8->data[rU8] & 0x7f;
+			rU8++;
+		}
+		else if (u8->data[rU8] < 0xe0)
+		{
+			u32temp = u8->data[rU8] & 0x1f;
+			u32temp <<= 6;
+			u32temp += u8->data[rU8 + 1] & 0x3f;
+			u32->data[rU32] = u32temp;
+			rU8 += 2;
+		}
+		else if (u8->data[rU8] < 0xf0)
+		{
+			u32temp = u8->data[rU8] & 0xf;
+			u32temp <<= 6;
+			u32temp += u8->data[rU8 + 1] & 0x3f;
+			u32temp <<= 6;
+			u32temp += u8->data[rU8 + 2] & 0x3f;
+			u32->data[rU32] = u32temp;
+			rU8 += 3;
+		}
+		else
+		{
+			u32temp = u8->data[rU8] & 0x7;
+			u32temp <<= 6;
+			u32temp += u8->data[rU8 + 1] & 0x3f;
+			u32temp <<= 6;
+			u32temp += u8->data[rU8 + 2] & 0x3f;
+			u32temp <<= 6;
+			u32temp += u8->data[rU8 + 3] & 0x3f;
+			u32->data[rU32] = u32temp;
+			rU8 += 4;
+		}
+		rU32++;
+	}
+}
