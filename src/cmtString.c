@@ -1,6 +1,6 @@
 /**
 * @file cmtCore.c
-* @date 2021-09-22
+* @date 2021-09-23
 * @author Dexnab
 */
 
@@ -1117,15 +1117,6 @@ void cmtU32toU8(cmtU32str* u32, cmtU8str* u8)
 	{
 		u32temp = u32->data[rU32];
 
-		//'\0'
-		if (!u32temp)
-		{
-			u8->data[rU8] = 0;
-			rU32++;
-			rU8++;
-			continue;
-		}
-
 		//[0,0x7f]
 		if (u32temp < 0x80)
 		{
@@ -1172,5 +1163,46 @@ void cmtU32toU8(cmtU32str* u32, cmtU8str* u8)
 			rU8 += 4;
 		}
 		rU32++;
+	}
+}
+
+cmtUint64 cmtU32toU16size(cmtU32str* u32)
+{
+	cmtUint64 rU32 = 0, u16size = 0;
+	cmtUint64 maxr;
+
+	maxr = u32->size / 4;
+	while (rU32 < maxr)
+	{
+		if (u32->data[rU32] < 0x10000) u16size += 2;
+		else u16size += 4;
+	}
+
+	return u16size;
+}
+
+void cmtU32toU16(cmtU32str* u32, cmtU16str* u16)
+{
+	cmtUint64 rU32 = 0, rU16 = 0;
+	cmtUint64 maxr;
+	cmtFchar u32temp;
+
+	maxr = u32->size / 4;
+	while (rU32 < maxr)
+	{
+		u32temp = u32->data[rU32];
+		if (u32temp < 0x10000)
+		{
+			u16->data[rU16] = (cmtUint16)u32temp;
+			rU16++;
+		}
+		else
+		{
+			u16->data[rU16 + 1] = (cmtUint16)u32temp & 0x3ff;
+			u16->data[rU16 + 1] += 0xdc00;
+			u16->data[rU16] = (cmtUint16)(u32temp >> 10 & 0x3ff);
+			u16->data[rU16] = u16->data[rU16] - 0x40 + 0xd800;
+			rU16 += 2;
+		}
 	}
 }

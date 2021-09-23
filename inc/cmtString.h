@@ -3,7 +3,7 @@
 * @brief 字符串处理库
 * @par Windows 依赖库：
 * @par Linux 依赖库：
-* @date 2021-09-22
+* @date 2021-09-23
 * @author Dexnab
 */
 
@@ -18,29 +18,53 @@
 
 /*--------------------------------结构体定义 开始--------------------------------*/
 
+/**
+* @struct cmtANSIstr
+* @brief ANSI字符串
+* @date 2021-9-23
+* @author dexnab
+*/
 typedef struct _CMTANSISTR
 {
-	cmtChar* data;
-	cmtUint64 size;
-	cmtChar* locale;
+	cmtChar* data;//<字符数组
+	cmtUint64 size;//<总字节数
+	cmtChar* locale;//locale字符串（注意以\\0结尾）
 }cmtANSIstr;
 
+/**
+* @struct cmtU8str
+* @brief UTF-8字符串
+* @date 2021-9-23
+* @author dexnab
+*/
 typedef struct _CMTU8STR
 {
-	cmtChar* data;
-	cmtUint64 size;
+	cmtChar* data;//<字符数组
+	cmtUint64 size;//<总字节数
 }cmtU8str;
 
+/**
+* @struct cmtU16str
+* @brief UTF-16字符串
+* @date 2021-9-23
+* @author dexnab
+*/
 typedef struct _CMTU16STR
 {
-	cmtWchar* data;
-	cmtUint64 size;
+	cmtWchar* data;//<字符数组
+	cmtUint64 size;//<总字节数
 }cmtU16str;
 
+/**
+* @struct cmtU32str
+* @brief UTF-32字符串
+* @date 2021-9-23
+* @author dexnab
+*/
 typedef struct _CMTU32STR
 {
-	cmtFchar* data;
-	cmtUint64 size;
+	cmtFchar* data;//<字符数组
+	cmtUint64 size;//<总字节数
 }cmtU32str;
 /*--------------------------------结构体定义 结束--------------------------------*/
 
@@ -55,6 +79,14 @@ typedef struct _CMTU32STR
 
 /*--------------------------------字符编码处理函数 开始--------------------------------*/
 
+/**
+* @brief 测量ANSI字符字节数
+* @param[in] ch 字符首地址
+* @param[in] locale locale字符串（注意以\\0结尾）
+* @return 字符字节数
+* @date 2021-09-23
+* @author dexnab
+*/
 extern cmtUint8 cmtANSIchSize(cmtChar* ch, cmtChar* locale);
 
 extern cmtUint64 cmtANSIstrSize(cmtChar* str);
