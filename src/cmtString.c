@@ -419,7 +419,7 @@ cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale, cmtBool* err)
 			//恢复locale
 			setlocale(LC_ALL, CurLocaleCp);
 
-			*err = TRUE;
+			if (err) *err = TRUE;
 			return 0;
 		}
 
@@ -429,7 +429,7 @@ cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale, cmtBool* err)
 	//恢复locale
 	setlocale(LC_ALL, CurLocaleCp);
 
-	*err = FALSE;
+	if (err) *err = FALSE;
 	return ASsize;
 }
 
@@ -671,4 +671,62 @@ void cmtU8toU32(cmtU8str* u8, cmtU32str* u32)
 		}
 		rU32++;
 	}
+}
+
+cmtUint8 cmtU16chSize(cmtWchar* ch)
+{
+	//如果首字在保留区间外，那么绝对只有一个字
+	if (*ch < CMT_UNICODE_RSV_START || *ch > CMT_UNICODE_RSV_END) return 2;
+	//如果首字在保留区间内，那么绝对有两个字，范围为[0x010000,0x10ffff]
+	else return 4;
+}
+
+cmtUint64 cmtU16strSize(cmtWchar* str)
+{
+	cmtUint64 r = 0;
+
+	while (str[r]) r++;
+
+	return r * 2;
+}
+
+cmtUint64 cmtU16len(cmtU16str* str)
+{
+	cmtUint64 r = 0, len = 0;
+	cmtUint64 maxr;
+
+	maxr = str->size / 2;
+	while (r < maxr)
+	{
+		//如果首字在保留区间外，那么绝对只有一个字
+		if (str->data[r] < CMT_UNICODE_RSV_START || str->data[r] > CMT_UNICODE_RSV_END) r++;
+		//如果首字在保留区间内，那么绝对有两个字，范围为[0x010000,0x10ffff]
+		else return r += 2;
+		len++;
+	}
+
+	return len;
+}
+
+cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err)
+{
+	cmtUint64 rU16 = 0, ASsize = 0;
+	cmtUint64 maxr;
+	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
+
+	//保存当前locale
+	memset(CurLocaleCp, 0, sizeof(CurLocaleCp));
+	CurLocale = setlocale(LC_ALL, NULL);
+	strncpy(CurLocaleCp, CurLocale, sizeof(CurLocaleCp) - 1);
+	//设置locale
+	setlocale(LC_ALL, locale);
+
+	maxr = u16->size / 2;
+	while (rU16 < maxr)
+	{
+
+	}
+
+	//恢复locale
+	setlocale(LC_ALL, CurLocaleCp);
 }

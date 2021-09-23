@@ -97,7 +97,7 @@ extern cmtUint64 cmtU16strSize(cmtWchar* str);
 
 extern cmtUint64 cmtU16len(cmtU16str* str);
 
-extern cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale);
+extern cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err);
 
 extern void cmtU16toANSI(cmtU16str* u16, cmtANSIstr* ansi);
 
