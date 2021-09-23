@@ -21,6 +21,7 @@
 void cmtDemoANSI()
 {
 	cmtANSIstr ansi = CMT_CONSTSTR("\x31\x32\x33\xb2\xe2\xca\xd4\x31\x32\x33");
+	ansi.locale = "zh-cn";
 	cmtU8str u8;
 	cmtU16str u16;
 	cmtU32str u32;
@@ -29,10 +30,35 @@ void cmtDemoANSI()
 	u8.data = malloc(u8.size);
 	if (!u8.data)
 	{
-		printf("ERROR: memory not enough\n");
+		printf("cmtDemoANSI: ERROR: memory not enough\n");
 		return;
 	}
 	cmtANSItoU8(&ansi, &u8);
+
+	u16.size = cmtANSItoU16size(&ansi);
+	u16.data = malloc(u16.size);
+	if (!u16.data)
+	{
+		printf("cmtDemoANSI: ERROR: memory not enough\n");
+		free(u8.data);
+		return;
+	}
+	cmtANSItoU16(&ansi, &u16);
+
+	u32.size = cmtANSItoU32size(&ansi);
+	u32.data = malloc(u32.size);
+	if (!u32.data)
+	{
+		printf("cmtDemoANSI: ERROR: memory not enough\n");
+		free(u8.data);
+		free(u16.data);
+		return;
+	}
+	cmtANSItoU32(&ansi, &u32);
+
+	free(u8.data);
+	free(u16.data);
+	free(u32.data);
 }
 
 int main(int argc, char** agrv)
@@ -42,7 +68,7 @@ int main(int argc, char** agrv)
 	cmtU32str u32 = CMT_CONSTSTR("\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x55\x3c\x02\x00\x61\x00\x00\x00");
 
 	//ansi->utf-8
-
+	cmtDemoANSI();
 
 	return 0;
 }
