@@ -703,7 +703,7 @@ cmtUint64 cmtU16len(cmtU16str* str)
 		//如果首字在保留区间外，那么绝对只有一个字
 		if (str->data[r] < CMT_UNICODE_RSV_START || str->data[r] > CMT_UNICODE_RSV_END) r++;
 		//如果首字在保留区间内，那么绝对有两个字，范围为[0x010000,0x10ffff]
-		else return r += 2;
+		else r += 2;
 		len++;
 	}
 
@@ -1179,6 +1179,7 @@ cmtUint64 cmtU32toU16size(cmtU32str* u32)
 	{
 		if (u32->data[rU32] < 0x10000) u16size += 2;
 		else u16size += 4;
+		rU32++;
 	}
 
 	return u16size;
@@ -1207,5 +1208,6 @@ void cmtU32toU16(cmtU32str* u32, cmtU16str* u16)
 			u16->data[rU16] = u16->data[rU16] - 0x40 + 0xd800;
 			rU16 += 2;
 		}
+		rU32++;
 	}
 }

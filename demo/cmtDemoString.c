@@ -164,6 +164,57 @@ void cmtDemoU16()
 	free(u32.data);
 }
 
+void cmtDemoU32()
+{
+	//同样，由于"xxx"只会自动在结尾加一个'\0'，所以还要手动再加三个
+	cmtU8str u32a = CMT_CONSTSTR("\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x00\x00\x00");
+	cmtU8str u32 = CMT_CONSTSTR("\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x55\x3c\x02\x00\x61\x00\x00\x00\x00\x00\x00");
+	cmtANSIstr ansi;
+	cmtU8str u8;
+	cmtU16str u16;
+	cmtBool err;
+
+	ansi.size = cmtU32toANSIsize(&u32a, "zh-cn", &err);
+	if (err)
+	{
+		printf("cmtDemoU32: ERROR: failed to convert into ANSI\n");
+		return;
+	}
+	ansi.data = malloc(ansi.size);
+	if (!ansi.data)
+	{
+		printf("cmtDemoU32: ERROR: memory not enough\n");
+		return;
+	}
+	ansi.locale = "zh-cn";
+	cmtU32toANSI(&u32a, &ansi);
+
+	u8.size = cmtU32toU8size(&u32);
+	u8.data = malloc(u8.size);
+	if (!u8.data)
+	{
+		printf("cmtDemoU32: ERROR: memory not enough\n");
+		free(ansi.data);
+		return;
+	}
+	cmtU32toU8(&u32, &u8);
+
+	u16.size = cmtU32toU16size(&u32);
+	u16.data = malloc(u16.size);
+	if (!u16.data)
+	{
+		printf("cmtDemoU32: ERROR: memory not enough\n");
+		free(ansi.data);
+		free(u8.data);
+		return;
+	}
+	cmtU32toU16(&u32, &u16);
+
+	free(ansi.data);
+	free(u8.data);
+	free(u16.data);
+}
+
 int main(int argc, char** agrv)
 {
 	cmtU8str u8 = CMT_CONSTSTR("\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33\xf0\xa3\xb1\x95\x61");
@@ -178,6 +229,9 @@ int main(int argc, char** agrv)
 
 	//utf-16->?
 	cmtDemoU16();
+
+	//utf-32->?
+	cmtDemoU32();
 
 	return 0;
 }
