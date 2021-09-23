@@ -346,7 +346,10 @@ cmtUint64 cmtU8len(cmtU8str* str)
 	cmtUint64 r = 0, len = 0;
 
 	while (r < str->size)
+	{
 		if (str->data[r] < 0x80 || str->data[r] >= 0xc0) len++;
+		r++;
+	}
 
 	return len;
 }
@@ -733,12 +736,7 @@ cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err)
 			continue;
 		}
 
-		//如果首字在保留区间外，那么绝对只有一个字
-		if (u16->data[rU16] < CMT_UNICODE_RSV_START || u16->data[rU16] > CMT_UNICODE_RSV_END) rU16++;
-		//如果首字在保留区间内，那么绝对有两个字，范围为[0x010000,0x10ffff]
-		else return rU16 += 2;
-
-		chsize = wctomb(AStemp, u16->data + rU16);
+		chsize = wctomb(AStemp, u16->data[rU16]);
 		if (chsize == -1)
 		{
 			//恢复locale
@@ -746,6 +744,11 @@ cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err)
 			if (err) *err = TRUE;
 			return 0;
 		}
+
+		//如果首字在保留区间外，那么绝对只有一个字
+		if (u16->data[rU16] < CMT_UNICODE_RSV_START || u16->data[rU16] > CMT_UNICODE_RSV_END) rU16++;
+		//如果首字在保留区间内，那么绝对有两个字，范围为[0x010000,0x10ffff]
+		else return rU16 += 2;
 		ASsize += chsize;
 	}
 
@@ -781,18 +784,18 @@ cmtBool cmtU16toANSI(cmtU16str* u16, cmtANSIstr* ansi)
 			continue;
 		}
 
-		//如果首字在保留区间外，那么绝对只有一个字
-		if (u16->data[rU16] < CMT_UNICODE_RSV_START || u16->data[rU16] > CMT_UNICODE_RSV_END) rU16++;
-		//如果首字在保留区间内，那么绝对有两个字，范围为[0x010000,0x10ffff]
-		else return rU16 += 2;
-
-		chsize = wctomb(ansi->data + rAs, u16->data + rU16);
+		chsize = wctomb(ansi->data + rAs, u16->data[rU16]);
 		if (chsize == -1)
 		{
 			//恢复locale
 			setlocale(LC_ALL, CurLocaleCp);
 			return TRUE;
 		}
+
+		//如果首字在保留区间外，那么绝对只有一个字
+		if (u16->data[rU16] < CMT_UNICODE_RSV_START || u16->data[rU16] > CMT_UNICODE_RSV_END) rU16++;
+		//如果首字在保留区间内，那么绝对有两个字，范围为[0x010000,0x10ffff]
+		else return rU16 += 2;
 		rAs += chsize;
 	}
 
@@ -946,7 +949,7 @@ void cmtU16toU32(cmtU16str* u16, cmtU32str* u32)
 
 			u16temp[0] = u16temp[0] - 0xd800 + 0x40;
 			u16temp[1] -= 0xdc00;
-			u32->data[rU32] = (u16temp[0] << 16) + u16temp[1];
+			u32->data[rU32] = ((cmtUint32)u16temp[0] << 10) + u16temp[1];
 			rU16 += 2;
 		}
 		rU32++;
