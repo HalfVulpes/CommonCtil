@@ -20,7 +20,7 @@
 
 /**
 * @struct cmtANSIstr
-* @brief ANSI字符串
+* @brief ANSI字符串结构体
 * @date 2021-9-23
 * @author dexnab
 */
@@ -33,7 +33,7 @@ typedef struct _CMTANSISTR
 
 /**
 * @struct cmtU8str
-* @brief UTF-8字符串
+* @brief UTF-8字符串结构体
 * @date 2021-9-23
 * @author dexnab
 */
@@ -45,7 +45,7 @@ typedef struct _CMTU8STR
 
 /**
 * @struct cmtU16str
-* @brief UTF-16字符串
+* @brief UTF-16字符串结构体
 * @date 2021-9-23
 * @author dexnab
 */
@@ -57,7 +57,7 @@ typedef struct _CMTU16STR
 
 /**
 * @struct cmtU32str
-* @brief UTF-32字符串
+* @brief UTF-32字符串结构体
 * @date 2021-9-23
 * @author dexnab
 */
@@ -89,8 +89,22 @@ typedef struct _CMTU32STR
 */
 extern cmtUint8 cmtANSIchSize(cmtChar* ch, cmtChar* locale);
 
+/**
+* @brief 测量ANSI字符串总字节数
+* @param[in] str 字符串首地址
+* @return 字符串总字节数
+* @date 2021-09-23
+* @author dexnab
+*/
 extern cmtUint64 cmtANSIstrSize(cmtChar* str);
 
+/**
+* @brief 测量ANSI字符串总字节数
+* @param[in] str 字符串结构体
+* @return 字符串总字节数
+* @date 2021-09-23
+* @author dexnab
+*/
 extern cmtUint64 cmtANSIlen(cmtANSIstr* str);
 
 extern cmtUint64 cmtANSItoU8size(cmtANSIstr* ansi);
