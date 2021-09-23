@@ -99,7 +99,7 @@ extern cmtUint64 cmtU16len(cmtU16str* str);
 
 extern cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err);
 
-extern void cmtU16toANSI(cmtU16str* u16, cmtANSIstr* ansi);
+extern cmtBool cmtU16toANSI(cmtU16str* u16, cmtANSIstr* ansi);
 
 extern cmtUint64 cmtU16toU8size(cmtU16str* u16);
 
@@ -111,9 +111,9 @@ extern void cmtU16toU32(cmtU16str* u16, cmtU32str* u32);
 
 extern cmtUint64 cmtU32strSize(cmtFchar* str);
 
-extern cmtUint64 cmtU32toANSIsize(cmtU32str* u32, cmtChar* locale);
+extern cmtUint64 cmtU32toANSIsize(cmtU32str* u32, cmtChar* locale, cmtBool* err);
 
-extern void cmtU32toANSI(cmtU32str* u32, cmtANSIstr* ansi);
+extern cmtBool cmtU32toANSI(cmtU32str* u32, cmtANSIstr* ansi);
 
 extern cmtUint64 cmtU32toU8size(cmtU32str* u32);
 
