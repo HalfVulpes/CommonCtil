@@ -3,6 +3,7 @@
 * @brief 字符串处理库
 * @par Windows 依赖库：
 * @par Linux 依赖库：
+* @note 本库中所有的UTF-16和UTF-32均为小端模式存储
 * @date 2021-09-23
 * @author Dexnab
 */
