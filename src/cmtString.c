@@ -151,7 +151,7 @@ void cmtANSItoU8(cmtANSIstr* ansi, cmtU8str* u8)
 			else if (u16temp[0] < 0x800)
 			{
 				//u8第二字节
-				u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
+				u8->data[rU8 + 1] = 0x80 + ((cmtUint8)u16temp[0] & 0x3f);
 				//u8第一字节
 				u16temp[0] >>= 6;
 				u8->data[rU8] = 0xc0 + (cmtUint8)u16temp[0];
@@ -161,10 +161,10 @@ void cmtANSItoU8(cmtANSIstr* ansi, cmtU8str* u8)
 			else
 			{
 				//u8第三字节
-				u8->data[rU8 + 2] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
+				u8->data[rU8 + 2] = 0x80 + ((cmtUint8)u16temp[0] & 0x3f);
 				//u8第二字节
 				u16temp[0] >>= 6;
-				u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
+				u8->data[rU8 + 1] = 0x80 + ((cmtUint8)u16temp[0] & 0x3f);
 				//u8第三字节
 				u16temp[0] >>= 6;
 				u8->data[rU8] = 0xe0 + (cmtUint8)u16temp[0];
@@ -177,13 +177,13 @@ void cmtANSItoU8(cmtANSIstr* ansi, cmtU8str* u8)
 			u16temp[0] = u16temp[0] - 0xd800 + 0x40;
 			u16temp[1] -= 0xdc00;
 			//u8第四字节
-			u8->data[rU8 + 3] = 0x80 + (cmtUint8)u16temp[1] & 0x3f;
+			u8->data[rU8 + 3] = 0x80 + ((cmtUint8)u16temp[1] & 0x3f);
 			//u8第三字节
 			u16temp[1] >>= 6;
 			u8->data[rU8 + 2] = 0x80 + (cmtUint8)u16temp[1] + (((cmtUint8)u16temp[0] & 0x3) << 4);
 			//u8第二字节
 			u16temp[0] >>= 2;
-			u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
+			u8->data[rU8 + 1] = 0x80 + ((cmtUint8)u16temp[0] & 0x3f);
 			//u8第一字节
 			u16temp[0] >>= 6;
 			u8->data[rU8] = 0xf0 + (cmtUint8)u16temp[0];
@@ -871,7 +871,7 @@ void cmtU16toU8(cmtU16str* u16, cmtU8str* u8)
 			else if (u16temp[0] < 0x800)
 			{
 				//u8第二字节
-				u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
+				u8->data[rU8 + 1] = 0x80 + ((cmtUint8)u16temp[0] & 0x3f);
 				//u8第一字节
 				u16temp[0] >>= 6;
 				u8->data[rU8] = 0xc0 + (cmtUint8)u16temp[0];
@@ -881,10 +881,10 @@ void cmtU16toU8(cmtU16str* u16, cmtU8str* u8)
 			else
 			{
 				//u8第三字节
-				u8->data[rU8 + 2] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
+				u8->data[rU8 + 2] = 0x80 + ((cmtUint8)u16temp[0] & 0x3f);
 				//u8第二字节
 				u16temp[0] >>= 6;
-				u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
+				u8->data[rU8 + 1] = 0x80 + ((cmtUint8)u16temp[0] & 0x3f);
 				//u8第一字节
 				u16temp[0] >>= 6;
 				u8->data[rU8] = 0xe0 + (cmtUint8)u16temp[0];
@@ -901,13 +901,13 @@ void cmtU16toU8(cmtU16str* u16, cmtU8str* u8)
 			u16temp[0] = u16temp[0] - 0xd800 + 0x40;
 			u16temp[1] -= 0xdc00;
 			//u8第四字节
-			u8->data[rU8 + 3] = 0x80 + (cmtUint8)u16temp[1] & 0x3f;
+			u8->data[rU8 + 3] = 0x80 + ((cmtUint8)u16temp[1] & 0x3f);
 			//u8第三字节
 			u16temp[1] >>= 6;
 			u8->data[rU8 + 2] = 0x80 + (cmtUint8)u16temp[1] + (((cmtUint8)u16temp[0] & 0x3) << 4);
 			//u8第二字节
 			u16temp[0] >>= 2;
-			u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
+			u8->data[rU8 + 1] = 0x80 + ((cmtUint8)u16temp[0] & 0x3f);
 			//u8第一字节
 			u16temp[0] >>= 6;
 			u8->data[rU8] = 0xf0 + (cmtUint8)u16temp[0];
@@ -1127,7 +1127,7 @@ void cmtU32toU8(cmtU32str* u32, cmtU8str* u8)
 		else if (u32->data[rU32] < 0x800)
 		{
 			//u8第二字节
-			u8->data[rU8 + 1] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			u8->data[rU8 + 1] = 0x80 + ((cmtUint8)u32temp & 0x3f);
 			//u8第一字节
 			u32temp >>= 6;
 			u8->data[rU8] = 0xc0 + (cmtUint8)u32temp;
@@ -1137,10 +1137,10 @@ void cmtU32toU8(cmtU32str* u32, cmtU8str* u8)
 		else if (u32->data[rU32] < 0x10000)
 		{
 			//u8第三字节
-			u8->data[rU8 + 2] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			u8->data[rU8 + 2] = 0x80 + ((cmtUint8)u32temp & 0x3f);
 			//u8第二字节
 			u32temp >>= 6;
-			u8->data[rU8 + 1] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			u8->data[rU8 + 1] = 0x80 + ((cmtUint8)u32temp & 0x3f);
 			//u8第一字节
 			u32temp >>= 6;
 			u8->data[rU8] = 0xe0 + (cmtUint8)u32temp;
@@ -1150,13 +1150,13 @@ void cmtU32toU8(cmtU32str* u32, cmtU8str* u8)
 		else
 		{
 			//u8第四字节
-			u8->data[rU8 + 3] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			u8->data[rU8 + 3] = 0x80 + ((cmtUint8)u32temp & 0x3f);
 			//u8第三字节
 			u32temp >>= 6;
-			u8->data[rU8 + 2] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			u8->data[rU8 + 2] = 0x80 + ((cmtUint8)u32temp & 0x3f);
 			//u8第二字节
 			u32temp >>= 6;
-			u8->data[rU8 + 1] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			u8->data[rU8 + 1] = 0x80 + ((cmtUint8)u32temp & 0x3f);
 			//u8第一字节
 			u32temp >>= 6;
 			u8->data[rU8] = 0xf0 + (cmtUint8)u32temp;
