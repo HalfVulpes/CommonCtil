@@ -378,7 +378,7 @@ cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale, cmtBool* err)
 
 		if (u8->data[rU8] < 0x80)
 		{
-			u16temp[0] = u8->data[rU8] & 0x7f;
+			u16temp[0] = u8->data[rU8];
 			rU8++;
 		}
 		else if (u8->data[rU8] < 0xe0)
@@ -459,7 +459,7 @@ cmtBool cmtU8toANSI(cmtU8str* u8, cmtANSIstr* ansi)
 
 		if (u8->data[rU8] < 0x80)
 		{
-			u16temp[0] = u8->data[rU8] & 0x7f;
+			u16temp[0] = u8->data[rU8];
 			rU8++;
 		}
 		else if (u8->data[rU8] < 0xe0)
@@ -568,7 +568,7 @@ void cmtU8toU16(cmtU8str* u8, cmtU16str* u16)
 
 		if (u8->data[rU8] < 0x80)
 		{
-			u16->data[rU16] = u8->data[rU8] & 0x7f;
+			u16->data[rU16] = u8->data[rU8];
 			rU8++;
 			rU16++;
 		}
@@ -635,7 +635,7 @@ void cmtU8toU32(cmtU8str* u8, cmtU32str* u32)
 
 		if (u8->data[rU8] < 0x80)
 		{
-			u32->data[rU32] = u8->data[rU8] & 0x7f;
+			u32->data[rU32] = u8->data[rU8];
 			rU8++;
 		}
 		else if (u8->data[rU8] < 0xe0)
@@ -885,7 +885,7 @@ void cmtU16toU8(cmtU16str* u16, cmtU8str* u8)
 				//u8第二字节
 				u16temp[0] >>= 6;
 				u8->data[rU8 + 1] = 0x80 + (cmtUint8)u16temp[0] & 0x3f;
-				//u8第三字节
+				//u8第一字节
 				u16temp[0] >>= 6;
 				u8->data[rU8] = 0xe0 + (cmtUint8)u16temp[0];
 				rU8 += 3;
@@ -1092,8 +1092,85 @@ cmtUint64 cmtU32toU8size(cmtU32str* u32)
 	maxr = u32->size / 4;
 	while (rU32 < maxr)
 	{
+		//[0,0x7f]
 		if (u32->data[rU32] < 0x80) u8size++;
 		//[0x80,0x07ff]
 		else if (u32->data[rU32] < 0x800) u8size += 2;
+		//[0x0800,0xffff]
+		else if (u32->data[rU32] < 0x10000) u8size += 3;
+		//[0x010000,0x10ffff]
+		else u8size += 4;
+		rU32++;
+	}
+
+	return u8size;
+}
+
+void cmtU32toU8(cmtU32str* u32, cmtU8str* u8)
+{
+	cmtUint64 rU32 = 0, rU8 = 0;
+	cmtUint64 maxr;
+	cmtFchar u32temp;
+
+	maxr = u32->size / 4;
+	while (rU32 < maxr)
+	{
+		u32temp = u32->data[rU32];
+
+		//'\0'
+		if (!u32temp)
+		{
+			u8->data[rU8] = 0;
+			rU32++;
+			rU8++;
+			continue;
+		}
+
+		//[0,0x7f]
+		if (u32temp < 0x80)
+		{
+			u8->data[rU8] = (cmtUint8)u32temp;
+			rU8++;
+		}
+		//[0x80,0x07ff]
+		else if (u32->data[rU32] < 0x800)
+		{
+			//u8第二字节
+			u8->data[rU8 + 1] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			//u8第一字节
+			u32temp >>= 6;
+			u8->data[rU8] = 0xc0 + (cmtUint8)u32temp;
+			rU8 += 2;
+		}
+		//[0x0800,0xffff]
+		else if (u32->data[rU32] < 0x10000)
+		{
+			//u8第三字节
+			u8->data[rU8 + 2] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			//u8第二字节
+			u32temp >>= 6;
+			u8->data[rU8 + 1] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			//u8第一字节
+			u32temp >>= 6;
+			u8->data[rU8] = 0xe0 + (cmtUint8)u32temp;
+			rU8 += 3;
+		}
+		//[0x010000,0x10ffff]
+		else
+		{
+			//u8第四字节
+			u8->data[rU8 + 3] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			//u8第三字节
+			u32temp >>= 6;
+			u8->data[rU8 + 2] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			//u8第二字节
+			u32temp >>= 6;
+			u8->data[rU8 + 1] = 0x80 + (cmtUint8)u32temp & 0x3f;
+			//u8第一字节
+			u32temp >>= 6;
+			u8->data[rU8] = 0xf0 + (cmtUint8)u32temp;
+			rU8 += 4;
+		}
+		rU32++;
 	}
 }
