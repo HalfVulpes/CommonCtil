@@ -411,6 +411,16 @@ extern void cmtU32toU16(cmtU32str* u32, cmtU16str* u16);
 
 /*--------------------------------字符串操作函数 开始--------------------------------*/
 
+/**
+* @brief 根据格式字符串生成字符串
+* @param[out] out 生成的字符串
+* @param[in] format 格式字符串
+* @param[in] ... 相应的参数（与格式字符串匹配）
+* @attention 格式字符串和生成的字符串都是UTF-8编码的
+* @attention 格式字符串具体要求见 doc/格式字符串.md
+* @date 2021-09-23
+* @author dexnab
+*/
 extern void cmtSprintf(cmtU8str* out, cmtU8str* format, ...);
 
 extern cmtBool cmtStrCmp(cmtU8str* str1, cmtU8str* str2);
