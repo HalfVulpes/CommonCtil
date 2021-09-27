@@ -125,7 +125,7 @@ void cmtANSItoU8(cmtANSIstr* ansi, cmtU8str* u8)
 	//设置locale
 	setlocale(LC_ALL, ansi->locale);
 
-	while (rAs < ansi->size)
+	while (rAs < ansi->size && rU8 < u8->size)
 	{
 		//'\0'
 		if (!ansi->data[rAs])
@@ -238,6 +238,7 @@ cmtUint64 cmtANSItoU16size(cmtANSIstr* ansi)
 void cmtANSItoU16(cmtANSIstr* ansi, cmtU16str* u16)
 {
 	cmtUint64 rAs = 0, rU16 = 0;
+	cmtUint64 rU16max;
 	cmtUint8 chsize;
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
 
@@ -248,7 +249,8 @@ void cmtANSItoU16(cmtANSIstr* ansi, cmtU16str* u16)
 	//设置locale
 	setlocale(LC_ALL, ansi->locale);
 
-	while (rAs < ansi->size)
+	rU16max = u16->size / 2;
+	while (rAs < ansi->size && rU16 < rU16max)
 	{
 		//'\0'
 		if (!ansi->data[rAs])
@@ -280,6 +282,7 @@ cmtUint64 cmtANSItoU32size(cmtANSIstr* ansi)
 void cmtANSItoU32(cmtANSIstr* ansi, cmtU32str* u32)
 {
 	cmtUint64 rAs = 0, rU32 = 0;
+	cmtUint64 rU32max;
 	cmtUint8 chsize;
 	cmtWchar u16temp[2];
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
@@ -291,7 +294,8 @@ void cmtANSItoU32(cmtANSIstr* ansi, cmtU32str* u32)
 	//设置locale
 	setlocale(LC_ALL, ansi->locale);
 
-	while (rAs < ansi->size)
+	rU32max = u32->size / 4;
+	while (rAs < ansi->size && rU32 < rU32max)
 	{
 		//'\0'
 		if (!ansi->data[rAs])
@@ -449,7 +453,7 @@ cmtBool cmtU8toANSI(cmtU8str* u8, cmtANSIstr* ansi)
 	//设置locale
 	setlocale(LC_ALL, ansi->locale);
 
-	while (rU8 < u8->size)
+	while (rU8 < u8->size && rAs < ansi->size)
 	{
 		//'\0'
 		if (!u8->data[rU8])
@@ -556,9 +560,11 @@ cmtUint64 cmtU8toU16size(cmtU8str* u8)
 void cmtU8toU16(cmtU8str* u8, cmtU16str* u16)
 {
 	cmtUint64 rU8 = 0, rU16 = 0;
+	cmtUint64 rU16max;
 	cmtWchar u16temp[2];
 
-	while (rU8 < u8->size)
+	rU16max = u16->size / 2;
+	while (rU8 < u8->size && rU16 < rU16max)
 	{
 		//'\0'
 		if (!u8->data[rU8])
@@ -623,9 +629,11 @@ cmtUint64 cmtU8toU32size(cmtU8str* u8)
 void cmtU8toU32(cmtU8str* u8, cmtU32str* u32)
 {
 	cmtUint64 rU8 = 0, rU32 = 0;
+	cmtUint64 rU32max;
 	cmtFchar u32temp;
 
-	while (rU8 < u8->size)
+	rU32max = u32->size / 4;
+	while (rU8 < u8->size && rU32 < rU32max)
 	{
 		//'\0'
 		if (!u8->data[rU8])
@@ -713,7 +721,7 @@ cmtUint64 cmtU16len(cmtU16str* str)
 cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err)
 {
 	cmtUint64 rU16 = 0, ASsize = 0;
-	cmtUint64 maxr;
+	cmtUint64 rU16max;
 	cmtChar AStemp[MB_LEN_MAX];
 	cmtInt8 chsize;
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
@@ -725,8 +733,8 @@ cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err)
 	//设置locale
 	setlocale(LC_ALL, locale);
 
-	maxr = u16->size / 2;
-	while (rU16 < maxr)
+	rU16max = u16->size / 2;
+	while (rU16 < rU16max)
 	{
 		//'\0'
 		if (!u16->data[rU16])
@@ -761,7 +769,7 @@ cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err)
 cmtBool cmtU16toANSI(cmtU16str* u16, cmtANSIstr* ansi)
 {
 	cmtUint64 rU16 = 0, rAs = 0;
-	cmtUint64 maxr;
+	cmtUint64 rU16max;
 	cmtInt8 chsize;
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
 
@@ -772,8 +780,8 @@ cmtBool cmtU16toANSI(cmtU16str* u16, cmtANSIstr* ansi)
 	//设置locale
 	setlocale(LC_ALL, ansi->locale);
 
-	maxr = u16->size / 2;
-	while (rU16 < maxr)
+	rU16max = u16->size / 2;
+	while (rU16 < rU16max && rAs < ansi->size)
 	{
 		//'\0'
 		if (!u16->data[rU16])
@@ -807,10 +815,10 @@ cmtBool cmtU16toANSI(cmtU16str* u16, cmtANSIstr* ansi)
 cmtUint64 cmtU16toU8size(cmtU16str* u16)
 {
 	cmtUint64 rU16 = 0, u8size = 0;
-	cmtUint64 maxr;
+	cmtUint64 rU16max;
 
-	maxr = u16->size / 2;
-	while (rU16 < maxr)
+	rU16max = u16->size / 2;
+	while (rU16 < rU16max)
 	{
 		//'\0'
 		if (!u16->data[rU16])
@@ -845,11 +853,11 @@ cmtUint64 cmtU16toU8size(cmtU16str* u16)
 void cmtU16toU8(cmtU16str* u16, cmtU8str* u8)
 {
 	cmtUint64 rU16 = 0, rU8 = 0;
-	cmtUint64 maxr;
+	cmtUint64 rU16max;
 	cmtWchar u16temp[2];
 
-	maxr = u16->size / 2;
-	while (rU16 < maxr)
+	rU16max = u16->size / 2;
+	while (rU16 < rU16max && rU8 < u8->size)
 	{
 		//'\0'
 		if (!u16->data[rU16])
@@ -929,11 +937,12 @@ cmtUint64 cmtU16toU32size(cmtU16str* u16)
 void cmtU16toU32(cmtU16str* u16, cmtU32str* u32)
 {
 	cmtUint64 rU16 = 0, rU32 = 0;
-	cmtUint64 maxr;
+	cmtUint64 rU16max, rU32max;
 	cmtWchar u16temp[2];
 
-	maxr = u16->size / 2;
-	while (rU16 < maxr)
+	rU16max = u16->size / 2;
+	rU32max = u32->size / 4;
+	while (rU16 < rU16max && rU32 < rU32max)
 	{
 		//如果首字在保留区间外，那么绝对只有一个字
 		if (u16->data[rU16] < CMT_UNICODE_RSV_START || u16->data[rU16] > CMT_UNICODE_RSV_END)
@@ -968,7 +977,7 @@ cmtUint64 cmtU32strSize(cmtFchar* str)
 cmtUint64 cmtU32toANSIsize(cmtU32str* u32, cmtChar* locale, cmtBool* err)
 {
 	cmtUint64 rU32 = 0, ASsize = 0;
-	cmtUint64 maxr;
+	cmtUint64 rU32max;
 	cmtInt8 chsize;
 	cmtWchar u16temp[2];
 	cmtChar AStemp[MB_LEN_MAX];
@@ -981,8 +990,8 @@ cmtUint64 cmtU32toANSIsize(cmtU32str* u32, cmtChar* locale, cmtBool* err)
 	//设置locale
 	setlocale(LC_ALL, locale);
 
-	maxr = u32->size / 4;
-	while (rU32 < maxr)
+	rU32max = u32->size / 4;
+	while (rU32 < rU32max)
 	{
 		//'\0'
 		if (!u32->data[rU32])
@@ -1030,7 +1039,7 @@ cmtUint64 cmtU32toANSIsize(cmtU32str* u32, cmtChar* locale, cmtBool* err)
 cmtBool cmtU32toANSI(cmtU32str* u32, cmtANSIstr* ansi)
 {
 	cmtUint64 rU32 = 0, rAs = 0;
-	cmtUint64 maxr;
+	cmtUint64 rU32max;
 	cmtInt8 chsize;
 	cmtWchar u16temp[2];
 	cmtChar CurLocaleCp[CMT_LOCALE_MAX], * CurLocale;
@@ -1042,8 +1051,8 @@ cmtBool cmtU32toANSI(cmtU32str* u32, cmtANSIstr* ansi)
 	//设置locale
 	setlocale(LC_ALL, ansi->locale);
 
-	maxr = u32->size / 4;
-	while (rU32 < maxr)
+	rU32max = u32->size / 4;
+	while (rU32 < rU32max && rAs < ansi->size)
 	{
 		//'\0'
 		if (!u32->data[rU32])
@@ -1090,10 +1099,10 @@ cmtBool cmtU32toANSI(cmtU32str* u32, cmtANSIstr* ansi)
 cmtUint64 cmtU32toU8size(cmtU32str* u32)
 {
 	cmtUint64 rU32 = 0, u8size = 0;
-	cmtUint64 maxr;
+	cmtUint64 rU32max;
 
-	maxr = u32->size / 4;
-	while (rU32 < maxr)
+	rU32max = u32->size / 4;
+	while (rU32 < rU32max)
 	{
 		//[0,0x7f]
 		if (u32->data[rU32] < 0x80) u8size++;
@@ -1112,11 +1121,11 @@ cmtUint64 cmtU32toU8size(cmtU32str* u32)
 void cmtU32toU8(cmtU32str* u32, cmtU8str* u8)
 {
 	cmtUint64 rU32 = 0, rU8 = 0;
-	cmtUint64 maxr;
+	cmtUint64 rU32max;
 	cmtFchar u32temp;
 
-	maxr = u32->size / 4;
-	while (rU32 < maxr)
+	rU32max = u32->size / 4;
+	while (rU32 < rU32max && rU8 < u8->size)
 	{
 		u32temp = u32->data[rU32];
 
@@ -1172,10 +1181,10 @@ void cmtU32toU8(cmtU32str* u32, cmtU8str* u8)
 cmtUint64 cmtU32toU16size(cmtU32str* u32)
 {
 	cmtUint64 rU32 = 0, u16size = 0;
-	cmtUint64 maxr;
+	cmtUint64 rU32max;
 
-	maxr = u32->size / 4;
-	while (rU32 < maxr)
+	rU32max = u32->size / 4;
+	while (rU32 < rU32max)
 	{
 		if (u32->data[rU32] < 0x10000) u16size += 2;
 		else u16size += 4;
@@ -1188,11 +1197,12 @@ cmtUint64 cmtU32toU16size(cmtU32str* u32)
 void cmtU32toU16(cmtU32str* u32, cmtU16str* u16)
 {
 	cmtUint64 rU32 = 0, rU16 = 0;
-	cmtUint64 maxr;
+	cmtUint64 rU32max, rU16max;
 	cmtFchar u32temp;
 
-	maxr = u32->size / 4;
-	while (rU32 < maxr)
+	rU32max = u32->size / 4;
+	rU16max = u16->size / 2;
+	while (rU32 < rU32max && rU16 < rU16max)
 	{
 		u32temp = u32->data[rU32];
 		if (u32temp < 0x10000)
@@ -1209,5 +1219,76 @@ void cmtU32toU16(cmtU32str* u32, cmtU16str* u16)
 			rU16 += 2;
 		}
 		rU32++;
+	}
+}
+
+void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
+{
+	cmtUint8* ArgList;
+	cmtUint64 rFmt = 0, rOut = 0;
+	cmtU8str FmtStr;
+	cmtUint64 rFmtStr;
+	cmtFmtInfo FmtInfo;
+
+	ArgList = format + sizeof(format);
+
+	while (rFmt < format->size && rOut < out->size)
+	{
+		//可能是格式控制字符串
+		if (format->data[rFmt] == '%')
+		{
+			//是个百分号而已 %%
+			if (format->data[rFmt + 1] == '%')
+			{
+				out->data[rOut++] = '%';
+				rFmt++;
+			}
+			//真正的格式控制字符串
+			else
+			{
+				//提取格式控制字符串
+				FmtStr.data = format + rFmt;
+				FmtStr.size = rFmt;
+				//找type字段
+				while (rFmt < format->size && (format->data[rFmt] == 'b' || format->data[rFmt] == 'B' ||
+					format->data[rFmt] == 'o' || format->data[rFmt] == 'O' || format->data[rFmt] == 'd' || format->data[rFmt] == 'D' ||
+					format->data[rFmt] == 'u' || format->data[rFmt] == 'U' || format->data[rFmt] == 'x' || format->data[rFmt] == 'X' ||
+					format->data[rFmt] == 'f' || format->data[rFmt] == 'F' || format->data[rFmt] == 'e' || format->data[rFmt] == 'E' ||
+					format->data[rFmt] == 'g' || format->data[rFmt] == 'G' || format->data[rFmt] == 'c' || format->data[rFmt] == 'C' ||
+					format->data[rFmt] == 's' || format->data[rFmt] == 'S')) rFmt++;
+				if (rFmt == format->size) break;
+				rFmt++;
+				FmtStr.size = rFmt - FmtStr.size;
+				
+				//分析格式控制字符串
+
+				//根据分析结果提取参数并输出
+			}
+		}
+		else
+		{
+			//不是格式控制字符串
+			//复制
+			if (format->data[rFmt] < 0x80)
+				out->data[rOut++] = format->data[rFmt++];
+			else if (format->data[rFmt] < 0xe0)
+			{
+				out->data[rOut++] = format->data[rFmt++];
+				out->data[rOut++] = format->data[rFmt++];
+			}
+			else if (format->data[rFmt] < 0xf0)
+			{
+				out->data[rOut++] = format->data[rFmt++];
+				out->data[rOut++] = format->data[rFmt++];
+				out->data[rOut++] = format->data[rFmt++];
+			}
+			else
+			{
+				out->data[rOut++] = format->data[rFmt++];
+				out->data[rOut++] = format->data[rFmt++];
+				out->data[rOut++] = format->data[rFmt++];
+				out->data[rOut++] = format->data[rFmt++];
+			}
+		}
 	}
 }

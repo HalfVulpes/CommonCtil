@@ -67,6 +67,36 @@ typedef struct _CMTU32STR
 	cmtFchar* data;//<字符数组
 	cmtUint64 size;//<总字节数
 }cmtU32str;
+
+typedef struct _CMTFMTPADINFO
+{
+	cmtBool align;
+	cmtBool content;
+	cmtUint64 length;
+}cmtFmtPadInfo;
+
+typedef struct _CMTFMTPRECINFO
+{
+	cmtBool flag;
+	cmtUint64 value;
+}cmtFmtPrecInfo;
+
+typedef struct _CMTFMTITRINFO
+{
+	cmtUint64 length;
+	cmtUint64 GroupSize;
+	cmtUint64 RowSize;
+}cmtFmtItrInfo;
+
+typedef struct _CMTFMTINFO
+{
+	cmtBool sign;
+	cmtFmtPadInfo padding;
+	cmtFmtPrecInfo precision;
+	cmtFmtItrInfo iteration;
+	cmtUint8 size;
+	cmtChar type;
+}cmtFmtInfo;
 /*--------------------------------结构体定义 结束--------------------------------*/
 
 /*--------------------------------宏定义 开始--------------------------------*/
@@ -74,6 +104,11 @@ typedef struct _CMTU32STR
 #define CMT_LOCALE_MAX 64
 #define CMT_UNICODE_RSV_START 0xd800
 #define CMT_UNICODE_RSV_END 0xdfff
+
+#define CMT_FMT_SIZE_HH 0
+#define CMT_FMT_SIZE_H 1
+#define CMT_FMT_SIZE_L 2
+#define CMT_FMT_SIZE_LL 3
 
 #define CMT_CONSTSTR(str) {str,sizeof(str)}
 /*--------------------------------宏定义 结束--------------------------------*/
@@ -411,11 +446,13 @@ extern void cmtU32toU16(cmtU32str* u32, cmtU16str* u16);
 
 /*--------------------------------字符串操作函数 开始--------------------------------*/
 
+extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
+
 /**
 * @brief 根据格式字符串生成字符串
 * @param[out] out 生成的字符串
 * @param[in] format 格式字符串
-* @param[in] ... 相应的参数（与格式字符串匹配）
+* @param[in] ... 参数列表（与格式字符串匹配）
 * @attention 格式字符串和生成的字符串都是UTF-8编码的
 * @attention 格式字符串具体要求见 doc/格式字符串.md
 * @date 2021-09-23
