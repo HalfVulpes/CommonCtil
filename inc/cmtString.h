@@ -72,15 +72,8 @@ typedef struct _CMTU32STR
 typedef union _CMTCOMMONBUF
 {
 	cmtUint64 u64;
-	cmtUint32 u32;
-	cmtUint16 u16;
-	cmtUint8 u8;
 	cmtInt64 i64;
-	cmtInt32 i32;
-	cmtInt16 i16;
-	cmtInt8 i8;
 	double f64;
-	float f32;
 }cmtCommonBuf;
 
 typedef struct _CMTFMTPADINFO
