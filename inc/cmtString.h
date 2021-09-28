@@ -16,6 +16,7 @@
 #include <string.h>
 #include <locale.h>
 #include <stdlib.h>
+#include <math.h>
 
 /*--------------------------------结构体定义 开始--------------------------------*/
 
@@ -77,12 +78,14 @@ typedef struct _CMTFMTPADINFO
 
 typedef struct _CMTFMTPRECINFO
 {
+	cmtBool enabled;
 	cmtBool flag;
 	cmtUint64 value;
 }cmtFmtPrecInfo;
 
 typedef struct _CMTFMTITRINFO
 {
+	cmtBool enabled;
 	cmtUint64 length;
 	cmtUint64 GroupSize;
 	cmtUint64 RowSize;

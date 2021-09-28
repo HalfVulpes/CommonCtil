@@ -1246,7 +1246,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 	cmtFmtInfo FmtInfo;
 	cmtU8str temp;
 
-	ArgList = format + sizeof(format);
+	ArgList = (cmtUint64)format + sizeof(format);
 
 	while (rFmt < format->size && rOut < out->size)
 	{
@@ -1314,6 +1314,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				//precision字段
 				if (FmtStr.data[rFmtStr] == '.')
 				{
+					FmtInfo.precision.enabled = TRUE;
 					rFmtStr++;
 					//flag
 					if (FmtStr.data[rFmtStr] == '=')
@@ -1328,10 +1329,13 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					temp.size = FmtStr.size - rFmtStr;
 					rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.precision.value);
 				}
+				else
+					FmtInfo.precision.enabled = FALSE;
 
 				//iteration字段
 				if (FmtStr.data[rFmtStr] == 'r')
 				{
+					FmtInfo.iteration.enabled = TRUE;
 					rFmtStr++;
 					//length
 					temp.data = FmtStr.data + rFmtStr;
@@ -1354,6 +1358,8 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.RowSize);
 					}
 				}
+				else
+					FmtInfo.iteration.enabled = FALSE;
 
 				//size字段
 				if (FmtStr.data[rFmtStr] == 'h')
@@ -1375,6 +1381,11 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				FmtInfo.type = FmtStr.data[FmtStr.size - 1];
 
 				//根据分析结果提取参数并输出
+				if (FmtInfo.type == 'b' || FmtInfo.type == 'B')
+				{
+					//计算长度
+					
+				}
 			}
 		}
 		else
