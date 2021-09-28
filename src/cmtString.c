@@ -1239,13 +1239,18 @@ cmtUint64 cmtStrtoUintDec(cmtU8str* in, cmtUint64* out)
 
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 {
+	//通用
 	cmtUint8* ArgList;
 	cmtUint64 rArg = 0;
 	cmtUint64 rFmt = 0, rOut = 0;
+	//格式控制字符串分析使用
 	cmtU8str FmtStr;
 	cmtUint64 rFmtStr;
 	cmtFmtInfo FmtInfo;
 	cmtU8str temp;
+	//构建输出字符串使用
+	cmtU8str OutStr;
+	cmtUint64 rOutStr;
 
 	ArgList = (cmtUint64)format + sizeof(format);
 
@@ -1421,7 +1426,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				//type字段
 				FmtInfo.type = FmtStr.data[FmtStr.size - 1];
 
-				//根据分析结果提取参数并输出
+				//根据分析结果构建输出字符串
 				if (FmtInfo.type == 'b' || FmtInfo.type == 'B')
 				{
 					//计算长度
