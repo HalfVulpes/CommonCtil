@@ -1842,89 +1842,99 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				}
 				else if (FmtInfo.type == 'X')
 				{
-				//从参数中载入指定长度的数据
-				value.u64 = 0;
-				if (FmtInfo.size == CMT_FMT_SIZE_HH) value.u64 = (cmtUint8)ArgList[rArg];
-				else if (FmtInfo.size == CMT_FMT_SIZE_H) value.u64 = (cmtUint16)ArgList[rArg];
-				else if (FmtInfo.size == CMT_FMT_SIZE_LL) value.u64 = (cmtUint64)ArgList[rArg];
-				else value.u64 = (cmtUint32)ArgList[rArg];
+					//从参数中载入指定长度的数据
+					value.u64 = 0;
+					if (FmtInfo.size == CMT_FMT_SIZE_HH) value.u64 = (cmtUint8)ArgList[rArg];
+					else if (FmtInfo.size == CMT_FMT_SIZE_H) value.u64 = (cmtUint16)ArgList[rArg];
+					else if (FmtInfo.size == CMT_FMT_SIZE_LL) value.u64 = (cmtUint64)ArgList[rArg];
+					else value.u64 = (cmtUint32)ArgList[rArg];
 
-				//计算长度
-				if (!FmtInfo.precision.enabled)
-				{
-					TempVal = value;
-					FmtInfo.precision.value = 0;
-					while (TempVal.u64)
+					//计算长度
+					if (!FmtInfo.precision.enabled)
 					{
-						FmtInfo.precision.value++;
-						TempVal.u64 /= 16;
+						TempVal = value;
+						FmtInfo.precision.value = 0;
+						while (TempVal.u64)
+						{
+							FmtInfo.precision.value++;
+							TempVal.u64 /= 16;
+						}
 					}
-				}
-				if (FmtInfo.padding.length > FmtInfo.precision.value)
-					OutStr.size = FmtInfo.padding.length;
-				else
-					OutStr.size = FmtInfo.precision.value;
+					if (FmtInfo.padding.length > FmtInfo.precision.value)
+						OutStr.size = FmtInfo.padding.length;
+					else
+						OutStr.size = FmtInfo.precision.value;
 
-				//构建字符串
-				rOutStr = 0;
-				//不用加padding
-				if (FmtInfo.padding.length <= FmtInfo.precision.value)
-				{
-					while (rOutStr < FmtInfo.precision.value)
+					//构建字符串
+					rOutStr = 0;
+					//不用加padding
+					if (FmtInfo.padding.length <= FmtInfo.precision.value)
 					{
-						//倒着写入（最低位在最右边）
-						OutStr.data[OutStr.size - rOutStr - 1] = value.u64 % 16 + '0';
-						//大于9的字符转A-F
-						if (OutStr.data[OutStr.size - rOutStr - 1] > '9')
-							OutStr.data[OutStr.size - rOutStr - 1] += 'A' - '9' - 1;
-						value.u64 /= 16;
-						rOutStr++;
+						while (rOutStr < FmtInfo.precision.value)
+						{
+							//倒着写入（最低位在最右边）
+							OutStr.data[OutStr.size - rOutStr - 1] = value.u64 % 16 + '0';
+							//大于9的字符转A-F
+							if (OutStr.data[OutStr.size - rOutStr - 1] > '9')
+								OutStr.data[OutStr.size - rOutStr - 1] += 'A' - '9' - 1;
+							value.u64 /= 16;
+							rOutStr++;
+						}
+					}
+					//需要加padding
+					else if (FmtInfo.padding.align)
+					{
+						PadFillSize = FmtInfo.padding.length - FmtInfo.precision.value;
+						while (rOutStr < PadFillSize)
+						{
+							//填充
+							if (FmtInfo.padding.content) OutStr.data[OutStr.size - rOutStr - 1] = '0';
+							else OutStr.data[OutStr.size - rOutStr - 1] = ' ';
+							rOutStr++;
+						}
+						while (rOutStr < OutStr.size)
+						{
+							//倒着写入（最低位在最右边）
+							OutStr.data[OutStr.size - rOutStr - 1] = value.u64 % 16 + '0';
+							//大于9的字符转A-F
+							if (OutStr.data[OutStr.size - rOutStr - 1] > '9')
+								OutStr.data[OutStr.size - rOutStr - 1] += 'A' - '9' - 1;
+							value.u64 /= 16;
+							rOutStr++;
+						}
+					}
+					else
+					{
+						while (rOutStr < FmtInfo.precision.value)
+						{
+							//倒着写入（最低位在最右边）
+							OutStr.data[OutStr.size - rOutStr - 1] = value.u64 % 16 + '0';
+							//大于9的字符转A-F
+							if (OutStr.data[OutStr.size - rOutStr - 1] > '9')
+								OutStr.data[OutStr.size - rOutStr - 1] += 'A' - '9' - 1;
+							value.u64 /= 16;
+							rOutStr++;
+						}
+						while (rOutStr < OutStr.size)
+						{
+							//填充
+							if (FmtInfo.padding.content) OutStr.data[OutStr.size - rOutStr - 1] = '0';
+							else OutStr.data[OutStr.size - rOutStr - 1] = ' ';
+							rOutStr++;
+						}
 					}
 				}
-				//需要加padding
-				else if (FmtInfo.padding.align)
+				else if (FmtInfo.type == 'f' || FmtInfo.type == 'F')
 				{
-					PadFillSize = FmtInfo.padding.length - FmtInfo.precision.value;
-					while (rOutStr < PadFillSize)
-					{
-						//填充
-						if (FmtInfo.padding.content) OutStr.data[OutStr.size - rOutStr - 1] = '0';
-						else OutStr.data[OutStr.size - rOutStr - 1] = ' ';
-						rOutStr++;
-					}
-					while (rOutStr < OutStr.size)
-					{
-						//倒着写入（最低位在最右边）
-						OutStr.data[OutStr.size - rOutStr - 1] = value.u64 % 16 + '0';
-						//大于9的字符转A-F
-						if (OutStr.data[OutStr.size - rOutStr - 1] > '9')
-							OutStr.data[OutStr.size - rOutStr - 1] += 'A' - '9' - 1;
-						value.u64 /= 16;
-						rOutStr++;
-					}
-				}
-				else
-				{
-					while (rOutStr < FmtInfo.precision.value)
-					{
-						//倒着写入（最低位在最右边）
-						OutStr.data[OutStr.size - rOutStr - 1] = value.u64 % 16 + '0';
-						//大于9的字符转A-F
-						if (OutStr.data[OutStr.size - rOutStr - 1] > '9')
-							OutStr.data[OutStr.size - rOutStr - 1] += 'A' - '9' - 1;
-						value.u64 /= 16;
-						rOutStr++;
-					}
-					while (rOutStr < OutStr.size)
-					{
-						//填充
-						if (FmtInfo.padding.content) OutStr.data[OutStr.size - rOutStr - 1] = '0';
-						else OutStr.data[OutStr.size - rOutStr - 1] = ' ';
-						rOutStr++;
-					}
-				}
+					//从参数中载入指定长度的数据
+					value.f64 = 0;
+					if (FmtInfo.size == CMT_FMT_SIZE_L || FmtInfo.size == CMT_FMT_SIZE_LL) value.f64 = (double)ArgList[rArg];
+					else value.f64 = (float)ArgList[rArg];
+
+
 				}
 				rOut += OutStr.size;
+				rArg++;
 			}
 		}
 		else
