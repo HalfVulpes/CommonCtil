@@ -1222,6 +1222,21 @@ void cmtU32toU16(cmtU32str* u32, cmtU16str* u16)
 	}
 }
 
+cmtUint64 cmtStrtoUintDec(cmtU8str* in, cmtUint64* out)
+{
+	cmtUint64 r = 0;
+
+	*out = 0;
+	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
+	{
+		*out *= 10;
+		*out += in->data[r] - '0';
+		r++;
+	}
+
+	return r;
+}
+
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 {
 	cmtUint8* ArgList;
@@ -1229,6 +1244,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 	cmtU8str FmtStr;
 	cmtUint64 rFmtStr;
 	cmtFmtInfo FmtInfo;
+	cmtU8str temp;
 
 	ArgList = format + sizeof(format);
 
@@ -1247,20 +1263,116 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 			else
 			{
 				//提取格式控制字符串
-				FmtStr.data = format + rFmt;
+				rFmt++;
+				FmtStr.data = format->data + rFmt;
 				FmtStr.size = rFmt;
 				//找type字段
-				while (rFmt < format->size && (format->data[rFmt] == 'b' || format->data[rFmt] == 'B' ||
-					format->data[rFmt] == 'o' || format->data[rFmt] == 'O' || format->data[rFmt] == 'd' || format->data[rFmt] == 'D' ||
-					format->data[rFmt] == 'u' || format->data[rFmt] == 'U' || format->data[rFmt] == 'x' || format->data[rFmt] == 'X' ||
-					format->data[rFmt] == 'f' || format->data[rFmt] == 'F' || format->data[rFmt] == 'e' || format->data[rFmt] == 'E' ||
-					format->data[rFmt] == 'g' || format->data[rFmt] == 'G' || format->data[rFmt] == 'c' || format->data[rFmt] == 'C' ||
-					format->data[rFmt] == 's' || format->data[rFmt] == 'S')) rFmt++;
+				while (rFmt < format->size && format->data[rFmt] != 'b' && format->data[rFmt] != 'B' &&
+					format->data[rFmt] != 'o' && format->data[rFmt] != 'O' && format->data[rFmt] != 'd' && format->data[rFmt] != 'D' &&
+					format->data[rFmt] != 'u' && format->data[rFmt] != 'U' && format->data[rFmt] != 'x' && format->data[rFmt] != 'X' &&
+					format->data[rFmt] != 'f' && format->data[rFmt] != 'F' && format->data[rFmt] != 'e' && format->data[rFmt] != 'E' &&
+					format->data[rFmt] != 'g' && format->data[rFmt] != 'G' && format->data[rFmt] != 'c' && format->data[rFmt] != 'C' &&
+					format->data[rFmt] != 's' && format->data[rFmt] != 'S') rFmt++;
 				if (rFmt == format->size) break;
 				rFmt++;
 				FmtStr.size = rFmt - FmtStr.size;
-				
+
 				//分析格式控制字符串
+				rFmtStr = 0;
+
+				//sign字段
+				if (FmtStr.data[rFmtStr] == '+')
+				{
+					FmtInfo.sign = TRUE;
+					rFmtStr++;
+				}
+				else
+					FmtInfo.sign = FALSE;
+
+				//padding字段
+				//align
+				if (FmtStr.data[rFmtStr] == '-')
+				{
+					FmtInfo.padding.align = TRUE;
+					rFmtStr++;
+				}
+				else
+					FmtInfo.padding.align = FALSE;
+				//content
+				if (FmtStr.data[rFmtStr] == '0')
+				{
+					FmtInfo.padding.content = TRUE;
+					rFmtStr++;
+				}
+				else
+					FmtInfo.padding.content = FALSE;
+				//length
+				temp.data = FmtStr.data + rFmtStr;
+				temp.size = FmtStr.size - rFmtStr;
+				rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.padding.length);
+
+				//precision字段
+				if (FmtStr.data[rFmtStr] == '.')
+				{
+					rFmtStr++;
+					//flag
+					if (FmtStr.data[rFmtStr] == '=')
+					{
+						FmtInfo.precision.flag = TRUE;
+						rFmtStr++;
+					}
+					else
+						FmtInfo.precision.flag = FALSE;
+					//value
+					temp.data = FmtStr.data + rFmtStr;
+					temp.size = FmtStr.size - rFmtStr;
+					rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.precision.value);
+				}
+
+				//iteration字段
+				if (FmtStr.data[rFmtStr] == 'r')
+				{
+					rFmtStr++;
+					//length
+					temp.data = FmtStr.data + rFmtStr;
+					temp.size = FmtStr.size - rFmtStr;
+					rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.length);
+					//group size
+					if (FmtStr.data[rFmtStr] == '-')
+					{
+						rFmtStr++;
+						temp.data = FmtStr.data + rFmtStr;
+						temp.size = FmtStr.size - rFmtStr;
+						rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.GroupSize);
+					}
+					//row size
+					if (FmtStr.data[rFmtStr] == '-')
+					{
+						rFmtStr++;
+						temp.data = FmtStr.data + rFmtStr;
+						temp.size = FmtStr.size - rFmtStr;
+						rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.RowSize);
+					}
+				}
+
+				//size字段
+				if (FmtStr.data[rFmtStr] == 'h')
+				{
+					rFmtStr++;
+					if (FmtStr.data[rFmtStr] == 'h') FmtInfo.size = CMT_FMT_SIZE_HH;
+					else FmtInfo.size = CMT_FMT_SIZE_H;
+				}
+				else if (FmtStr.data[rFmtStr] == 'l')
+				{
+					rFmtStr++;
+					if (FmtStr.data[rFmtStr] == 'l') FmtInfo.size = CMT_FMT_SIZE_LL;
+					else FmtInfo.size = CMT_FMT_SIZE_L;
+				}
+				else
+					FmtInfo.size = CMT_FMT_SIZE_DEFAULT;
+
+				//type字段
+				FmtInfo.type = FmtStr.data[FmtStr.size - 1];
 
 				//根据分析结果提取参数并输出
 			}

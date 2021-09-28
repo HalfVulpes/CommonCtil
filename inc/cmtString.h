@@ -105,10 +105,11 @@ typedef struct _CMTFMTINFO
 #define CMT_UNICODE_RSV_START 0xd800
 #define CMT_UNICODE_RSV_END 0xdfff
 
-#define CMT_FMT_SIZE_HH 0
-#define CMT_FMT_SIZE_H 1
-#define CMT_FMT_SIZE_L 2
-#define CMT_FMT_SIZE_LL 3
+#define CMT_FMT_SIZE_DEFAULT 0
+#define CMT_FMT_SIZE_HH 1
+#define CMT_FMT_SIZE_H 2
+#define CMT_FMT_SIZE_L 3
+#define CMT_FMT_SIZE_LL 4
 
 #define CMT_CONSTSTR(str) {str,sizeof(str)}
 /*--------------------------------宏定义 结束--------------------------------*/
@@ -445,6 +446,16 @@ extern void cmtU32toU16(cmtU32str* u32, cmtU16str* u16);
 /*--------------------------------字符编码处理函数 结束--------------------------------*/
 
 /*--------------------------------字符串操作函数 开始--------------------------------*/
+
+extern cmtUint64 cmtStrtoUintDec(cmtU8str* in, cmtUint64* out);
+
+extern cmtUint64 cmtStrtoIntDec(cmtU8str* in, cmtInt64* out);
+
+extern cmtUint64 cmtStrtoFl32(cmtU8str* in, float* out);
+
+extern cmtUint64 cmtStrtoFl64(cmtU8str* in, double* out);
+
+extern cmtUint64 cmtStrtoBool(cmtU8str* in, cmtBool* out);
 
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 
