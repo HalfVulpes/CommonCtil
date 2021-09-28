@@ -1240,7 +1240,7 @@ cmtUint64 cmtStrtoUintDec(cmtU8str* in, cmtUint64* out)
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 {
 	//通用
-	cmtUint8* ArgList;
+	cmtUint64* ArgList;//参数栈是会64位/32位对齐的
 	cmtUint64 rArg = 0;
 	cmtUint64 rFmt = 0, rOut = 0;
 	//格式控制字符串分析使用
@@ -1251,8 +1251,9 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 	//构建输出字符串使用
 	cmtU8str OutStr;
 	cmtUint64 rOutStr;
+	cmtCommonBuf value, TempVal;
 
-	ArgList = (cmtUint64)format + sizeof(format);
+	ArgList = &format + 1;
 
 	while (rFmt < format->size && rOut < out->size)
 	{
@@ -1315,8 +1316,8 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				//length
 				if (FmtStr.data[rFmtStr] == '*')
 				{
-					FmtInfo.padding.length = *(cmtUint64*)(ArgList + rArg);
-					rArg += sizeof(cmtUint64);
+					FmtInfo.padding.length = ArgList[rArg];
+					rArg++;
 				}
 				else
 				{
@@ -1341,8 +1342,8 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					//value
 					if (FmtStr.data[rFmtStr] == '*')
 					{
-						FmtInfo.precision.value = *(cmtUint64*)(ArgList + rArg);
-						rArg += sizeof(cmtUint64);
+						FmtInfo.precision.value = ArgList[rArg];
+						rArg++;
 					}
 					else
 					{
@@ -1362,8 +1363,8 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					//length
 					if (FmtStr.data[rFmtStr] == '*')
 					{
-						FmtInfo.iteration.length = *(cmtUint64*)(ArgList + rArg);
-						rArg += sizeof(cmtUint64);
+						FmtInfo.iteration.length = ArgList[rArg];
+						rArg++;
 					}
 					else
 					{
@@ -1377,8 +1378,8 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						rFmtStr++;
 						if (FmtStr.data[rFmtStr] == '*')
 						{
-							FmtInfo.iteration.GroupSize = *(cmtUint64*)(ArgList + rArg);
-							rArg += sizeof(cmtUint64);
+							FmtInfo.iteration.GroupSize = ArgList[rArg];
+							rArg++;
 						}
 						else
 						{
@@ -1393,8 +1394,8 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						rFmtStr++;
 						if (FmtStr.data[rFmtStr] == '*')
 						{
-							FmtInfo.iteration.RowSize = *(cmtUint64*)(ArgList + rArg);
-							rArg += sizeof(cmtUint64);
+							FmtInfo.iteration.RowSize = ArgList[rArg];
+							rArg++;
 						}
 						else
 						{
@@ -1429,8 +1430,27 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				//根据分析结果构建输出字符串
 				if (FmtInfo.type == 'b' || FmtInfo.type == 'B')
 				{
+					value.u64 = 0;
+					if (FmtInfo.size == CMT_FMT_SIZE_LL) value.u8 = ArgList[rArg];
+					else if (FmtInfo.size == CMT_FMT_SIZE_L) value.u16 = ArgList[rArg];
+					else if (FmtInfo.size == CMT_FMT_SIZE_HH) value.u64 = ArgList[rArg];
+					else value.u32 = ArgList[rArg];
+					TempVal = value;
+
 					//计算长度
-					
+					OutStr.size = 0;
+					while (TempVal.u64)
+					{
+						OutStr.size++;
+						TempVal.u64 /= 2;
+					}
+					if (!FmtInfo.precision.enabled) FmtInfo.precision.value = OutStr.size;
+					if (FmtInfo.padding.length > OutStr.size)
+						OutStr.size = FmtInfo.padding.length;
+
+					//构建字符串
+					TempVal = value;
+
 				}
 			}
 		}
