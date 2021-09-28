@@ -1240,6 +1240,7 @@ cmtUint64 cmtStrtoUintDec(cmtU8str* in, cmtUint64* out)
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 {
 	cmtUint8* ArgList;
+	cmtUint64 rArg = 0;
 	cmtUint64 rFmt = 0, rOut = 0;
 	cmtU8str FmtStr;
 	cmtUint64 rFmtStr;
@@ -1307,9 +1308,17 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				else
 					FmtInfo.padding.content = FALSE;
 				//length
-				temp.data = FmtStr.data + rFmtStr;
-				temp.size = FmtStr.size - rFmtStr;
-				rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.padding.length);
+				if (FmtStr.data[rFmtStr] == '*')
+				{
+					FmtInfo.padding.length = *(cmtUint64*)(ArgList + rArg);
+					rArg += sizeof(cmtUint64);
+				}
+				else
+				{
+					temp.data = FmtStr.data + rFmtStr;
+					temp.size = FmtStr.size - rFmtStr;
+					rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.padding.length);
+				}
 
 				//precision字段
 				if (FmtStr.data[rFmtStr] == '.')
@@ -1325,9 +1334,17 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					else
 						FmtInfo.precision.flag = FALSE;
 					//value
-					temp.data = FmtStr.data + rFmtStr;
-					temp.size = FmtStr.size - rFmtStr;
-					rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.precision.value);
+					if (FmtStr.data[rFmtStr] == '*')
+					{
+						FmtInfo.precision.value = *(cmtUint64*)(ArgList + rArg);
+						rArg += sizeof(cmtUint64);
+					}
+					else
+					{
+						temp.data = FmtStr.data + rFmtStr;
+						temp.size = FmtStr.size - rFmtStr;
+						rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.precision.value);
+					}
 				}
 				else
 					FmtInfo.precision.enabled = FALSE;
@@ -1338,24 +1355,48 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					FmtInfo.iteration.enabled = TRUE;
 					rFmtStr++;
 					//length
-					temp.data = FmtStr.data + rFmtStr;
-					temp.size = FmtStr.size - rFmtStr;
-					rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.length);
+					if (FmtStr.data[rFmtStr] == '*')
+					{
+						FmtInfo.iteration.length = *(cmtUint64*)(ArgList + rArg);
+						rArg += sizeof(cmtUint64);
+					}
+					else
+					{
+						temp.data = FmtStr.data + rFmtStr;
+						temp.size = FmtStr.size - rFmtStr;
+						rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.length);
+					}
 					//group size
 					if (FmtStr.data[rFmtStr] == '-')
 					{
 						rFmtStr++;
-						temp.data = FmtStr.data + rFmtStr;
-						temp.size = FmtStr.size - rFmtStr;
-						rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.GroupSize);
+						if (FmtStr.data[rFmtStr] == '*')
+						{
+							FmtInfo.iteration.GroupSize = *(cmtUint64*)(ArgList + rArg);
+							rArg += sizeof(cmtUint64);
+						}
+						else
+						{
+							temp.data = FmtStr.data + rFmtStr;
+							temp.size = FmtStr.size - rFmtStr;
+							rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.GroupSize);
+						}
 					}
 					//row size
 					if (FmtStr.data[rFmtStr] == '-')
 					{
 						rFmtStr++;
-						temp.data = FmtStr.data + rFmtStr;
-						temp.size = FmtStr.size - rFmtStr;
-						rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.RowSize);
+						if (FmtStr.data[rFmtStr] == '*')
+						{
+							FmtInfo.iteration.RowSize = *(cmtUint64*)(ArgList + rArg);
+							rArg += sizeof(cmtUint64);
+						}
+						else
+						{
+							temp.data = FmtStr.data + rFmtStr;
+							temp.size = FmtStr.size - rFmtStr;
+							rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.RowSize);
+						}
 					}
 				}
 				else
