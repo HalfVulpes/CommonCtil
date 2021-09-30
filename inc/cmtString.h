@@ -73,7 +73,6 @@ typedef union _CMTCOMMONBUF
 {
 	cmtUint64 u64;
 	cmtInt64 i64;
-	double f64;
 }cmtCommonBuf;
 
 typedef struct _CMTFMTPADINFO

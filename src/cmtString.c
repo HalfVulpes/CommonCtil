@@ -1251,9 +1251,12 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 	//构建输出字符串使用
 	cmtU8str OutStr;
 	cmtUint64 rOutStr;
-	cmtCommonBuf value, TempVal;
 	cmtUint64 PadFillSize;
+	cmtCommonBuf value, TempVal;
 	cmtBool NegSign;
+	//浮点类型使用
+	cmtUint64 mantissa;
+	cmtUint16 exponent;
 
 	ArgList = &format + 1;
 
@@ -1926,12 +1929,14 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				}
 				else if (FmtInfo.type == 'f' || FmtInfo.type == 'F')
 				{
-					//从参数中载入指定长度的数据
-					value.f64 = 0;
-					if (FmtInfo.size == CMT_FMT_SIZE_L || FmtInfo.size == CMT_FMT_SIZE_LL) value.f64 = (double)ArgList[rArg];
-					else value.f64 = (float)ArgList[rArg];
-
-
+					//选择精度类型
+					if (FmtInfo.size == CMT_FMT_SIZE_L || FmtInfo.size == CMT_FMT_SIZE_LL)
+					{
+						//从参数中载入指定长度的数据，并分离
+						mantissa = (cmtUint64)ArgList[rArg] & 0x1fffffffffffff;
+						
+					}
+					else value.f32 = (float)ArgList[rArg];
 				}
 				rOut += OutStr.size;
 				rArg++;
