@@ -2262,7 +2262,8 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						//结构：(偏左符号)(前置padding)(偏右符号)(整数数据)(.(小数数据))(后置padding)
 						//一、数据处理
 						//（一）从参数中载入指定长度的数据
-						value1.f32 = (float)ArgList[rArg];
+						//全都升级成double了
+						value1.f32 = (float)*((double*)ArgList + rArg);
 						//负数记录并取绝对值
 						if (value1.f32 < 0)
 						{
@@ -2426,9 +2427,9 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 							rOutStr = 1;
 							while (rOutStr < DecDataStr.size - 1)
 							{
+								value1.f32 *= 10;
 								//正着写入
 								DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f32 % 10;
-								value1.f32 *= 10;
 								rOutStr++;
 							}
 							//最后一位需要带四舍五入
