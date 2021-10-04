@@ -1672,18 +1672,18 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					//三、各子字符串定位
 					//（一）计算各子字符串大小
 					//需要padding
-					if (FmtInfo.padding.length > DataStr.size + FmtInfo.sign)
+					if (FmtInfo.padding.length > FmtInfo.sign + DataStr.size)
 					{
 						//左对齐
 						if (FmtInfo.padding.align)
 						{
 							FrontPad.size = 0;
-							BackPad.size = FmtInfo.padding.length - DataStr.size - FmtInfo.sign;
+							BackPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size;
 						}
 						//右对齐
 						else
 						{
-							FrontPad.size = FmtInfo.padding.length - DataStr.size - FmtInfo.sign;
+							FrontPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size;
 							BackPad.size = 0;
 						}
 					}
@@ -2068,10 +2068,10 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					//单双精度要分开
 					if (FmtInfo.size == CMT_FMT_SIZE_L || FmtInfo.size == CMT_FMT_SIZE_LL)
 					{
-						//结构：(偏左符号)(前置padding)(偏右符号)(整数数据).(小数数据)(后置padding)
+						//结构：(偏左符号)(前置padding)(偏右符号)(整数数据)(.(小数数据))(后置padding)
 						//一、数据处理
 						//（一）从参数中载入指定长度的数据
-						value1.f64 = (double)ArgList[rArg];
+						value1.f64 = *((double*)ArgList + rArg);
 						//负数记录并取绝对值
 						if (value1.f64 < 0)
 						{
@@ -2102,50 +2102,352 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 								pofd--;
 							}
 						}
+						//（二）计算整数数据字符串大小
 						//没有指定precision：默认保留6位小数
 						if (!FmtInfo.precision.enabled)
 						{
 							FmtInfo.precision.flag = FALSE;
 							FmtInfo.precision.value = 6;
 						}
-						//计算字符串size（无padding）
+						//计算整数数据字符串大小
+						if (pofd > 0) DataStr.size = pofd;
+						else DataStr.size = 1;
+						//（三）计算小数数据字符串大小
 						//有效数字模式
 						if (FmtInfo.precision.flag)
 						{
 							if (pofd > 0)
 							{
-								if (pofd >= FmtInfo.precision.value) OutStr.size = pofd;
-								else OutStr.size = FmtInfo.precision.value + 1;
+								if (FmtInfo.precision.value > pofd) DecDataStr.size = FmtInfo.precision.value - pofd + 1;
+								else DecDataStr.size = 0;
 							}
-							else OutStr.size = 1 - pofd + FmtInfo.precision.value;
+							else
+								DecDataStr.size = FmtInfo.precision.value - pofd;
 						}
-						//小数点模式
+						//小数位数模式
+						else
+							DecDataStr.size = FmtInfo.precision.value + 1;
+
+						//三、各子字符串定位
+						//（一）计算各子字符串大小
+						//需要padding
+						if (FmtInfo.padding.length > FmtInfo.sign + DataStr.size + DecDataStr.size)
+						{
+							//左对齐
+							if (FmtInfo.padding.align)
+							{
+								FrontPad.size = 0;
+								BackPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size;
+							}
+							//右对齐
+							else
+							{
+								FrontPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size;
+								BackPad.size = 0;
+							}
+						}
+						//不需要padding
 						else
 						{
-							if (pofd > 0) OutStr.size = pofd + FmtInfo.precision.value + 1;
-							else OutStr.size = FmtInfo.precision.value + 2;
+							FrontPad.size = 0;
+							BackPad.size = 0;
 						}
-						//加符号位
+						//（二）计算各子字符串地址
+						DataStr.data = FrontPad.data + FrontPad.size + FmtInfo.sign;
+						DecDataStr.data = DataStr.data + DataStr.size;
+						BackPad.data = DecDataStr.data + DecDataStr.size;
+						//（三）根据符号位置调整前置padding位置，并预填符号
 						if (FmtInfo.sign)
-							OutStr.size++;
-
-						//三、处理前置padding
-
-
-						//构建字符串
-						rOutStr = 0;
-						//1. 处理padding
-						if (OutStr.size < FmtInfo.padding.length)
 						{
-							//更新字符串size
-							PadFillSize = FmtInfo.padding.length - OutStr.size;
-							OutStr.size = FmtInfo.padding.length;
+							//符号偏左
+							if (FrontPad.size && FmtInfo.padding.content)
+							{
+								FrontPad.data++;
+								*(FrontPad.data - 1) = SignChar;
+							}
+							//符号偏右
+							else
+								*(DataStr.data - 1) = SignChar;
 						}
 
+						//四、构建字符串
+						//（一）前置padding
+						if (FrontPad.size)
+						{
+							rOutStr = 0;
+							//填0
+							if (FmtInfo.padding.content)
+							{
+								while (rOutStr < FrontPad.size)
+								{
+									FrontPad.data[rOutStr] = '0';
+									rOutStr++;
+								}
+							}
+							//填空格
+							else
+							{
+								while (rOutStr < FrontPad.size)
+								{
+									FrontPad.data[rOutStr] = ' ';
+									rOutStr++;
+								}
+							}
+						}
+						//（二）整数数据字符串
+						value2 = value1;
+						rOutStr = 0;
+						while (rOutStr < DataStr.size)
+						{
+							//倒着写入（最低位在最右边）
+							//有效数字模式
+							if (FmtInfo.precision.flag)
+							{
+								//保留范围之外，填0
+								if (DataStr.size - rOutStr > FmtInfo.precision.value)
+									DataStr.data[DataStr.size - rOutStr - 1] = '0';
+								//最后一位保留的有效数字，四舍五入
+								else if (DataStr.size - rOutStr == FmtInfo.precision.value)
+									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value2.f64 + 0.5) % 10;
+								//其他情况正常转换
+								else
+									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f64 % 10;
+							}
+							//小数位数模式
+							else
+							{
+								//如果个位就是最后一位（不保留小数位），个位需要四舍五入
+								if (!rOutStr && !FmtInfo.precision.value)
+									DataStr.data[DataStr.size - 1] = '0' + (cmtUint64)(value2.f64 + 0.5) % 10;
+								//其他情况正常转换
+								else
+									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f64 % 10;
+							}
+							value2.f64 /= 10;
+							rOutStr++;
+						}
+						//（三）小数数据字符串
+						if (DecDataStr.size)
+						{
+							DecDataStr.data[0] = '.';
+							//剪掉整数部分以防指数上溢
+							value1.f64 -= (cmtUint64)value1.f64;
+							rOutStr = 1;
+							while (rOutStr < DecDataStr.size - 1)
+							{
+								value1.f64 *= 10;
+								//正着写入
+								DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f64 % 10;
+								rOutStr++;
+							}
+							//最后一位需要带四舍五入
+							DecDataStr.data[rOutStr] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+						}
+						//（四）后置padding
+						if (BackPad.size)
+						{
+							rOutStr = 0;
+							while (rOutStr < BackPad.size)
+							{
+								BackPad.data[rOutStr] = ' ';
+								rOutStr++;
+							}
+						}
+
+						//（四）rOut增量
+						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + BackPad.size;
 					}
 					else
-						value.f32 = (float)ArgList[rArg];
+					{
+						//结构：(偏左符号)(前置padding)(偏右符号)(整数数据)(.(小数数据))(后置padding)
+						//一、数据处理
+						//（一）从参数中载入指定长度的数据
+						value1.f32 = (float)ArgList[rArg];
+						//负数记录并取绝对值
+						if (value1.f32 < 0)
+						{
+							SignChar = '-';
+							value1.f32 = -value1.f32;
+							FmtInfo.sign = TRUE;//打开符号显示
+						}
+						else
+							SignChar = '+';
 
+						//二、计算数据字符串大小
+						//（一）计算pofd（第一位十进制数字位置）
+						value2 = value1;
+						pofd = 0;
+						if (value2.f32 >= 1)
+						{
+							while (value2.f32 >= 1)
+							{
+								value2.f32 /= 10.0;
+								pofd++;
+							}
+						}
+						else
+						{
+							while (value2.f32 < 1)
+							{
+								value2.f32 *= 10.0;
+								pofd--;
+							}
+						}
+						//（二）计算整数数据字符串大小
+						//没有指定precision：默认保留6位小数
+						if (!FmtInfo.precision.enabled)
+						{
+							FmtInfo.precision.flag = FALSE;
+							FmtInfo.precision.value = 6;
+						}
+						//计算整数数据字符串大小
+						if (pofd > 0) DataStr.size = pofd;
+						else DataStr.size = 1;
+						//（三）计算小数数据字符串大小
+						//有效数字模式
+						if (FmtInfo.precision.flag)
+						{
+							if (pofd > 0)
+							{
+								if (FmtInfo.precision.value > pofd) DecDataStr.size = FmtInfo.precision.value - pofd + 1;
+								else DecDataStr.size = 0;
+							}
+							else
+								DecDataStr.size = FmtInfo.precision.value - pofd;
+						}
+						//小数位数模式
+						else
+							DecDataStr.size = FmtInfo.precision.value + 1;
+
+						//三、各子字符串定位
+						//（一）计算各子字符串大小
+						//需要padding
+						if (FmtInfo.padding.length > FmtInfo.sign + DataStr.size + DecDataStr.size)
+						{
+							//左对齐
+							if (FmtInfo.padding.align)
+							{
+								FrontPad.size = 0;
+								BackPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size;
+							}
+							//右对齐
+							else
+							{
+								FrontPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size;
+								BackPad.size = 0;
+							}
+						}
+						//不需要padding
+						else
+						{
+							FrontPad.size = 0;
+							BackPad.size = 0;
+						}
+						//（二）计算各子字符串地址
+						DataStr.data = FrontPad.data + FrontPad.size + FmtInfo.sign;
+						DecDataStr.data = DataStr.data + DataStr.size;
+						BackPad.data = DecDataStr.data + DecDataStr.size;
+						//（三）根据符号位置调整前置padding位置，并预填符号
+						if (FmtInfo.sign)
+						{
+							//符号偏左
+							if (FrontPad.size && FmtInfo.padding.content)
+							{
+								FrontPad.data++;
+								*(FrontPad.data - 1) = SignChar;
+							}
+							//符号偏右
+							else
+								*(DataStr.data - 1) = SignChar;
+						}
+
+						//四、构建字符串
+						//（一）前置padding
+						if (FrontPad.size)
+						{
+							rOutStr = 0;
+							//填0
+							if (FmtInfo.padding.content)
+							{
+								while (rOutStr < FrontPad.size)
+								{
+									FrontPad.data[rOutStr] = '0';
+									rOutStr++;
+								}
+							}
+							//填空格
+							else
+							{
+								while (rOutStr < FrontPad.size)
+								{
+									FrontPad.data[rOutStr] = ' ';
+									rOutStr++;
+								}
+							}
+						}
+						//（二）整数数据字符串
+						value2 = value1;
+						rOutStr = 0;
+						while (rOutStr < DataStr.size)
+						{
+							//倒着写入（最低位在最右边）
+							//有效数字模式
+							if (FmtInfo.precision.flag)
+							{
+								//保留范围之外，填0
+								if (DataStr.size - rOutStr > FmtInfo.precision.value)
+									DataStr.data[DataStr.size - rOutStr - 1] = '0';
+								//最后一位保留的有效数字，四舍五入
+								else if (DataStr.size - rOutStr == FmtInfo.precision.value)
+									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value2.f32 + 0.5) % 10;
+								//其他情况正常转换
+								else
+									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f32 % 10;
+							}
+							//小数位数模式
+							else
+							{
+								//如果个位就是最后一位（不保留小数位），个位需要四舍五入
+								if (!rOutStr && !FmtInfo.precision.value)
+									DataStr.data[DataStr.size - 1] = '0' + (cmtUint64)(value2.f32 + 0.5) % 10;
+								//其他情况正常转换
+								else
+									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f32 % 10;
+							}
+							value2.f32 /= 10;
+							rOutStr++;
+						}
+						//（三）小数数据字符串
+						if (DecDataStr.size)
+						{
+							DecDataStr.data[0] = '.';
+							//剪掉整数部分以防指数上溢
+							value1.f32 -= (cmtUint64)value1.f32;
+							rOutStr = 1;
+							while (rOutStr < DecDataStr.size - 1)
+							{
+								//正着写入
+								DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f32 % 10;
+								value1.f32 *= 10;
+								rOutStr++;
+							}
+							//最后一位需要带四舍五入
+							DecDataStr.data[rOutStr] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
+						}
+						//（四）后置padding
+						if (BackPad.size)
+						{
+							rOutStr = 0;
+							while (rOutStr < BackPad.size)
+							{
+								BackPad.data[rOutStr] = ' ';
+								rOutStr++;
+							}
+						}
+
+						//（四）rOut增量
+						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + BackPad.size;
+					}
 				}
 				rArg++;
 			}

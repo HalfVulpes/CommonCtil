@@ -482,6 +482,7 @@ extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 * @param[in] ... 参数列表（与格式字符串匹配）
 * @attention 格式字符串和生成的字符串都是UTF-8编码的
 * @attention 格式字符串具体要求见 doc/格式字符串.md
+* @attention float输出还有问题，暂时只能用double
 * @date 2021-09-23
 * @author dexnab
 */
