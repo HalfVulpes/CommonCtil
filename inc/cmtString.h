@@ -69,11 +69,13 @@ typedef struct _CMTU32STR
 	cmtUint64 size;//<总字节数
 }cmtU32str;
 
-typedef union _CMTCOMMONBUF
+typedef union _CMTCOMVAL
 {
 	cmtUint64 u64;
 	cmtInt64 i64;
-}cmtCommonBuf;
+	double f64;
+	float f32;
+}cmtComVal;
 
 typedef struct _CMTFMTPADINFO
 {
@@ -119,6 +121,11 @@ typedef struct _CMTFMTINFO
 #define CMT_FMT_SIZE_H 2
 #define CMT_FMT_SIZE_L 3
 #define CMT_FMT_SIZE_LL 4
+
+//10^22
+#define CMT_DOUBLE_MAX_10E 10000000000000000000000.0
+//10^9
+#define CMT_FLOAT_MAX_10E 1000000000.0
 
 #define CMT_CONSTSTR(str) {str,sizeof(str)}
 /*--------------------------------宏定义 结束--------------------------------*/
