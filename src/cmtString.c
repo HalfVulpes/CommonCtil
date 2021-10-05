@@ -1260,6 +1260,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 	cmtInt64 pofd;
 	//浮点类型指数模式使用
 	cmtU8str ExpStr;
+	cmtInt64 exponent;
 
 	ArgList = &format + 1;
 
@@ -2067,10 +2068,10 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				}
 				else if (FmtInfo.type == 'f' || FmtInfo.type == 'F')
 				{
+					//结构：(偏左符号)(前置padding)(偏右符号)(整数数据)(.(小数数据))(后置padding)
 					//单双精度要分开
 					if (FmtInfo.size == CMT_FMT_SIZE_L || FmtInfo.size == CMT_FMT_SIZE_LL)
 					{
-						//结构：(偏左符号)(前置padding)(偏右符号)(整数数据)(.(小数数据))(后置padding)
 						//一、数据处理
 						//（一）从参数中载入指定长度的数据
 						value1.f64 = *((double*)ArgList + rArg);
@@ -2083,9 +2084,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 						else
 							SignChar = '+';
-
-						//二、计算数据字符串大小
-						//（一）计算pofd（第一位十进制数字位置）
+						//（二）计算pofd（第一位十进制数字位置）
 						value2 = value1;
 						pofd = 0;
 						if (value2.f64 >= 1)
@@ -2104,7 +2103,10 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 								pofd--;
 							}
 						}
-						//（二）计算整数数据字符串大小
+
+						//二、计算数据字符串大小
+					cSp_llf_step2:
+						//（一）计算整数数据字符串大小
 						//没有指定precision：默认保留6位小数
 						if (!FmtInfo.precision.enabled)
 						{
@@ -2114,7 +2116,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						//计算整数数据字符串大小
 						if (pofd > 0) DataStr.size = pofd;
 						else DataStr.size = 1;
-						//（三）计算小数数据字符串大小
+						//（二）计算小数数据字符串大小
 						//有效数字模式
 						if (FmtInfo.precision.flag)
 						{
@@ -2261,7 +2263,6 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					}
 					else
 					{
-						//结构：(偏左符号)(前置padding)(偏右符号)(整数数据)(.(小数数据))(后置padding)
 						//一、数据处理
 						//（一）从参数中载入指定长度的数据
 						//全都升级成double了
@@ -2275,9 +2276,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 						else
 							SignChar = '+';
-
-						//二、计算数据字符串大小
-						//（一）计算pofd（第一位十进制数字位置）
+						//（二）计算pofd（第一位十进制数字位置）
 						value2 = value1;
 						pofd = 0;
 						if (value2.f32 >= 1)
@@ -2296,7 +2295,10 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 								pofd--;
 							}
 						}
-						//（二）计算整数数据字符串大小
+
+						//二、计算数据字符串大小
+					cSp_hhf_step2:
+						//（一）计算整数数据字符串大小
 						//没有指定precision：默认保留6位小数
 						if (!FmtInfo.precision.enabled)
 						{
@@ -2306,7 +2308,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						//计算整数数据字符串大小
 						if (pofd > 0) DataStr.size = pofd;
 						else DataStr.size = 1;
-						//（三）计算小数数据字符串大小
+						//（二）计算小数数据字符串大小
 						//有效数字模式
 						if (FmtInfo.precision.flag)
 						{
@@ -2454,10 +2456,10 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				}
 				else if (FmtInfo.type == 'e')
 				{
+					//结构：(偏左符号)(前置padding)(偏右符号)(整数数据)(.(小数数据))(e(指数符号)(指数数据))(后置padding)
 					//单双精度要分开
 					if (FmtInfo.size == CMT_FMT_SIZE_L || FmtInfo.size == CMT_FMT_SIZE_LL)
 					{
-						//结构：(偏左符号)(前置padding)(偏右符号)(整数数据)(.(小数数据))(e(指数符号)(指数数据))(后置padding)
 						//一、数据处理
 						//（一）从参数中载入指定长度的数据
 						value1.f64 = *((double*)ArgList + rArg);
@@ -2470,9 +2472,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 						else
 							SignChar = '+';
-
-						//二、计算数据字符串大小
-						//（一）计算pofd（第一位十进制数字位置）
+						//（二）计算pofd（第一位十进制数字位置）
 						value2 = value1;
 						pofd = 0;
 						if (value2.f64 >= 1)
@@ -2491,34 +2491,36 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 								pofd--;
 							}
 						}
-						//（二）计算整数数据字符串大小
+						//（三）计算指数数据字符串大小
+						exponent = pofd - 1;
+						value2.i64 = exponent;
+						if (value2.i64) ExpStr.size = 2;
+						else ExpStr.size = 3;
+						while (value2.i64)
+						{
+							ExpStr.size++;
+							value2.i64 /= 10;
+						}
+
+						//二、计算数据字符串大小
+					cSp_lle_step2:
+						//（一）计算整数数据字符串大小
 						//没有指定precision：默认保留6位小数
 						if (!FmtInfo.precision.enabled)
 						{
 							FmtInfo.precision.flag = FALSE;
 							FmtInfo.precision.value = 6;
 						}
-						//有效数字转
-						if (!FmtInfo.precision.flag)
-
+						//有效数字转小数点
+						if (FmtInfo.precision.flag)
+							FmtInfo.precision.value--;
 						//整数数据字符串大小始终为1
 						DataStr.size = 1;
-						//（三）计算小数数据字符串大小
-						//有效数字模式
-						if (FmtInfo.precision.flag)
-							DecDataStr.size = FmtInfo.precision.value;
-						//小数位数模式
-						else
+						//（二）计算小数数据字符串大小
+						if (FmtInfo.precision.value)
 							DecDataStr.size = FmtInfo.precision.value + 1;
-						//（四）计算指数数据字符串大小
-						if (pofd > 0) value2.u64 = pofd;
-						else value2.u64 = -pofd;
-						ExpStr.size = 2;
-						while (value2.u64)
-						{
-							ExpStr.size++;
-							value2.u64 /= 10;
-						}
+						else
+							DecDataStr.size = 0;
 
 						//三、各子字符串定位
 						//（一）计算各子字符串大小
@@ -2588,69 +2590,119 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 							}
 						}
 						//（二）数据字符串
-						//过位（使用循环乘除法让末位有效数字在个位上）
-						while (pofd > 0)
+						//1. 原始数据首位数字在小数点右边
+						if (pofd < 0)
 						{
-							
-						}
-						rOutStr = 0;
-						while (rOutStr < DecDataStr.size)
-						{
-
-						}
-						
-						//末位有效数字>1
-						
-						//（二）整数数据字符串
-						value2 = value1;
-						rOutStr = 0;
-						while (rOutStr < DataStr.size)
-						{
-							//倒着写入（最低位在最右边）
-							//有效数字模式
-							if (FmtInfo.precision.flag)
-							{
-								//保留范围之外，填0
-								if (DataStr.size - rOutStr > FmtInfo.precision.value)
-									DataStr.data[DataStr.size - rOutStr - 1] = '0';
-								//最后一位保留的有效数字，四舍五入
-								else if (DataStr.size - rOutStr == FmtInfo.precision.value)
-									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value2.f64 + 0.5) % 10;
-								//其他情况正常转换
-								else
-									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f64 % 10;
-							}
-							//小数位数模式
-							else
-							{
-								//如果个位就是最后一位（不保留小数位），个位需要四舍五入
-								if (!rOutStr && !FmtInfo.precision.value)
-									DataStr.data[DataStr.size - 1] = '0' + (cmtUint64)(value2.f64 + 0.5) % 10;
-								//其他情况正常转换
-								else
-									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f64 % 10;
-							}
-							value2.f64 /= 10;
-							rOutStr++;
-						}
-						//（三）小数数据字符串
-						if (DecDataStr.size)
-						{
-							DecDataStr.data[0] = '.';
-							//剪掉整数部分以防指数上溢
-							value1.f64 -= (cmtUint64)value1.f64;
-							rOutStr = 1;
-							while (rOutStr < DecDataStr.size - 1)
+							//一、过位（去掉前面的0，让首位数字移到个位）
+							while (pofd < 0)
 							{
 								value1.f64 *= 10;
-								//正着写入
-								DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f64 % 10;
+								pofd++;
+							}
+							//二、整数数据字符串
+							if (DecDataStr.size)
+								DataStr.data[0] = '0' + (cmtUint64)value1.f64 % 10;
+							//如果没有小数部分，整数位需要四舍五入
+							else
+								DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+							value1.f64 *= 10;
+							//三、小数数据字符串
+							if (DecDataStr.size)
+							{
+								DecDataStr.data[0] = '.';
+								rOutStr = 1;
+								while (rOutStr < DecDataStr.size - 1)
+								{
+									//正着写入（从左往右）
+									DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f64 % 10;
+									value1.f64 *= 10;
+									rOutStr++;
+								}
+								//最后一位需要四舍五入
+								DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+							}
+						}
+						//2. 原始数据末位有效数字在小数点左边
+						else if (pofd > FmtInfo.precision.value)
+						{
+							//一、过位（去掉无效数字）
+							while (pofd > 1 + FmtInfo.precision.value)
+							{
+								value1.f64 /= 10;
+								pofd--;
+							}
+							//二、小数数据字符串
+							if (DecDataStr.size)
+							{
+								DecDataStr.data[0] = '.';
+								//最后一位需要四舍五入
+								DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+								value1.f64 /= 10;
+								rOutStr = 1;
+								while (rOutStr < DecDataStr.size - 1)
+								{
+									//倒着写入（从右往左）
+									DecDataStr.data[DecDataStr.size - rOutStr - 1] = '0' + (cmtUint64)value1.f64 % 10;
+									value1.f64 /= 10;
+									rOutStr++;
+								}
+							}
+							//三、整数数据字符串
+							if (DecDataStr.size)
+								DataStr.data[0] = '0' + (cmtUint64)value1.f64 % 10;
+							//如果没有小数部分，整数位需要四舍五入
+							else
+								DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+						}
+						//3. 原始数据有效数字横跨小数点
+						else
+						{
+							//一、原始数据整数部分
+							//（一）小数数据字符串
+							DecDataStr.data[0] = '.';
+							value2 = value1;
+							rOutStr = 1;
+							while (rOutStr < pofd)
+							{
+								//倒着写入（从右往左）
+								DecDataStr.data[pofd - rOutStr] = '0' + (cmtUint64)value2.f64 % 10;
+								value2.f64 /= 10;
 								rOutStr++;
 							}
-							//最后一位需要带四舍五入
-							DecDataStr.data[rOutStr] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+							//（二）整数数据字符串
+							DataStr.data[0] = '0' + (cmtUint64)value2.f64 % 10;
+							//二、原始数据小数部分
+							//（一）小数数据字符串
+							//剪掉整数部分以防指数上溢
+							value1.f64 -= (cmtUint64)value1.f64;
+							value1.f64 *= 10;
+							while (rOutStr < DecDataStr.size - 1)
+							{
+								//正着写入（从左往右）
+								DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f64 % 10;
+								value1.f64 *= 10;
+								rOutStr++;
+							}
+							//最后一位需要四舍五入
+							DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
 						}
-						//（四）后置padding
+						//（四）指数数据字符串
+						ExpStr.data[0] = 'e';
+						if (exponent >= 0) ExpStr.data[1] = '+';
+						else
+						{
+							ExpStr.data[1] = '-';
+							exponent = -exponent;
+						}
+						rOutStr = 0;
+						while (rOutStr < ExpStr.size - 2)
+						{
+							//倒着写入（从右往左）
+							ExpStr.data[ExpStr.size - rOutStr - 1] = '0' + exponent % 10;
+							exponent /= 10;
+							rOutStr++;
+						}
+						//（五）后置padding
 						if (BackPad.size)
 						{
 							rOutStr = 0;
@@ -2662,14 +2714,12 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 
 						//（四）rOut增量
-						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + BackPad.size;
+						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size + BackPad.size;
 					}
 					else
 					{
-						//结构：(偏左符号)(前置padding)(偏右符号)(整数数据)(.(小数数据))(后置padding)
 						//一、数据处理
 						//（一）从参数中载入指定长度的数据
-						//全都升级成double了
 						value1.f32 = (float)*((double*)ArgList + rArg);
 						//负数记录并取绝对值
 						if (value1.f32 < 0)
@@ -2680,9 +2730,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 						else
 							SignChar = '+';
-
-						//二、计算数据字符串大小
-						//（一）计算pofd（第一位十进制数字位置）
+						//（二）计算pofd（第一位十进制数字位置）
 						value2 = value1;
 						pofd = 0;
 						if (value2.f32 >= 1)
@@ -2701,47 +2749,52 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 								pofd--;
 							}
 						}
-						//（二）计算整数数据字符串大小
+						//（三）计算指数数据字符串大小
+						exponent = pofd - 1;
+						value2.i64 = exponent;
+						if (value2.i64) ExpStr.size = 2;
+						else ExpStr.size = 3;
+						while (value2.i64)
+						{
+							ExpStr.size++;
+							value2.i64 /= 10;
+						}
+
+						//二、计算数据字符串大小
+					cSp_hhe_step2:
+						//（一）计算整数数据字符串大小
 						//没有指定precision：默认保留6位小数
 						if (!FmtInfo.precision.enabled)
 						{
 							FmtInfo.precision.flag = FALSE;
 							FmtInfo.precision.value = 6;
 						}
-						//计算整数数据字符串大小
-						if (pofd > 0) DataStr.size = pofd;
-						else DataStr.size = 1;
-						//（三）计算小数数据字符串大小
-						//有效数字模式
+						//有效数字转小数点
 						if (FmtInfo.precision.flag)
-						{
-							if (pofd > 0)
-							{
-								if (FmtInfo.precision.value > pofd) DecDataStr.size = FmtInfo.precision.value - pofd + 1;
-								else DecDataStr.size = 0;
-							}
-							else
-								DecDataStr.size = FmtInfo.precision.value - pofd;
-						}
-						//小数位数模式
-						else
+							FmtInfo.precision.value--;
+						//整数数据字符串大小始终为1
+						DataStr.size = 1;
+						//（二）计算小数数据字符串大小
+						if (FmtInfo.precision.value)
 							DecDataStr.size = FmtInfo.precision.value + 1;
+						else
+							DecDataStr.size = 0;
 
 						//三、各子字符串定位
 						//（一）计算各子字符串大小
 						//需要padding
-						if (FmtInfo.padding.length > FmtInfo.sign + DataStr.size + DecDataStr.size)
+						if (FmtInfo.padding.length > FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size)
 						{
 							//左对齐
 							if (FmtInfo.padding.align)
 							{
 								FrontPad.size = 0;
-								BackPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size;
+								BackPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size - ExpStr.size;
 							}
 							//右对齐
 							else
 							{
-								FrontPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size;
+								FrontPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size - ExpStr.size;
 								BackPad.size = 0;
 							}
 						}
@@ -2754,7 +2807,8 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						//（二）计算各子字符串地址
 						DataStr.data = FrontPad.data + FrontPad.size + FmtInfo.sign;
 						DecDataStr.data = DataStr.data + DataStr.size;
-						BackPad.data = DecDataStr.data + DecDataStr.size;
+						ExpStr.data = DecDataStr.data + DecDataStr.size;
+						BackPad.data = DecDataStr.data + ExpStr.size;
 						//（三）根据符号位置调整前置padding位置，并预填符号
 						if (FmtInfo.sign)
 						{
@@ -2793,56 +2847,120 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 								}
 							}
 						}
-						//（二）整数数据字符串
-						value2 = value1;
-						rOutStr = 0;
-						while (rOutStr < DataStr.size)
+						//（二）数据字符串
+						//1. 原始数据首位数字在小数点右边
+						if (pofd < 0)
 						{
-							//倒着写入（最低位在最右边）
-							//有效数字模式
-							if (FmtInfo.precision.flag)
-							{
-								//保留范围之外，填0
-								if (DataStr.size - rOutStr > FmtInfo.precision.value)
-									DataStr.data[DataStr.size - rOutStr - 1] = '0';
-								//最后一位保留的有效数字，四舍五入
-								else if (DataStr.size - rOutStr == FmtInfo.precision.value)
-									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value2.f32 + 0.5) % 10;
-								//其他情况正常转换
-								else
-									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f32 % 10;
-							}
-							//小数位数模式
-							else
-							{
-								//如果个位就是最后一位（不保留小数位），个位需要四舍五入
-								if (!rOutStr && !FmtInfo.precision.value)
-									DataStr.data[DataStr.size - 1] = '0' + (cmtUint64)(value2.f32 + 0.5) % 10;
-								//其他情况正常转换
-								else
-									DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f32 % 10;
-							}
-							value2.f32 /= 10;
-							rOutStr++;
-						}
-						//（三）小数数据字符串
-						if (DecDataStr.size)
-						{
-							DecDataStr.data[0] = '.';
-							//剪掉整数部分以防指数上溢
-							value1.f32 -= (cmtUint64)value1.f32;
-							rOutStr = 1;
-							while (rOutStr < DecDataStr.size - 1)
+							//一、过位（去掉前面的0，让首位数字移到个位）
+							while (pofd < 0)
 							{
 								value1.f32 *= 10;
-								//正着写入
-								DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f32 % 10;
+								pofd++;
+							}
+							//二、整数数据字符串
+							if (DecDataStr.size)
+								DataStr.data[0] = '0' + (cmtUint64)value1.f32 % 10;
+							//如果没有小数部分，整数位需要四舍五入
+							else
+								DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
+							value1.f32 *= 10;
+							//三、小数数据字符串
+							if (DecDataStr.size)
+							{
+								DecDataStr.data[0] = '.';
+								rOutStr = 1;
+								while (rOutStr < DecDataStr.size - 1)
+								{
+									//正着写入（从左往右）
+									DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f32 % 10;
+									value1.f32 *= 10;
+									rOutStr++;
+								}
+								//最后一位需要四舍五入
+								DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
+							}
+						}
+						//2. 原始数据末位有效数字在小数点左边
+						else if (pofd > FmtInfo.precision.value)
+						{
+							//一、过位（去掉无效数字）
+							while (pofd > 1 + FmtInfo.precision.value)
+							{
+								value1.f32 /= 10;
+								pofd--;
+							}
+							//二、小数数据字符串
+							if (DecDataStr.size)
+							{
+								DecDataStr.data[0] = '.';
+								//最后一位需要四舍五入
+								DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
+								value1.f32 /= 10;
+								rOutStr = 1;
+								while (rOutStr < DecDataStr.size - 1)
+								{
+									//倒着写入（从右往左）
+									DecDataStr.data[DecDataStr.size - rOutStr - 1] = '0' + (cmtUint64)value1.f32 % 10;
+									value1.f32 /= 10;
+									rOutStr++;
+								}
+							}
+							//三、整数数据字符串
+							if (DecDataStr.size)
+								DataStr.data[0] = '0' + (cmtUint64)value1.f32 % 10;
+							//如果没有小数部分，整数位需要四舍五入
+							else
+								DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
+						}
+						//3. 原始数据有效数字横跨小数点
+						else
+						{
+							//一、原始数据整数部分
+							//（一）小数数据字符串
+							DecDataStr.data[0] = '.';
+							value2 = value1;
+							rOutStr = 1;
+							while (rOutStr < pofd)
+							{
+								//倒着写入（从右往左）
+								DecDataStr.data[pofd - rOutStr] = '0' + (cmtUint64)value2.f32 % 10;
+								value2.f32 /= 10;
 								rOutStr++;
 							}
-							//最后一位需要带四舍五入
-							DecDataStr.data[rOutStr] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
+							//（二）整数数据字符串
+							DataStr.data[0] = '0' + (cmtUint64)value2.f32 % 10;
+							//二、原始数据小数部分
+							//（一）小数数据字符串
+							//剪掉整数部分以防指数上溢
+							value1.f32 -= (cmtUint64)value1.f32;
+							value1.f32 *= 10;
+							while (rOutStr < DecDataStr.size - 1)
+							{
+								//正着写入（从左往右）
+								DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f32 % 10;
+								value1.f32 *= 10;
+								rOutStr++;
+							}
+							//最后一位需要四舍五入
+							DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
 						}
-						//（四）后置padding
+						//（四）指数数据字符串
+						ExpStr.data[0] = 'e';
+						if (exponent >= 0) ExpStr.data[1] = '+';
+						else
+						{
+							ExpStr.data[1] = '-';
+							exponent = -exponent;
+						}
+						rOutStr = 0;
+						while (rOutStr < ExpStr.size - 2)
+						{
+							//倒着写入（从右往左）
+							ExpStr.data[ExpStr.size - rOutStr - 1] = '0' + exponent % 10;
+							exponent /= 10;
+							rOutStr++;
+						}
+						//（五）后置padding
 						if (BackPad.size)
 						{
 							rOutStr = 0;
@@ -2854,24 +2972,746 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 
 						//（四）rOut增量
-						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + BackPad.size;
+						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size + BackPad.size;
 					}
 				}
 				else if (FmtInfo.type == 'E')
 				{
+					//单双精度要分开
+					if (FmtInfo.size == CMT_FMT_SIZE_L || FmtInfo.size == CMT_FMT_SIZE_LL)
+					{
+						//一、数据处理
+						//（一）从参数中载入指定长度的数据
+						value1.f64 = *((double*)ArgList + rArg);
+						//负数记录并取绝对值
+						if (value1.f64 < 0)
+						{
+							SignChar = '-';
+							value1.f64 = -value1.f64;
+							FmtInfo.sign = TRUE;//打开符号显示
+						}
+						else
+							SignChar = '+';
+						//（二）计算pofd（第一位十进制数字位置）
+						value2 = value1;
+						pofd = 0;
+						if (value2.f64 >= 1)
+						{
+							while (value2.f64 >= 1)
+							{
+								value2.f64 /= 10.0;
+								pofd++;
+							}
+						}
+						else
+						{
+							while (value2.f64 < 1)
+							{
+								value2.f64 *= 10.0;
+								pofd--;
+							}
+						}
+						//（三）计算指数数据字符串大小
+						exponent = pofd - 1;
+						value2.i64 = exponent;
+						if (value2.i64) ExpStr.size = 2;
+						else ExpStr.size = 3;
+						while (value2.i64)
+						{
+							ExpStr.size++;
+							value2.i64 /= 10;
+						}
 
+						//二、计算数据字符串大小
+					cSp_llE_step2:
+						//（一）计算整数数据字符串大小
+						//没有指定precision：默认保留6位小数
+						if (!FmtInfo.precision.enabled)
+						{
+							FmtInfo.precision.flag = FALSE;
+							FmtInfo.precision.value = 6;
+						}
+						//有效数字转小数点
+						if (FmtInfo.precision.flag)
+							FmtInfo.precision.value--;
+						//整数数据字符串大小始终为1
+						DataStr.size = 1;
+						//（二）计算小数数据字符串大小
+						if (FmtInfo.precision.value)
+							DecDataStr.size = FmtInfo.precision.value + 1;
+						else
+							DecDataStr.size = 0;
+
+						//三、各子字符串定位
+						//（一）计算各子字符串大小
+						//需要padding
+						if (FmtInfo.padding.length > FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size)
+						{
+							//左对齐
+							if (FmtInfo.padding.align)
+							{
+								FrontPad.size = 0;
+								BackPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size - ExpStr.size;
+							}
+							//右对齐
+							else
+							{
+								FrontPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size - ExpStr.size;
+								BackPad.size = 0;
+							}
+						}
+						//不需要padding
+						else
+						{
+							FrontPad.size = 0;
+							BackPad.size = 0;
+						}
+						//（二）计算各子字符串地址
+						DataStr.data = FrontPad.data + FrontPad.size + FmtInfo.sign;
+						DecDataStr.data = DataStr.data + DataStr.size;
+						ExpStr.data = DecDataStr.data + DecDataStr.size;
+						BackPad.data = DecDataStr.data + ExpStr.size;
+						//（三）根据符号位置调整前置padding位置，并预填符号
+						if (FmtInfo.sign)
+						{
+							//符号偏左
+							if (FrontPad.size && FmtInfo.padding.content)
+							{
+								FrontPad.data++;
+								*(FrontPad.data - 1) = SignChar;
+							}
+							//符号偏右
+							else
+								*(DataStr.data - 1) = SignChar;
+						}
+
+						//四、构建字符串
+						//（一）前置padding
+						if (FrontPad.size)
+						{
+							rOutStr = 0;
+							//填0
+							if (FmtInfo.padding.content)
+							{
+								while (rOutStr < FrontPad.size)
+								{
+									FrontPad.data[rOutStr] = '0';
+									rOutStr++;
+								}
+							}
+							//填空格
+							else
+							{
+								while (rOutStr < FrontPad.size)
+								{
+									FrontPad.data[rOutStr] = ' ';
+									rOutStr++;
+								}
+							}
+						}
+						//（二）数据字符串
+						//1. 原始数据首位数字在小数点右边
+						if (pofd < 0)
+						{
+							//一、过位（去掉前面的0，让首位数字移到个位）
+							while (pofd < 0)
+							{
+								value1.f64 *= 10;
+								pofd++;
+							}
+							//二、整数数据字符串
+							if (DecDataStr.size)
+								DataStr.data[0] = '0' + (cmtUint64)value1.f64 % 10;
+							//如果没有小数部分，整数位需要四舍五入
+							else
+								DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+							value1.f64 *= 10;
+							//三、小数数据字符串
+							if (DecDataStr.size)
+							{
+								DecDataStr.data[0] = '.';
+								rOutStr = 1;
+								while (rOutStr < DecDataStr.size - 1)
+								{
+									//正着写入（从左往右）
+									DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f64 % 10;
+									value1.f64 *= 10;
+									rOutStr++;
+								}
+								//最后一位需要四舍五入
+								DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+							}
+						}
+						//2. 原始数据末位有效数字在小数点左边
+						else if (pofd > FmtInfo.precision.value)
+						{
+							//一、过位（去掉无效数字）
+							while (pofd > 1 + FmtInfo.precision.value)
+							{
+								value1.f64 /= 10;
+								pofd--;
+							}
+							//二、小数数据字符串
+							if (DecDataStr.size)
+							{
+								DecDataStr.data[0] = '.';
+								//最后一位需要四舍五入
+								DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+								value1.f64 /= 10;
+								rOutStr = 1;
+								while (rOutStr < DecDataStr.size - 1)
+								{
+									//倒着写入（从右往左）
+									DecDataStr.data[DecDataStr.size - rOutStr - 1] = '0' + (cmtUint64)value1.f64 % 10;
+									value1.f64 /= 10;
+									rOutStr++;
+								}
+							}
+							//三、整数数据字符串
+							if (DecDataStr.size)
+								DataStr.data[0] = '0' + (cmtUint64)value1.f64 % 10;
+							//如果没有小数部分，整数位需要四舍五入
+							else
+								DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+						}
+						//3. 原始数据有效数字横跨小数点
+						else
+						{
+							//一、原始数据整数部分
+							//（一）小数数据字符串
+							DecDataStr.data[0] = '.';
+							value2 = value1;
+							rOutStr = 1;
+							while (rOutStr < pofd)
+							{
+								//倒着写入（从右往左）
+								DecDataStr.data[pofd - rOutStr] = '0' + (cmtUint64)value2.f64 % 10;
+								value2.f64 /= 10;
+								rOutStr++;
+							}
+							//（二）整数数据字符串
+							DataStr.data[0] = '0' + (cmtUint64)value2.f64 % 10;
+							//二、原始数据小数部分
+							//（一）小数数据字符串
+							//剪掉整数部分以防指数上溢
+							value1.f64 -= (cmtUint64)value1.f64;
+							value1.f64 *= 10;
+							while (rOutStr < DecDataStr.size - 1)
+							{
+								//正着写入（从左往右）
+								DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f64 % 10;
+								value1.f64 *= 10;
+								rOutStr++;
+							}
+							//最后一位需要四舍五入
+							DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+						}
+						//（四）指数数据字符串
+						ExpStr.data[0] = 'E';
+						if (exponent >= 0) ExpStr.data[1] = '+';
+						else
+						{
+							ExpStr.data[1] = '-';
+							exponent = -exponent;
+						}
+						rOutStr = 0;
+						while (rOutStr < ExpStr.size - 2)
+						{
+							//倒着写入（从右往左）
+							ExpStr.data[ExpStr.size - rOutStr - 1] = '0' + exponent % 10;
+							exponent /= 10;
+							rOutStr++;
+						}
+						//（五）后置padding
+						if (BackPad.size)
+						{
+							rOutStr = 0;
+							while (rOutStr < BackPad.size)
+							{
+								BackPad.data[rOutStr] = ' ';
+								rOutStr++;
+							}
+						}
+
+						//（四）rOut增量
+						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size + BackPad.size;
+					}
+					else
+					{
+						//一、数据处理
+						//（一）从参数中载入指定长度的数据
+						value1.f32 = (float)*((double*)ArgList + rArg);
+						//负数记录并取绝对值
+						if (value1.f32 < 0)
+						{
+							SignChar = '-';
+							value1.f32 = -value1.f32;
+							FmtInfo.sign = TRUE;//打开符号显示
+						}
+						else
+							SignChar = '+';
+						//（二）计算pofd（第一位十进制数字位置）
+						value2 = value1;
+						pofd = 0;
+						if (value2.f32 >= 1)
+						{
+							while (value2.f32 >= 1)
+							{
+								value2.f32 /= 10.0;
+								pofd++;
+							}
+						}
+						else
+						{
+							while (value2.f32 < 1)
+							{
+								value2.f32 *= 10.0;
+								pofd--;
+							}
+						}
+						//（三）计算指数数据字符串大小
+						exponent = pofd - 1;
+						value2.i64 = exponent;
+						if (value2.i64) ExpStr.size = 2;
+						else ExpStr.size = 3;
+						while (value2.i64)
+						{
+							ExpStr.size++;
+							value2.i64 /= 10;
+						}
+
+						//二、计算数据字符串大小
+					cSp_hhE_step2:
+						//（一）计算整数数据字符串大小
+						//没有指定precision：默认保留6位小数
+						if (!FmtInfo.precision.enabled)
+						{
+							FmtInfo.precision.flag = FALSE;
+							FmtInfo.precision.value = 6;
+						}
+						//有效数字转小数点
+						if (FmtInfo.precision.flag)
+							FmtInfo.precision.value--;
+						//整数数据字符串大小始终为1
+						DataStr.size = 1;
+						//（二）计算小数数据字符串大小
+						if (FmtInfo.precision.value)
+							DecDataStr.size = FmtInfo.precision.value + 1;
+						else
+							DecDataStr.size = 0;
+
+						//三、各子字符串定位
+						//（一）计算各子字符串大小
+						//需要padding
+						if (FmtInfo.padding.length > FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size)
+						{
+							//左对齐
+							if (FmtInfo.padding.align)
+							{
+								FrontPad.size = 0;
+								BackPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size - ExpStr.size;
+							}
+							//右对齐
+							else
+							{
+								FrontPad.size = FmtInfo.padding.length - FmtInfo.sign - DataStr.size - DecDataStr.size - ExpStr.size;
+								BackPad.size = 0;
+							}
+						}
+						//不需要padding
+						else
+						{
+							FrontPad.size = 0;
+							BackPad.size = 0;
+						}
+						//（二）计算各子字符串地址
+						DataStr.data = FrontPad.data + FrontPad.size + FmtInfo.sign;
+						DecDataStr.data = DataStr.data + DataStr.size;
+						ExpStr.data = DecDataStr.data + DecDataStr.size;
+						BackPad.data = DecDataStr.data + ExpStr.size;
+						//（三）根据符号位置调整前置padding位置，并预填符号
+						if (FmtInfo.sign)
+						{
+							//符号偏左
+							if (FrontPad.size && FmtInfo.padding.content)
+							{
+								FrontPad.data++;
+								*(FrontPad.data - 1) = SignChar;
+							}
+							//符号偏右
+							else
+								*(DataStr.data - 1) = SignChar;
+						}
+
+						//四、构建字符串
+						//（一）前置padding
+						if (FrontPad.size)
+						{
+							rOutStr = 0;
+							//填0
+							if (FmtInfo.padding.content)
+							{
+								while (rOutStr < FrontPad.size)
+								{
+									FrontPad.data[rOutStr] = '0';
+									rOutStr++;
+								}
+							}
+							//填空格
+							else
+							{
+								while (rOutStr < FrontPad.size)
+								{
+									FrontPad.data[rOutStr] = ' ';
+									rOutStr++;
+								}
+							}
+						}
+						//（二）数据字符串
+						//1. 原始数据首位数字在小数点右边
+						if (pofd < 0)
+						{
+							//一、过位（去掉前面的0，让首位数字移到个位）
+							while (pofd < 0)
+							{
+								value1.f32 *= 10;
+								pofd++;
+							}
+							//二、整数数据字符串
+							if (DecDataStr.size)
+								DataStr.data[0] = '0' + (cmtUint64)value1.f32 % 10;
+							//如果没有小数部分，整数位需要四舍五入
+							else
+								DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
+							value1.f32 *= 10;
+							//三、小数数据字符串
+							if (DecDataStr.size)
+							{
+								DecDataStr.data[0] = '.';
+								rOutStr = 1;
+								while (rOutStr < DecDataStr.size - 1)
+								{
+									//正着写入（从左往右）
+									DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f32 % 10;
+									value1.f32 *= 10;
+									rOutStr++;
+								}
+								//最后一位需要四舍五入
+								DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
+							}
+						}
+						//2. 原始数据末位有效数字在小数点左边
+						else if (pofd > FmtInfo.precision.value)
+						{
+							//一、过位（去掉无效数字）
+							while (pofd > 1 + FmtInfo.precision.value)
+							{
+								value1.f32 /= 10;
+								pofd--;
+							}
+							//二、小数数据字符串
+							if (DecDataStr.size)
+							{
+								DecDataStr.data[0] = '.';
+								//最后一位需要四舍五入
+								DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
+								value1.f32 /= 10;
+								rOutStr = 1;
+								while (rOutStr < DecDataStr.size - 1)
+								{
+									//倒着写入（从右往左）
+									DecDataStr.data[DecDataStr.size - rOutStr - 1] = '0' + (cmtUint64)value1.f32 % 10;
+									value1.f32 /= 10;
+									rOutStr++;
+								}
+							}
+							//三、整数数据字符串
+							if (DecDataStr.size)
+								DataStr.data[0] = '0' + (cmtUint64)value1.f32 % 10;
+							//如果没有小数部分，整数位需要四舍五入
+							else
+								DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
+						}
+						//3. 原始数据有效数字横跨小数点
+						else
+						{
+							//一、原始数据整数部分
+							//（一）小数数据字符串
+							DecDataStr.data[0] = '.';
+							value2 = value1;
+							rOutStr = 1;
+							while (rOutStr < pofd)
+							{
+								//倒着写入（从右往左）
+								DecDataStr.data[pofd - rOutStr] = '0' + (cmtUint64)value2.f32 % 10;
+								value2.f32 /= 10;
+								rOutStr++;
+							}
+							//（二）整数数据字符串
+							DataStr.data[0] = '0' + (cmtUint64)value2.f32 % 10;
+							//二、原始数据小数部分
+							//（一）小数数据字符串
+							//剪掉整数部分以防指数上溢
+							value1.f32 -= (cmtUint64)value1.f32;
+							value1.f32 *= 10;
+							while (rOutStr < DecDataStr.size - 1)
+							{
+								//正着写入（从左往右）
+								DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f32 % 10;
+								value1.f32 *= 10;
+								rOutStr++;
+							}
+							//最后一位需要四舍五入
+							DecDataStr.data[DecDataStr.size - 1] = '0' + (cmtUint64)(value1.f32 + 0.5) % 10;
+						}
+						//（四）指数数据字符串
+						ExpStr.data[0] = 'E';
+						if (exponent >= 0) ExpStr.data[1] = '+';
+						else
+						{
+							ExpStr.data[1] = '-';
+							exponent = -exponent;
+						}
+						rOutStr = 0;
+						while (rOutStr < ExpStr.size - 2)
+						{
+							//倒着写入（从右往左）
+							ExpStr.data[ExpStr.size - rOutStr - 1] = '0' + exponent % 10;
+							exponent /= 10;
+							rOutStr++;
+						}
+						//（五）后置padding
+						if (BackPad.size)
+						{
+							rOutStr = 0;
+							while (rOutStr < BackPad.size)
+							{
+								BackPad.data[rOutStr] = ' ';
+								rOutStr++;
+							}
+						}
+
+						//（四）rOut增量
+						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size + BackPad.size;
+					}
 				}
 				else if (FmtInfo.type == 'g')
 				{
+					if (FmtInfo.size == CMT_FMT_SIZE_L || FmtInfo.size == CMT_FMT_SIZE_LL)
+					{
+						//一、数据处理
+						//（一）从参数中载入指定长度的数据
+						value1.f64 = *((double*)ArgList + rArg);
+						//负数记录并取绝对值
+						if (value1.f64 < 0)
+						{
+							SignChar = '-';
+							value1.f64 = -value1.f64;
+							FmtInfo.sign = TRUE;//打开符号显示
+						}
+						else
+							SignChar = '+';
+						//（二）计算pofd（第一位十进制数字位置）
+						value2 = value1;
+						pofd = 0;
+						if (value2.f64 >= 1)
+						{
+							while (value2.f64 >= 1)
+							{
+								value2.f64 /= 10.0;
+								pofd++;
+							}
+						}
+						else
+						{
+							while (value2.f64 < 1)
+							{
+								value2.f64 *= 10.0;
+								pofd--;
+							}
+						}
+						//（三）计算指数数据字符串大小
+						exponent = pofd - 1;
+						value2.i64 = exponent;
+						if (value2.i64) ExpStr.size = 2;
+						else ExpStr.size = 3;
+						while (value2.i64)
+						{
+							ExpStr.size++;
+							value2.i64 /= 10;
+						}
 
+						//二、选择输出模式
+						//使用指数模式
+						if (FmtInfo.precision.enabled && exponent > FmtInfo.precision.value || exponent < -4)
+							goto cSp_lle_step2;
+						//使用正常模式
+						else
+							goto cSp_llf_step2;
+					}
+					else
+					{
+						//一、数据处理
+						//（一）从参数中载入指定长度的数据
+						value1.f32 = (float)*((double*)ArgList + rArg);
+						//负数记录并取绝对值
+						if (value1.f32 < 0)
+						{
+							SignChar = '-';
+							value1.f32 = -value1.f32;
+							FmtInfo.sign = TRUE;//打开符号显示
+						}
+						else
+							SignChar = '+';
+						//（二）计算pofd（第一位十进制数字位置）
+						value2 = value1;
+						pofd = 0;
+						if (value2.f32 >= 1)
+						{
+							while (value2.f32 >= 1)
+							{
+								value2.f32 /= 10.0;
+								pofd++;
+							}
+						}
+						else
+						{
+							while (value2.f32 < 1)
+							{
+								value2.f32 *= 10.0;
+								pofd--;
+							}
+						}
+						//（三）计算指数数据字符串大小
+						exponent = pofd - 1;
+						value2.i64 = exponent;
+						if (value2.i64) ExpStr.size = 2;
+						else ExpStr.size = 3;
+						while (value2.i64)
+						{
+							ExpStr.size++;
+							value2.i64 /= 10;
+						}
+
+						//二、选择输出模式
+						//使用指数模式
+						if (FmtInfo.precision.enabled && exponent > FmtInfo.precision.value || exponent < -4)
+							goto cSp_hhe_step2;
+						//使用正常模式
+						else
+							goto cSp_hhf_step2;
+					}
 				}
 				else if (FmtInfo.type == 'G')
 				{
+					if (FmtInfo.size == CMT_FMT_SIZE_L || FmtInfo.size == CMT_FMT_SIZE_LL)
+					{
+						//一、数据处理
+						//（一）从参数中载入指定长度的数据
+						value1.f64 = *((double*)ArgList + rArg);
+						//负数记录并取绝对值
+						if (value1.f64 < 0)
+						{
+							SignChar = '-';
+							value1.f64 = -value1.f64;
+							FmtInfo.sign = TRUE;//打开符号显示
+						}
+						else
+							SignChar = '+';
+						//（二）计算pofd（第一位十进制数字位置）
+						value2 = value1;
+						pofd = 0;
+						if (value2.f64 >= 1)
+						{
+							while (value2.f64 >= 1)
+							{
+								value2.f64 /= 10.0;
+								pofd++;
+							}
+						}
+						else
+						{
+							while (value2.f64 < 1)
+							{
+								value2.f64 *= 10.0;
+								pofd--;
+							}
+						}
+						//（三）计算指数数据字符串大小
+						exponent = pofd - 1;
+						value2.i64 = exponent;
+						if (value2.i64) ExpStr.size = 2;
+						else ExpStr.size = 3;
+						while (value2.i64)
+						{
+							ExpStr.size++;
+							value2.i64 /= 10;
+						}
 
+						//二、选择输出模式
+						//使用指数模式
+						if (FmtInfo.precision.enabled && exponent > FmtInfo.precision.value || exponent < -4)
+							goto cSp_llE_step2;
+						//使用正常模式
+						else
+							goto cSp_llf_step2;
+					}
+					else
+					{
+						//一、数据处理
+						//（一）从参数中载入指定长度的数据
+						value1.f32 = (float)*((double*)ArgList + rArg);
+						//负数记录并取绝对值
+						if (value1.f32 < 0)
+						{
+							SignChar = '-';
+							value1.f32 = -value1.f32;
+							FmtInfo.sign = TRUE;//打开符号显示
+						}
+						else
+							SignChar = '+';
+						//（二）计算pofd（第一位十进制数字位置）
+						value2 = value1;
+						pofd = 0;
+						if (value2.f32 >= 1)
+						{
+							while (value2.f32 >= 1)
+							{
+								value2.f32 /= 10.0;
+								pofd++;
+							}
+						}
+						else
+						{
+							while (value2.f32 < 1)
+							{
+								value2.f32 *= 10.0;
+								pofd--;
+							}
+						}
+						//（三）计算指数数据字符串大小
+						exponent = pofd - 1;
+						value2.i64 = exponent;
+						if (value2.i64) ExpStr.size = 2;
+						else ExpStr.size = 3;
+						while (value2.i64)
+						{
+							ExpStr.size++;
+							value2.i64 /= 10;
+						}
+
+						//二、选择输出模式
+						//使用指数模式
+						if (FmtInfo.precision.enabled && exponent > FmtInfo.precision.value || exponent < -4)
+							goto cSp_hhE_step2;
+						//使用正常模式
+						else
+							goto cSp_hhf_step2;
+					}
 				}
 				else if (FmtInfo.type == 'c')
 				{
-
+					
 				}
 				else
 				{

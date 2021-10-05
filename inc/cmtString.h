@@ -473,6 +473,14 @@ extern cmtUint64 cmtStrtoFl64(cmtU8str* in, double* out);
 
 extern cmtUint64 cmtStrtoBool(cmtU8str* in, cmtBool* out);
 
+extern cmtUint64 cmtSprintfDouble(cmtU8str* out, double value, cmtFmtInfo* FmtInfo);
+
+extern cmtUint64 cmtSprintfFloat(cmtU8str* out, float value, cmtFmtInfo* FmtInfo);
+
+extern cmtUint64 cmtSprintfDoubleE(cmtU8str* out, double value, cmtFmtInfo* FmtInfo);
+
+extern cmtUint64 cmtSprintfFloatE(cmtU8str* out, float value, cmtFmtInfo* FmtInfo);
+
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 
 /**
