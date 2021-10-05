@@ -2450,6 +2450,30 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + BackPad.size;
 					}
 				}
+				else if (FmtInfo.type == 'e')
+				{
+					
+				}
+				else if (FmtInfo.type == 'E')
+				{
+
+				}
+				else if (FmtInfo.type == 'g')
+				{
+
+				}
+				else if (FmtInfo.type == 'G')
+				{
+
+				}
+				else if (FmtInfo.type == 'c')
+				{
+
+				}
+				else
+				{
+
+				}
 				rArg++;
 			}
 		}
