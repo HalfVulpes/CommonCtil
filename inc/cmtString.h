@@ -473,16 +473,14 @@ extern cmtUint64 cmtStrtoFl64(cmtU8str* in, double* out);
 
 extern cmtUint64 cmtStrtoBool(cmtU8str* in, cmtBool* out);
 
-extern cmtUint64 cmtSprintfDouble(cmtU8str* out, double value, cmtFmtInfo* FmtInfo);
-
-extern cmtUint64 cmtSprintfFloat(cmtU8str* out, float value, cmtFmtInfo* FmtInfo);
-
-extern cmtUint64 cmtSprintfDoubleE(cmtU8str* out, double value, cmtFmtInfo* FmtInfo);
-
-extern cmtUint64 cmtSprintfFloatE(cmtU8str* out, float value, cmtFmtInfo* FmtInfo);
-
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 
+/*
+* TODO:
+* 浮点数还没有处理错误数据（NAN，0，INFINITY）
+* 输出字符串还要增加控制字数模式（由precision给定）
+* 遍历输出实现
+*/
 /**
 * @brief 根据格式字符串生成字符串
 * @param[out] out 生成的字符串

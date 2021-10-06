@@ -1535,7 +1535,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 					}
 
-					//（四）rOut增量
+					//五、rOut增量
 					rOut += FrontPad.size + DataStr.size + BackPad.size;
 				}
 				else if (FmtInfo.type == 'o' || FmtInfo.type == 'O')
@@ -1635,7 +1635,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 					}
 
-					//（四）rOut增量
+					//五、rOut增量
 					rOut += FrontPad.size + DataStr.size + BackPad.size;
 				}
 				else if (FmtInfo.type == 'd' || FmtInfo.type == 'D')
@@ -1757,7 +1757,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 					}
 
-					//（四）rOut增量
+					//五、rOut增量
 					rOut += FrontPad.size + FmtInfo.sign + DataStr.size + BackPad.size;
 				}
 				else if (FmtInfo.type == 'u' || FmtInfo.type == 'U')
@@ -1857,7 +1857,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 					}
 
-					//（四）rOut增量
+					//五、rOut增量
 					rOut += FrontPad.size + DataStr.size + BackPad.size;
 				}
 				else if (FmtInfo.type == 'x')
@@ -1960,7 +1960,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 					}
 
-					//（四）rOut增量
+					//五、rOut增量
 					rOut += FrontPad.size + DataStr.size + BackPad.size;
 				}
 				else if (FmtInfo.type == 'X')
@@ -2063,7 +2063,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						}
 					}
 
-					//（四）rOut增量
+					//五、rOut增量
 					rOut += FrontPad.size + DataStr.size + BackPad.size;
 				}
 				else if (FmtInfo.type == 'f' || FmtInfo.type == 'F')
@@ -2258,7 +2258,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 							}
 						}
 
-						//（四）rOut增量
+						//五、rOut增量
 						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + BackPad.size;
 					}
 					else
@@ -2450,7 +2450,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 							}
 						}
 
-						//（四）rOut增量
+						//五、rOut增量
 						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + BackPad.size;
 					}
 				}
@@ -2712,9 +2712,6 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 								rOutStr++;
 							}
 						}
-
-						//（四）rOut增量
-						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size + BackPad.size;
 					}
 					else
 					{
@@ -2970,10 +2967,10 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 								rOutStr++;
 							}
 						}
-
-						//（四）rOut增量
-						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size + BackPad.size;
 					}
+
+					//五、rOut增量
+					rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size + BackPad.size;
 				}
 				else if (FmtInfo.type == 'E')
 				{
@@ -3232,9 +3229,6 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 								rOutStr++;
 							}
 						}
-
-						//（四）rOut增量
-						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size + BackPad.size;
 					}
 					else
 					{
@@ -3490,10 +3484,10 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 								rOutStr++;
 							}
 						}
-
-						//（四）rOut增量
-						rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size + BackPad.size;
 					}
+
+					//五、rOut增量
+					rOut += FrontPad.size + FmtInfo.sign + DataStr.size + DecDataStr.size + ExpStr.size + BackPad.size;
 				}
 				else if (FmtInfo.type == 'g')
 				{
@@ -3709,13 +3703,79 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 							goto cSp_hhf_step2;
 					}
 				}
-				else if (FmtInfo.type == 'c')
-				{
-					
-				}
 				else
 				{
+					//结构：(前置padding)(字符串)(后置padding)
+					//一、计算字符串大小
+					if (FmtInfo.size == CMT_FMT_SIZE_HH) DataStr.size = cmtANSItoU8size(ArgList[rArg]);
+					else if (FmtInfo.size == CMT_FMT_SIZE_L) DataStr.size = cmtU16toU8size(ArgList[rArg]);
+					else if (FmtInfo.size == CMT_FMT_SIZE_LL) DataStr.size = cmtU32toU8size(ArgList[rArg]);
+					else DataStr.size = ((cmtU8str*)ArgList[rArg])->size;
+					if (FmtInfo.precision.enabled && DataStr.size > FmtInfo.precision.value)
+						DataStr.size = FmtInfo.precision.value;
 
+					//二、各子字符串定位
+					//（一）计算各子字符串大小
+					//需要padding
+					if (FmtInfo.padding.length > DataStr.size)
+					{
+						//左对齐
+						if (FmtInfo.padding.align)
+						{
+							FrontPad.size = 0;
+							BackPad.size = FmtInfo.padding.length - DataStr.size;
+						}
+						//右对齐
+						else
+						{
+							FrontPad.size = FmtInfo.padding.length - DataStr.size;
+							BackPad.size = 0;
+						}
+					}
+					//不需要padding
+					else
+					{
+						FrontPad.size = 0;
+						BackPad.size = 0;
+					}
+					//（二）计算各子字符串地址
+					DataStr.data = FrontPad.data + FrontPad.size;
+					BackPad.data = DataStr.data + DataStr.size;
+
+					//三、构建字符串
+					//（一）前置padding
+					if (FrontPad.size)
+					{
+						rOutStr = 0;
+						while (rOutStr < FrontPad.size)
+						{
+							FrontPad.data[rOutStr] = ' ';
+							rOutStr++;
+						}
+					}
+					//（二）字符串
+					if (FmtInfo.size == CMT_FMT_SIZE_HH) cmtANSItoU8(ArgList[rArg], &DataStr);
+					else if (FmtInfo.size == CMT_FMT_SIZE_L) cmtU16toU8(ArgList[rArg], &DataStr);
+					else if (FmtInfo.size == CMT_FMT_SIZE_LL) cmtU32toU8(ArgList[rArg], &DataStr);
+					else
+					{
+						rOutStr = 0;
+						while (rOutStr < DataStr.size)
+							DataStr.data[rOutStr] = ((cmtU8str*)ArgList[rArg])->data[rOutStr];
+					}
+					//（三）后置padding
+					if (BackPad.size)
+					{
+						rOutStr = 0;
+						while (rOutStr < BackPad.size)
+						{
+							BackPad.data[rOutStr] = ' ';
+							rOutStr++;
+						}
+					}
+
+					//四、rOut增量
+					rOut += FrontPad.size + DataStr.size + BackPad.size;
 				}
 				rArg++;
 			}
