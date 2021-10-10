@@ -1222,7 +1222,7 @@ void cmtU32toU16(cmtU32str* u32, cmtU16str* u16)
 	}
 }
 
-cmtUint64 cmtStrtoUintDec(cmtU8str* in, cmtUint64* out)
+cmtUint64 cmtStrtoUdec(cmtU8str* in, cmtUint64* out)
 {
 	cmtUint64 r = 0;
 
@@ -1332,7 +1332,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				{
 					temp.data = FmtStr.data + rFmtStr;
 					temp.size = FmtStr.size - rFmtStr;
-					rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.padding.length);
+					rFmtStr += cmtStrtoUdec(&temp, &FmtInfo.padding.length);
 				}
 
 				//precision字段
@@ -1358,7 +1358,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					{
 						temp.data = FmtStr.data + rFmtStr;
 						temp.size = FmtStr.size - rFmtStr;
-						rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.precision.value);
+						rFmtStr += cmtStrtoUdec(&temp, &FmtInfo.precision.value);
 					}
 				}
 				else
@@ -1379,7 +1379,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					{
 						temp.data = FmtStr.data + rFmtStr;
 						temp.size = FmtStr.size - rFmtStr;
-						rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.length);
+						rFmtStr += cmtStrtoUdec(&temp, &FmtInfo.iteration.length);
 					}
 					//group size
 					if (FmtStr.data[rFmtStr] == '-')
@@ -1394,7 +1394,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						{
 							temp.data = FmtStr.data + rFmtStr;
 							temp.size = FmtStr.size - rFmtStr;
-							rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.GroupSize);
+							rFmtStr += cmtStrtoUdec(&temp, &FmtInfo.iteration.GroupSize);
 						}
 					}
 					//row size
@@ -1410,7 +1410,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						{
 							temp.data = FmtStr.data + rFmtStr;
 							temp.size = FmtStr.size - rFmtStr;
-							rFmtStr += cmtStrtoUintDec(&temp, &FmtInfo.iteration.RowSize);
+							rFmtStr += cmtStrtoUdec(&temp, &FmtInfo.iteration.RowSize);
 						}
 					}
 				}
