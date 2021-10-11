@@ -477,19 +477,15 @@ extern cmtUint64 cmtStrtoF32(cmtU8str* in, float* out);
 
 extern cmtUint64 cmtStrtoF64(cmtU8str* in, double* out);
 
-extern cmtUint64 cmtBintoStrSize(cmtUint64 in);
+extern cmtUint64 cmtBinLen(cmtUint64 in);
 
 extern void cmtBintoStr(cmtUint64 in, cmtU8str* out);
 
-extern cmtUint64 cmtOcttoStrSize(cmtUint64 in);
+extern cmtUint64 cmtOctLen(cmtUint64 in);
 
 extern void cmtOcttoStr(cmtUint64 in, cmtU8str* out);
 
-extern cmtUint64 cmtUdectoStrSize(cmtUint64 in);
-
-extern void cmtUdectoStr(cmtUint64 in, cmtU8str* out);
-
-extern cmtUint64 cmtDectoStrSize(cmtInt64 in);
+extern cmtUint64 cmtDecLen(cmtInt64 in);
 
 extern void cmtDectoStr(cmtInt64 in, cmtU8str* out);
 
@@ -497,13 +493,25 @@ extern cmtUint64 cmtHextoStrSize(cmtUint64 in);
 
 extern void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtBool cap);
 
-extern cmtBool cmtF32toStr(float in, cmtU8str* out, cmtUint64 sigf);
+extern cmtUint64 cmtCalcPofdF32(float in);
 
-extern cmtBool cmtF64toStr(double in, cmtU8str* out, cmtUint64 sigf);
+extern cmtUint64 cmtCalcPofdF64(double in);
 
-extern cmtBool cmtF32toStrE(float in, cmtU8str* out, cmtUint64 sigf);
+extern cmtUint8 cmtF32toStr(float in, cmtU8str* out, cmtUint64 sigf);
 
-extern cmtBool cmtF64toStrE(double in, cmtU8str* out, cmtUint64 sigf);
+extern cmtUint8 cmtF64toStr(double in, cmtU8str* out, cmtUint64 sigf);
+
+extern cmtUint8 cmtF32toStrAftp(float in, cmtU8str* out, cmtUint64 aftp);
+
+extern cmtUint8 cmtF64toStrAftp(double in, cmtU8str* out, cmtUint64 aftp);
+
+extern cmtUint8 cmtF32toStrE(float in, cmtU8str* out, cmtUint64 sigf);
+
+extern cmtUint8 cmtF64toStrE(double in, cmtU8str* out, cmtUint64 sigf);
+
+extern cmtUint8 cmtF32toStrAftpE(float in, cmtU8str* out, cmtUint64 aftp);
+
+extern cmtUint8 cmtF64toStrAftpE(double in, cmtU8str* out, cmtUint64 aftp);
 
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 

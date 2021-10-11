@@ -1237,6 +1237,59 @@ cmtUint64 cmtStrtoUdec(cmtU8str* in, cmtUint64* out)
 	return r;
 }
 
+cmtUint64 cmtCalcPofdF32(float in)
+{
+	cmtUint64 pofd = 0;
+
+	if (in >= 1)
+	{
+		while (in >= 1)
+		{
+			in /= 10.0;
+			pofd++;
+		}
+	}
+	else
+	{
+		while (in < 1)
+		{
+			in *= 10.0;
+			pofd--;
+		}
+	}
+
+	return pofd;
+}
+
+cmtUint64 cmtCalcPofdF64(double in)
+{
+	cmtUint64 pofd = 0;
+
+	if (in >= 1)
+	{
+		while (in >= 1)
+		{
+			in /= 10.0;
+			pofd++;
+		}
+	}
+	else
+	{
+		while (in < 1)
+		{
+			in *= 10.0;
+			pofd--;
+		}
+	}
+
+	return pofd;
+}
+
+cmtUint8 cmtF32toStr(float in, cmtU8str* out, cmtUint64 sigf)
+{
+
+}
+
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 {
 	//通用
