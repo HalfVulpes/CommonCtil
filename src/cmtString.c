@@ -1222,7 +1222,7 @@ void cmtU32toU16(cmtU32str* u32, cmtU16str* u16)
 	}
 }
 
-cmtUint64 cmtStrtoUdec(cmtU8str* in, cmtUint64* out)
+cmtUint64 cmtStrtoDec(cmtU8str* in, cmtInt64* out)
 {
 	cmtUint64 r = 0;
 
@@ -1233,6 +1233,7 @@ cmtUint64 cmtStrtoUdec(cmtU8str* in, cmtUint64* out)
 		*out += in->data[r] - '0';
 		r++;
 	}
+	if (in->data[0] == '-') *out = -*out;
 
 	return r;
 }
@@ -1285,9 +1286,98 @@ cmtUint64 cmtCalcPofdF64(double in)
 	return pofd;
 }
 
-cmtUint8 cmtF32toStr(float in, cmtU8str* out, cmtUint64 sigf)
+void cmtF32toStr(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf)
 {
+	//结构：(整数数据)[.(小数数据)]
+	cmtU8str integer, decimal;
+	cmtUint64 r;
+	cmtUint64 RemSize = out->size;
 
+	//一、计算各字串大小
+	//（一）整数数据字符串
+	if (pofd > 0) integer.size = pofd;
+	else integer.size = 1;
+	//（二）小数数据字符串
+	if (pofd > 0)
+	{
+		if (sigf > pofd) decimal.size = sigf - pofd + 1;
+		else decimal.size = 0;
+	}
+	else
+		decimal.size = sigf - pofd;
+	//（三）防溢出截断
+	if (integer.size > RemSize)
+	{
+		integer.size = RemSize;
+		decimal.size = 0;
+	}
+	else
+	{
+		RemSize -= integer.size;
+		if (decimal.size > RemSize)
+			decimal.size = RemSize;
+	}
+
+	//二、计算各字串起始地址
+	integer.data = out->data;
+	decimal.data = integer.data + integer.size;
+
+	//三、构建字符串
+	//（一）整数数据字符串
+	r = integer.size;
+	while (r > 0)
+	{
+
+	}
+
+	value2 = value1;
+	rOutStr = 0;
+	while (rOutStr < DataStr.size)
+	{
+		//倒着写入（最低位在最右边）
+		//有效数字模式
+		if (FmtInfo.precision.flag)
+		{
+			//保留范围之外，填0
+			if (DataStr.size - rOutStr > FmtInfo.precision.value)
+				DataStr.data[DataStr.size - rOutStr - 1] = '0';
+			//最后一位保留的有效数字，四舍五入
+			else if (DataStr.size - rOutStr == FmtInfo.precision.value)
+				DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value2.f64 + 0.5) % 10;
+			//其他情况正常转换
+			else
+				DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f64 % 10;
+		}
+		//小数位数模式
+		else
+		{
+			//如果个位就是最后一位（不保留小数位），个位需要四舍五入
+			if (!rOutStr && !FmtInfo.precision.value)
+				DataStr.data[DataStr.size - 1] = '0' + (cmtUint64)(value2.f64 + 0.5) % 10;
+			//其他情况正常转换
+			else
+				DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f64 % 10;
+		}
+		value2.f64 /= 10;
+		rOutStr++;
+	}
+	//（三）小数数据字符串
+	if (DecDataStr.size)
+	{
+		DecDataStr.data[0] = '.';
+		//剪掉整数部分以防指数上溢
+		value1.f64 -= (cmtUint64)value1.f64;
+		rOutStr = 1;
+		while (rOutStr < DecDataStr.size - 1)
+		{
+			value1.f64 *= 10;
+			//正着写入
+			DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f64 % 10;
+			rOutStr++;
+		}
+		//最后一位需要带四舍五入
+		DecDataStr.data[rOutStr] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+	}
 }
 
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
@@ -1385,7 +1475,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 				{
 					temp.data = FmtStr.data + rFmtStr;
 					temp.size = FmtStr.size - rFmtStr;
-					rFmtStr += cmtStrtoUdec(&temp, &FmtInfo.padding.length);
+					rFmtStr += cmtStrtoDec(&temp, &FmtInfo.padding.length);
 				}
 
 				//precision字段
@@ -1411,7 +1501,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					{
 						temp.data = FmtStr.data + rFmtStr;
 						temp.size = FmtStr.size - rFmtStr;
-						rFmtStr += cmtStrtoUdec(&temp, &FmtInfo.precision.value);
+						rFmtStr += cmtStrtoDec(&temp, &FmtInfo.precision.value);
 					}
 				}
 				else
@@ -1432,7 +1522,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					{
 						temp.data = FmtStr.data + rFmtStr;
 						temp.size = FmtStr.size - rFmtStr;
-						rFmtStr += cmtStrtoUdec(&temp, &FmtInfo.iteration.length);
+						rFmtStr += cmtStrtoDec(&temp, &FmtInfo.iteration.length);
 					}
 					//group size
 					if (FmtStr.data[rFmtStr] == '-')
@@ -1447,7 +1537,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						{
 							temp.data = FmtStr.data + rFmtStr;
 							temp.size = FmtStr.size - rFmtStr;
-							rFmtStr += cmtStrtoUdec(&temp, &FmtInfo.iteration.GroupSize);
+							rFmtStr += cmtStrtoDec(&temp, &FmtInfo.iteration.GroupSize);
 						}
 					}
 					//row size
@@ -1463,7 +1553,7 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 						{
 							temp.data = FmtStr.data + rFmtStr;
 							temp.size = FmtStr.size - rFmtStr;
-							rFmtStr += cmtStrtoUdec(&temp, &FmtInfo.iteration.RowSize);
+							rFmtStr += cmtStrtoDec(&temp, &FmtInfo.iteration.RowSize);
 						}
 					}
 				}
