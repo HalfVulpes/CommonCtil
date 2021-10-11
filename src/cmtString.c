@@ -1291,7 +1291,10 @@ void cmtF32toStr(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf)
 	//结构：(整数数据)[.(小数数据)]
 	cmtU8str integer, decimal;
 	cmtUint64 r;
-	cmtUint64 RemSize = out->size;
+	cmtUint64 MaxAddr;
+	float InCopy;
+
+	MaxAddr = out->data + out->size;
 
 	//一、计算各字串大小
 	//（一）整数数据字符串
@@ -1305,29 +1308,16 @@ void cmtF32toStr(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf)
 	}
 	else
 		decimal.size = sigf - pofd;
-	//（三）防溢出截断
-	if (integer.size > RemSize)
-	{
-		integer.size = RemSize;
-		decimal.size = 0;
-	}
-	else
-	{
-		RemSize -= integer.size;
-		if (decimal.size > RemSize)
-			decimal.size = RemSize;
-	}
-
-	//二、计算各字串起始地址
-	integer.data = out->data;
-	decimal.data = integer.data + integer.size;
 
 	//三、构建字符串
 	//（一）整数数据字符串
+	InCopy = in;
 	r = integer.size;
 	while (r > 0)
 	{
-
+		if (integer.data + r < MaxAddr)
+		integer.data[r] = '0' + (cmtUint64)(InCopy + 0.5) % 10;
+		r--;
 	}
 
 	value2 = value1;
