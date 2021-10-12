@@ -475,35 +475,91 @@ extern cmtUint64 cmtStrtoF32(cmtU8str* in, float* out);
 
 extern cmtUint64 cmtStrtoF64(cmtU8str* in, double* out);
 
-extern cmtUint64 cmtBinLen(cmtUint64 in);
+extern cmtUint64 cmtBintoStrSize(cmtUint64 in);
 
 extern void cmtBintoStr(cmtUint64 in, cmtU8str* out);
 
-extern cmtUint64 cmtOctLen(cmtUint64 in);
+extern cmtUint64 cmtOcttoStrSize(cmtUint64 in);
 
 extern void cmtOcttoStr(cmtUint64 in, cmtU8str* out);
 
-extern cmtUint64 cmtDecLen(cmtInt64 in);
+extern cmtUint64 cmtDectoStrSize(cmtInt64 in);
 
 extern void cmtDectoStr(cmtInt64 in, cmtU8str* out);
 
-extern cmtUint64 cmtHexLen(cmtUint64 in);
+extern cmtUint64 cmtHextoStrSize(cmtUint64 in);
 
 extern void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtBool cap);
 
+/**
+* @brief 计算pofd（32位浮点）
+* @param[in] in 数字
+* @return pofd
+* @note pofd的解释详见 doc/格式字符串.md
+* @date 2021-10-12
+* @author dexnab
+*/
 extern cmtUint64 cmtCalcPofdF32(float in);
 
+/**
+* @brief 计算pofd（64位浮点）
+* @param[in] in 数字
+* @return pofd
+* @note pofd的解释详见 doc/格式字符串.md
+* @date 2021-10-12
+* @author dexnab
+*/
 extern cmtUint64 cmtCalcPofdF64(double in);
 
-extern cmtUint64 cmtF32Len(float in, cmtUint64 pofd, cmtUint64 sigf);
+/**
+* @brief 计算普通小数字符串字节数（32位浮点）
+* @param[in] in 数字
+* @param[in] pofd pofd
+* @param[in] sigf 保留有效数字位数
+* @attention 不包含符号
+* @date 2021-10-12
+* @author dexnab
+*/
+extern cmtUint64 cmtF32toStrSize(float in, cmtUint64 pofd, cmtUint64 sigf);
 
+/**
+* @brief 计算普通小数字符串字节数（64位浮点）
+* @param[in] in 数字
+* @param[in] pofd pofd
+* @param[in] sigf 保留有效数字位数
+* @attention 不包含符号
+* @date 2021-10-12
+* @author dexnab
+*/
+extern cmtUint64 cmtF64toStrSize(double in, cmtUint64 pofd, cmtUint64 sigf);
+
+/**
+* @brief 转换为普通小数字符串（32位浮点）
+* @param[in] in 数字
+* @param[in] out 输出字符串
+* @param[in] pofd pofd
+* @param[in] sigf 保留有效数字位数
+* @attention 不输出符号
+* @date 2021-10-12
+* @author dexnab
+*/
 extern void cmtF32toStr(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf);
 
-extern void cmtF64toStr(double in, cmtU8str* out, cmtUint64 sigf);
+/**
+* @brief 转换为普通小数字符串（64位浮点）
+* @param[in] in 数字
+* @param[in] out 输出字符串
+* @param[in] pofd pofd
+* @param[in] sigf 保留有效数字位数
+* @attention 不输出符号
+* @date 2021-10-12
+* @author dexnab
+*/
+extern void cmtF64toStr(double in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf);
 
-extern void cmtF32toStrE(float in, cmtU8str* out, cmtUint64 sigf);
+extern void cmtF32toStrE(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf);
 
-extern void cmtF64toStrE(double in, cmtU8str* out, cmtUint64 sigf);
+extern void cmtF64toStrE(double in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf);
 
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 

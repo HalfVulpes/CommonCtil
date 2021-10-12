@@ -1286,12 +1286,54 @@ cmtUint64 cmtCalcPofdF64(double in)
 	return pofd;
 }
 
+cmtUint64 cmtF32toStrSize(float in, cmtUint64 pofd, cmtUint64 sigf)
+{
+	//结构：(整数数据)[.(小数数据)]
+	cmtU8str integer, decimal;
+
+	//一、计算各字串大小
+	//（一）整数数据字符串
+	if (pofd > 0) integer.size = pofd;
+	else integer.size = 1;
+	//（二）小数数据字符串
+	if (pofd > 0)
+	{
+		if (sigf > pofd) decimal.size = sigf - pofd + 1;
+		else decimal.size = 0;
+	}
+	else
+		decimal.size = sigf - pofd;
+
+	return integer.size + decimal.size;
+}
+
+cmtUint64 cmtF64toStrSize(double in, cmtUint64 pofd, cmtUint64 sigf)
+{
+	//结构：(整数数据)[.(小数数据)]
+	cmtU8str integer, decimal;
+
+	//一、计算各字串大小
+	//（一）整数数据字符串
+	if (pofd > 0) integer.size = pofd;
+	else integer.size = 1;
+	//（二）小数数据字符串
+	if (pofd > 0)
+	{
+		if (sigf > pofd) decimal.size = sigf - pofd + 1;
+		else decimal.size = 0;
+	}
+	else
+		decimal.size = sigf - pofd;
+
+	return integer.size + decimal.size;
+}
+
 void cmtF32toStr(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf)
 {
 	//结构：(整数数据)[.(小数数据)]
 	cmtU8str integer, decimal;
 	cmtUint64 r;
-	cmtUint64 MaxAddr;
+	cmtUint64 MaxAddr;//最大地址+1
 	float InCopy;
 
 	MaxAddr = out->data + out->size;
@@ -1309,64 +1351,122 @@ void cmtF32toStr(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf)
 	else
 		decimal.size = sigf - pofd;
 
+	//二、计算各子字符串地址
+	integer.data = out->data;
+	decimal.data = integer.data + integer.size;
+
 	//三、构建字符串
 	//（一）整数数据字符串
 	InCopy = in;
 	r = integer.size;
 	while (r > 0)
 	{
-		if (integer.data + r < MaxAddr)
-		integer.data[r] = '0' + (cmtUint64)(InCopy + 0.5) % 10;
-		r--;
-	}
-
-	value2 = value1;
-	rOutStr = 0;
-	while (rOutStr < DataStr.size)
-	{
-		//倒着写入（最低位在最右边）
-		//有效数字模式
-		if (FmtInfo.precision.flag)
+		//写入地址限制
+		if (integer.data + r <= MaxAddr)
 		{
 			//保留范围之外，填0
-			if (DataStr.size - rOutStr > FmtInfo.precision.value)
-				DataStr.data[DataStr.size - rOutStr - 1] = '0';
+			if (r > sigf)
+				integer.data[r - 1] = '0';
 			//最后一位保留的有效数字，四舍五入
-			else if (DataStr.size - rOutStr == FmtInfo.precision.value)
-				DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)(value2.f64 + 0.5) % 10;
+			else if (r == sigf)
+				integer.data[r - 1] = '0' + (cmtUint64)(InCopy + 0.5) % 10;
 			//其他情况正常转换
 			else
-				DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f64 % 10;
+				integer.data[r - 1] = '0' + (cmtUint64)InCopy % 10;
 		}
-		//小数位数模式
-		else
-		{
-			//如果个位就是最后一位（不保留小数位），个位需要四舍五入
-			if (!rOutStr && !FmtInfo.precision.value)
-				DataStr.data[DataStr.size - 1] = '0' + (cmtUint64)(value2.f64 + 0.5) % 10;
-			//其他情况正常转换
-			else
-				DataStr.data[DataStr.size - rOutStr - 1] = '0' + (cmtUint64)value2.f64 % 10;
-		}
-		value2.f64 /= 10;
-		rOutStr++;
+		InCopy /= 10.0;
+		r--;
 	}
-	//（三）小数数据字符串
-	if (DecDataStr.size)
+	if (decimal.size)
 	{
-		DecDataStr.data[0] = '.';
+		if (decimal.data < MaxAddr)
+			decimal.data[0] = '.';
 		//剪掉整数部分以防指数上溢
-		value1.f64 -= (cmtUint64)value1.f64;
-		rOutStr = 1;
-		while (rOutStr < DecDataStr.size - 1)
+		in -= (cmtUint64)in;
+		//正常转换
+		in *= 10;
+		r = 1;
+		while (r < decimal.size - 1)
 		{
-			value1.f64 *= 10;
-			//正着写入
-			DecDataStr.data[rOutStr] = '0' + (cmtUint64)value1.f64 % 10;
-			rOutStr++;
+			if (decimal.data + r < MaxAddr)
+				decimal.data[r] = '0' + (cmtUint64)in % 10;
+			in *= 10;
+			r++;
 		}
 		//最后一位需要带四舍五入
-		DecDataStr.data[rOutStr] = '0' + (cmtUint64)(value1.f64 + 0.5) % 10;
+		if (decimal.data + r < MaxAddr)
+			decimal.data[r] = '0' + (cmtUint64)(in + 0.5) % 10;
+	}
+}
+
+void cmtF64toStr(double in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf)
+{
+	//结构：(整数数据)[.(小数数据)]
+	cmtU8str integer, decimal;
+	cmtUint64 r;
+	cmtUint64 MaxAddr;//最大地址+1
+	float InCopy;
+
+	MaxAddr = out->data + out->size;
+
+	//一、计算各字串大小
+	//（一）整数数据字符串
+	if (pofd > 0) integer.size = pofd;
+	else integer.size = 1;
+	//（二）小数数据字符串
+	if (pofd > 0)
+	{
+		if (sigf > pofd) decimal.size = sigf - pofd + 1;
+		else decimal.size = 0;
+	}
+	else
+		decimal.size = sigf - pofd;
+
+	//二、计算各子字符串地址
+	integer.data = out->data;
+	decimal.data = integer.data + integer.size;
+
+	//三、构建字符串
+	//（一）整数数据字符串
+	InCopy = in;
+	r = integer.size;
+	while (r > 0)
+	{
+		//写入地址限制
+		if (integer.data + r <= MaxAddr)
+		{
+			//保留范围之外，填0
+			if (r > sigf)
+				integer.data[r - 1] = '0';
+			//最后一位保留的有效数字，四舍五入
+			else if (r == sigf)
+				integer.data[r - 1] = '0' + (cmtUint64)(InCopy + 0.5) % 10;
+			//其他情况正常转换
+			else
+				integer.data[r - 1] = '0' + (cmtUint64)InCopy % 10;
+		}
+		InCopy /= 10.0;
+		r--;
+	}
+	if (decimal.size)
+	{
+		if (decimal.data < MaxAddr)
+			decimal.data[0] = '.';
+		//剪掉整数部分以防指数上溢
+		in -= (cmtUint64)in;
+		//正常转换
+		in *= 10;
+		r = 1;
+		while (r < decimal.size - 1)
+		{
+			if (decimal.data + r < MaxAddr)
+				decimal.data[r] = '0' + (cmtUint64)in % 10;
+			in *= 10;
+			r++;
+		}
+		//最后一位需要带四舍五入
+		if (decimal.data + r < MaxAddr)
+			decimal.data[r] = '0' + (cmtUint64)(in + 0.5) % 10;
 	}
 }
 
