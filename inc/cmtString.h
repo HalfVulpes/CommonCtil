@@ -499,7 +499,7 @@ extern void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtBool cap);
 * @date 2021-10-12
 * @author dexnab
 */
-extern cmtUint64 cmtCalcPofdF32(float in);
+extern cmtInt64 cmtCalcPofdF32(float in);
 
 /**
 * @brief 计算pofd（64位浮点）
@@ -509,30 +509,18 @@ extern cmtUint64 cmtCalcPofdF32(float in);
 * @date 2021-10-12
 * @author dexnab
 */
-extern cmtUint64 cmtCalcPofdF64(double in);
+extern cmtInt64 cmtCalcPofdF64(double in);
 
 /**
-* @brief 计算普通小数字符串字节数（32位浮点）
+* @brief 计算普通小数字符串字节数
 * @param[in] in 数字
 * @param[in] pofd pofd
 * @param[in] sigf 保留有效数字位数
 * @attention 不包含符号
-* @date 2021-10-12
+* @date 2021-10-14
 * @author dexnab
 */
-extern cmtUint64 cmtF32toStrSize(float in, cmtUint64 pofd, cmtUint64 sigf);
-
-/**
-* @brief 计算普通小数字符串字节数（64位浮点）
-* @param[in] in 数字
-* @param[in] pofd pofd
-* @param[in] sigf 保留有效数字位数
-* @attention 不包含符号
-* @date 2021-10-12
-* @author dexnab
-*/
-extern cmtUint64 cmtF64toStrSize(double in, cmtUint64 pofd, cmtUint64 sigf);
-
+extern cmtUint64 cmtFltoStrSize(cmtInt64 pofd, cmtUint64 sigf);
 /**
 * @brief 转换为普通小数字符串（32位浮点）
 * @param[in] in 数字
@@ -543,7 +531,7 @@ extern cmtUint64 cmtF64toStrSize(double in, cmtUint64 pofd, cmtUint64 sigf);
 * @date 2021-10-12
 * @author dexnab
 */
-extern void cmtF32toStr(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf);
+extern void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf);
 
 /**
 * @brief 转换为普通小数字符串（64位浮点）
@@ -555,29 +543,18 @@ extern void cmtF32toStr(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf)
 * @date 2021-10-12
 * @author dexnab
 */
-extern void cmtF64toStr(double in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf);
+extern void cmtF64toStr(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf);
 
 /**
-* @brief 计算科学计数法模式字符串字节数（32位浮点）
+* @brief 计算科学计数法模式字符串字节数
 * @param[in] in 数字
 * @param[in] pofd pofd
 * @param[in] sigf 保留有效数字位数
 * @attention 不包含符号
-* @date 2021-10-12
+* @date 2021-10-14
 * @author dexnab
 */
-extern cmtUint64 cmtF32toStrExSize(float in, cmtUint64 pofd, cmtUint64 sigf);
-
-/**
-* @brief 计算科学计数法模式字符串字节数（64位浮点）
-* @param[in] in 数字
-* @param[in] pofd pofd
-* @param[in] sigf 保留有效数字位数
-* @attention 不包含符号
-* @date 2021-10-12
-* @author dexnab
-*/
-extern cmtUint64 cmtF64toStrExSize(double in, cmtUint64 pofd, cmtUint64 sigf);
+extern cmtUint64 cmtFltoStrExSize(cmtInt64 pofd, cmtUint64 sigf);
 
 /**
 * @brief 转换为科学计数法模式字符串（32位浮点）
@@ -585,11 +562,12 @@ extern cmtUint64 cmtF64toStrExSize(double in, cmtUint64 pofd, cmtUint64 sigf);
 * @param[in] out 输出字符串
 * @param[in] pofd pofd
 * @param[in] sigf 保留有效数字位数
+* @param[in] cap 指数部分的‘e’是否大写
 * @attention 不输出符号
-* @date 2021-10-12
+* @date 2021-10-14
 * @author dexnab
 */
-extern void cmtF32toStrEx(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf, cmtBool cap);
+extern void cmtF32toStrEx(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);
 
 /**
 * @brief 转换为科学计数法模式字符串（64位浮点）
@@ -597,11 +575,12 @@ extern void cmtF32toStrEx(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sig
 * @param[in] out 输出字符串
 * @param[in] pofd pofd
 * @param[in] sigf 保留有效数字位数
+* @param[in] cap 指数部分的‘e’是否大写
 * @attention 不输出符号
-* @date 2021-10-12
+* @date 2021-10-14
 * @author dexnab
 */
-extern void cmtF64toStrEx(double in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf, cmtBool cap);
+extern void cmtF64toStrEx(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);
 
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 
