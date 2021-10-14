@@ -494,7 +494,7 @@ extern cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out);
 * @date 2021-10-14
 * @author dexnab
 */
-extern cmtUint64 cmtStrtoDec(cmtU8str* in, cmtInt64* out);
+extern cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out);
 
 /**
 * @brief 字符串转整数（十六进制）
