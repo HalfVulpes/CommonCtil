@@ -1405,7 +1405,7 @@ void cmtF64toStr(double in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf)
 	cmtU8str integer, decimal;
 	cmtUint64 r;
 	cmtUint64 MaxAddr;//最大地址+1
-	float InCopy;
+	double InCopy;
 
 	MaxAddr = out->data + out->size;
 
@@ -1468,6 +1468,27 @@ void cmtF64toStr(double in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf)
 		if (decimal.data + r < MaxAddr)
 			decimal.data[r] = '0' + (cmtUint64)(in + 0.5) % 10;
 	}
+}
+
+void cmtF32toStrEx(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf)
+{
+	//结构：(整数数据)[.(小数数据)](e(指数符号)(指数数据))
+	cmtU8str integer, decimal, exponent;
+	cmtChar ExpSign;
+	cmtUint64 r;
+	cmtUint64 MaxAddr;//最大地址+1
+	float InCopy;
+
+	MaxAddr = out->data + out->size;
+
+	//一、计算各字串大小
+	//（一）整数数据字符串
+	integer.size = 1;
+	//（二）小数数据字符串
+	if (sigf == 1) decimal.size = 0;
+	else decimal.size = sigf;
+	//（三）指数数据字符串
+	
 }
 
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
