@@ -463,32 +463,144 @@ extern void cmtU32toU16(cmtU32str* u32, cmtU16str* u16);
 
 /*--------------------------------字符串操作函数 开始--------------------------------*/
 
+/**
+* @brief 字符串转整数（二进制）
+* @param[in] in 字符串
+* @param[out] out 整数
+* @return 转换了多少字节的字符串
+* @attention 数字必须从第一个字符起始
+* @date 2021-10-14
+* @author dexnab
+*/
 extern cmtUint64 cmtStrtoBin(cmtU8str* in, cmtUint64* out);
 
+/**
+* @brief 字符串转整数（八进制）
+* @param[in] in 字符串
+* @param[out] out 整数
+* @return 转换了多少字节的字符串
+* @attention 数字必须从第一个字符起始
+* @date 2021-10-14
+* @author dexnab
+*/
 extern cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out);
 
+/**
+* @brief 字符串转整数（十进制）
+* @param[in] in 字符串
+* @param[out] out 整数
+* @return 转换了多少字节的字符串
+* @attention 数字必须从第一个字符起始（前面不能有符号）
+* @date 2021-10-14
+* @author dexnab
+*/
 extern cmtUint64 cmtStrtoDec(cmtU8str* in, cmtInt64* out);
 
+/**
+* @brief 字符串转整数（十六进制）
+* @param[in] in 字符串
+* @param[out] out 整数
+* @return 转换了多少字节的字符串
+* @attention 数字必须从第一个字符起始（前面不能有前缀）
+* @date 2021-10-14
+* @author dexnab
+*/
 extern cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out);
 
+/**
+* @brief 字符串转浮点数（32位）
+* @param[in] in 字符串
+* @param[out] out 浮点数
+* @return 转换了多少字节的字符串
+* @attention 数字必须从第一个字符起始（前面不能有符号）
+* @date 2021-10-14
+* @author dexnab
+*/
 extern cmtUint64 cmtStrtoF32(cmtU8str* in, float* out);
 
+/**
+* @brief 字符串转浮点数（64位）
+* @param[in] in 字符串
+* @param[out] out 浮点数
+* @return 转换了多少字节的字符串
+* @attention 数字必须从第一个字符起始（前面不能有符号）
+* @date 2021-10-14
+* @author dexnab
+*/
 extern cmtUint64 cmtStrtoF64(cmtU8str* in, double* out);
 
+/**
+* @brief 计算由整数转换而来的字符串的字节数（二进制）
+* @param[in] in 整数
+* @return 字节数
+* @date 2021-10-14
+* @author dexnab
+*/
 extern cmtUint64 cmtBintoStrSize(cmtUint64 in);
 
+/**
+* @brief 整数转字符串（二进制）
+* @param[in] in 整数
+* @param[in] out 输出字符串
+* @date 2021-10-14
+* @author dexnab
+*/
 extern void cmtBintoStr(cmtUint64 in, cmtU8str* out);
 
+/**
+* @brief 计算由整数转换而来的字符串的字节数（八进制）
+* @param[in] in 整数
+* @return 字节数
+* @date 2021-10-14
+* @author dexnab
+*/
 extern cmtUint64 cmtOcttoStrSize(cmtUint64 in);
 
+/**
+* @brief 整数转字符串（八进制）
+* @param[in] in 整数
+* @param[in] out 输出字符串
+* @date 2021-10-14
+* @author dexnab
+*/
 extern void cmtOcttoStr(cmtUint64 in, cmtU8str* out);
 
+/**
+* @brief 计算由整数转换而来的字符串的字节数（十进制）
+* @param[in] in 整数
+* @return 字节数
+* @attention 不包含符号
+* @date 2021-10-14
+* @author dexnab
+*/
 extern cmtUint64 cmtDectoStrSize(cmtUint64 in);
 
+/**
+* @brief 整数转字符串（十进制）
+* @param[in] in 整数
+* @param[in] out 输出字符串
+* @attention 不输出符号
+* @date 2021-10-14
+* @author dexnab
+*/
 extern void cmtDectoStr(cmtUint64 in, cmtU8str* out);
 
+/**
+* @brief 计算由整数转换而来的字符串的字节数（十六进制）
+* @param[in] in 整数
+* @return 字节数
+* @date 2021-10-14
+* @author dexnab
+*/
 extern cmtUint64 cmtHextoStrSize(cmtUint64 in);
 
+/**
+* @brief 整数转字符串（十六进制）
+* @param[in] in 整数
+* @param[in] out 输出字符串
+* @date 2021-10-14
+* @author dexnab
+*/
 extern void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtBool cap);
 
 /**
@@ -512,17 +624,18 @@ extern cmtInt64 cmtCalcPofdF32(float in);
 extern cmtInt64 cmtCalcPofdF64(double in);
 
 /**
-* @brief 计算普通小数字符串字节数
+* @brief 计算由浮点数转换而来的普通小数字符串的字节数
 * @param[in] in 数字
 * @param[in] pofd pofd
 * @param[in] sigf 保留有效数字位数
+* @return 字节数
 * @attention 不包含符号
 * @date 2021-10-14
 * @author dexnab
 */
 extern cmtUint64 cmtFltoStrSize(cmtInt64 pofd, cmtUint64 sigf);
 /**
-* @brief 转换为普通小数字符串（32位浮点）
+* @brief 浮点数转普通小数字符串（32位浮点）
 * @param[in] in 数字
 * @param[in] out 输出字符串
 * @param[in] pofd pofd
@@ -534,7 +647,7 @@ extern cmtUint64 cmtFltoStrSize(cmtInt64 pofd, cmtUint64 sigf);
 extern void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf);
 
 /**
-* @brief 转换为普通小数字符串（64位浮点）
+* @brief 浮点数转普通小数字符串（64位浮点）
 * @param[in] in 数字
 * @param[in] out 输出字符串
 * @param[in] pofd pofd
@@ -546,10 +659,11 @@ extern void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf);
 extern void cmtF64toStr(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf);
 
 /**
-* @brief 计算科学计数法模式字符串字节数
+* @brief 计算有浮点数转换而来的科学计数法模式字符串的字节数
 * @param[in] in 数字
 * @param[in] pofd pofd
 * @param[in] sigf 保留有效数字位数
+* @return 字节数
 * @attention 不包含符号
 * @date 2021-10-14
 * @author dexnab
@@ -557,7 +671,7 @@ extern void cmtF64toStr(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf)
 extern cmtUint64 cmtFltoStrExSize(cmtInt64 pofd, cmtUint64 sigf);
 
 /**
-* @brief 转换为科学计数法模式字符串（32位浮点）
+* @brief 浮点数转科学计数法模式字符串（32位浮点）
 * @param[in] in 数字
 * @param[in] out 输出字符串
 * @param[in] pofd pofd
@@ -570,7 +684,7 @@ extern cmtUint64 cmtFltoStrExSize(cmtInt64 pofd, cmtUint64 sigf);
 extern void cmtF32toStrEx(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);
 
 /**
-* @brief 转换为科学计数法模式字符串（64位浮点）
+* @brief 浮点数转科学计数法模式字符串（64位浮点）
 * @param[in] in 数字
 * @param[in] out 输出字符串
 * @param[in] pofd pofd

@@ -1222,7 +1222,7 @@ void cmtU32toU16(cmtU32str* u32, cmtU16str* u16)
 	}
 }
 
-cmtUint64 cmtStrtoDec(cmtU8str* in, cmtInt64* out)
+cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out)
 {
 	cmtUint64 r = 0;
 
@@ -1233,7 +1233,6 @@ cmtUint64 cmtStrtoDec(cmtU8str* in, cmtInt64* out)
 		*out += in->data[r] - '0';
 		r++;
 	}
-	if (in->data[0] == '-') *out = -*out;
 
 	return r;
 }
