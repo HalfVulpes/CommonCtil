@@ -1285,6 +1285,81 @@ cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out)
 	return r;
 }
 
+cmtUint64 cmtStrtoF32(cmtU8str* in, float* out)
+{
+	float integer = 0.0f, decimal = 0.0f;
+	cmtU8str DecStr;
+	cmtUint64 r = 0;
+
+	//整数部分
+	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
+	{
+		integer *= 10.0f;
+		integer += in->data[r] - '0';
+		r++;
+	}
+	//小数部分
+	if (in->data[r] == '.')
+	{
+		//计算小数数据字符串大小
+		DecStr.data = in->data + r;
+		r++;
+		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9') r++;
+		DecStr.size = in->data + r - DecStr.data;
+		//转换
+		r = DecStr.size;
+		while (r > 0)
+		{
+			decimal += in->data[r] - '0';
+			decimal /= 10.0f;
+			r--;
+		}
+	}
+
+	*out = integer + decimal;
+	return DecStr.data + DecStr.size - in->data;
+}
+
+cmtUint64 cmtStrtoF64(cmtU8str* in, double* out)
+{
+	double integer = 0.0f, decimal = 0.0f;
+	cmtU8str DecStr;
+	cmtUint64 r = 0;
+
+	//整数部分
+	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
+	{
+		integer *= 10.0;
+		integer += in->data[r] - '0';
+		r++;
+	}
+	//小数部分
+	if (in->data[r] == '.')
+	{
+		//计算小数数据字符串大小
+		DecStr.data = in->data + r;
+		r++;
+		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9') r++;
+		DecStr.size = in->data + r - DecStr.data;
+		//转换
+		r = DecStr.size;
+		while (r > 0)
+		{
+			decimal += in->data[r] - '0';
+			decimal /= 10.0;
+			r--;
+		}
+	}
+
+	*out = integer + decimal;
+	return DecStr.data + DecStr.size - in->data;
+}
+
+cmtUint64 cmtBintoStrSize(cmtUint64 in)
+{
+
+}
+
 cmtUint64 cmtDectoStrSize(cmtUint64 in)
 {
 	cmtUint64 size = 0;
