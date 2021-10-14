@@ -483,9 +483,9 @@ extern cmtUint64 cmtOcttoStrSize(cmtUint64 in);
 
 extern void cmtOcttoStr(cmtUint64 in, cmtU8str* out);
 
-extern cmtUint64 cmtDectoStrSize(cmtInt64 in);
+extern cmtUint64 cmtDectoStrSize(cmtUint64 in);
 
-extern void cmtDectoStr(cmtInt64 in, cmtU8str* out);
+extern void cmtDectoStr(cmtUint64 in, cmtU8str* out);
 
 extern cmtUint64 cmtHextoStrSize(cmtUint64 in);
 
@@ -589,7 +589,7 @@ extern cmtUint64 cmtF64toStrExSize(double in, cmtUint64 pofd, cmtUint64 sigf);
 * @date 2021-10-12
 * @author dexnab
 */
-extern void cmtF32toStrEx(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf);
+extern void cmtF32toStrEx(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf, cmtBool cap);
 
 /**
 * @brief 转换为科学计数法模式字符串（64位浮点）
@@ -601,7 +601,7 @@ extern void cmtF32toStrEx(float in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sig
 * @date 2021-10-12
 * @author dexnab
 */
-extern void cmtF64toStrEx(double in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf);
+extern void cmtF64toStrEx(double in, cmtU8str* out, cmtUint64 pofd, cmtUint64 sigf, cmtBool cap);
 
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 
