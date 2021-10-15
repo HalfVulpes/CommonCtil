@@ -463,6 +463,8 @@ extern void cmtU32toU16(cmtU32str* u32, cmtU16str* u16);
 
 /*--------------------------------字符串操作函数 开始--------------------------------*/
 
+extern void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList);
+
 /**
 * @brief 字符串转整数（二进制）
 * @param[in] in 字符串
@@ -545,7 +547,7 @@ extern cmtUint64 cmtBintoStrSize(cmtUint64 in);
 * @date 2021-10-14
 * @author dexnab
 */
-extern void cmtBintoStr(cmtUint64 in, cmtU8str* out);
+extern void cmtBintoStr(cmtUint64 in, cmtU8str* out, cmtUint64 precision);
 
 /**
 * @brief 计算由整数转换而来的字符串的字节数（八进制）
@@ -598,6 +600,7 @@ extern cmtUint64 cmtHextoStrSize(cmtUint64 in);
 * @brief 整数转字符串（十六进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
+* @param[in] cap a-f是否大写
 * @date 2021-10-14
 * @author dexnab
 */
