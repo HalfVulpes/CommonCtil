@@ -544,10 +544,11 @@ extern cmtUint64 cmtBintoStrSize(cmtUint64 in);
 * @brief 整数转字符串（二进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
+* @note 如果out空间不够，则只保留最右侧的数字
 * @date 2021-10-14
 * @author dexnab
 */
-extern void cmtBintoStr(cmtUint64 in, cmtU8str* out, cmtUint64 precision);
+extern void cmtBintoStr(cmtUint64 in, cmtU8str* out);
 
 /**
 * @brief 计算由整数转换而来的字符串的字节数（八进制）
@@ -562,6 +563,7 @@ extern cmtUint64 cmtOcttoStrSize(cmtUint64 in);
 * @brief 整数转字符串（八进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
+* @note 如果out空间不够，则只保留最右侧的数字
 * @date 2021-10-14
 * @author dexnab
 */
@@ -581,6 +583,7 @@ extern cmtUint64 cmtDectoStrSize(cmtUint64 in);
 * @brief 整数转字符串（十进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
+* @note 如果out空间不够，则只保留最右侧的数字
 * @attention 不输出符号
 * @date 2021-10-14
 * @author dexnab
@@ -601,6 +604,7 @@ extern cmtUint64 cmtHextoStrSize(cmtUint64 in);
 * @param[in] in 整数
 * @param[in] out 输出字符串
 * @param[in] cap a-f是否大写
+* @note 如果out空间不够，则只保留最右侧的数字
 * @date 2021-10-14
 * @author dexnab
 */

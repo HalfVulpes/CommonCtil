@@ -1707,6 +1707,8 @@ void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf)
 	}
 	else
 		decimal.size = sigf - pofd;
+	//大小限制
+
 
 	//二、计算各子字符串地址
 	integer.data = out->data;
@@ -2216,17 +2218,9 @@ void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 					else value1.u64 = (cmtUint32)ArgList[rArg];
 
 					//二、计算数据字符串大小
-					//没有指定precision：计算能输出所有数字的precision
+					//没有指定precision：输出所有数字
 					if (!FmtInfo.precision.enabled)
-					{
-						value2 = value1;
-						FmtInfo.precision.value = 0;
-						while (value2.u64)
-						{
-							FmtInfo.precision.value++;
-							value2.u64 /= 2;
-						}
-					}
+						DataStr.size = cmtBintoStrSize(value1.u64);
 					DataStr.size = FmtInfo.precision.value;
 
 					//三、各子字符串定位
