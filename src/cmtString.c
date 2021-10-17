@@ -1689,14 +1689,15 @@ void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf)
 {
 	//结构：(整数数据)[.(小数数据)]
 	cmtU8str integer, decimal;
+	cmtUint64 IntDigit, DecDigit;
 	cmtUint64 r;
 	float InCopy;
 	cmtUint64 TotalSize = 0;
 
-	//一、计算各字串大小
-	//（一）整数数据字符串
-	if (pofd > 0) integer.size = pofd;
-	else integer.size = 1;
+	//一、计算各部分数字个数
+	//（一）整数
+	if (pofd > 0) IntDigit = pofd;
+	else IntDigit = 1;
 	//大小限制
 	TotalSize += integer.size;
 	if (TotalSize > out->size)
@@ -1705,7 +1706,7 @@ void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf)
 		decimal.size = 0;
 		goto T_1end;
 	}
-	//（二）小数数据字符串
+	//（二）小数
 	if (pofd > 0)
 	{
 		if (sigf > pofd) decimal.size = sigf - pofd + 1;
@@ -1717,9 +1718,21 @@ void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf)
 	TotalSize += decimal.size;
 	if (TotalSize > out->size)
 		decimal.size -= TotalSize - out->size;
-T_1end:
 
 	//二、计算各子字符串地址
+	//（一）计算大小
+	//1. 整数
+	TotalSize += IntDigit;
+	if (TotalSize > out->size)
+	{
+		integer.size = IntDigit - (TotalSize - out->size);
+		decimal.size = 0;
+		goto T_2_1end;
+	}
+	else
+		integer.size = IntDigit;
+T_2_1end:
+	//（二）计算地址
 	integer.data = out->data;
 	decimal.data = integer.data + integer.size;
 
