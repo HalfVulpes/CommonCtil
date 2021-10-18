@@ -1516,14 +1516,15 @@ cmtUint64 cmtBintoStrSize(cmtUint64 in)
 	return size;
 }
 
-void cmtBintoStr(cmtUint64 in, cmtU8str* out)
+void cmtBintoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit)
 {
 	cmtUint64 r;
 
-	r = out->size;
-	while (in > 0 && r > 0)
+	r = digit;
+	while (r > 0)
 	{
-		out->data[r - 1] = '0' + in % 2;
+		if (r <= out->size)
+			out->data[r - 1] = in % 2;
 		in /= 2;
 		r--;
 	}
@@ -1542,14 +1543,15 @@ cmtUint64 cmtOcttoStrSize(cmtUint64 in)
 	return size;
 }
 
-void cmtOcttoStr(cmtUint64 in, cmtU8str* out)
+void cmtOcttoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit)
 {
 	cmtUint64 r;
 
-	r = out->size;
-	while (in > 0 && r > 0)
+	r = digit;
+	while (r > 0)
 	{
-		out->data[r - 1] = '0' + in % 8;
+		if (r <= out->size)
+			out->data[r - 1] = in % 8;
 		in /= 8;
 		r--;
 	}
@@ -1568,14 +1570,15 @@ cmtUint64 cmtDectoStrSize(cmtUint64 in)
 	return size;
 }
 
-void cmtDectoStr(cmtUint64 in, cmtU8str* out)
+void cmtDectoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit)
 {
 	cmtUint64 r;
 
-	r = out->size;
-	while (in > 0 && r > 0)
+	r = digit;
+	while (r > 0)
 	{
-		out->data[r - 1] = '0' + in % 10;
+		if (r <= out->size)
+			out->data[r - 1] = in % 10;
 		in /= 10;
 		r--;
 	}
@@ -1594,25 +1597,27 @@ cmtUint64 cmtHextoStrSize(cmtUint64 in)
 	return size;
 }
 
-void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtBool cap)
+void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit, cmtBool cap)
 {
 	cmtUint64 r;
 	cmtChar ch;
 
-	r = out->size;
-	while (in > 0 && r > 0)
+	r = digit;
+	while (r > 0)
 	{
-		if (r < out->size)
-			ch = '0' + in % 16;
-		//大于9的字符转a-f
-		if (ch > '9')
+		if (r <= out->size)
 		{
-			if (cap) ch += 'A' - '9' - 1;
-			else ch += 'a' - '9' - 1;
+			ch = '0' + in % 16;
+			//大于9的字符转a-f
+			if (ch > '9')
+			{
+				if (cap) ch += 'A' - '9' - 1;
+				else ch += 'a' - '9' - 1;
+			}
+			out->data[r - 1] = ch;
 		}
-		out->data[r - 1] = ch;
 		in /= 16;
-		r++;
+		r--;
 	}
 }
 
@@ -1689,48 +1694,52 @@ void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf)
 {
 	//结构：(整数数据)[.(小数数据)]
 	cmtU8str integer, decimal;
-	cmtUint64 IntDigit, DecDigit;
+	cmtUint64 IntSize, DecSize;
 	cmtUint64 r;
 	float InCopy;
 	cmtUint64 TotalSize = 0;
 
 	//一、计算各部分数字个数
 	//（一）整数
-	if (pofd > 0) IntDigit = pofd;
-	else IntDigit = 1;
+	if (pofd > 0) IntSize = pofd;
+	else IntSize = 1;
 	//大小限制
 	TotalSize += integer.size;
 	if (TotalSize > out->size)
 	{
-		integer.size -= TotalSize - out->size;
+		integer.size = IntSize - (TotalSize - out->size);
 		decimal.size = 0;
 		goto T_1end;
 	}
+	else
+		integer.size = IntSize;
 	//（二）小数
 	if (pofd > 0)
 	{
-		if (sigf > pofd) decimal.size = sigf - pofd + 1;
-		else decimal.size = 0;
+		if (sigf > pofd) DecSize = sigf - pofd + 1;
+		else DecSize = 0;
 	}
 	else
-		decimal.size = sigf - pofd;
+		DecSize = sigf - pofd;
 	//大小限制
-	TotalSize += decimal.size;
+	TotalSize += DecSize;
 	if (TotalSize > out->size)
-		decimal.size -= TotalSize - out->size;
+		decimal.size = DecSize - (TotalSize - out->size);
+	else
+		decimal.size = DecSize;
 
 	//二、计算各子字符串地址
 	//（一）计算大小
 	//1. 整数
-	TotalSize += IntDigit;
+	TotalSize += IntSize;
 	if (TotalSize > out->size)
 	{
-		integer.size = IntDigit - (TotalSize - out->size);
+		integer.size = IntSize - (TotalSize - out->size);
 		decimal.size = 0;
 		goto T_2_1end;
 	}
 	else
-		integer.size = IntDigit;
+		integer.size = IntSize;
 T_2_1end:
 	//（二）计算地址
 	integer.data = out->data;

@@ -532,10 +532,10 @@ extern cmtUint64 cmtStrtoF32(cmtU8str* in, float* out);
 extern cmtUint64 cmtStrtoF64(cmtU8str* in, double* out);
 
 /**
-* @brief 计算由整数转换而来的字符串的字节数（二进制）
+* @brief 计算有多少位数字（二进制）
 * @param[in] in 整数
-* @return 字节数
-* @date 2021-10-14
+* @return 数字位数
+* @date 2021-10-18
 * @author dexnab
 */
 extern cmtUint64 cmtBintoStrSize(cmtUint64 in);
@@ -544,17 +544,17 @@ extern cmtUint64 cmtBintoStrSize(cmtUint64 in);
 * @brief 整数转字符串（二进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
-* @note 如果out空间不够，则只保留最右侧的数字
-* @date 2021-10-14
+* @param[in] digit 输出数字位数
+* @date 2021-10-18
 * @author dexnab
 */
-extern void cmtBintoStr(cmtUint64 in, cmtU8str* out);
+extern void cmtBintoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit);
 
 /**
-* @brief 计算由整数转换而来的字符串的字节数（八进制）
+* @brief 计算有多少位数字（八进制）
 * @param[in] in 整数
-* @return 字节数
-* @date 2021-10-14
+* @return 数字位数
+* @date 2021-10-18
 * @author dexnab
 */
 extern cmtUint64 cmtOcttoStrSize(cmtUint64 in);
@@ -563,18 +563,18 @@ extern cmtUint64 cmtOcttoStrSize(cmtUint64 in);
 * @brief 整数转字符串（八进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
-* @note 如果out空间不够，则只保留最右侧的数字
-* @date 2021-10-14
+* @param[in] digit 输出数字位数
+* @date 2021-10-18
 * @author dexnab
 */
-extern void cmtOcttoStr(cmtUint64 in, cmtU8str* out);
+extern void cmtOcttoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit);
 
 /**
-* @brief 计算由整数转换而来的字符串的字节数（十进制）
+* @brief 计算有多少位数字（十进制）
 * @param[in] in 整数
-* @return 字节数
+* @return 数字位数
 * @attention 不包含符号
-* @date 2021-10-14
+* @date 2021-10-18
 * @author dexnab
 */
 extern cmtUint64 cmtDectoStrSize(cmtUint64 in);
@@ -583,18 +583,18 @@ extern cmtUint64 cmtDectoStrSize(cmtUint64 in);
 * @brief 整数转字符串（十进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
-* @note 如果out空间不够，则只保留最右侧的数字
+* @param[in] digit 输出数字位数
 * @attention 不输出符号
-* @date 2021-10-14
+* @date 2021-10-18
 * @author dexnab
 */
-extern void cmtDectoStr(cmtUint64 in, cmtU8str* out);
+extern void cmtDectoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit);
 
 /**
-* @brief 计算由整数转换而来的字符串的字节数（十六进制）
+* @brief 计算有多少位数字（十六进制）
 * @param[in] in 整数
-* @return 字节数
-* @date 2021-10-14
+* @return 数字位数
+* @date 2021-10-18
 * @author dexnab
 */
 extern cmtUint64 cmtHextoStrSize(cmtUint64 in);
@@ -603,12 +603,12 @@ extern cmtUint64 cmtHextoStrSize(cmtUint64 in);
 * @brief 整数转字符串（十六进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
+* @param[in] digit 输出数字位数
 * @param[in] cap a-f是否大写
-* @note 如果out空间不够，则只保留最右侧的数字
-* @date 2021-10-14
+* @date 2021-10-18
 * @author dexnab
 */
-extern void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtBool cap);
+extern void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit, cmtBool cap);
 
 /**
 * @brief 计算pofd（32位浮点）
