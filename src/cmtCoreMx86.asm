@@ -10,19 +10,19 @@
 	xor ah, ah
 	inc ah
 
-	;¼ì²éMaxSpinÊÇ·ñÎª-1
+	;æ£€æŸ¥MaxSpinæ˜¯å¦ä¸º-1
 	cmp edx, 0ffffffffh
 	je cSLE_NoCount
 
 	cSLE_SpinStart:
-	;¼õ·¨Ä£Ê½£¬¿ØÖÆÑ­»·´ÎÊı
+	;å‡æ³•æ¨¡å¼ï¼Œæ§åˆ¶å¾ªç¯æ¬¡æ•°
 	test edx, edx
-	;×ÔĞıÊıµ½´ïÉÏÏŞ
+	;è‡ªæ—‹æ•°åˆ°è¾¾ä¸Šé™
 	jz cSLE_EndMaxSpin
 	dec edx
 	
 	xor al, al
-	;cmpxchg£º
+	;cmpxchgï¼š
 	;if(op1==ax)
 	;{
 	;	op1=op2;
@@ -34,9 +34,9 @@
 	;	rflags.zf=0;
 	;}
 	cmpxchg byte ptr [ecx], ah
-	;MaxSpin=0£ºÔÊĞí½øÈë
+	;MaxSpin=0ï¼šå…è®¸è¿›å…¥
 	jz cSLE_EndNormal
-	;MaxSpin!=0£º¼ÌĞø×ÔĞı
+	;MaxSpin!=0ï¼šç»§ç»­è‡ªæ—‹
 	jmp cSLE_SpinStart
 
 	cSLE_NoCount:

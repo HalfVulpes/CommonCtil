@@ -5,7 +5,7 @@
 */
 #include <cmtCore.h>
 
-//Windows°æ±¾
+//Windowsç‰ˆæœ¬
 #if defined(CMT_ENV_WINDOWS)
 cmtUint64 cmtCreateThread(cmtUint32(__stdcall *proc)(void*), void* param, cmtThreadInfo* info)
 {
@@ -104,21 +104,21 @@ void cmtLockEnter(cmtLock* lock)
 		SpinState = cmtSpinLockEnter(&lock->value, lock->MaxSpin);
 		if (SpinState)
 		{
-			//ÏÈÐýÍê
+			//å…ˆæ—‹å®Œ
 			cmtSpinLockEnter(&lock->value, -1);
-			//ÔÙ´Î¼ì²éËø×´Ì¬
-			//Èç¹ûÒÑ¾­Éý¼¶ÁË£¬¾ÍÊ¹ÓÃÏµÍ³Ëø£¬Í£Ö¹Ê¹ÓÃ×ÔÐýËø
+			//å†æ¬¡æ£€æŸ¥é”çŠ¶æ€
+			//å¦‚æžœå·²ç»å‡çº§äº†ï¼Œå°±ä½¿ç”¨ç³»ç»Ÿé”ï¼Œåœæ­¢ä½¿ç”¨è‡ªæ—‹é”
 			if (lock->state)
 			{
 				cmtSysLockEnter(lock->handle);
 				cmtSpinLockLeave(lock->value);
 			}
-			//Èç¹ûÃ»ÓÐÉý¼¶£¬¾Í×Ô¼ºÉý¼¶
+			//å¦‚æžœæ²¡æœ‰å‡çº§ï¼Œå°±è‡ªå·±å‡çº§
 			else
 			{
-				//³¢ÊÔÉý¼¶Ëø
+				//å°è¯•å‡çº§é”
 				lock->handle = cmtSysLockInit();
-				//Èç¹û³É¹¦£¬ÇÐ»»×´Ì¬£¬Í£Ö¹Ê¹ÓÃ×ÔÐýËø
+				//å¦‚æžœæˆåŠŸï¼Œåˆ‡æ¢çŠ¶æ€ï¼Œåœæ­¢ä½¿ç”¨è‡ªæ—‹é”
 				if (lock->handle)
 				{
 					lock->state = TRUE;

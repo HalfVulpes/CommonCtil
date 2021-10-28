@@ -489,3 +489,7 @@ dkms.conf
 *.pptx
 *.pdf
 *.chm
+
+#test main 
+TestMain.c
+cmtTestMain.c
