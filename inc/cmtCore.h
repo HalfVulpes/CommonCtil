@@ -18,6 +18,8 @@
 #include <pthread.h>
 #endif
 
+/*--------------------------------结构体定义 开始--------------------------------*/
+
 /**
 * @struct cmtThreadInfo
 * @brief 线程额外信息
@@ -58,12 +60,12 @@ typedef struct _CMTLOCK
 	cmtUint8 value;//<自旋模式下锁变量
 	cmtUint64 handle;//<信号量模式下句柄
 }cmtLock;
+/*--------------------------------结构体定义 结束--------------------------------*/
+/*--------------------------------线程/进程操作函数 开始--------------------------------*/
 
-//进程操作
 extern cmtUint64 cmtCreateProcess(cmtWchar* cmd, cmtProcessInfo* info);
 extern cmtUint8 cmtTerminateProcess(cmtWchar* cmd);
 
-//线程操作
 /**
 * @brief 创建线程
 * @param[in] proc 线程函数\n
@@ -116,8 +118,9 @@ extern cmtUint8 cmtResumeThread(cmtUint64 handle);
 * @author Dexnab
 */
 extern cmtUint32 cmtWaitForThread(cmtUint64 handle, cmtUint64 time);
+/*--------------------------------线程/进程操作函数 结束--------------------------------*/
+/*--------------------------------句柄（文件描述符）操作函数 开始--------------------------------*/
 
-//句柄操作
 extern cmtUint8 cmtDupHandle(cmtUint64 dst, cmtUint64 src);
 /**
 * @brief 关闭句柄
@@ -126,8 +129,9 @@ extern cmtUint8 cmtDupHandle(cmtUint64 dst, cmtUint64 src);
 * @author Dexnab
 */
 extern void cmtCloseHandle(cmtUint64 handle);
+/*--------------------------------句柄（文件描述符）操作函数 结束--------------------------------*/
+/*--------------------------------原子操作函数 开始--------------------------------*/
 
-//原子操作（未实现）
 //INC
 extern void cmtAtomInc8(cmtUint8* num);
 extern void cmtAtomInc16(cmtUint16* num);
@@ -138,8 +142,9 @@ extern void cmtAtomDec8(cmtUint8* num);
 extern void cmtAtomDec16(cmtUint16* num);
 extern void cmtAtomDec32(cmtUint32* num);
 extern void cmtAtomDec64(cmtUint64* num);
+/*--------------------------------原子操作函数 结束--------------------------------*/
+/*--------------------------------锁操作函数 开始--------------------------------*/
 
-//锁
 /**
 * @brief 进入自旋锁
 * @param[in] value 锁变量地址
@@ -225,4 +230,15 @@ extern void cmtLockLeave(cmtLock* lock);
 * @author Dexnab
 */
 extern void cmtLockFree(cmtLock* lock);
+/*--------------------------------锁操作函数 结束--------------------------------*/
+/*--------------------------------内存操作函数 开始--------------------------------*/
+
+extern cmtUint8* cmtReserveMem(cmtUint8* addr, cmtUint64 size);
+
+extern cmtUint8 cmtCommitMem(cmtUint8* addr, cmtUint64 size);
+
+extern void cmtFreeMem(cmtUint8* addr);
+
+extern void cmtReleaseMem(cmtUint8* addr);
+/*--------------------------------内存操作函数 结束--------------------------------*/
 #endif
