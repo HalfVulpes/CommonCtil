@@ -1387,22 +1387,22 @@ cmtUint64 cmtStrtoBin(cmtU8str* in, cmtUint64* out)
 
 	return r;
 }
-//
-//cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out)
-//{
-//	cmtUint64 r = 0;
-//
-//	*out = 0;
-//	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '7')
-//	{
-//		*out *= 8;
-//		*out += in->data[r] - '0';
-//		r++;
-//	}
-//
-//	return r;
-//}
-//
+
+cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out)
+{
+	cmtUint64 r = 0;
+
+	*out = 0;
+	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '7')
+	{
+		*out *= 8;
+		*out += in->data[r] - '0';
+		r++;
+	}
+
+	return r;
+}
+
 cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out)
 {
 	cmtUint64 r = 0;
@@ -1417,25 +1417,25 @@ cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out)
 
 	return r;
 }
-//
-//cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out)
-//{
-//	cmtUint64 r = 0;
-//
-//	*out = 0;
-//	while (r < in->size && (in->data[r] >= '0' && in->data[r] <= '9' ||
-//		in->data[r] >= 'a' && in->data[r] <= 'f' || in->data[r] >= 'A' && in->data[r] <= 'F'))
-//	{
-//		*out *= 16;
-//		if (in->data[r] < '9') *out += in->data[r] - '0';
-//		else if (in->data[r] < 'F') *out += in->data[r] - 'A';
-//		else *out += in->data[r] - 'a';
-//		r++;
-//	}
-//
-//	return r;
-//}
-//
+
+cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out)
+{
+	cmtUint64 r = 0;
+
+	*out = 0;
+	while (r < in->size && (in->data[r] >= '0' && in->data[r] <= '9' ||
+		in->data[r] >= 'a' && in->data[r] <= 'f' || in->data[r] >= 'A' && in->data[r] <= 'F'))
+	{
+		*out *= 16;
+		if (in->data[r] <= '9') *out += in->data[r] - '0';
+		else if (in->data[r] <= 'F') *out += in->data[r] - 'A' + 10;
+		else *out += in->data[r] - 'a' + 10;
+		r++;
+	}
+
+	return r;
+}
+
 //cmtUint64 cmtStrtoF32(cmtU8str* in, float* out)
 //{
 //	float integer = 0.0f, decimal = 0.0f;

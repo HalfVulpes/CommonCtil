@@ -521,38 +521,35 @@ extern void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList);
 */
 extern cmtUint64 cmtStrtoBin(cmtU8str* in, cmtUint64* out);
 
-//status: NC
+//status: PA
 /**
 * @brief 字符串转整数（八进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
-* @attention 数字必须从第一个字符起始
 * @date 2021-10-14
 * @author dexnab
 */
 extern cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out);
 
-//status: NC
+//status: PA
 /**
 * @brief 字符串转整数（十进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
-* @attention 数字必须从第一个字符起始（前面不能有符号）
 * @date 2021-10-14
 * @author dexnab
 */
 extern cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out);
 
-//status: NC
+//status: PA
 /**
 * @brief 字符串转整数（十六进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
-* @attention 数字必须从第一个字符起始（前面不能有前缀）
-* @date 2021-10-14
+* @date 2021-11-04
 * @author dexnab
 */
 extern cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out);
@@ -596,7 +593,7 @@ extern cmtUint64 cmtBintoStrSize(cmtUint64 in);
 * @brief 整数转字符串（二进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
-* @param[in] digit 输出数字位数
+* @param[in] digit 数字位数
 * @date 2021-10-18
 * @author dexnab
 */
@@ -617,7 +614,7 @@ extern cmtUint64 cmtOcttoStrSize(cmtUint64 in);
 * @brief 整数转字符串（八进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
-* @param[in] digit 输出数字位数
+* @param[in] digit 数字位数
 * @date 2021-10-18
 * @author dexnab
 */
@@ -639,7 +636,7 @@ extern cmtUint64 cmtDectoStrSize(cmtUint64 in);
 * @brief 整数转字符串（十进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
-* @param[in] digit 输出数字位数
+* @param[in] digit 数字位数
 * @attention 不输出符号
 * @date 2021-10-18
 * @author dexnab
@@ -661,7 +658,7 @@ extern cmtUint64 cmtHextoStrSize(cmtUint64 in);
 * @brief 整数转字符串（十六进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
-* @param[in] digit 输出数字位数
+* @param[in] digit 数字位数
 * @param[in] cap a-f是否大写
 * @date 2021-10-18
 * @author dexnab
@@ -690,7 +687,7 @@ extern cmtInt64 cmtCalcPofdF32(float in);
 */
 extern cmtInt64 cmtCalcPofdF64(double in);
 
-//status: NC
+//status: OD
 /**
 * @brief 计算由浮点数转换而来的普通小数字符串的字节数
 * @param[in] in 数字

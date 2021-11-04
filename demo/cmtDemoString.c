@@ -234,6 +234,42 @@ void cmtDemoStrtoBin()
 	cmtUint64 num;
 
 	cmtStrtoBin(&u8, &num);
+	//标答：num=173
+}
+
+void cmtDemoStrtoOct()
+{
+	//16477=7487
+	cmtU8str u8 = CMT_CONSTSTR("164778");
+	//此处减小size的目的是检测边界检查功能
+	u8.size = 5;
+	cmtUint64 num;
+
+	cmtStrtoOct(&u8, &num);
+	//标答：num=7487
+}
+
+void cmtDemoStrtoDec()
+{
+	cmtU8str u8 = CMT_CONSTSTR("1954435");
+	//此处减小size的目的是检测边界检查功能
+	u8.size = 6;
+	cmtUint64 num;
+
+	cmtStrtoDec(&u8, &num);
+	//标答：num=195443
+}
+
+void cmtDemoStrtoHex()
+{
+	//458DA562=1166910818
+	cmtU8str u8 = CMT_CONSTSTR("458dA562c");
+	//此处减小size的目的是检测边界检查功能
+	u8.size = 8;
+	cmtUint64 num;
+
+	cmtStrtoHex(&u8, &num);
+	//标答：num=1166910818
 }
 
 //void cmtDemoSprintf()
