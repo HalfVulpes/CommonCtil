@@ -1258,6 +1258,7 @@ void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList)
 	{
 		info->padding.length = ArgList[rArg];
 		rArg++;
+		rFmt++;
 	}
 	else
 	{
@@ -1284,6 +1285,7 @@ void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList)
 		{
 			info->precision.value = ArgList[rArg];
 			rArg++;
+			rFmt++;
 		}
 		else
 		{
@@ -1305,6 +1307,7 @@ void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList)
 		{
 			info->iteration.length = ArgList[rArg];
 			rArg++;
+			rFmt++;
 		}
 		else
 		{
@@ -1320,6 +1323,7 @@ void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList)
 			{
 				info->iteration.GroupSize = ArgList[rArg];
 				rArg++;
+				rFmt++;
 			}
 			else
 			{
@@ -1336,6 +1340,7 @@ void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList)
 			{
 				info->iteration.RowSize = ArgList[rArg];
 				rArg++;
+				rFmt++;
 			}
 			else
 			{
@@ -1382,22 +1387,22 @@ cmtUint64 cmtStrtoBin(cmtU8str* in, cmtUint64* out)
 
 	return r;
 }
-
-cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out)
-{
-	cmtUint64 r = 0;
-
-	*out = 0;
-	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '7')
-	{
-		*out *= 8;
-		*out += in->data[r] - '0';
-		r++;
-	}
-
-	return r;
-}
-
+//
+//cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out)
+//{
+//	cmtUint64 r = 0;
+//
+//	*out = 0;
+//	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '7')
+//	{
+//		*out *= 8;
+//		*out += in->data[r] - '0';
+//		r++;
+//	}
+//
+//	return r;
+//}
+//
 cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out)
 {
 	cmtUint64 r = 0;
@@ -1412,770 +1417,770 @@ cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out)
 
 	return r;
 }
-
-cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out)
-{
-	cmtUint64 r = 0;
-
-	*out = 0;
-	while (r < in->size && (in->data[r] >= '0' && in->data[r] <= '9' ||
-		in->data[r] >= 'a' && in->data[r] <= 'f' || in->data[r] >= 'A' && in->data[r] <= 'F'))
-	{
-		*out *= 16;
-		if (in->data[r] < '9') *out += in->data[r] - '0';
-		else if (in->data[r] < 'F') *out += in->data[r] - 'A';
-		else *out += in->data[r] - 'a';
-		r++;
-	}
-
-	return r;
-}
-
-cmtUint64 cmtStrtoF32(cmtU8str* in, float* out)
-{
-	float integer = 0.0f, decimal = 0.0f;
-	cmtU8str DecStr;
-	cmtUint64 r = 0;
-
-	//整数部分
-	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
-	{
-		integer *= 10.0f;
-		integer += in->data[r] - '0';
-		r++;
-	}
-	//小数部分
-	if (in->data[r] == '.')
-	{
-		//计算小数数据字符串大小
-		DecStr.data = in->data + r;
-		r++;
-		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9') r++;
-		DecStr.size = in->data + r - DecStr.data;
-		//转换
-		r = DecStr.size;
-		while (r > 0)
-		{
-			decimal += in->data[r] - '0';
-			decimal /= 10.0f;
-			r--;
-		}
-	}
-
-	*out = integer + decimal;
-	return DecStr.data + DecStr.size - in->data;
-}
-
-cmtUint64 cmtStrtoF64(cmtU8str* in, double* out)
-{
-	double integer = 0.0f, decimal = 0.0f;
-	cmtU8str DecStr;
-	cmtUint64 r = 0;
-
-	//整数部分
-	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
-	{
-		integer *= 10.0;
-		integer += in->data[r] - '0';
-		r++;
-	}
-	//小数部分
-	if (in->data[r] == '.')
-	{
-		//计算小数数据字符串大小
-		DecStr.data = in->data + r;
-		r++;
-		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9') r++;
-		DecStr.size = in->data + r - DecStr.data;
-		//转换
-		r = DecStr.size;
-		while (r > 0)
-		{
-			decimal += in->data[r] - '0';
-			decimal /= 10.0;
-			r--;
-		}
-		//使用的大小
-		r = DecStr.data + DecStr.size - in->data;
-	}
-
-	*out = integer + decimal;
-	return r;
-}
-
-cmtUint64 cmtBintoStrSize(cmtUint64 in)
-{
-	cmtUint64 size = 0;
-
-	while (in > 0)
-	{
-		in /= 2;
-		size++;
-	}
-
-	return size;
-}
-
-void cmtBintoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit)
-{
-	cmtUint64 r;
-
-	r = digit;
-	while (r > 0)
-	{
-		if (r <= out->size)
-			out->data[r - 1] = in % 2;
-		in /= 2;
-		r--;
-	}
-}
-
-cmtUint64 cmtOcttoStrSize(cmtUint64 in)
-{
-	cmtUint64 size = 0;
-
-	while (in > 0)
-	{
-		in /= 8;
-		size++;
-	}
-
-	return size;
-}
-
-void cmtOcttoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit)
-{
-	cmtUint64 r;
-
-	r = digit;
-	while (r > 0)
-	{
-		if (r <= out->size)
-			out->data[r - 1] = in % 8;
-		in /= 8;
-		r--;
-	}
-}
-
-cmtUint64 cmtDectoStrSize(cmtUint64 in)
-{
-	cmtUint64 size = 0;
-
-	while (in > 0)
-	{
-		in /= 10;
-		size++;
-	}
-
-	return size;
-}
-
-void cmtDectoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit)
-{
-	cmtUint64 r;
-
-	r = digit;
-	while (r > 0)
-	{
-		if (r <= out->size)
-			out->data[r - 1] = in % 10;
-		in /= 10;
-		r--;
-	}
-}
-
-cmtUint64 cmtHextoStrSize(cmtUint64 in)
-{
-	cmtUint64 size = 0;
-
-	while (in > 0)
-	{
-		in /= 16;
-		size++;
-	}
-
-	return size;
-}
-
-void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit, cmtBool cap)
-{
-	cmtUint64 r;
-	cmtChar ch;
-
-	r = digit;
-	while (r > 0)
-	{
-		if (r <= out->size)
-		{
-			ch = '0' + in % 16;
-			//大于9的字符转a-f
-			if (ch > '9')
-			{
-				if (cap) ch += 'A' - '9' - 1;
-				else ch += 'a' - '9' - 1;
-			}
-			out->data[r - 1] = ch;
-		}
-		in /= 16;
-		r--;
-	}
-}
-
-cmtInt64 cmtCalcPofdF32(float in)
-{
-	cmtInt64 pofd = 0;
-
-	if (in >= 1)
-	{
-		while (in >= 1)
-		{
-			in /= 10.0f;
-			pofd++;
-		}
-	}
-	else
-	{
-		while (in < 1)
-		{
-			in *= 10.0f;
-			pofd--;
-		}
-	}
-
-	return pofd;
-}
-
-cmtInt64 cmtCalcPofdF64(double in)
-{
-	cmtInt64 pofd = 0;
-
-	if (in >= 1)
-	{
-		while (in >= 1)
-		{
-			in /= 10.0;
-			pofd++;
-		}
-	}
-	else
-	{
-		while (in < 1)
-		{
-			in *= 10.0;
-			pofd--;
-		}
-	}
-
-	return pofd;
-}
-
-cmtUint64 cmtFltoStrSize(cmtInt64 pofd, cmtUint64 sigf)
-{
-	//结构：(整数数据)[.(小数数据)]
-	cmtU8str integer, decimal;
-
-	//一、计算各字串大小
-	//（一）整数数据字符串
-	if (pofd > 0) integer.size = pofd;
-	else integer.size = 1;
-	//（二）小数数据字符串
-	if (pofd > 0)
-	{
-		if (sigf > pofd) decimal.size = sigf - pofd + 1;
-		else decimal.size = 0;
-	}
-	else
-		decimal.size = sigf - pofd;
-
-	return integer.size + decimal.size;
-}
-
-void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf)
-{
-	//结构：(整数数据)[.(小数数据)]
-	cmtU8str integer, decimal;
-	cmtUint64 IntSize, DecSize;
-	cmtUint64 r;
-	float InCopy;
-	cmtUint64 TotalSize = 0;
-
-	//一、计算各部分数字个数
-	//（一）整数
-	if (pofd > 0) IntSize = pofd;
-	else IntSize = 1;
-	//大小限制
-	TotalSize += integer.size;
-	if (TotalSize > out->size)
-	{
-		integer.size = IntSize - (TotalSize - out->size);
-		decimal.size = 0;
-		goto T_1end;
-	}
-	else
-		integer.size = IntSize;
-	//（二）小数
-	if (pofd > 0)
-	{
-		if (sigf > pofd) DecSize = sigf - pofd + 1;
-		else DecSize = 0;
-	}
-	else
-		DecSize = sigf - pofd;
-	//大小限制
-	TotalSize += DecSize;
-	if (TotalSize > out->size)
-		decimal.size = DecSize - (TotalSize - out->size);
-	else
-		decimal.size = DecSize;
-
-	//二、计算各子字符串地址
-	//（一）计算大小
-	//1. 整数
-	TotalSize += IntSize;
-	if (TotalSize > out->size)
-	{
-		integer.size = IntSize - (TotalSize - out->size);
-		decimal.size = 0;
-		goto T_2_1end;
-	}
-	else
-		integer.size = IntSize;
-T_2_1end:
-	//（二）计算地址
-	integer.data = out->data;
-	decimal.data = integer.data + integer.size;
-
-	//三、构建字符串
-	//（一）整数数据字符串
-	InCopy = in;
-	r = integer.size;
-	while (r > 0)
-	{
-		//保留范围之外，填0
-		if (r > sigf)
-			integer.data[r - 1] = '0';
-		//最后一位保留的有效数字，四舍五入
-		else if (r == sigf)
-			integer.data[r - 1] = '0' + (cmtUint64)(InCopy + 0.5f) % 10;
-		//其他情况正常转换
-		else
-			integer.data[r - 1] = '0' + (cmtUint64)InCopy % 10;
-
-		InCopy /= 10.0f;
-		r--;
-	}
-	if (decimal.size)
-	{
-		decimal.data[0] = '.';
-		//剪掉整数部分以防指数上溢
-		in -= (cmtUint64)in;
-		//正常转换
-		in *= 10.0f;
-		r = 1;
-		while (r < decimal.size - 1)
-		{
-			decimal.data[r] = '0' + (cmtUint64)in % 10;
-			in *= 10.0f;
-			r++;
-		}
-		//最后一位需要四舍五入
-		if (r < decimal.size)
-			decimal.data[r] = '0' + (cmtUint64)(in + 0.5f) % 10;
-	}
-}
-
-void cmtF64toStr(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf)
-{
-	//结构：(整数数据)[.(小数数据)]
-	cmtU8str integer, decimal;
-	cmtUint64 r;
-	cmtUint64 MaxAddr;//最大地址+1
-	double InCopy;
-
-	MaxAddr = out->data + out->size;
-
-	//一、计算各字串大小
-	//（一）整数数据字符串
-	if (pofd > 0) integer.size = pofd;
-	else integer.size = 1;
-	//（二）小数数据字符串
-	if (pofd > 0)
-	{
-		if (sigf > pofd) decimal.size = sigf - pofd + 1;
-		else decimal.size = 0;
-	}
-	else
-		decimal.size = sigf - pofd;
-
-	//二、计算各子字符串地址
-	integer.data = out->data;
-	decimal.data = integer.data + integer.size;
-
-	//三、构建字符串
-	//（一）整数数据字符串
-	InCopy = in;
-	r = integer.size;
-	while (r > 0)
-	{
-		//写入地址限制
-		if (integer.data + r <= MaxAddr)
-		{
-			//保留范围之外，填0
-			if (r > sigf)
-				integer.data[r - 1] = '0';
-			//最后一位保留的有效数字，四舍五入
-			else if (r == sigf)
-				integer.data[r - 1] = '0' + (cmtUint64)(InCopy + 0.5) % 10;
-			//其他情况正常转换
-			else
-				integer.data[r - 1] = '0' + (cmtUint64)InCopy % 10;
-		}
-		InCopy /= 10.0;
-		r--;
-	}
-	if (decimal.size)
-	{
-		if (decimal.data < MaxAddr)
-			decimal.data[0] = '.';
-		//剪掉整数部分以防指数上溢
-		in -= (cmtUint64)in;
-		//正常转换
-		in *= 10.0;
-		r = 1;
-		while (r < decimal.size - 1)
-		{
-			if (decimal.data + r < MaxAddr)
-				decimal.data[r] = '0' + (cmtUint64)in % 10;
-			in *= 10.0;
-			r++;
-		}
-		//最后一位需要四舍五入
-		if (decimal.data + r < MaxAddr)
-			decimal.data[r] = '0' + (cmtUint64)(in + 0.5) % 10;
-	}
-}
-
-cmtUint64 cmtFltoStrExSize(cmtInt64 pofd, cmtUint64 sigf)
-{
-	//结构：(整数数据)[.(小数数据)](e(指数符号)(指数数据))
-	cmtU8str decimal, exponent;
-
-	//一、计算各字串大小
-	//（一）小数数据字符串
-	if (sigf == 1) decimal.size = 0;
-	else decimal.size = sigf;
-	//（二）指数数据字符串
-	if (pofd > 0) exponent.size = 2 + cmtDectoStrSize(pofd - 1);
-	else exponent.size = 2 + cmtDectoStrSize(-pofd);
-
-	return 1 + decimal.size + exponent.size;
-}
-
-void cmtF32toStrEx(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap)
-{
-	//结构：(整数数据)[.(小数数据)](e(指数符号)(指数数据))
-	cmtU8str decimal, exponent;
-	cmtChar integer, ExpSign;
-	cmtUint64 r;
-	cmtUint64 MaxAddr;//最大地址+1
-	cmtU8str TempStr;
-	float InCopy;
-
-	MaxAddr = out->data + out->size;
-
-	//一、计算各字串大小
-	//（一）小数数据字符串
-	if (sigf == 1) decimal.size = 0;
-	else decimal.size = sigf;
-	//（二）指数数据字符串
-	if (pofd > 0) exponent.size = 2 + cmtDectoStrSize(pofd - 1);
-	else exponent.size = 2 + cmtDectoStrSize(-pofd);
-
-	//二、计算各子字符串地址
-	decimal.data = out->data + 1;
-	exponent.data = decimal.data + decimal.size;
-
-	//三、构建字符串
-	//（一）通用
-	if (exponent.data < MaxAddr)
-	{
-		if (cap) exponent.data[0] = 'E';
-		else exponent.data[0] = 'e';
-	}
-	//（二）pofd < 0
-	if (pofd < 0)
-	{
-		//1. 指数数据字符串
-		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '-';
-		TempStr.data = exponent.data + 2;
-		if (exponent.data + exponent.size > MaxAddr)
-			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
-		else
-			TempStr.size = exponent.size;
-		cmtDectoStr(-pofd, &TempStr);
-		//2. 整数数据字符串
-		//左移
-		while (pofd < 0)
-		{
-			in *= 10.0f;
-			pofd++;
-		}
-		//转换
-		if (out->size)
-		{
-			if (decimal.size) out->data[0] = '0' + (cmtUint64)in;
-			//没有小数数据，整数数据需要四舍五入
-			else out->data[0] = '0' + (cmtUint64)(in + 0.5f);
-		}
-		//3. 小数数据字符串
-		if (decimal.size)
-		{
-			in *= 10.0f;
-			if (decimal.data < MaxAddr) decimal.data[0] = '.';
-			r = 1;
-			while (r < sigf - 1)
-			{
-				if (decimal.data + r < MaxAddr)
-					decimal.data[r] = '0' + (cmtUint64)in % 10;
-				in *= 10.0f;
-				r++;
-			}
-			//最后一位需要四舍五入
-			if (decimal.data + r < MaxAddr)
-				decimal.data[r] = '0' + (cmtUint64)(in + 0.5f) % 10;
-		}
-	}
-	//（三）0 < pofd < sigf
-	else if (pofd < sigf)
-	{
-		//1. 指数数据字符串
-		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '+';
-		TempStr.data = exponent.data + 2;
-		if (exponent.data + exponent.size > MaxAddr)
-			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
-		else
-			TempStr.size = exponent.size;
-		cmtDectoStr(pofd - 1, &TempStr);
-		//2. 左侧
-		InCopy = in;
-		//（1）小数数据字符串
-		if (decimal.data < MaxAddr) decimal.data[0] = '.';
-		r = pofd - 1;
-		while (r > 0)
-		{
-			if (decimal.data + r < MaxAddr)
-				decimal.data[r] = '0' + (cmtUint64)InCopy % 10;
-			InCopy /= 10.0f;
-			r--;
-		}
-		//（2）整数数据字符串
-		if (out->size) out->data[0] = '0' + (cmtUint64)InCopy % 10;
-		//3. 右侧
-		//剪掉整数部分以防指数上溢
-		in -= (cmtUint64)in;
-		//小数数据字符串
-		in *= 10.0f;
-		r = pofd;
-		while (r < sigf - 1)
-		{
-			if (decimal.data + r < MaxAddr)
-				decimal.data[r] = '0' + (cmtUint64)in % 10;
-			in *= 10.0f;
-			r++;
-		}
-		//最后一位需要四舍五入
-		if (decimal.data + r < MaxAddr)
-			decimal.data[r] = '0' + (cmtUint64)(in + 0.5f) % 10;
-	}
-	//（四）pofd >= sigf
-	else
-	{
-		//1. 指数数据字符串
-		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '+';
-		TempStr.data = exponent.data + 2;
-		if (exponent.data + exponent.size > MaxAddr)
-			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
-		else
-			TempStr.size = exponent.size;
-		cmtDectoStr(pofd - 1, &TempStr);
-		//2. 小数数据字符串
-		//移位
-		while (pofd - sigf > 0)
-		{
-			in /= 10.0f;
-			pofd--;
-		}
-		//转换
-		if (decimal.data < MaxAddr) decimal.data[0] = '.';
-		//末位需要四舍五入
-		if (decimal.data + decimal.size <= MaxAddr)
-			decimal.data[decimal.size - 1] = '0' + (cmtUint64)(in + 0.5f) % 10;
-		in /= 10.0f;
-		r = decimal.size - 2;
-		while (r > 0)
-		{
-			if (decimal.data + r < MaxAddr)
-				decimal.data[r] = '0' + (cmtUint64)in % 10;
-			in /= 10.0f;
-			r--;
-		}
-		//3. 整数数据字符串
-		if (out->size) out->data[0] = '0' + (cmtUint64)in;
-	}
-}
-
-void cmtF64toStrEx(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap)
-{
-	//结构：(整数数据)[.(小数数据)](e(指数符号)(指数数据))
-	cmtU8str decimal, exponent;
-	cmtChar integer, ExpSign;
-	cmtUint64 r;
-	cmtUint64 MaxAddr;//最大地址+1
-	cmtU8str TempStr;
-	double InCopy;
-
-	MaxAddr = out->data + out->size;
-
-	//一、计算各字串大小
-	//（一）小数数据字符串
-	if (sigf == 1) decimal.size = 0;
-	else decimal.size = sigf;
-	//（二）指数数据字符串
-	if (pofd > 0) exponent.size = 2 + cmtDectoStrSize(pofd - 1);
-	else exponent.size = 2 + cmtDectoStrSize(-pofd);
-
-	//二、计算各子字符串地址
-	decimal.data = out->data + 1;
-	exponent.data = decimal.data + decimal.size;
-
-	//三、构建字符串
-	//（一）通用
-	if (exponent.data < MaxAddr)
-	{
-		if (cap) exponent.data[0] = 'E';
-		else exponent.data[0] = 'e';
-	}
-	//（二）pofd < 0
-	if (pofd < 0)
-	{
-		//1. 指数数据字符串
-		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '-';
-		TempStr.data = exponent.data + 2;
-		if (exponent.data + exponent.size > MaxAddr)
-			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
-		else
-			TempStr.size = exponent.size;
-		cmtDectoStr(-pofd, &TempStr);
-		//2. 整数数据字符串
-		//左移
-		while (pofd < 0)
-		{
-			in *= 10.0;
-			pofd++;
-		}
-		//转换
-		if (out->size)
-		{
-			if (decimal.size) out->data[0] = '0' + (cmtUint64)in;
-			//没有小数数据，整数数据需要四舍五入
-			else out->data[0] = '0' + (cmtUint64)(in + 0.5);
-		}
-		//3. 小数数据字符串
-		if (decimal.size)
-		{
-			in *= 10.0;
-			if (decimal.data < MaxAddr) decimal.data[0] = '.';
-			r = 1;
-			while (r < sigf - 1)
-			{
-				if (decimal.data + r < MaxAddr)
-					decimal.data[r] = '0' + (cmtUint64)in % 10;
-				in *= 10.0;
-				r++;
-			}
-			//最后一位需要四舍五入
-			if (decimal.data + r < MaxAddr)
-				decimal.data[r] = '0' + (cmtUint64)(in + 0.5) % 10;
-		}
-	}
-	//（三）0 < pofd < sigf
-	else if (pofd < sigf)
-	{
-		//1. 指数数据字符串
-		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '+';
-		TempStr.data = exponent.data + 2;
-		if (exponent.data + exponent.size > MaxAddr)
-			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
-		else
-			TempStr.size = exponent.size;
-		cmtDectoStr(pofd - 1, &TempStr);
-		//2. 左侧
-		InCopy = in;
-		//（1）小数数据字符串
-		if (decimal.data < MaxAddr) decimal.data[0] = '.';
-		r = pofd - 1;
-		while (r > 0)
-		{
-			if (decimal.data + r < MaxAddr)
-				decimal.data[r] = '0' + (cmtUint64)InCopy % 10;
-			InCopy /= 10.0;
-			r--;
-		}
-		//（2）整数数据字符串
-		if (out->size) out->data[0] = '0' + (cmtUint64)InCopy % 10;
-		//3. 右侧
-		//剪掉整数部分以防指数上溢
-		in -= (cmtUint64)in;
-		//小数数据字符串
-		in *= 10.0;
-		r = pofd;
-		while (r < sigf - 1)
-		{
-			if (decimal.data + r < MaxAddr)
-				decimal.data[r] = '0' + (cmtUint64)in % 10;
-			in *= 10.0;
-			r++;
-		}
-		//最后一位需要四舍五入
-		if (decimal.data + r < MaxAddr)
-			decimal.data[r] = '0' + (cmtUint64)(in + 0.5) % 10;
-	}
-	//（四）pofd >= sigf
-	else
-	{
-		//1. 指数数据字符串
-		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '+';
-		TempStr.data = exponent.data + 2;
-		if (exponent.data + exponent.size > MaxAddr)
-			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
-		else
-			TempStr.size = exponent.size;
-		cmtDectoStr(pofd - 1, &TempStr);
-		//2. 小数数据字符串
-		//移位
-		while (pofd - sigf > 0)
-		{
-			in /= 10.0;
-			pofd--;
-		}
-		//转换
-		if (decimal.data < MaxAddr) decimal.data[0] = '.';
-		//末位需要四舍五入
-		if (decimal.data + decimal.size <= MaxAddr)
-			decimal.data[decimal.size - 1] = '0' + (cmtUint64)(in + 0.5) % 10;
-		in /= 10.0;
-		r = decimal.size - 2;
-		while (r > 0)
-		{
-			if (decimal.data + r < MaxAddr)
-				decimal.data[r] = '0' + (cmtUint64)in % 10;
-			in /= 10.0;
-			r--;
-		}
-		//3. 整数数据字符串
-		if (out->size) out->data[0] = '0' + (cmtUint64)in;
-	}
-}
+//
+//cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out)
+//{
+//	cmtUint64 r = 0;
+//
+//	*out = 0;
+//	while (r < in->size && (in->data[r] >= '0' && in->data[r] <= '9' ||
+//		in->data[r] >= 'a' && in->data[r] <= 'f' || in->data[r] >= 'A' && in->data[r] <= 'F'))
+//	{
+//		*out *= 16;
+//		if (in->data[r] < '9') *out += in->data[r] - '0';
+//		else if (in->data[r] < 'F') *out += in->data[r] - 'A';
+//		else *out += in->data[r] - 'a';
+//		r++;
+//	}
+//
+//	return r;
+//}
+//
+//cmtUint64 cmtStrtoF32(cmtU8str* in, float* out)
+//{
+//	float integer = 0.0f, decimal = 0.0f;
+//	cmtU8str DecStr;
+//	cmtUint64 r = 0;
+//
+//	//整数部分
+//	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
+//	{
+//		integer *= 10.0f;
+//		integer += in->data[r] - '0';
+//		r++;
+//	}
+//	//小数部分
+//	if (in->data[r] == '.')
+//	{
+//		//计算小数数据字符串大小
+//		DecStr.data = in->data + r;
+//		r++;
+//		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9') r++;
+//		DecStr.size = in->data + r - DecStr.data;
+//		//转换
+//		r = DecStr.size;
+//		while (r > 0)
+//		{
+//			decimal += in->data[r] - '0';
+//			decimal /= 10.0f;
+//			r--;
+//		}
+//	}
+//
+//	*out = integer + decimal;
+//	return DecStr.data + DecStr.size - in->data;
+//}
+//
+//cmtUint64 cmtStrtoF64(cmtU8str* in, double* out)
+//{
+//	double integer = 0.0f, decimal = 0.0f;
+//	cmtU8str DecStr;
+//	cmtUint64 r = 0;
+//
+//	//整数部分
+//	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
+//	{
+//		integer *= 10.0;
+//		integer += in->data[r] - '0';
+//		r++;
+//	}
+//	//小数部分
+//	if (in->data[r] == '.')
+//	{
+//		//计算小数数据字符串大小
+//		DecStr.data = in->data + r;
+//		r++;
+//		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9') r++;
+//		DecStr.size = in->data + r - DecStr.data;
+//		//转换
+//		r = DecStr.size;
+//		while (r > 0)
+//		{
+//			decimal += in->data[r] - '0';
+//			decimal /= 10.0;
+//			r--;
+//		}
+//		//使用的大小
+//		r = DecStr.data + DecStr.size - in->data;
+//	}
+//
+//	*out = integer + decimal;
+//	return r;
+//}
+//
+//cmtUint64 cmtBintoStrSize(cmtUint64 in)
+//{
+//	cmtUint64 size = 0;
+//
+//	while (in > 0)
+//	{
+//		in /= 2;
+//		size++;
+//	}
+//
+//	return size;
+//}
+//
+//void cmtBintoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit)
+//{
+//	cmtUint64 r;
+//
+//	r = digit;
+//	while (r > 0)
+//	{
+//		if (r <= out->size)
+//			out->data[r - 1] = in % 2;
+//		in /= 2;
+//		r--;
+//	}
+//}
+//
+//cmtUint64 cmtOcttoStrSize(cmtUint64 in)
+//{
+//	cmtUint64 size = 0;
+//
+//	while (in > 0)
+//	{
+//		in /= 8;
+//		size++;
+//	}
+//
+//	return size;
+//}
+//
+//void cmtOcttoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit)
+//{
+//	cmtUint64 r;
+//
+//	r = digit;
+//	while (r > 0)
+//	{
+//		if (r <= out->size)
+//			out->data[r - 1] = in % 8;
+//		in /= 8;
+//		r--;
+//	}
+//}
+//
+//cmtUint64 cmtDectoStrSize(cmtUint64 in)
+//{
+//	cmtUint64 size = 0;
+//
+//	while (in > 0)
+//	{
+//		in /= 10;
+//		size++;
+//	}
+//
+//	return size;
+//}
+//
+//void cmtDectoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit)
+//{
+//	cmtUint64 r;
+//
+//	r = digit;
+//	while (r > 0)
+//	{
+//		if (r <= out->size)
+//			out->data[r - 1] = in % 10;
+//		in /= 10;
+//		r--;
+//	}
+//}
+//
+//cmtUint64 cmtHextoStrSize(cmtUint64 in)
+//{
+//	cmtUint64 size = 0;
+//
+//	while (in > 0)
+//	{
+//		in /= 16;
+//		size++;
+//	}
+//
+//	return size;
+//}
+//
+//void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit, cmtBool cap)
+//{
+//	cmtUint64 r;
+//	cmtChar ch;
+//
+//	r = digit;
+//	while (r > 0)
+//	{
+//		if (r <= out->size)
+//		{
+//			ch = '0' + in % 16;
+//			//大于9的字符转a-f
+//			if (ch > '9')
+//			{
+//				if (cap) ch += 'A' - '9' - 1;
+//				else ch += 'a' - '9' - 1;
+//			}
+//			out->data[r - 1] = ch;
+//		}
+//		in /= 16;
+//		r--;
+//	}
+//}
+//
+//cmtInt64 cmtCalcPofdF32(float in)
+//{
+//	cmtInt64 pofd = 0;
+//
+//	if (in >= 1)
+//	{
+//		while (in >= 1)
+//		{
+//			in /= 10.0f;
+//			pofd++;
+//		}
+//	}
+//	else
+//	{
+//		while (in < 1)
+//		{
+//			in *= 10.0f;
+//			pofd--;
+//		}
+//	}
+//
+//	return pofd;
+//}
+//
+//cmtInt64 cmtCalcPofdF64(double in)
+//{
+//	cmtInt64 pofd = 0;
+//
+//	if (in >= 1)
+//	{
+//		while (in >= 1)
+//		{
+//			in /= 10.0;
+//			pofd++;
+//		}
+//	}
+//	else
+//	{
+//		while (in < 1)
+//		{
+//			in *= 10.0;
+//			pofd--;
+//		}
+//	}
+//
+//	return pofd;
+//}
+//
+//cmtUint64 cmtFltoStrSize(cmtInt64 pofd, cmtUint64 sigf)
+//{
+//	//结构：(整数数据)[.(小数数据)]
+//	cmtU8str integer, decimal;
+//
+//	//一、计算各字串大小
+//	//（一）整数数据字符串
+//	if (pofd > 0) integer.size = pofd;
+//	else integer.size = 1;
+//	//（二）小数数据字符串
+//	if (pofd > 0)
+//	{
+//		if (sigf > pofd) decimal.size = sigf - pofd + 1;
+//		else decimal.size = 0;
+//	}
+//	else
+//		decimal.size = sigf - pofd;
+//
+//	return integer.size + decimal.size;
+//}
+//
+//void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf)
+//{
+//	//结构：(整数数据)[.(小数数据)]
+//	cmtU8str integer, decimal;
+//	cmtUint64 IntSize, DecSize;
+//	cmtUint64 r;
+//	float InCopy;
+//	cmtUint64 TotalSize = 0;
+//
+//	//一、计算各部分数字个数
+//	//（一）整数
+//	if (pofd > 0) IntSize = pofd;
+//	else IntSize = 1;
+//	//大小限制
+//	TotalSize += integer.size;
+//	if (TotalSize > out->size)
+//	{
+//		integer.size = IntSize - (TotalSize - out->size);
+//		decimal.size = 0;
+//		goto T_1end;
+//	}
+//	else
+//		integer.size = IntSize;
+//	//（二）小数
+//	if (pofd > 0)
+//	{
+//		if (sigf > pofd) DecSize = sigf - pofd + 1;
+//		else DecSize = 0;
+//	}
+//	else
+//		DecSize = sigf - pofd;
+//	//大小限制
+//	TotalSize += DecSize;
+//	if (TotalSize > out->size)
+//		decimal.size = DecSize - (TotalSize - out->size);
+//	else
+//		decimal.size = DecSize;
+//
+//	//二、计算各子字符串地址
+//	//（一）计算大小
+//	//1. 整数
+//	TotalSize += IntSize;
+//	if (TotalSize > out->size)
+//	{
+//		integer.size = IntSize - (TotalSize - out->size);
+//		decimal.size = 0;
+//		goto T_2_1end;
+//	}
+//	else
+//		integer.size = IntSize;
+//T_2_1end:
+//	//（二）计算地址
+//	integer.data = out->data;
+//	decimal.data = integer.data + integer.size;
+//
+//	//三、构建字符串
+//	//（一）整数数据字符串
+//	InCopy = in;
+//	r = integer.size;
+//	while (r > 0)
+//	{
+//		//保留范围之外，填0
+//		if (r > sigf)
+//			integer.data[r - 1] = '0';
+//		//最后一位保留的有效数字，四舍五入
+//		else if (r == sigf)
+//			integer.data[r - 1] = '0' + (cmtUint64)(InCopy + 0.5f) % 10;
+//		//其他情况正常转换
+//		else
+//			integer.data[r - 1] = '0' + (cmtUint64)InCopy % 10;
+//
+//		InCopy /= 10.0f;
+//		r--;
+//	}
+//	if (decimal.size)
+//	{
+//		decimal.data[0] = '.';
+//		//剪掉整数部分以防指数上溢
+//		in -= (cmtUint64)in;
+//		//正常转换
+//		in *= 10.0f;
+//		r = 1;
+//		while (r < decimal.size - 1)
+//		{
+//			decimal.data[r] = '0' + (cmtUint64)in % 10;
+//			in *= 10.0f;
+//			r++;
+//		}
+//		//最后一位需要四舍五入
+//		if (r < decimal.size)
+//			decimal.data[r] = '0' + (cmtUint64)(in + 0.5f) % 10;
+//	}
+//}
+//
+//void cmtF64toStr(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf)
+//{
+//	//结构：(整数数据)[.(小数数据)]
+//	cmtU8str integer, decimal;
+//	cmtUint64 r;
+//	cmtUint64 MaxAddr;//最大地址+1
+//	double InCopy;
+//
+//	MaxAddr = out->data + out->size;
+//
+//	//一、计算各字串大小
+//	//（一）整数数据字符串
+//	if (pofd > 0) integer.size = pofd;
+//	else integer.size = 1;
+//	//（二）小数数据字符串
+//	if (pofd > 0)
+//	{
+//		if (sigf > pofd) decimal.size = sigf - pofd + 1;
+//		else decimal.size = 0;
+//	}
+//	else
+//		decimal.size = sigf - pofd;
+//
+//	//二、计算各子字符串地址
+//	integer.data = out->data;
+//	decimal.data = integer.data + integer.size;
+//
+//	//三、构建字符串
+//	//（一）整数数据字符串
+//	InCopy = in;
+//	r = integer.size;
+//	while (r > 0)
+//	{
+//		//写入地址限制
+//		if (integer.data + r <= MaxAddr)
+//		{
+//			//保留范围之外，填0
+//			if (r > sigf)
+//				integer.data[r - 1] = '0';
+//			//最后一位保留的有效数字，四舍五入
+//			else if (r == sigf)
+//				integer.data[r - 1] = '0' + (cmtUint64)(InCopy + 0.5) % 10;
+//			//其他情况正常转换
+//			else
+//				integer.data[r - 1] = '0' + (cmtUint64)InCopy % 10;
+//		}
+//		InCopy /= 10.0;
+//		r--;
+//	}
+//	if (decimal.size)
+//	{
+//		if (decimal.data < MaxAddr)
+//			decimal.data[0] = '.';
+//		//剪掉整数部分以防指数上溢
+//		in -= (cmtUint64)in;
+//		//正常转换
+//		in *= 10.0;
+//		r = 1;
+//		while (r < decimal.size - 1)
+//		{
+//			if (decimal.data + r < MaxAddr)
+//				decimal.data[r] = '0' + (cmtUint64)in % 10;
+//			in *= 10.0;
+//			r++;
+//		}
+//		//最后一位需要四舍五入
+//		if (decimal.data + r < MaxAddr)
+//			decimal.data[r] = '0' + (cmtUint64)(in + 0.5) % 10;
+//	}
+//}
+//
+//cmtUint64 cmtFltoStrExSize(cmtInt64 pofd, cmtUint64 sigf)
+//{
+//	//结构：(整数数据)[.(小数数据)](e(指数符号)(指数数据))
+//	cmtU8str decimal, exponent;
+//
+//	//一、计算各字串大小
+//	//（一）小数数据字符串
+//	if (sigf == 1) decimal.size = 0;
+//	else decimal.size = sigf;
+//	//（二）指数数据字符串
+//	if (pofd > 0) exponent.size = 2 + cmtDectoStrSize(pofd - 1);
+//	else exponent.size = 2 + cmtDectoStrSize(-pofd);
+//
+//	return 1 + decimal.size + exponent.size;
+//}
+//
+//void cmtF32toStrEx(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap)
+//{
+//	//结构：(整数数据)[.(小数数据)](e(指数符号)(指数数据))
+//	cmtU8str decimal, exponent;
+//	cmtChar integer, ExpSign;
+//	cmtUint64 r;
+//	cmtUint64 MaxAddr;//最大地址+1
+//	cmtU8str TempStr;
+//	float InCopy;
+//
+//	MaxAddr = out->data + out->size;
+//
+//	//一、计算各字串大小
+//	//（一）小数数据字符串
+//	if (sigf == 1) decimal.size = 0;
+//	else decimal.size = sigf;
+//	//（二）指数数据字符串
+//	if (pofd > 0) exponent.size = 2 + cmtDectoStrSize(pofd - 1);
+//	else exponent.size = 2 + cmtDectoStrSize(-pofd);
+//
+//	//二、计算各子字符串地址
+//	decimal.data = out->data + 1;
+//	exponent.data = decimal.data + decimal.size;
+//
+//	//三、构建字符串
+//	//（一）通用
+//	if (exponent.data < MaxAddr)
+//	{
+//		if (cap) exponent.data[0] = 'E';
+//		else exponent.data[0] = 'e';
+//	}
+//	//（二）pofd < 0
+//	if (pofd < 0)
+//	{
+//		//1. 指数数据字符串
+//		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '-';
+//		TempStr.data = exponent.data + 2;
+//		if (exponent.data + exponent.size > MaxAddr)
+//			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
+//		else
+//			TempStr.size = exponent.size;
+//		cmtDectoStr(-pofd, &TempStr);
+//		//2. 整数数据字符串
+//		//左移
+//		while (pofd < 0)
+//		{
+//			in *= 10.0f;
+//			pofd++;
+//		}
+//		//转换
+//		if (out->size)
+//		{
+//			if (decimal.size) out->data[0] = '0' + (cmtUint64)in;
+//			//没有小数数据，整数数据需要四舍五入
+//			else out->data[0] = '0' + (cmtUint64)(in + 0.5f);
+//		}
+//		//3. 小数数据字符串
+//		if (decimal.size)
+//		{
+//			in *= 10.0f;
+//			if (decimal.data < MaxAddr) decimal.data[0] = '.';
+//			r = 1;
+//			while (r < sigf - 1)
+//			{
+//				if (decimal.data + r < MaxAddr)
+//					decimal.data[r] = '0' + (cmtUint64)in % 10;
+//				in *= 10.0f;
+//				r++;
+//			}
+//			//最后一位需要四舍五入
+//			if (decimal.data + r < MaxAddr)
+//				decimal.data[r] = '0' + (cmtUint64)(in + 0.5f) % 10;
+//		}
+//	}
+//	//（三）0 < pofd < sigf
+//	else if (pofd < sigf)
+//	{
+//		//1. 指数数据字符串
+//		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '+';
+//		TempStr.data = exponent.data + 2;
+//		if (exponent.data + exponent.size > MaxAddr)
+//			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
+//		else
+//			TempStr.size = exponent.size;
+//		cmtDectoStr(pofd - 1, &TempStr);
+//		//2. 左侧
+//		InCopy = in;
+//		//（1）小数数据字符串
+//		if (decimal.data < MaxAddr) decimal.data[0] = '.';
+//		r = pofd - 1;
+//		while (r > 0)
+//		{
+//			if (decimal.data + r < MaxAddr)
+//				decimal.data[r] = '0' + (cmtUint64)InCopy % 10;
+//			InCopy /= 10.0f;
+//			r--;
+//		}
+//		//（2）整数数据字符串
+//		if (out->size) out->data[0] = '0' + (cmtUint64)InCopy % 10;
+//		//3. 右侧
+//		//剪掉整数部分以防指数上溢
+//		in -= (cmtUint64)in;
+//		//小数数据字符串
+//		in *= 10.0f;
+//		r = pofd;
+//		while (r < sigf - 1)
+//		{
+//			if (decimal.data + r < MaxAddr)
+//				decimal.data[r] = '0' + (cmtUint64)in % 10;
+//			in *= 10.0f;
+//			r++;
+//		}
+//		//最后一位需要四舍五入
+//		if (decimal.data + r < MaxAddr)
+//			decimal.data[r] = '0' + (cmtUint64)(in + 0.5f) % 10;
+//	}
+//	//（四）pofd >= sigf
+//	else
+//	{
+//		//1. 指数数据字符串
+//		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '+';
+//		TempStr.data = exponent.data + 2;
+//		if (exponent.data + exponent.size > MaxAddr)
+//			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
+//		else
+//			TempStr.size = exponent.size;
+//		cmtDectoStr(pofd - 1, &TempStr);
+//		//2. 小数数据字符串
+//		//移位
+//		while (pofd - sigf > 0)
+//		{
+//			in /= 10.0f;
+//			pofd--;
+//		}
+//		//转换
+//		if (decimal.data < MaxAddr) decimal.data[0] = '.';
+//		//末位需要四舍五入
+//		if (decimal.data + decimal.size <= MaxAddr)
+//			decimal.data[decimal.size - 1] = '0' + (cmtUint64)(in + 0.5f) % 10;
+//		in /= 10.0f;
+//		r = decimal.size - 2;
+//		while (r > 0)
+//		{
+//			if (decimal.data + r < MaxAddr)
+//				decimal.data[r] = '0' + (cmtUint64)in % 10;
+//			in /= 10.0f;
+//			r--;
+//		}
+//		//3. 整数数据字符串
+//		if (out->size) out->data[0] = '0' + (cmtUint64)in;
+//	}
+//}
+//
+//void cmtF64toStrEx(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap)
+//{
+//	//结构：(整数数据)[.(小数数据)](e(指数符号)(指数数据))
+//	cmtU8str decimal, exponent;
+//	cmtChar integer, ExpSign;
+//	cmtUint64 r;
+//	cmtUint64 MaxAddr;//最大地址+1
+//	cmtU8str TempStr;
+//	double InCopy;
+//
+//	MaxAddr = out->data + out->size;
+//
+//	//一、计算各字串大小
+//	//（一）小数数据字符串
+//	if (sigf == 1) decimal.size = 0;
+//	else decimal.size = sigf;
+//	//（二）指数数据字符串
+//	if (pofd > 0) exponent.size = 2 + cmtDectoStrSize(pofd - 1);
+//	else exponent.size = 2 + cmtDectoStrSize(-pofd);
+//
+//	//二、计算各子字符串地址
+//	decimal.data = out->data + 1;
+//	exponent.data = decimal.data + decimal.size;
+//
+//	//三、构建字符串
+//	//（一）通用
+//	if (exponent.data < MaxAddr)
+//	{
+//		if (cap) exponent.data[0] = 'E';
+//		else exponent.data[0] = 'e';
+//	}
+//	//（二）pofd < 0
+//	if (pofd < 0)
+//	{
+//		//1. 指数数据字符串
+//		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '-';
+//		TempStr.data = exponent.data + 2;
+//		if (exponent.data + exponent.size > MaxAddr)
+//			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
+//		else
+//			TempStr.size = exponent.size;
+//		cmtDectoStr(-pofd, &TempStr);
+//		//2. 整数数据字符串
+//		//左移
+//		while (pofd < 0)
+//		{
+//			in *= 10.0;
+//			pofd++;
+//		}
+//		//转换
+//		if (out->size)
+//		{
+//			if (decimal.size) out->data[0] = '0' + (cmtUint64)in;
+//			//没有小数数据，整数数据需要四舍五入
+//			else out->data[0] = '0' + (cmtUint64)(in + 0.5);
+//		}
+//		//3. 小数数据字符串
+//		if (decimal.size)
+//		{
+//			in *= 10.0;
+//			if (decimal.data < MaxAddr) decimal.data[0] = '.';
+//			r = 1;
+//			while (r < sigf - 1)
+//			{
+//				if (decimal.data + r < MaxAddr)
+//					decimal.data[r] = '0' + (cmtUint64)in % 10;
+//				in *= 10.0;
+//				r++;
+//			}
+//			//最后一位需要四舍五入
+//			if (decimal.data + r < MaxAddr)
+//				decimal.data[r] = '0' + (cmtUint64)(in + 0.5) % 10;
+//		}
+//	}
+//	//（三）0 < pofd < sigf
+//	else if (pofd < sigf)
+//	{
+//		//1. 指数数据字符串
+//		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '+';
+//		TempStr.data = exponent.data + 2;
+//		if (exponent.data + exponent.size > MaxAddr)
+//			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
+//		else
+//			TempStr.size = exponent.size;
+//		cmtDectoStr(pofd - 1, &TempStr);
+//		//2. 左侧
+//		InCopy = in;
+//		//（1）小数数据字符串
+//		if (decimal.data < MaxAddr) decimal.data[0] = '.';
+//		r = pofd - 1;
+//		while (r > 0)
+//		{
+//			if (decimal.data + r < MaxAddr)
+//				decimal.data[r] = '0' + (cmtUint64)InCopy % 10;
+//			InCopy /= 10.0;
+//			r--;
+//		}
+//		//（2）整数数据字符串
+//		if (out->size) out->data[0] = '0' + (cmtUint64)InCopy % 10;
+//		//3. 右侧
+//		//剪掉整数部分以防指数上溢
+//		in -= (cmtUint64)in;
+//		//小数数据字符串
+//		in *= 10.0;
+//		r = pofd;
+//		while (r < sigf - 1)
+//		{
+//			if (decimal.data + r < MaxAddr)
+//				decimal.data[r] = '0' + (cmtUint64)in % 10;
+//			in *= 10.0;
+//			r++;
+//		}
+//		//最后一位需要四舍五入
+//		if (decimal.data + r < MaxAddr)
+//			decimal.data[r] = '0' + (cmtUint64)(in + 0.5) % 10;
+//	}
+//	//（四）pofd >= sigf
+//	else
+//	{
+//		//1. 指数数据字符串
+//		if (exponent.data + 1 < MaxAddr) exponent.data[1] = '+';
+//		TempStr.data = exponent.data + 2;
+//		if (exponent.data + exponent.size > MaxAddr)
+//			TempStr.size = MaxAddr - (cmtUint64)TempStr.data;
+//		else
+//			TempStr.size = exponent.size;
+//		cmtDectoStr(pofd - 1, &TempStr);
+//		//2. 小数数据字符串
+//		//移位
+//		while (pofd - sigf > 0)
+//		{
+//			in /= 10.0;
+//			pofd--;
+//		}
+//		//转换
+//		if (decimal.data < MaxAddr) decimal.data[0] = '.';
+//		//末位需要四舍五入
+//		if (decimal.data + decimal.size <= MaxAddr)
+//			decimal.data[decimal.size - 1] = '0' + (cmtUint64)(in + 0.5) % 10;
+//		in /= 10.0;
+//		r = decimal.size - 2;
+//		while (r > 0)
+//		{
+//			if (decimal.data + r < MaxAddr)
+//				decimal.data[r] = '0' + (cmtUint64)in % 10;
+//			in /= 10.0;
+//			r--;
+//		}
+//		//3. 整数数据字符串
+//		if (out->size) out->data[0] = '0' + (cmtUint64)in;
+//	}
+//}
 
 //void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 //{

@@ -132,6 +132,7 @@ typedef struct _CMTFMTINFO
 
 /*--------------------------------字符编码处理函数 开始--------------------------------*/
 
+//status: PA
 /**
 * @brief 测量ANSI字符字节数
 * @param[in] ch 字符首地址
@@ -142,6 +143,7 @@ typedef struct _CMTFMTINFO
 */
 extern cmtUint8 cmtANSIchSize(cmtChar* ch, cmtChar* locale);
 
+//status: PA
 /**
 * @brief 测量ANSI字符串总字节数
 * @param[in] str 字符串首地址
@@ -151,6 +153,7 @@ extern cmtUint8 cmtANSIchSize(cmtChar* ch, cmtChar* locale);
 */
 extern cmtUint64 cmtANSIstrSize(cmtChar* str);
 
+//status: PA
 /**
 * @brief 测量ANSI字符串字符数
 * @param[in] str 字符串结构体
@@ -160,6 +163,7 @@ extern cmtUint64 cmtANSIstrSize(cmtChar* str);
 */
 extern cmtUint64 cmtANSIlen(cmtANSIstr* str);
 
+//status: PA
 /**
 * @brief 计算ANSI转UTF-8后，UTF-8字符串的字节数
 * @param[in] ansi ANSI字符串结构体
@@ -169,6 +173,7 @@ extern cmtUint64 cmtANSIlen(cmtANSIstr* str);
 */
 extern cmtUint64 cmtANSItoU8size(cmtANSIstr* ansi);
 
+//status: PA
 /**
 * @brief ANSI转UTF-8
 * @param[in] ansi ANSI字符串结构体
@@ -178,6 +183,7 @@ extern cmtUint64 cmtANSItoU8size(cmtANSIstr* ansi);
 */
 extern void cmtANSItoU8(cmtANSIstr* ansi, cmtU8str* u8);
 
+//status: PA
 /**
 * @brief 计算ANSI转UTF-16后，UTF-16字符串的字节数
 * @param[in] ansi ANSI字符串结构体
@@ -187,6 +193,7 @@ extern void cmtANSItoU8(cmtANSIstr* ansi, cmtU8str* u8);
 */
 extern cmtUint64 cmtANSItoU16size(cmtANSIstr* ansi);
 
+//status: PA
 /**
 * @brief ANSI转UTF-16
 * @param[in] ansi ANSI字符串结构体
@@ -196,6 +203,7 @@ extern cmtUint64 cmtANSItoU16size(cmtANSIstr* ansi);
 */
 extern void cmtANSItoU16(cmtANSIstr* ansi, cmtU16str* u16);
 
+//status: PA
 /**
 * @brief 计算ANSI转UTF-32后，UTF-32字符串的字节数
 * @param[in] ansi ANSI字符串结构体
@@ -205,6 +213,7 @@ extern void cmtANSItoU16(cmtANSIstr* ansi, cmtU16str* u16);
 */
 extern cmtUint64 cmtANSItoU32size(cmtANSIstr* ansi);
 
+//status: PA
 /**
 * @brief ANSI转UTF-32
 * @param[in] ansi ANSI字符串结构体
@@ -214,6 +223,7 @@ extern cmtUint64 cmtANSItoU32size(cmtANSIstr* ansi);
 */
 extern void cmtANSItoU32(cmtANSIstr* ansi, cmtU32str* u32);
 
+//status: PA
 /**
 * @brief 测量UTF-8字符字节数
 * @param[in] ch 字符首地址
@@ -223,6 +233,7 @@ extern void cmtANSItoU32(cmtANSIstr* ansi, cmtU32str* u32);
 */
 extern cmtUint8 cmtU8chSize(cmtChar* ch);
 
+//status: PA
 /**
 * @brief 测量UTF-8字符串总字节数
 * @param[in] str 字符串首地址
@@ -232,6 +243,7 @@ extern cmtUint8 cmtU8chSize(cmtChar* ch);
 */
 extern cmtUint64 cmtU8strSize(cmtChar* str);
 
+//status: PA
 /**
 * @brief 测量UTF-8字符串字符数
 * @param[in] str 字符串结构体
@@ -241,6 +253,7 @@ extern cmtUint64 cmtU8strSize(cmtChar* str);
 */
 extern cmtUint64 cmtU8len(cmtU8str* str);
 
+//status: PA
 /**
 * @brief 计算UTF-8转ANSI后，ANSI字符串的字节数
 * @param[in] u8 UTF-8字符串结构体
@@ -254,6 +267,7 @@ extern cmtUint64 cmtU8len(cmtU8str* str);
 */
 extern cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale, cmtBool* err);
 
+//status: PA
 /**
 * @brief UTF-8转ANSI
 * @param[in] u8 UTF-8字符串结构体
@@ -266,6 +280,7 @@ extern cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale, cmtBool* err);
 */
 extern cmtBool cmtU8toANSI(cmtU8str* u8, cmtANSIstr* ansi);
 
+//status: PA
 /**
 * @brief 计算UTF-8转UTF-16后，UTF-16字符串的字节数
 * @param[in] u8 UTF-8字符串结构体
@@ -275,6 +290,7 @@ extern cmtBool cmtU8toANSI(cmtU8str* u8, cmtANSIstr* ansi);
 */
 extern cmtUint64 cmtU8toU16size(cmtU8str* u8);
 
+//status: PA
 /**
 * @brief UTF-8转UTF-16
 * @param[in] u8 UTF-8字符串结构体
@@ -284,6 +300,7 @@ extern cmtUint64 cmtU8toU16size(cmtU8str* u8);
 */
 extern void cmtU8toU16(cmtU8str* u8, cmtU16str* u16);
 
+//status: PA
 /**
 * @brief 计算UTF-8转UTF-32后，UTF-32字符串的字节数
 * @param[in] u8 UTF-8字符串结构体
@@ -293,6 +310,7 @@ extern void cmtU8toU16(cmtU8str* u8, cmtU16str* u16);
 */
 extern cmtUint64 cmtU8toU32size(cmtU8str* u8);
 
+//status: PA
 /**
 * @brief UTF-8转UTF-32
 * @param[in] u8 UTF-8字符串结构体
@@ -302,6 +320,7 @@ extern cmtUint64 cmtU8toU32size(cmtU8str* u8);
 */
 extern void cmtU8toU32(cmtU8str* u8, cmtU32str* u32);
 
+//status: PA
 /**
 * @brief 测量UTF-16字符字节数
 * @param[in] ch 字符首地址
@@ -311,6 +330,7 @@ extern void cmtU8toU32(cmtU8str* u8, cmtU32str* u32);
 */
 extern cmtUint8 cmtU16chSize(cmtWchar* ch);
 
+//status: PA
 /**
 * @brief 测量UTF-16字符串总字节数
 * @param[in] str 字符串首地址
@@ -320,6 +340,7 @@ extern cmtUint8 cmtU16chSize(cmtWchar* ch);
 */
 extern cmtUint64 cmtU16strSize(cmtWchar* str);
 
+//status: PA
 /**
 * @brief 测量UTF-16字符串字符数
 * @param[in] str 字符串结构体
@@ -329,6 +350,7 @@ extern cmtUint64 cmtU16strSize(cmtWchar* str);
 */
 extern cmtUint64 cmtU16len(cmtU16str* str);
 
+//status: PA
 /**
 * @brief 计算UTF-16转ANSI后，ANSI字符串的字节数
 * @param[in] u16 UTF-16字符串结构体
@@ -342,6 +364,7 @@ extern cmtUint64 cmtU16len(cmtU16str* str);
 */
 extern cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err);
 
+//status: PA
 /**
 * @brief UTF-16转ANSI
 * @param[in] u16 UTF-16字符串结构体
@@ -354,6 +377,7 @@ extern cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err)
 */
 extern cmtBool cmtU16toANSI(cmtU16str* u16, cmtANSIstr* ansi);
 
+//status: PA
 /**
 * @brief 计算UTF-16转UTF-8后，UTF-8字符串的字节数
 * @param[in] u16 UTF-16字符串结构体
@@ -363,6 +387,7 @@ extern cmtBool cmtU16toANSI(cmtU16str* u16, cmtANSIstr* ansi);
 */
 extern cmtUint64 cmtU16toU8size(cmtU16str* u16);
 
+//status: PA
 /**
 * @brief UTF-16转UTF-8
 * @param[in] u16 UTF-16字符串结构体
@@ -372,6 +397,7 @@ extern cmtUint64 cmtU16toU8size(cmtU16str* u16);
 */
 extern void cmtU16toU8(cmtU16str* u16, cmtU8str* u8);
 
+//status: PA
 /**
 * @brief 计算UTF-16转UTF-32后，UTF-32字符串的字节数
 * @param[in] u16 UTF-16字符串结构体
@@ -381,6 +407,7 @@ extern void cmtU16toU8(cmtU16str* u16, cmtU8str* u8);
 */
 extern cmtUint64 cmtU16toU32size(cmtU16str* u16);
 
+//status: PA
 /**
 * @brief UTF-16转UTF-32
 * @param[in] u16 UTF-16字符串结构体
@@ -390,6 +417,7 @@ extern cmtUint64 cmtU16toU32size(cmtU16str* u16);
 */
 extern void cmtU16toU32(cmtU16str* u16, cmtU32str* u32);
 
+//status: PA
 /**
 * @brief 测量UTF-32字符串总字节数
 * @param[in] str 字符串首地址
@@ -399,6 +427,7 @@ extern void cmtU16toU32(cmtU16str* u16, cmtU32str* u32);
 */
 extern cmtUint64 cmtU32strSize(cmtFchar* str);
 
+//status: PA
 /**
 * @brief 计算UTF-32转ANSI后，ANSI字符串的字节数
 * @param[in] u32 UTF-32字符串结构体
@@ -412,6 +441,7 @@ extern cmtUint64 cmtU32strSize(cmtFchar* str);
 */
 extern cmtUint64 cmtU32toANSIsize(cmtU32str* u32, cmtChar* locale, cmtBool* err);
 
+//status: PA
 /**
 * @brief UTF-32转ANSI
 * @param[in] u32 UTF-32字符串结构体
@@ -424,6 +454,7 @@ extern cmtUint64 cmtU32toANSIsize(cmtU32str* u32, cmtChar* locale, cmtBool* err)
 */
 extern cmtBool cmtU32toANSI(cmtU32str* u32, cmtANSIstr* ansi);
 
+//status: PA
 /**
 * @brief 计算UTF-32转UTF-8后，UTF-8字符串的字节数
 * @param[in] u32 UTF-32字符串结构体
@@ -433,6 +464,7 @@ extern cmtBool cmtU32toANSI(cmtU32str* u32, cmtANSIstr* ansi);
 */
 extern cmtUint64 cmtU32toU8size(cmtU32str* u32);
 
+//status: PA
 /**
 * @brief UTF-32转UTF-8
 * @param[in] u32 UTF-32字符串结构体
@@ -442,6 +474,7 @@ extern cmtUint64 cmtU32toU8size(cmtU32str* u32);
 */
 extern void cmtU32toU8(cmtU32str* u32, cmtU8str* u8);
 
+//status: PA
 /**
 * @brief 计算UTF-32转UTF-16后，UTF-16字符串的字节数
 * @param[in] u32 UTF-32字符串结构体
@@ -451,6 +484,7 @@ extern void cmtU32toU8(cmtU32str* u32, cmtU8str* u8);
 */
 extern cmtUint64 cmtU32toU16size(cmtU32str* u32);
 
+//status: PA
 /**
 * @brief UTF-32转UTF-16
 * @param[in] u32 UTF-32字符串结构体
@@ -463,19 +497,31 @@ extern void cmtU32toU16(cmtU32str* u32, cmtU16str* u16);
 
 /*--------------------------------字符串操作函数 开始--------------------------------*/
 
+//status: PA
+/**
+* @brief 分析格式字符串
+* @param[in] fmt 格式控制字符串
+* @param[out] info 分析结果
+* @param[in] ArgList 参数数组
+* @attention fmt只保留格式控制字符串，从%开始（不含）到type字段结束（包含），如"llf"
+* @attention 本函数不进行边界检查，请保证格式控制字符串绝对符合要求（详见doc/格式字符串），否则会造成溢出
+* @date 2021-11-01
+* @author dexnab
+*/
 extern void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList);
 
+//status: PA
 /**
 * @brief 字符串转整数（二进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
-* @attention 数字必须从第一个字符起始
 * @date 2021-10-14
 * @author dexnab
 */
 extern cmtUint64 cmtStrtoBin(cmtU8str* in, cmtUint64* out);
 
+//status: NC
 /**
 * @brief 字符串转整数（八进制）
 * @param[in] in 字符串
@@ -487,6 +533,7 @@ extern cmtUint64 cmtStrtoBin(cmtU8str* in, cmtUint64* out);
 */
 extern cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out);
 
+//status: NC
 /**
 * @brief 字符串转整数（十进制）
 * @param[in] in 字符串
@@ -498,6 +545,7 @@ extern cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out);
 */
 extern cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out);
 
+//status: NC
 /**
 * @brief 字符串转整数（十六进制）
 * @param[in] in 字符串
@@ -509,6 +557,7 @@ extern cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out);
 */
 extern cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out);
 
+//status: NC
 /**
 * @brief 字符串转浮点数（32位）
 * @param[in] in 字符串
@@ -520,6 +569,7 @@ extern cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out);
 */
 extern cmtUint64 cmtStrtoF32(cmtU8str* in, float* out);
 
+//status: NC
 /**
 * @brief 字符串转浮点数（64位）
 * @param[in] in 字符串
@@ -531,6 +581,7 @@ extern cmtUint64 cmtStrtoF32(cmtU8str* in, float* out);
 */
 extern cmtUint64 cmtStrtoF64(cmtU8str* in, double* out);
 
+//status: NC
 /**
 * @brief 计算有多少位数字（二进制）
 * @param[in] in 整数
@@ -540,6 +591,7 @@ extern cmtUint64 cmtStrtoF64(cmtU8str* in, double* out);
 */
 extern cmtUint64 cmtBintoStrSize(cmtUint64 in);
 
+//status: NC
 /**
 * @brief 整数转字符串（二进制）
 * @param[in] in 整数
@@ -550,6 +602,7 @@ extern cmtUint64 cmtBintoStrSize(cmtUint64 in);
 */
 extern void cmtBintoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit);
 
+//status: NC
 /**
 * @brief 计算有多少位数字（八进制）
 * @param[in] in 整数
@@ -559,6 +612,7 @@ extern void cmtBintoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit);
 */
 extern cmtUint64 cmtOcttoStrSize(cmtUint64 in);
 
+//status: NC
 /**
 * @brief 整数转字符串（八进制）
 * @param[in] in 整数
@@ -569,6 +623,7 @@ extern cmtUint64 cmtOcttoStrSize(cmtUint64 in);
 */
 extern void cmtOcttoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit);
 
+//status: NC
 /**
 * @brief 计算有多少位数字（十进制）
 * @param[in] in 整数
@@ -579,6 +634,7 @@ extern void cmtOcttoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit);
 */
 extern cmtUint64 cmtDectoStrSize(cmtUint64 in);
 
+//status: NC
 /**
 * @brief 整数转字符串（十进制）
 * @param[in] in 整数
@@ -590,6 +646,7 @@ extern cmtUint64 cmtDectoStrSize(cmtUint64 in);
 */
 extern void cmtDectoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit);
 
+//status: NC
 /**
 * @brief 计算有多少位数字（十六进制）
 * @param[in] in 整数
@@ -599,6 +656,7 @@ extern void cmtDectoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit);
 */
 extern cmtUint64 cmtHextoStrSize(cmtUint64 in);
 
+//status: NC
 /**
 * @brief 整数转字符串（十六进制）
 * @param[in] in 整数
@@ -610,6 +668,7 @@ extern cmtUint64 cmtHextoStrSize(cmtUint64 in);
 */
 extern void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit, cmtBool cap);
 
+//status: NC
 /**
 * @brief 计算pofd（32位浮点）
 * @param[in] in 数字
@@ -620,6 +679,7 @@ extern void cmtHextoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit, cmtBool ca
 */
 extern cmtInt64 cmtCalcPofdF32(float in);
 
+//status: NC
 /**
 * @brief 计算pofd（64位浮点）
 * @param[in] in 数字
@@ -630,6 +690,7 @@ extern cmtInt64 cmtCalcPofdF32(float in);
 */
 extern cmtInt64 cmtCalcPofdF64(double in);
 
+//status: NC
 /**
 * @brief 计算由浮点数转换而来的普通小数字符串的字节数
 * @param[in] in 数字
@@ -641,6 +702,8 @@ extern cmtInt64 cmtCalcPofdF64(double in);
 * @author dexnab
 */
 extern cmtUint64 cmtFltoStrSize(cmtInt64 pofd, cmtUint64 sigf);
+
+//status: NC
 /**
 * @brief 浮点数转普通小数字符串（32位浮点）
 * @param[in] in 数字
@@ -653,6 +716,7 @@ extern cmtUint64 cmtFltoStrSize(cmtInt64 pofd, cmtUint64 sigf);
 */
 extern void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf);
 
+//status: NC
 /**
 * @brief 浮点数转普通小数字符串（64位浮点）
 * @param[in] in 数字
@@ -665,6 +729,7 @@ extern void cmtF32toStr(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf);
 */
 extern void cmtF64toStr(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf);
 
+//status: NC
 /**
 * @brief 计算有浮点数转换而来的科学计数法模式字符串的字节数
 * @param[in] in 数字
@@ -677,6 +742,7 @@ extern void cmtF64toStr(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf)
 */
 extern cmtUint64 cmtFltoStrExSize(cmtInt64 pofd, cmtUint64 sigf);
 
+//status: NC
 /**
 * @brief 浮点数转科学计数法模式字符串（32位浮点）
 * @param[in] in 数字
@@ -690,6 +756,7 @@ extern cmtUint64 cmtFltoStrExSize(cmtInt64 pofd, cmtUint64 sigf);
 */
 extern void cmtF32toStrEx(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);
 
+//status: NC
 /**
 * @brief 浮点数转科学计数法模式字符串（64位浮点）
 * @param[in] in 数字
@@ -703,8 +770,10 @@ extern void cmtF32toStrEx(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf
 */
 extern void cmtF64toStrEx(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);
 
+//status: NC
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 
+//status: NC
 /*
 * TODO:
 * 浮点数还没有处理错误数据（NAN，0，INFINITY）
