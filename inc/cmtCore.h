@@ -69,7 +69,7 @@ extern cmtUint8 cmtTerminateProcess(cmtWchar* cmd);
 /**
 * @brief 创建线程
 * @param[in] proc 线程函数\n
-* 函数定义需要为：cmtUint32 __stdcall ThreadProc(void* param);
+* 函数定义需要为：cmtUint32 CMT_STDCALL ThreadProc(void* param);
 * @param[in] param 传入参数
 * @param[in] info 线程额外信息，缺省NULL
 * @return 线程句柄
@@ -78,7 +78,7 @@ extern cmtUint8 cmtTerminateProcess(cmtWchar* cmd);
 * @date 2021-08-12
 * @author Dexnab
 */
-extern cmtUint64 cmtCreateThread(cmtUint32(__stdcall* proc)(void*), void* param, cmtThreadInfo* info);
+extern cmtUint64 cmtCreateThread(cmtUint32(CMT_STDCALL* proc)(void*), void* param, cmtThreadInfo* info);
 /**
 * @brief 强制终止线程
 * @param[in] handle 线程句柄
