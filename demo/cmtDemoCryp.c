@@ -77,12 +77,3 @@ void cmtDemoAESecb()
 
 	printf("AES-ECB:\nplain:\n%hs\ncipher:\n%hs\n", data, deced);
 }
-
-int main(int argc, char** argv)
-{
-	cmtDemoAESecb();
-	cmtDemoAEScbc();
-	cmtDemoAESctr();
-	
-	return 0;
-}
