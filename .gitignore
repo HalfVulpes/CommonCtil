@@ -493,3 +493,7 @@ dkms.conf
 #test main 
 TestMain.c
 cmtTestMain.c
+
+#cmake-debugger files
+cmake-build-debug/
+CMakeLists.txt
