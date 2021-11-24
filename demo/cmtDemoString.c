@@ -225,51 +225,99 @@ void cmtDemoAnlyFmt()
 	cmtAnlyFmt(&u8, &FmtInfo, arglist);
 }
 
-void cmtDemoStrtoBin()
+void cmtDemoStrToBin()
 {
-	//10101101=173
-	cmtU8str u8 = CMT_CONSTSTR("101011011");
-	//此处减小size的目的是检测边界检查功能
-	u8.size = 8;
-	cmtUint64 num;
+	cmtU8str str1 = CMT_CONSTSTR("101011011");//10101101b=173
+	str1.size = 8;
+	cmtU8str str2 = CMT_CONSTSTR("101011011abc");//101011011b=347
+	str2.size = 12;
+	cmtU8str str3 = CMT_CONSTSTR("abc10");
+	str3.size = 5;
+	cmtUint64 num, ret;
 
-	cmtStrtoBin(&u8, &num);
-	//标答：num=173
+	//测试1：边界检测
+	ret = cmtStrToBin(&str1, &num);//标答：num=173 ret=8
+
+	//测试2：干扰字符检测1
+	ret = cmtStrToBin(&str2, &num);//标答：num=347 ret=9
+
+	//测试3：干扰字符检测2
+	ret = cmtStrToBin(&str3, &num);//标答：num=0 ret=0
 }
 
-void cmtDemoStrtoOct()
+void cmtDemoStrToOct()
 {
-	//16477=7487
-	cmtU8str u8 = CMT_CONSTSTR("164778");
-	//此处减小size的目的是检测边界检查功能
-	u8.size = 5;
-	cmtUint64 num;
+	cmtU8str str1 = CMT_CONSTSTR("123456");//12345o=5349
+	str1.size = 5;
+	cmtU8str str2 = CMT_CONSTSTR("123456abc");//123546o=42798
+	str2.size = 9;
+	cmtU8str str3 = CMT_CONSTSTR("abc123");
+	str3.size = 6;
+	cmtUint64 num, ret;
 
-	cmtStrtoOct(&u8, &num);
-	//标答：num=7487
+	//测试1：边界检测
+	ret = cmtStrToOct(&str1, &num);//标答：num=5349 ret=5
+
+	//测试2：干扰字符检测1
+	ret = cmtStrToOct(&str2, &num);//标答：num=42798 ret=6
+
+	//测试3：干扰字符检测2
+	ret = cmtStrToOct(&str3, &num);//标答：num=0 ret=0
 }
 
-void cmtDemoStrtoDec()
+void cmtDemoStrToDec()
 {
-	cmtU8str u8 = CMT_CONSTSTR("1954435");
-	//此处减小size的目的是检测边界检查功能
-	u8.size = 6;
-	cmtUint64 num;
+	cmtU8str str1 = CMT_CONSTSTR("12345678");
+	str1.size = 5;
+	cmtU8str str2 = CMT_CONSTSTR("+123456");
+	str2.size = 7;
+	cmtU8str str3 = CMT_CONSTSTR("-123456");
+	str3.size = 7;
+	cmtU8str str4 = CMT_CONSTSTR("1234abc");
+	str4.size = 7;
+	cmtU8str str5 = CMT_CONSTSTR("abc1234");
+	str5.size = 7;
+	cmtInt64 num, ret;
 
-	cmtStrtoDec(&u8, &num);
-	//标答：num=195443
+	//测试1：边界检测
+	ret = cmtStrToDec(&str1, &num);//标答：num=12345 ret=5
+
+	//测试2：正号检测
+	ret = cmtStrToDec(&str2, &num);//标答：num=123456 ret=7
+
+	//测试3：负号检测
+	ret = cmtStrToDec(&str3, &num);//标答：num=-123456 ret=7
+
+	//测试4：干扰字符检测1
+	ret = cmtStrToDec(&str4, &num);//标答：num=1234 ret=4
+
+	//测试5：干扰字符检测2
+	ret = cmtStrToDec(&str5, &num);//标答：num=0 ret=0
 }
 
-void cmtDemoStrtoHex()
+void cmtDemoStrToHex()
 {
-	//458DA562=1166910818
-	cmtU8str u8 = CMT_CONSTSTR("458dA562c");
-	//此处减小size的目的是检测边界检查功能
-	u8.size = 8;
-	cmtUint64 num;
+	cmtU8str str1 = CMT_CONSTSTR("123456");
+	str1.size = 5;
+	cmtU8str str2 = CMT_CONSTSTR("123456aBc");
+	str2.size = 9;
+	cmtU8str str3 = CMT_CONSTSTR("123abch");
+	str3.size = 7;
+	cmtU8str str4 = CMT_CONSTSTR("x123");
+	str4.size = 4;
+	cmtUint64 num, ret;
 
-	cmtStrtoHex(&u8, &num);
-	//标答：num=1166910818
+	//测试1：边界检测
+	ret = cmtStrToHex(&str1, &num);//标答：num=12345h ret=5
+
+	//测试2：大小写a-f(A-F)检测
+	ret = cmtStrToHex(&str2, &num);//标答：num=123456abch ret=9
+
+	//测试3：干扰字符检测1
+	ret = cmtStrToHex(&str3, &num);//标答：num=123abch ret=6
+
+	//测试3：干扰字符检测2
+	ret = cmtStrToHex(&str4, &num);//标答：num=0 ret=0
 }
 
 //void cmtDemoSprintf()
