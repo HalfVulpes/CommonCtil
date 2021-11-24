@@ -46,9 +46,9 @@
 #define CMT_STDCALL __stdcall
 #define CMT_FASTCALL __fastcall
 #elif defined(CMT_ENV_LINUX)
-#define CMT_CDECL __attribute__((cdecl))
-#define CMT_STDCALL __attribute__((stdcall))
-#define CMT_FASTCALL __attribute__((fastcall))
+#define CMT_CDECL __attribute__((__cdecl__))
+#define CMT_STDCALL __attribute__((__stdcall__))
+#define CMT_FASTCALL __attribute__((__fastcall__))
 #endif
 #endif
 
