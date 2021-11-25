@@ -504,4 +504,11 @@ dkms.conf
 #test main 
 TestMain.c
 cmtTestMain.c
+<<<<<<< HEAD
 test.c
+=======
+
+#cmake-debugger files
+cmake-build-debug/
+CMakeLists.txt
+>>>>>>> 7f912a05d7facca1e9eaeb61bf3f7f9bf52a6586

@@ -1,23 +1,23 @@
 /**
 * @file CommonCtil.h
-* @brief ComonCtil ¿âµÄÍ·ÎÄ¼ş£¬Í¨¹ıÔÚÄãµÄÏîÄ¿ÖĞ°üº¬´ËÍ·ÎÄ¼şÀ´Ê¹ÓÃÕâ¸ö¹¤¾ß¿â
-* @par Windows ÒÀÀµ¿â£ºKernel32.lib 
-* @par Linux ÒÀÀµ¿â£ºlibpthread.a
+* @brief ComonCtil åº“çš„å¤´æ–‡ä»¶ï¼Œé€šè¿‡åœ¨ä½ çš„é¡¹ç›®ä¸­åŒ…å«æ­¤å¤´æ–‡ä»¶æ¥ä½¿ç”¨è¿™ä¸ªå·¥å…·åº“
+* @par Windows ä¾èµ–åº“ï¼šKernel32.lib
+* @par Linux ä¾èµ–åº“ï¼šlibpthread.a
 * @date 2021-09-14
 * @author GogeBlue
 * @author Dexnab
 */
 
-//·ÀÖ¹¶àÖØ°üº¬
+//é˜²æ­¢å¤šé‡åŒ…å«
 #pragma once
 #ifndef _INC_COMMONCTIL
 #define _INC_COMMONCTIL
 
-//ÕûºÏ°üº¬
-#include <cmtType.h>//±ê×¼¶¨Òå
-#include <cmtCore.h>//ºËĞÄ¹¦ÄÜ
-#include <cmtString.h>//×Ö·û´®
-#include <cmtQueue.h>//¶ÓÁĞ
-#include <cmtCryp.h>//¼ÓÃÜ¿â
+//æ•´åˆåŒ…å«
+#include <cmtType.h>//æ ‡å‡†å®šä¹‰
+#include <cmtCore.h>//æ ¸å¿ƒåŠŸèƒ½
+#include <cmtString.h>//å­—ç¬¦ä¸²
+#include <cmtQueue.h>//é˜Ÿåˆ—
+#include <cmtCryp.h>//åŠ å¯†åº“
 
 #endif
