@@ -1,5 +1,10 @@
 build/
 
+#PLEASE DO NOT rely on the following filters
+#they may be changed or removed in following updates
+#PLEASE USE "build/" directory to store anything
+#you do not want to push (e.g. ide workspace, temporary builds)
+
 # User-specific files
 *.rsuser
 *.suo
@@ -414,6 +419,8 @@ FodyWeavers.xsd
 *.mod
 *.smod
 
+#disabled because of some 3rd party libraries
+#and final output of this project
 # Compiled Static libraries
 *.lai
 *.la
@@ -444,17 +451,20 @@ FodyWeavers.xsd
 *.gch
 *.pch
 
+#disabled because of some 3rd party libraries
+#and final output of this project
 # Libraries
-*.lib
-*.a
-*.la
-*.lo
+#*.lib
+#*.a
+#*.la
+#*.lo
 
+#disabled because of some 3rd party libraries (e.g. vcruntime.dll)
 # Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+#*.dll
+#*.so
+#*.so.*
+#*.dylib
 
 # Executables
 *.exe
@@ -479,17 +489,19 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+#disabled because of some documents (e.g. plan.xlsx)
 #for office files 
-*.xlsx
-*.xls
-*.doc
-*.docx
-*.odt
-*.ppt
-*.pptx
-*.pdf
-*.chm
+#*.xlsx
+#*.xls
+#*.doc
+#*.docx
+#*.odt
+#*.ppt
+#*.pptx
+#*.pdf
+#*.chm
 
 #test main 
 TestMain.c
 cmtTestMain.c
+test.c
