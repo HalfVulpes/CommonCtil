@@ -519,7 +519,7 @@ extern void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList);
 * @date 2021-10-14
 * @author dexnab
 */
-extern cmtUint64 cmtStrtoBin(cmtU8str* in, cmtUint64* out);
+extern cmtUint64 cmtStrToBin(cmtU8str* in, cmtUint64* out);
 
 //status: PA
 /**
@@ -530,7 +530,7 @@ extern cmtUint64 cmtStrtoBin(cmtU8str* in, cmtUint64* out);
 * @date 2021-10-14
 * @author dexnab
 */
-extern cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out);
+extern cmtUint64 cmtStrToOct(cmtU8str* in, cmtUint64* out);
 
 //status: PA
 /**
@@ -538,10 +538,11 @@ extern cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out);
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
+* @note 有没有符号都行。虽然参数out类型是无符号类型，但有符号数也可以直接用，参数out只是很单纯的一个指针而已
 * @date 2021-10-14
 * @author dexnab
 */
-extern cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out);
+extern cmtUint64 cmtStrToDec(cmtU8str* in, cmtUint64* out);
 
 //status: PA
 /**
@@ -552,7 +553,7 @@ extern cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out);
 * @date 2021-11-04
 * @author dexnab
 */
-extern cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out);
+extern cmtUint64 cmtStrToHex(cmtU8str* in, cmtUint64* out);
 
 //status: NC
 /**
@@ -560,11 +561,10 @@ extern cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out);
 * @param[in] in 字符串
 * @param[out] out 浮点数
 * @return 转换了多少字节的字符串
-* @attention 数字必须从第一个字符起始（前面不能有符号）
 * @date 2021-10-14
 * @author dexnab
 */
-extern cmtUint64 cmtStrtoF32(cmtU8str* in, float* out);
+extern cmtUint64 cmtStrToF32(cmtU8str* in, float* out);
 
 //status: NC
 /**
