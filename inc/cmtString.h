@@ -555,49 +555,48 @@ extern cmtUint64 cmtStrToDec(cmtU8str* in, cmtUint64* out);
 */
 extern cmtUint64 cmtStrToHex(cmtU8str* in, cmtUint64* out);
 
-//status: NC
+//status: PA
 /**
 * @brief 字符串转浮点数（32位）
 * @param[in] in 字符串
 * @param[out] out 浮点数
 * @return 转换了多少字节的字符串
-* @date 2021-10-14
+* @date 2021-12-01
 * @author dexnab
 */
 extern cmtUint64 cmtStrToF32(cmtU8str* in, float* out);
 
-//status: NC
+//status: PA
 /**
 * @brief 字符串转浮点数（64位）
 * @param[in] in 字符串
 * @param[out] out 浮点数
 * @return 转换了多少字节的字符串
-* @attention 数字必须从第一个字符起始（前面不能有符号）
-* @date 2021-10-14
+* @date 2021-12-01
 * @author dexnab
 */
-extern cmtUint64 cmtStrtoF64(cmtU8str* in, double* out);
+extern cmtUint64 cmtStrToF64(cmtU8str* in, double* out);
 
-//status: NC
+//status: NT
 /**
-* @brief 计算有多少位数字（二进制）
+* @brief 整数转字符串（二进制）之数字位数
 * @param[in] in 整数
 * @return 数字位数
 * @date 2021-10-18
 * @author dexnab
 */
-extern cmtUint64 cmtBintoStrSize(cmtUint64 in);
+extern cmtUint64 cmtBinToStrSize(cmtUint64 in);
 
 //status: NC
 /**
 * @brief 整数转字符串（二进制）
 * @param[in] in 整数
 * @param[in] out 输出字符串
-* @param[in] digit 数字位数
-* @date 2021-10-18
+* @attention 缓冲区不够的情况下，输出可能乱序
+* @date 2021-12-01
 * @author dexnab
 */
-extern void cmtBintoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit);
+extern void cmtBinToStr(cmtUint64 in, cmtU8str* out);
 
 //status: NC
 /**

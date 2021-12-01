@@ -236,13 +236,16 @@ void cmtDemoStrToBin()
 	cmtUint64 num, ret;
 
 	//测试1：边界检测
-	ret = cmtStrToBin(&str1, &num);//标答：num=173 ret=8
+	ret = cmtStrToBin(&str1, &num);
+	//标答：num=173 ret=8
 
 	//测试2：干扰字符检测1
-	ret = cmtStrToBin(&str2, &num);//标答：num=347 ret=9
+	ret = cmtStrToBin(&str2, &num);
+	//标答：num=347 ret=9
 
 	//测试3：干扰字符检测2
-	ret = cmtStrToBin(&str3, &num);//标答：num=0 ret=0
+	ret = cmtStrToBin(&str3, &num);
+	//标答：num=0 ret=0
 }
 
 void cmtDemoStrToOct()
@@ -256,13 +259,16 @@ void cmtDemoStrToOct()
 	cmtUint64 num, ret;
 
 	//测试1：边界检测
-	ret = cmtStrToOct(&str1, &num);//标答：num=5349 ret=5
+	ret = cmtStrToOct(&str1, &num);
+	//标答：num=5349 ret=5
 
 	//测试2：干扰字符检测1
-	ret = cmtStrToOct(&str2, &num);//标答：num=42798 ret=6
+	ret = cmtStrToOct(&str2, &num);
+	//标答：num=42798 ret=6
 
 	//测试3：干扰字符检测2
-	ret = cmtStrToOct(&str3, &num);//标答：num=0 ret=0
+	ret = cmtStrToOct(&str3, &num);
+	//标答：num=0 ret=0
 }
 
 void cmtDemoStrToDec()
@@ -280,19 +286,24 @@ void cmtDemoStrToDec()
 	cmtInt64 num, ret;
 
 	//测试1：边界检测
-	ret = cmtStrToDec(&str1, &num);//标答：num=12345 ret=5
+	ret = cmtStrToDec(&str1, &num);
+	//标答：num=12345 ret=5
 
 	//测试2：正号检测
-	ret = cmtStrToDec(&str2, &num);//标答：num=123456 ret=7
+	ret = cmtStrToDec(&str2, &num);
+	//标答：num=123456 ret=7
 
 	//测试3：负号检测
-	ret = cmtStrToDec(&str3, &num);//标答：num=-123456 ret=7
+	ret = cmtStrToDec(&str3, &num);
+	//标答：num=-123456 ret=7
 
 	//测试4：干扰字符检测1
-	ret = cmtStrToDec(&str4, &num);//标答：num=1234 ret=4
+	ret = cmtStrToDec(&str4, &num);
+	//标答：num=1234 ret=4
 
 	//测试5：干扰字符检测2
-	ret = cmtStrToDec(&str5, &num);//标答：num=0 ret=0
+	ret = cmtStrToDec(&str5, &num);
+	//标答：num=0 ret=0
 }
 
 void cmtDemoStrToHex()
@@ -308,16 +319,181 @@ void cmtDemoStrToHex()
 	cmtUint64 num, ret;
 
 	//测试1：边界检测
-	ret = cmtStrToHex(&str1, &num);//标答：num=12345h ret=5
+	ret = cmtStrToHex(&str1, &num);
+	//标答：num=12345h ret=5
 
 	//测试2：大小写a-f(A-F)检测
-	ret = cmtStrToHex(&str2, &num);//标答：num=123456abch ret=9
+	ret = cmtStrToHex(&str2, &num);
+	//标答：num=123456abch ret=9
 
 	//测试3：干扰字符检测1
-	ret = cmtStrToHex(&str3, &num);//标答：num=123abch ret=6
+	ret = cmtStrToHex(&str3, &num);
+	//标答：num=123abch ret=6
 
-	//测试3：干扰字符检测2
-	ret = cmtStrToHex(&str4, &num);//标答：num=0 ret=0
+	//测试4：干扰字符检测2
+	ret = cmtStrToHex(&str4, &num);
+	//标答：num=0 ret=0
+}
+
+void cmtDemoStrToF32()
+{
+	cmtU8str str1 = CMT_CONSTSTR("1.4567");
+	str1.size = 3;
+	cmtU8str str2 = CMT_CONSTSTR("123.0007");
+	str2.size = 8;
+	cmtU8str str3 = CMT_CONSTSTR("1357000000000000000000000000000.000");
+	str3.size = 35;
+	cmtU8str str4 = CMT_CONSTSTR("0.0000000000000000000000000001357");
+	str4.size = 33;
+	cmtU8str str5 = CMT_CONSTSTR("123.543e+20");
+	str5.size = 11;
+	cmtU8str str6 = CMT_CONSTSTR("92.0003E+20");
+	str6.size = 11;
+	cmtU8str str7 = CMT_CONSTSTR("543.159abc");
+	str7.size = 10;
+	cmtU8str str8 = CMT_CONSTSTR("abc543.159");
+	str8.size = 10;
+	cmtU8str str9 = CMT_CONSTSTR("-164.327000");
+	str9.size = 11;
+	cmtU8str str10 = CMT_CONSTSTR("00580.13e-10");
+	str10.size = 12;
+	cmtU8str str11 = CMT_CONSTSTR("065300");
+	str11.size = 6;
+	cmtU8str str12 = CMT_CONSTSTR(".036600");
+	str12.size = 7;
+	float num;
+	cmtUint64 ret;
+
+	//测试1：边界检测
+	ret = cmtStrToF32(&str1, &num);
+	//标答：num=1.4（近似即可） ret=3
+	
+	//测试2：普通小数
+	ret = cmtStrToF32(&str2, &num);
+	//标答：num=123.0007（近似即可） ret=8
+	
+	//测试3：极大数
+	ret = cmtStrToF32(&str3, &num);
+	//标答：num=1.357e+30（近似即可） ret=35
+	
+	//测试4：极小数
+	ret = cmtStrToF32(&str4, &num);
+	//标答：num=1.357e-28（近似即可） ret=33
+	
+	//测试5：科学计数法（小写e）
+	ret = cmtStrToF32(&str5, &num);
+	//标答：num=1.23543e+22（近似即可） ret=11
+	
+	//测试6：科学计数法（大写E）
+	ret = cmtStrToF32(&str6, &num);
+	//标答：num=9.20003+21（近似即可） ret=11
+	
+	//测试7：干扰字符检测1
+	ret = cmtStrToF32(&str7, &num);
+	//标答：num=543.159（近似即可） ret=7
+	
+	//测试8：干扰字符检测2
+	ret = cmtStrToF32(&str8, &num);
+	//标答：num=0.0 ret=0
+
+	//测试9：负数
+	ret = cmtStrToF32(&str9, &num);
+	//标答：num=-164.327（近似即可） ret=11
+
+	//测试10：负指数
+	ret = cmtStrToF32(&str10, &num);
+	//标答：num=5.8013e-8（近似即可） ret=12
+
+	//测试11：无小数
+	ret = cmtStrToF32(&str11, &num);
+	//标答：num=65300.0（近似即可） ret=6
+
+	//测试12：无整数
+	ret = cmtStrToF32(&str12, &num);
+	//标答：num=0.0366 ret=7
+}
+
+void cmtDemoStrToF64()
+{
+	cmtU8str str1 = CMT_CONSTSTR("1.4567");
+	str1.size = 3;
+	cmtU8str str2 = CMT_CONSTSTR("123.0000007");
+	str2.size = 11;
+	cmtU8str str3 = CMT_CONSTSTR("135700000000000000000000000000000000000000000000000000000.000");
+	str3.size = 61;
+	cmtU8str str4 = CMT_CONSTSTR("0.00000000000000000000000000000000000000000000000000000000000000001357");
+	str4.size = 70;
+	cmtU8str str5 = CMT_CONSTSTR("123.543e+90");
+	str5.size = 11;
+	cmtU8str str6 = CMT_CONSTSTR("92.0003E+120");
+	str6.size = 12;
+	cmtU8str str7 = CMT_CONSTSTR("543.159abc");
+	str7.size = 10;
+	cmtU8str str8 = CMT_CONSTSTR("abc543.159");
+	str8.size = 10;
+	cmtU8str str9 = CMT_CONSTSTR("-1640000.327000");
+	str9.size = 15;
+	cmtU8str str10 = CMT_CONSTSTR("00580.13e-170");
+	str10.size = 13;
+	cmtU8str str11 = CMT_CONSTSTR("065300");
+	str11.size = 6;
+	cmtU8str str12 = CMT_CONSTSTR(".036600");
+	str12.size = 7;
+	double num;
+	cmtUint64 ret;
+
+	//测试1：边界检测
+	ret = cmtStrToF64(&str1, &num);
+	//标答：num=1.4（近似即可） ret=3
+
+	//测试2：普通小数
+	ret = cmtStrToF64(&str2, &num);
+	//标答：num=123.0000007（近似即可） ret=11
+
+	//测试3：极大数
+	ret = cmtStrToF64(&str3, &num);
+	//标答：num=1.357e+56（近似即可） ret=61
+
+	//测试4：极小数
+	ret = cmtStrToF64(&str4, &num);
+	//标答：num=1.357e-65（近似即可） ret=70
+
+	//测试5：科学计数法（小写e）
+	ret = cmtStrToF64(&str5, &num);
+	//标答：num=1.23543e+92（近似即可） ret=11
+
+	//测试6：科学计数法（大写E）
+	ret = cmtStrToF64(&str6, &num);
+	//标答：num=9.20003+121（近似即可） ret=12
+
+	//测试7：干扰字符检测1
+	ret = cmtStrToF64(&str7, &num);
+	//标答：num=543.159（近似即可） ret=7
+
+	//测试8：干扰字符检测2
+	ret = cmtStrToF64(&str8, &num);
+	//标答：num=0.0 ret=0
+
+	//测试9：负数
+	ret = cmtStrToF64(&str9, &num);
+	//标答：num=-1640000.327（近似即可） ret=15
+
+	//测试10：负指数
+	ret = cmtStrToF64(&str10, &num);
+	//标答：num=5.8013e-168（近似即可） ret=13
+
+	//测试11：无小数
+	ret = cmtStrToF64(&str11, &num);
+	//标答：num=65300.0（近似即可） ret=6
+
+	//测试12：无整数
+	ret = cmtStrToF64(&str12, &num);
+	//标答：num=0.0366 ret=7
+}
+
+void cmtDemoBinToStr()
+{
+
 }
 
 //void cmtDemoSprintf()
