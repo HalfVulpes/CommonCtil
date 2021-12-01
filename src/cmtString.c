@@ -1452,12 +1452,214 @@ cmtUint64 cmtStrToHex(cmtU8str* in, cmtUint64* out)
 
 cmtUint64 cmtStrToF32(cmtU8str* in, float* out)
 {
-	//num=sigf*mag
-	float sigf = 0.0f;//有效数字部分（尾数）
-	float mag = 0.0f;//倍数
+	//自动机图请参考"/doc/cmtStrToFxx.svg"
+	cmtBool sign = 0;//'-': 1; '+': 0
+	float integer, decimal, multiple1 = 1, multiple2;
 	cmtUint64 r = 0;
 
-	
+	//start
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '+')
+		goto _T1;
+	if (in->data[r] == '-')
+		goto _T2;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e')
+		goto _T12;
+	goto _Tend;
+
+	//'+'
+_T1:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e')
+		goto _T12;
+	goto _Tend;
+
+	//'-'
+_T2:
+	sign = TRUE;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T3:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T4:
+	integer = in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e')
+		goto _T12;
+	goto _Tend;
+
+	//n['0','9']
+_T5:
+	integer *= 10.0f;
+	integer += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e')
+		goto _T12;
+	goto _Tend;
+
+	//'.'
+_T6:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T7;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	goto _Tend;
+
+	//'0'
+_T7:
+	multiple1 *= 10.0f;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T7;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == 'e')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T8:
+	multiple1 *= 10.0f;
+	decimal += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == '0')
+		goto _T9;
+	if (in->data[r] == 'e')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T9:
+	multiple2 = multiple1;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T10;
+	if (in->data[r] == 'e')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T10:
+	multiple2 *= 10.0f;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T10;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == 'e')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T11:
+	multiple1 = multiple2;
+	multiple1 *= 10.0f;
+	decimal += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == '0')
+		goto _T9;
+	if (in->data[r] == 'e')
+		goto _T12;
+	goto _Tend;
+
+	//'e'
+_T12:
+
+	//'+'
+_T13:
+
+	//'-'
+_T14:
+
+	//'0'
+_T15:
+
+	//n['1','9']
+_T16:
+
+	//n['0','9']
+_T17:
+
+	//end
+_Tend:
+
 }
 
 //cmtUint64 cmtStrtoF64(cmtU8str* in, double* out)
