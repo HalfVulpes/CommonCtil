@@ -20,41 +20,32 @@
 
 void cmtDemoANSI()
 {
-	cmtANSIstr ansi = CMT_CONSTSTR("\x31\x32\x33\xb2\xe2\xca\xd4\x31\x32\x33");
+	cmtANSIstr ansi = CMT_CONSTSTR("\x31\x32\x33\xb2\xe2\xca\xd4\x31\x32\x33");//123测试123
 	ansi.locale = "zh-cn";
 	cmtU8str u8;
 	cmtU16str u16;
 	cmtU32str u32;
 
+	//测试1：ANSI转UTF-8
 	u8.size = cmtANSItoU8size(&ansi);
 	u8.data = malloc(u8.size);
-	if (!u8.data)
-	{
-		printf("cmtDemoANSI: ERROR: memory not enough\n");
-		return;
-	}
 	cmtANSItoU8(&ansi, &u8);
+	//标答：u8->data="\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33"
+	//u8->size=13
 
+	//测试2：ANSI转UTF-16
 	u16.size = cmtANSItoU16size(&ansi);
 	u16.data = malloc(u16.size);
-	if (!u16.data)
-	{
-		printf("cmtDemoANSI: ERROR: memory not enough\n");
-		free(u8.data);
-		return;
-	}
 	cmtANSItoU16(&ansi, &u16);
+	//标答：u16->data="\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00"
+	//u16->size=18
 
+	//测试3：ANSI转UTF-32
 	u32.size = cmtANSItoU32size(&ansi);
 	u32.data = malloc(u32.size);
-	if (!u32.data)
-	{
-		printf("cmtDemoANSI: ERROR: memory not enough\n");
-		free(u8.data);
-		free(u16.data);
-		return;
-	}
 	cmtANSItoU32(&ansi, &u32);
+	//标答：u16->data="\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00"
+	//u16->size=33
 
 	free(u8.data);
 	free(u16.data);
@@ -63,8 +54,8 @@ void cmtDemoANSI()
 
 void cmtDemoU8()
 {
-	cmtU8str u8a = CMT_CONSTSTR("\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33");
-	cmtU8str u8 = CMT_CONSTSTR("\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33\xf0\xa3\xb1\x95\x61");
+	cmtU8str u8a = CMT_CONSTSTR("\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33");//123测试123
+	cmtU8str u8b = CMT_CONSTSTR("\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33\xf0\xa3\xb1\x95\x61");//123测试123𣱕a
 	cmtANSIstr ansi;
 	cmtU16str u16;
 	cmtU32str u32;

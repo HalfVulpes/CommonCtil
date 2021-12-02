@@ -1,6 +1,6 @@
 /**
-* @file cmtCore.c
-* @date 2021-09-23
+* @file cmtString.c
+* @date 2021-12-01
 * @author Dexnab
 */
 
@@ -2033,12 +2033,12 @@ cmtUint64 cmtBinToStrSize(cmtUint64 in)
 
 void cmtBinToStr(cmtUint64 in, cmtU8str* out)
 {
-	cmtUint64 r = 0;
+	cmtUint64 r;
 
+	r = out->size;
 	while (r > 0)
 	{
-		if (r <= out->size)
-			out->data[r - 1] = in % 2;
+		out->data[r - 1] = in % 2;
 		in /= 2;
 		r--;
 	}
