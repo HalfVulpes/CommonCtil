@@ -1,6 +1,6 @@
 /**
-* @file cmtCore.c
-* @date 2021-09-23
+* @file cmtString.c
+* @date 2021-12-01
 * @author Dexnab
 */
 
@@ -1452,103 +1452,598 @@ cmtUint64 cmtStrToHex(cmtU8str* in, cmtUint64* out)
 
 cmtUint64 cmtStrToF32(cmtU8str* in, float* out)
 {
-	float integer = 0.0f, decimal = 0.0f;
-	cmtU8str DecStr;
-	cmtUint64 r = 0;
+	//自动机图请参考"/doc/cmtStrToFxx.svg"
+	cmtBool sign = 0, ExpSign = 0;//'-': 1; '+': 0
+	float integer = 0.0f, decimal = 0.0f, multiple1 = 1.0f, multiple2;
+	cmtUint64 exponent = 0;
+	cmtUint64 r = 0, rExp = 0;
 
-	//整数部分
-	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
-	{
-		integer *= 10.0f;
-		integer += in->data[r] - '0';
-		r++;
-	}
-	//小数部分
+	//start
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '+')
+		goto _T1;
+	if (in->data[r] == '-')
+		goto _T2;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
 	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'+'
+_T1:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'-'
+_T2:
+	sign = TRUE;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T3:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T4:
+	integer = in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T5;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['0','9']
+_T5:
+	integer *= 10.0f;
+	integer += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T5;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'.'
+_T6:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T7;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	goto _Tend;
+
+	//'0'
+_T7:
+	multiple1 *= 10.0f;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T7;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T8:
+	multiple1 *= 10.0f;
+	decimal *= 10.0f;
+	decimal += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == '0')
+		goto _T9;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T9:
+	multiple2 = multiple1;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T10;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T10:
+	multiple2 *= 10.0f;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T10;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T11:
+	multiple1 = multiple2;
+	multiple1 *= 10.0f;
+	decimal *= 10.0f;
+	decimal += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == '0')
+		goto _T9;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//{'e','E'}
+_T12:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '+')
+		goto _T13;
+	if (in->data[r] == '-')
+		goto _T14;
+	goto _Tend;
+
+	//'+'
+_T13:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//'-'
+_T14:
+	ExpSign = TRUE;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//'0'
+_T15:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//n['1','9']
+_T16:
+	exponent = in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T17;
+	goto _Tend;
+
+	//n['0','9']
+_T17:
+	exponent *= 10;
+	exponent += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T17;
+	goto _Tend;
+
+	//end
+_Tend:
+	//multiple2 = 10 ^ exponent;
+	multiple2 = 1.0f;
+	while (rExp < exponent)
 	{
-		//计算小数数据字符串大小
-		DecStr.data = in->data + r;
-		r++;
-		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9') r++;
-		DecStr.size = in->data + r - DecStr.data;
-		//转换
-		r = DecStr.size;
-		while (r > 0)
-		{
-			decimal += in->data[r] - '0';
-			decimal /= 10.0f;
-			r--;
-		}
+		multiple2 *= 10.0f;
+		rExp++;
 	}
 
-	*out = integer + decimal;
-	return DecStr.data + DecStr.size - in->data;
+	//xxx.xxxe-xxx
+	//result = (integer + decimal / multiple1) / multiple2;
+	if (ExpSign) *out = (integer + decimal / multiple1) / multiple2;
+	//xxx.xxxe+xxx
+	//result = (integer + decimal / multiple1) * multiple2;
+	else *out = (integer + decimal / multiple1) * multiple2;
+
+	//负数
+	if (sign) *out = -*out;
+
+	return r;
 }
 
-//cmtUint64 cmtStrtoF64(cmtU8str* in, double* out)
-//{
-//	double integer = 0.0f, decimal = 0.0f;
-//	cmtU8str DecStr;
-//	cmtUint64 r = 0;
-//
-//	//整数部分
-//	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
-//	{
-//		integer *= 10.0;
-//		integer += in->data[r] - '0';
-//		r++;
-//	}
-//	//小数部分
-//	if (in->data[r] == '.')
-//	{
-//		//计算小数数据字符串大小
-//		DecStr.data = in->data + r;
-//		r++;
-//		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9') r++;
-//		DecStr.size = in->data + r - DecStr.data;
-//		//转换
-//		r = DecStr.size;
-//		while (r > 0)
-//		{
-//			decimal += in->data[r] - '0';
-//			decimal /= 10.0;
-//			r--;
-//		}
-//		//使用的大小
-//		r = DecStr.data + DecStr.size - in->data;
-//	}
-//
-//	*out = integer + decimal;
-//	return r;
-//}
-//
-//cmtUint64 cmtBintoStrSize(cmtUint64 in)
-//{
-//	cmtUint64 size = 0;
-//
-//	while (in > 0)
-//	{
-//		in /= 2;
-//		size++;
-//	}
-//
-//	return size;
-//}
-//
-//void cmtBintoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit)
-//{
-//	cmtUint64 r;
-//
-//	r = digit;
-//	while (r > 0)
-//	{
-//		if (r <= out->size)
-//			out->data[r - 1] = in % 2;
-//		in /= 2;
-//		r--;
-//	}
-//}
-//
+cmtUint64 cmtStrToF64(cmtU8str* in, double* out)
+{
+	//自动机图请参考"/doc/cmtStrToFxx.svg"
+	cmtBool sign = 0, ExpSign = 0;//'-': 1; '+': 0
+	double integer = 0.0, decimal = 0.0, multiple1 = 1.0, multiple2;
+	cmtUint64 exponent = 0;
+	cmtUint64 r = 0, rExp = 0;
+
+	//start
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '+')
+		goto _T1;
+	if (in->data[r] == '-')
+		goto _T2;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'+'
+_T1:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'-'
+_T2:
+	sign = TRUE;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T3:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T4:
+	integer = in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T5;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['0','9']
+_T5:
+	integer *= 10.0;
+	integer += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T5;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'.'
+_T6:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T7;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	goto _Tend;
+
+	//'0'
+_T7:
+	multiple1 *= 10.0;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T7;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T8:
+	multiple1 *= 10.0;
+	decimal *= 10.0;
+	decimal += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == '0')
+		goto _T9;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T9:
+	multiple2 = multiple1;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T10;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T10:
+	multiple2 *= 10.0;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T10;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T11:
+	multiple1 = multiple2;
+	multiple1 *= 10.0;
+	decimal *= 10.0;
+	decimal += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == '0')
+		goto _T9;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//{'e','E'}
+_T12:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '+')
+		goto _T13;
+	if (in->data[r] == '-')
+		goto _T14;
+	goto _Tend;
+
+	//'+'
+_T13:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//'-'
+_T14:
+	ExpSign = TRUE;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//'0'
+_T15:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//n['1','9']
+_T16:
+	exponent = in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T17;
+	goto _Tend;
+
+	//n['0','9']
+_T17:
+	exponent *= 10;
+	exponent += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T17;
+	goto _Tend;
+
+	//end
+_Tend:
+	//multiple2 = 10 ^ exponent;
+	multiple2 = 1.0f;
+	while (rExp < exponent)
+	{
+		multiple2 *= 10.0;
+		rExp++;
+	}
+
+	//xxx.xxxe-xxx
+	//result = (integer + decimal / multiple1) / multiple2;
+	if (ExpSign) *out = (integer + decimal / multiple1) / multiple2;
+	//xxx.xxxe+xxx
+	//result = (integer + decimal / multiple1) * multiple2;
+	else *out = (integer + decimal / multiple1) * multiple2;
+
+	//负数
+	if (sign) *out = -*out;
+
+	return r;
+}
+
+cmtUint64 cmtBinToStrSize(cmtUint64 in)
+{
+	cmtUint64 size = 0;
+
+	while (in > 0)
+	{
+		in /= 2;
+		size++;
+	}
+
+	return size;
+}
+
+void cmtBinToStr(cmtUint64 in, cmtU8str* out)
+{
+	cmtUint64 r;
+
+	r = out->size;
+	while (r > 0)
+	{
+		out->data[r - 1] = in % 2;
+		in /= 2;
+		r--;
+	}
+}
+
 //cmtUint64 cmtOcttoStrSize(cmtUint64 in)
 //{
 //	cmtUint64 size = 0;
