@@ -587,7 +587,7 @@ extern cmtUint64 cmtStrToF64(cmtU8str* in, double* out);
 */
 extern cmtUint64 cmtBinToStrSize(cmtUint64 in);
 
-//status: NC
+//status: NT
 /**
 * @brief 整数转字符串（二进制）
 * @param[in] in 整数
