@@ -1,3 +1,8 @@
+/**
+* @file cmtDemoString.c
+* @date 2021-12-04
+* @author dexnab
+*/
 #include <cmtDemoString.h>
 
 void cmtDemoANSI()
@@ -154,6 +159,11 @@ void cmtDemoAnlyFmt()
 	arglist[0] = 12;
 
 	cmtAnlyFmt(&u8, &FmtInfo, arglist);
+	//标答：FmtInfo.sign=TURE
+	//FmtInfo.padding.align=TRUE
+	//FmtInfo.padding.content=TRUE
+	//FmtInfo.padding.length=10
+	//FmtInfo.precision.enabled=TRUE;
 }
 
 void cmtDemoStrToBin()

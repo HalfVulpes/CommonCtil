@@ -1,10 +1,8 @@
 /**
 * @file cmtString.h
 * @brief 字符串处理库
-* @par Windows 依赖库：
-* @par Linux 依赖库：
 * @note 本库中所有的UTF-16和UTF-32均为小端模式存储
-* @date 2021-09-23
+* @date 2021-12-04
 * @author Dexnab
 */
 
@@ -21,16 +19,22 @@
 /*--------------------------------结构体定义 开始--------------------------------*/
 
 /**
-* @struct cmtANSIstr
+* @typedef cmtANSIstr
+* @brief ANSI字符串结构体
+* @date 2021-9-23
+* @author dexnab
+*/
+/**
+* @struct _CMTANSISTR
 * @brief ANSI字符串结构体
 * @date 2021-9-23
 * @author dexnab
 */
 typedef struct _CMTANSISTR
 {
-	cmtChar* data;//<字符数组
-	cmtUint64 size;//<总字节数
-	cmtChar* locale;//使用的代码页（locale字符串注意以\\0结尾）
+	cmtChar* data;///<字符数组
+	cmtUint64 size;///<总字节数
+	cmtChar* locale;///<使用的代码页（locale字符串注意以\\0结尾）
 }cmtANSIstr;
 
 /**
@@ -69,14 +73,12 @@ typedef struct _CMTU32STR
 	cmtUint64 size;//<总字节数
 }cmtU32str;
 
-typedef union _CMTCOMVAL
-{
-	cmtUint64 u64;
-	cmtInt64 i64;
-	double f64;
-	float f32;
-}cmtComVal;
-
+/**
+* @struct cmtFmtPadInfo
+* @brief cmtFmtInfo.padding字段
+* @date 2021-12-04
+* @author dexnab
+*/
 typedef struct _CMTFMTPADINFO
 {
 	cmtBool align;
@@ -84,6 +86,12 @@ typedef struct _CMTFMTPADINFO
 	cmtUint64 length;
 }cmtFmtPadInfo;
 
+/**
+* @struct cmtFmtPrecInfo
+* @brief cmtFmtInfo.precision字段
+* @date 2021-12-04
+* @author dexnab
+*/
 typedef struct _CMTFMTPRECINFO
 {
 	cmtBool enabled;
@@ -91,6 +99,12 @@ typedef struct _CMTFMTPRECINFO
 	cmtUint64 value;
 }cmtFmtPrecInfo;
 
+/**
+* @struct cmtFmtItrInfo
+* @brief cmtFmtInfo.iteration字段
+* @date 2021-12-04
+* @author dexnab
+*/
 typedef struct _CMTFMTITRINFO
 {
 	cmtBool enabled;
@@ -99,6 +113,12 @@ typedef struct _CMTFMTITRINFO
 	cmtUint64 RowSize;
 }cmtFmtItrInfo;
 
+/**
+* @struct cmtFmtInfo
+* @brief 格式控制字符串解析结果
+* @date 2021-12-04
+* @author dexnab
+*/
 typedef struct _CMTFMTINFO
 {
 	cmtBool sign;
@@ -555,12 +575,12 @@ extern cmtUint64 cmtStrToDec(cmtU8str* in, cmtUint64* out);
 */
 extern cmtUint64 cmtStrToHex(cmtU8str* in, cmtUint64* out);
 
-//status: PA
 /**
 * @brief 字符串转浮点数（32位）
 * @param[in] in 字符串
 * @param[out] out 浮点数
 * @return 转换了多少字节的字符串
+* @test cmtDemoStrToF32() 状态：PA
 * @date 2021-12-01
 * @author dexnab
 */
