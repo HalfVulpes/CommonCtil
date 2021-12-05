@@ -67,6 +67,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">结构体</a> &#124;
+<a href="#define-members">宏定义</a> &#124;
 <a href="#typedef-members">类型定义</a> &#124;
 <a href="#func-members">函数</a>  </div>
   <div class="headertitle">
@@ -76,7 +77,12 @@ $(function() {
 
 <p>字符串处理库  
 <a href="#details">更多...</a></p>
-
+<div class="textblock"><code>#include &lt;<a class="el" href="cmt_type_8h_source.html">cmtType.h</a>&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;locale.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;math.h&gt;</code><br />
+</div>
 <p><a href="cmt_string_8h_source.html">浏览源代码.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -98,6 +104,48 @@ $(function() {
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct___c_m_t_f_m_t_i_n_f_o.html">_CMTFMTINFO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+宏定义</h2></td></tr>
+<tr class="memitem:ae67e0790920f5b9f73ba86a99660aedd"><td class="memItemLeft" align="right" valign="top"><a id="ae67e0790920f5b9f73ba86a99660aedd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_INC_CMTSTRING</b></td></tr>
+<tr class="separator:ae67e0790920f5b9f73ba86a99660aedd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af08ec37a8c99d747fb60fa15bc28678b"><td class="memItemLeft" align="right" valign="top"><a id="af08ec37a8c99d747fb60fa15bc28678b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_CRT_SECURE_NO_WARNINGS</b></td></tr>
+<tr class="separator:af08ec37a8c99d747fb60fa15bc28678b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaa228f1bc1d32bec1bf86e7ed7dd610"><td class="memItemLeft" align="right" valign="top"><a id="afaa228f1bc1d32bec1bf86e7ed7dd610"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_LOCALE_MAX</b>&#160;&#160;&#160;64</td></tr>
+<tr class="separator:afaa228f1bc1d32bec1bf86e7ed7dd610"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c2f4a0801f873158718e1fc3140f71d"><td class="memItemLeft" align="right" valign="top"><a id="a2c2f4a0801f873158718e1fc3140f71d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_UNICODE_RSV_START</b>&#160;&#160;&#160;0xd800</td></tr>
+<tr class="separator:a2c2f4a0801f873158718e1fc3140f71d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e44288afb190df1c285960f4224c6ae"><td class="memItemLeft" align="right" valign="top"><a id="a6e44288afb190df1c285960f4224c6ae"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_UNICODE_RSV_END</b>&#160;&#160;&#160;0xdfff</td></tr>
+<tr class="separator:a6e44288afb190df1c285960f4224c6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a539755fe0afb4a86078b43d4ba996e2b"><td class="memItemLeft" align="right" valign="top"><a id="a539755fe0afb4a86078b43d4ba996e2b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_FMT_SIZE_DEFAULT</b>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a539755fe0afb4a86078b43d4ba996e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a430d7c2a767ed6895c49e46fd2f755dc"><td class="memItemLeft" align="right" valign="top"><a id="a430d7c2a767ed6895c49e46fd2f755dc"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_FMT_SIZE_HH</b>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a430d7c2a767ed6895c49e46fd2f755dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9e539a312ca9f730f1cd5c87dd3af16"><td class="memItemLeft" align="right" valign="top"><a id="ac9e539a312ca9f730f1cd5c87dd3af16"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_FMT_SIZE_H</b>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:ac9e539a312ca9f730f1cd5c87dd3af16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad88f66dcfbc25afea1d89584236c156e"><td class="memItemLeft" align="right" valign="top"><a id="ad88f66dcfbc25afea1d89584236c156e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_FMT_SIZE_L</b>&#160;&#160;&#160;3</td></tr>
+<tr class="separator:ad88f66dcfbc25afea1d89584236c156e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13f614e5c3d1f3827143a60d528e2ea7"><td class="memItemLeft" align="right" valign="top"><a id="a13f614e5c3d1f3827143a60d528e2ea7"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_FMT_SIZE_LL</b>&#160;&#160;&#160;4</td></tr>
+<tr class="separator:a13f614e5c3d1f3827143a60d528e2ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b2409353976fc572d75923e4c12f50"><td class="memItemLeft" align="right" valign="top"><a id="a90b2409353976fc572d75923e4c12f50"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_DOUBLE_MAX_10E</b>&#160;&#160;&#160;10000000000000000000000.0</td></tr>
+<tr class="separator:a90b2409353976fc572d75923e4c12f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad655ac8960264908e5626077fd4c25d"><td class="memItemLeft" align="right" valign="top"><a id="aad655ac8960264908e5626077fd4c25d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_FLOAT_MAX_10E</b>&#160;&#160;&#160;1000000000.0</td></tr>
+<tr class="separator:aad655ac8960264908e5626077fd4c25d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fcc37c802ffaf2d8acf57d5ce0cbd77"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cmt_string_8h.html#a3fcc37c802ffaf2d8acf57d5ce0cbd77">CMT_CONSTSTR</a>(str)&#160;&#160;&#160;{str,sizeof(str)}</td></tr>
+<tr class="memdesc:a3fcc37c802ffaf2d8acf57d5ce0cbd77"><td class="mdescLeft">&#160;</td><td class="mdescRight">字符串结构体初始化宏  <a href="cmt_string_8h.html#a3fcc37c802ffaf2d8acf57d5ce0cbd77">更多...</a><br /></td></tr>
+<tr class="separator:a3fcc37c802ffaf2d8acf57d5ce0cbd77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 类型定义</h2></td></tr>
@@ -376,7 +424,40 @@ cmtBool&#160;</td><td class="memItemRight" valign="bottom"><b>cmtJsonArrGetArr</
 <dl class="section author"><dt>作者</dt><dd>Dexnab </dd></dl>
 
 <p class="definition">在文件 <a class="el" href="cmt_string_8h_source.html">cmtString.h</a> 中定义.</p>
-</div><h2 class="groupheader">类型定义说明</h2>
+</div><h2 class="groupheader">宏定义说明</h2>
+<a id="a3fcc37c802ffaf2d8acf57d5ce0cbd77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fcc37c802ffaf2d8acf57d5ce0cbd77">&#9670;&nbsp;</a></span>CMT_CONSTSTR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CMT_CONSTSTR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">str</td><td>)</td>
+          <td>&#160;&#160;&#160;{str,sizeof(str)}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>字符串结构体初始化宏 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">str</td><td>字符串 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>用于初始化字符串结构体 </dd></dl>
+<dl class="test"><dt><b><a class="el" href="test.html#_test000001">测试:</a></b></dt><dd><a class="el" href="cmt_demo_string_8c.html#a35ddca2170dfb0c686c190aa7f496678" title="字符串转整数（二进制）">cmtDemoStrToBin()</a> 状态：PA </dd></dl>
+<dl class="section date"><dt>日期</dt><dd>2021-12-05 </dd></dl>
+<dl class="section author"><dt>作者</dt><dd>dexnab </dd></dl>
+
+<p class="definition">在文件 <a class="el" href="cmt_string_8h_source.html">cmtString.h</a> 第 <a class="el" href="cmt_string_8h_source.html#l00159">159</a> 行定义.</p>
+
+</div>
+</div>
+<h2 class="groupheader">类型定义说明</h2>
 <a id="a2b46908d6cb9c49273f18b21acbe1871"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b46908d6cb9c49273f18b21acbe1871">&#9670;&nbsp;</a></span>cmtANSIstr</h2>
 
@@ -390,6 +471,7 @@ cmtBool&#160;</td><td class="memItemRight" valign="bottom"><b>cmtJsonArrGetArr</
 </div><div class="memdoc">
 
 <p>ANSI字符串结构体 </p>
+<dl class="section see"><dt>参见</dt><dd><a class="el" href="struct___c_m_t_a_n_s_i_s_t_r.html" title="ANSI字符串结构体">_CMTANSISTR</a> </dd></dl>
 <dl class="section date"><dt>日期</dt><dd>2021-9-23 </dd></dl>
 <dl class="section author"><dt>作者</dt><dd>dexnab </dd></dl>
 
@@ -1617,7 +1699,7 @@ cmtBool&#160;</td><td class="memItemRight" valign="bottom"><b>cmtJsonArrGetArr</
   </dd>
 </dl>
 <dl class="section return"><dt>返回</dt><dd>转换了多少字节的字符串 </dd></dl>
-<dl class="test"><dt><b><a class="el" href="test.html#_test000001">测试:</a></b></dt><dd><a class="el" href="cmt_demo_string_8c.html#aa3aa7c0645e272734a449e0bd0dde44b" title="字符串转32位浮点">cmtDemoStrToF32()</a> 状态：PA </dd></dl>
+<dl class="test"><dt><b><a class="el" href="test.html#_test000002">测试:</a></b></dt><dd><a class="el" href="cmt_demo_string_8c.html#aa3aa7c0645e272734a449e0bd0dde44b" title="字符串转浮点（32位）">cmtDemoStrToF32()</a> 状态：PA </dd></dl>
 <dl class="section date"><dt>日期</dt><dd>2021-12-01 </dd></dl>
 <dl class="section author"><dt>作者</dt><dd>dexnab </dd></dl>
 

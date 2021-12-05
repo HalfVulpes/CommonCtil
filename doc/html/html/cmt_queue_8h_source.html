@@ -87,9 +87,9 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}<a class="code" href="structcmt_queue.html">cmtQueue</a>;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">extern</span> <a class="code" href="structcmt_queue.html">cmtQueue</a>* <a class="code" href="cmt_queue_8h.html#a1aa60b3f1aa67e997b31a3366e42fe80">cmtQueueInit</a>(cmtUint64 size);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#define cmtQueueClean(queue) {queue-&gt;bgn = queue-&gt;end = 0;}</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="cmt_queue_8h.html#a35d43e4ebdf8185decf35a2b25393600">   54</a></span>&#160;<span class="preprocessor">#define cmtQueueClean(queue) {queue-&gt;bgn = queue-&gt;end = 0;}</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#define cmtQueueFree(queue) {free(queue-&gt;base);free(queue);}</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="cmt_queue_8h.html#a12b0b4d93e96fa25c2cc43c0ff7e73f7">   63</a></span>&#160;<span class="preprocessor">#define cmtQueueFree(queue) {free(queue-&gt;base);free(queue);}</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">extern</span> cmtUint8 <a class="code" href="cmt_queue_8h.html#a7712bc26b690122ef766b296b8b049db">cmtQueueIn</a>(<a class="code" href="structcmt_queue.html">cmtQueue</a>* queue, cmtUint8* data, cmtUint64 size);</div>
 <div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="cmt_queue_8h.html#a442bc1d93bbdd96dbce705d8d38223bf">   89</a></span>&#160;<span class="keyword">extern</span> cmtUint8 <a class="code" href="cmt_queue_8h.html#a442bc1d93bbdd96dbce705d8d38223bf">cmtQueueOut</a>(<a class="code" href="structcmt_queue.html">cmtQueue</a>* queue, cmtUint8* buffer, cmtUint64 size);</div>

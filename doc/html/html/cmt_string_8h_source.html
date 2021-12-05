@@ -82,318 +82,317 @@ $(function() {
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/*--------------------------------结构体定义 开始--------------------------------*/</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="struct___c_m_t_a_n_s_i_s_t_r.html">   33</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">_CMTANSISTR</a></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="struct___c_m_t_a_n_s_i_s_t_r.html#a30fab447484fd7feef6ab3a4cf75eb9f">   35</a></span>&#160;    cmtChar* <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html#a30fab447484fd7feef6ab3a4cf75eb9f">data</a>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="struct___c_m_t_a_n_s_i_s_t_r.html#a71ed364e74721b9f0c59c2931c99405d">   36</a></span>&#160;    cmtUint64 <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html#a71ed364e74721b9f0c59c2931c99405d">size</a>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="struct___c_m_t_a_n_s_i_s_t_r.html#aa88ba24f8b32ba7dabe614f1d5f0476d">   37</a></span>&#160;    cmtChar* <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html#aa88ba24f8b32ba7dabe614f1d5f0476d">locale</a>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a2b46908d6cb9c49273f18b21acbe1871">   38</a></span>&#160;}<a class="code" href="cmt_string_8h.html#a2b46908d6cb9c49273f18b21acbe1871">cmtANSIstr</a>;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="struct___c_m_t_u8_s_t_r.html">   46</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_u8_s_t_r.html">_CMTU8STR</a></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    cmtChar* data;<span class="comment">//&lt;字符数组</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    cmtUint64 size;<span class="comment">//&lt;总字节数</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}<a class="code" href="structcmt_u8str.html">cmtU8str</a>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="struct___c_m_t_u16_s_t_r.html">   58</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_u16_s_t_r.html">_CMTU16STR</a></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    cmtWchar* data;<span class="comment">//&lt;字符数组</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    cmtUint64 size;<span class="comment">//&lt;总字节数</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}<a class="code" href="structcmt_u16str.html">cmtU16str</a>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="struct___c_m_t_u32_s_t_r.html">   70</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_u32_s_t_r.html">_CMTU32STR</a></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;{</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    cmtFchar* data;<span class="comment">//&lt;字符数组</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    cmtUint64 size;<span class="comment">//&lt;总字节数</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}<a class="code" href="structcmt_u32str.html">cmtU32str</a>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="struct___c_m_t_f_m_t_p_a_d_i_n_f_o.html">   82</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_f_m_t_p_a_d_i_n_f_o.html">_CMTFMTPADINFO</a></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;{</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    cmtBool align;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    cmtBool content;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    cmtUint64 length;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}<a class="code" href="structcmt_fmt_pad_info.html">cmtFmtPadInfo</a>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="struct___c_m_t_f_m_t_p_r_e_c_i_n_f_o.html">   95</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_f_m_t_p_r_e_c_i_n_f_o.html">_CMTFMTPRECINFO</a></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;{</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    cmtBool enabled;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    cmtBool flag;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    cmtUint64 value;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}<a class="code" href="structcmt_fmt_prec_info.html">cmtFmtPrecInfo</a>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="struct___c_m_t_f_m_t_i_t_r_i_n_f_o.html">  108</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_f_m_t_i_t_r_i_n_f_o.html">_CMTFMTITRINFO</a></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    cmtBool enabled;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    cmtUint64 length;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    cmtUint64 GroupSize;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    cmtUint64 RowSize;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}<a class="code" href="structcmt_fmt_itr_info.html">cmtFmtItrInfo</a>;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="struct___c_m_t_f_m_t_i_n_f_o.html">  122</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_f_m_t_i_n_f_o.html">_CMTFMTINFO</a></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;{</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    cmtBool sign;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <a class="code" href="structcmt_fmt_pad_info.html">cmtFmtPadInfo</a> padding;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <a class="code" href="structcmt_fmt_prec_info.html">cmtFmtPrecInfo</a> precision;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <a class="code" href="structcmt_fmt_itr_info.html">cmtFmtItrInfo</a> iteration;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    cmtUint8 size;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    cmtChar type;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}<a class="code" href="structcmt_fmt_info.html">cmtFmtInfo</a>;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">/*--------------------------------结构体定义 结束--------------------------------*/</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">/*--------------------------------宏定义 开始--------------------------------*/</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">#define CMT_LOCALE_MAX 64</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">#define CMT_UNICODE_RSV_START 0xd800</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="preprocessor">#define CMT_UNICODE_RSV_END 0xdfff</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="preprocessor">#define CMT_FMT_SIZE_DEFAULT 0</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="preprocessor">#define CMT_FMT_SIZE_HH 1</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="preprocessor">#define CMT_FMT_SIZE_H 2</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="preprocessor">#define CMT_FMT_SIZE_L 3</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="preprocessor">#define CMT_FMT_SIZE_LL 4</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">//10^22</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="preprocessor">#define CMT_DOUBLE_MAX_10E 10000000000000000000000.0</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">//10^9</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="preprocessor">#define CMT_FLOAT_MAX_10E 1000000000.0</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor">#define CMT_CONSTSTR(str) {str,sizeof(str)}</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">/*--------------------------------宏定义 结束--------------------------------*/</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">/*--------------------------------字符编码处理函数 开始--------------------------------*/</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint8 <a class="code" href="cmt_string_8h.html#aa2ee552b3e518185f1f84bd49e58d738">cmtANSIchSize</a>(cmtChar* ch, cmtChar* locale);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ad1ad2f15c775d709079a46d8450607ff">cmtANSIstrSize</a>(cmtChar* str);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ae733bff83699e7cef27b6fb1066b565c">cmtANSIlen</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* str);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a43ae70dd431a62afecb510aa025e93e8">cmtANSItoU8size</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#af55f98acc581837df44d334a1501feac">cmtANSItoU8</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#aa580f77549fb0c99584409695bec5783">cmtANSItoU16size</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a7a33d2aa49cdc288592e73489843ef24">cmtANSItoU16</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi, <a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16);</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a8dad90464565276ce2b9410d06bd2b81">cmtANSItoU32size</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#ae8c3f124f41f309a419580417007dd58">cmtANSItoU32</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi, <a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint8 <a class="code" href="cmt_string_8h.html#a8a919af9b24adc9780fc7f4196dbe6f4">cmtU8chSize</a>(cmtChar* ch);</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#afbb81ac788eb9e1454d192ec5203afdb">cmtU8strSize</a>(cmtChar* str);</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a9213064c679dcf987808ac8a50462ada">cmtU8len</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* str);</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a3f472b3c660242b0938b060508b0e262">cmtU8toANSIsize</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8, cmtChar* locale, cmtBool* err);</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtBool <a class="code" href="cmt_string_8h.html#a8cd389a30ed8a148e2a69632e7809931">cmtU8toANSI</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8, <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ab35c33b091b9af1bb88a94169a358b2d">cmtU8toU16size</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8);</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a5e24a8cffbf2e297f4864c2616d83ada">cmtU8toU16</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8, <a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16);</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a00fa0eb3abe2eb774b93d0c1bd1bce34">cmtU8toU32size</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8);</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a523eb91bb2b26f0145f39ea61f08bb41">cmtU8toU32</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8, <a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32);</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint8 <a class="code" href="cmt_string_8h.html#a213951a27260e31b104927e8610638cd">cmtU16chSize</a>(cmtWchar* ch);</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a321e0924f1889ac542ce8d632eec6a78">cmtU16strSize</a>(cmtWchar* str);</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a6e1e1135e1511f8e39d40da4089ba76a">cmtU16len</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* str);</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160; </div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ab0ff748b1822edb1bad2ce06b21d5d6e">cmtU16toANSIsize</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16, cmtChar* locale, cmtBool* err);</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160; </div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtBool <a class="code" href="cmt_string_8h.html#a001c733a422e7151c9aca87328321c72">cmtU16toANSI</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16, <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160; </div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a89d2c4732c6ff95936ec0968db08d67c">cmtU16toU8size</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16);</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160; </div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a1068e20259631040d247e98bb745c6fb">cmtU16toU8</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8);</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160; </div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ab11a370812c74f876627de636bd92df4">cmtU16toU32size</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16);</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160; </div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a33d74963d249800897b778a89083bc89">cmtU16toU32</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16, <a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32);</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160; </div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#abdf25fcea4785a6dd7cbe18918029c4d">cmtU32strSize</a>(cmtFchar* str);</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160; </div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a0b2a60fe14e73068b393c300b6e2ff52">cmtU32toANSIsize</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32, cmtChar* locale, cmtBool* err);</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160; </div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtBool <a class="code" href="cmt_string_8h.html#adc37c8a0392b2035714dafaed6d6bf71">cmtU32toANSI</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32, <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160; </div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a47611ab6e85adf9093cd4073dc76e620">cmtU32toU8size</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32);</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160; </div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a62e503efdb24fad9f1b6b8cb754c858f">cmtU32toU8</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8);</div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160; </div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#afe362f40debb78e1058afeba1f392a61">cmtU32toU16size</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32);</div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160; </div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#ae2bcad4df0a406012b37bc20b0a23515">cmtU32toU16</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32, <a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16);</div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;<span class="comment">/*--------------------------------字符编码处理函数 结束--------------------------------*/</span></div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160; </div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;<span class="comment">/*--------------------------------字符串操作函数 开始--------------------------------*/</span></div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160; </div>
-<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a0f16abcc0b99774cddb3167065ccb75e">cmtAnlyFmt</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* fmt, <a class="code" href="structcmt_fmt_info.html">cmtFmtInfo</a>* info, cmtUint64* ArgList);</div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160; </div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#aed395d48317b7468625d4648d442460e">cmtStrToBin</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, cmtUint64* out);</div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160; </div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ab1afbad82274a403bde80071efd17323">cmtStrToOct</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, cmtUint64* out);</div>
-<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160; </div>
-<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a7f352d9e9140cc339aff944b4a86fc77">cmtStrToDec</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, cmtUint64* out);</div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160; </div>
-<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a3c48c19e0a1d7a67b8abbdafd92e9ed8">cmtStrToHex</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, cmtUint64* out);</div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160; </div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a5f4cb34c1e0a6c080072e8a1ada15675">cmtStrToF32</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, <span class="keywordtype">float</span>* out);</div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160; </div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;<span class="comment">//status: PA</span></div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a9627070c4120e02963ed6ff752a98845">cmtStrToF64</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, <span class="keywordtype">double</span>* out);</div>
-<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160; </div>
-<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;<span class="comment">//status: NT</span></div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a15e093d3a4fce330ff3c5ba30b76a5a5">cmtBinToStrSize</a>(cmtUint64 in);</div>
-<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160; </div>
-<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;<span class="comment">//status: NT</span></div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a9571aa299cb613b65131b88f0714941c">cmtBinToStr</a>(cmtUint64 in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out);</div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160; </div>
-<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00630"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a4eb7c667ae88aa77cbc65bc41dc1689b">  630</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a4eb7c667ae88aa77cbc65bc41dc1689b">cmtOcttoStrSize</a>(cmtUint64 in);</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160; </div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00641"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a450eb67cd935a09447fc9bcd77359849">  641</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a450eb67cd935a09447fc9bcd77359849">cmtOcttoStr</a>(cmtUint64 in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtUint64 digit);</div>
-<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160; </div>
-<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00652"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a5fbdcaaa618a5df86f155b283596b814">  652</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a5fbdcaaa618a5df86f155b283596b814">cmtDectoStrSize</a>(cmtUint64 in);</div>
-<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160; </div>
-<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00664"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a2517911c676226eda3b72b98fecada77">  664</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a2517911c676226eda3b72b98fecada77">cmtDectoStr</a>(cmtUint64 in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtUint64 digit);</div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160; </div>
-<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00674"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#adb029b005064d361e0843b5432550868">  674</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#adb029b005064d361e0843b5432550868">cmtHextoStrSize</a>(cmtUint64 in);</div>
-<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160; </div>
-<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00686"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a729a31bcafce7e3834fdbe58efbad1f0">  686</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a729a31bcafce7e3834fdbe58efbad1f0">cmtHextoStr</a>(cmtUint64 in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtUint64 digit, cmtBool cap);</div>
-<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160; </div>
-<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00697"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a5a27c623b79a138cbff28675104f7864">  697</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtInt64 <a class="code" href="cmt_string_8h.html#a5a27c623b79a138cbff28675104f7864">cmtCalcPofdF32</a>(<span class="keywordtype">float</span> in);</div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160; </div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00708"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a05fafd4c5b207a8cad8c6ec25860fae6">  708</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtInt64 <a class="code" href="cmt_string_8h.html#a05fafd4c5b207a8cad8c6ec25860fae6">cmtCalcPofdF64</a>(<span class="keywordtype">double</span> in);</div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160; </div>
-<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;<span class="comment">//status: OD</span></div>
-<div class="line"><a name="l00721"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a00277efae20409593c9abe0dc1f11e38">  721</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a00277efae20409593c9abe0dc1f11e38">cmtFltoStrSize</a>(cmtInt64 pofd, cmtUint64 sigf);</div>
-<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160; </div>
-<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00734"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#af375d24f1381bb7952034f898f91b324">  734</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#af375d24f1381bb7952034f898f91b324">cmtF32toStr</a>(<span class="keywordtype">float</span> in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtInt64 pofd, cmtUint64 sigf);</div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160; </div>
-<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00747"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a677e1682277cd643a28307d84b972829">  747</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a677e1682277cd643a28307d84b972829">cmtF64toStr</a>(<span class="keywordtype">double</span> in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtInt64 pofd, cmtUint64 sigf);</div>
-<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160; </div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00760"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#af0dfaa108d4ab8d0ae0b153036f774c3">  760</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#af0dfaa108d4ab8d0ae0b153036f774c3">cmtFltoStrExSize</a>(cmtInt64 pofd, cmtUint64 sigf);</div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160; </div>
-<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00774"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a1d2fad6525dddb3cba2894f0e7b65b20">  774</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a1d2fad6525dddb3cba2894f0e7b65b20">cmtF32toStrEx</a>(<span class="keywordtype">float</span> in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);</div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160; </div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00788"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a3b5c37dfaaf8c1d1b6a7979554895c99">  788</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a3b5c37dfaaf8c1d1b6a7979554895c99">cmtF64toStrEx</a>(<span class="keywordtype">double</span> in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);</div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160; </div>
-<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;<span class="keyword">extern</span> cmtUint64 cmtSprintfSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* format, ...);</div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160; </div>
-<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;<span class="comment">//status: NC</span></div>
-<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;<span class="comment">* TODO:</span></div>
-<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;<span class="comment">* 浮点数还没有处理错误数据（NAN，0，INFINITY）</span></div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;<span class="comment">* 输出字符串还要增加控制字数模式（由precision给定）</span></div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;<span class="comment">* 遍历输出实现</span></div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00810"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a9c95049b74517f56aa38020dde7ac319">  810</a></span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a9c95049b74517f56aa38020dde7ac319">cmtSprintf</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* format, ...);</div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160; </div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;<span class="keyword">extern</span> cmtBool cmtStrCmp(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* str1, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* str2);</div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160; </div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;<span class="keyword">extern</span> cmtUint64 cmtStrFind(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* src, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* tar);</div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160; </div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;<span class="keyword">extern</span> cmtUint64 cmtRegexMatch(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* src, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* regex);</div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;<span class="comment">/*--------------------------------字符串操作函数 结束--------------------------------*/</span></div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160; </div>
-<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;<span class="comment">/*--------------------------------json函数 开始--------------------------------*/</span></div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160; </div>
-<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetBool(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtBool* ret);</div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160; </div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetInt(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtInt64* ret);</div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160; </div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetDouble(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <span class="keywordtype">double</span>* ret);</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="struct___c_m_t_a_n_s_i_s_t_r.html">   34</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">_CMTANSISTR</a></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="struct___c_m_t_a_n_s_i_s_t_r.html#a30fab447484fd7feef6ab3a4cf75eb9f">   36</a></span>&#160;    cmtChar* <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html#a30fab447484fd7feef6ab3a4cf75eb9f">data</a>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="struct___c_m_t_a_n_s_i_s_t_r.html#a71ed364e74721b9f0c59c2931c99405d">   37</a></span>&#160;    cmtUint64 <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html#a71ed364e74721b9f0c59c2931c99405d">size</a>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="struct___c_m_t_a_n_s_i_s_t_r.html#aa88ba24f8b32ba7dabe614f1d5f0476d">   38</a></span>&#160;    cmtChar* <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html#aa88ba24f8b32ba7dabe614f1d5f0476d">locale</a>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a2b46908d6cb9c49273f18b21acbe1871">   39</a></span>&#160;}<a class="code" href="cmt_string_8h.html#a2b46908d6cb9c49273f18b21acbe1871">cmtANSIstr</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="struct___c_m_t_u8_s_t_r.html">   47</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_u8_s_t_r.html">_CMTU8STR</a></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    cmtChar* data;<span class="comment">//&lt;字符数组</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    cmtUint64 size;<span class="comment">//&lt;总字节数</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}<a class="code" href="structcmt_u8str.html">cmtU8str</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="struct___c_m_t_u16_s_t_r.html">   59</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_u16_s_t_r.html">_CMTU16STR</a></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    cmtWchar* data;<span class="comment">//&lt;字符数组</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    cmtUint64 size;<span class="comment">//&lt;总字节数</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}<a class="code" href="structcmt_u16str.html">cmtU16str</a>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="struct___c_m_t_u32_s_t_r.html">   71</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_u32_s_t_r.html">_CMTU32STR</a></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;{</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    cmtFchar* data;<span class="comment">//&lt;字符数组</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    cmtUint64 size;<span class="comment">//&lt;总字节数</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}<a class="code" href="structcmt_u32str.html">cmtU32str</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="struct___c_m_t_f_m_t_p_a_d_i_n_f_o.html">   83</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_f_m_t_p_a_d_i_n_f_o.html">_CMTFMTPADINFO</a></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;{</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    cmtBool align;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    cmtBool content;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    cmtUint64 length;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}<a class="code" href="structcmt_fmt_pad_info.html">cmtFmtPadInfo</a>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="struct___c_m_t_f_m_t_p_r_e_c_i_n_f_o.html">   96</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_f_m_t_p_r_e_c_i_n_f_o.html">_CMTFMTPRECINFO</a></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;{</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    cmtBool enabled;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    cmtBool flag;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    cmtUint64 value;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}<a class="code" href="structcmt_fmt_prec_info.html">cmtFmtPrecInfo</a>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="struct___c_m_t_f_m_t_i_t_r_i_n_f_o.html">  109</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_f_m_t_i_t_r_i_n_f_o.html">_CMTFMTITRINFO</a></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;{</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    cmtBool enabled;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    cmtUint64 length;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    cmtUint64 GroupSize;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    cmtUint64 RowSize;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}<a class="code" href="structcmt_fmt_itr_info.html">cmtFmtItrInfo</a>;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="struct___c_m_t_f_m_t_i_n_f_o.html">  123</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_f_m_t_i_n_f_o.html">_CMTFMTINFO</a></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;{</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    cmtBool sign;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <a class="code" href="structcmt_fmt_pad_info.html">cmtFmtPadInfo</a> padding;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <a class="code" href="structcmt_fmt_prec_info.html">cmtFmtPrecInfo</a> precision;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <a class="code" href="structcmt_fmt_itr_info.html">cmtFmtItrInfo</a> iteration;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    cmtUint8 size;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    cmtChar type;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;}<a class="code" href="structcmt_fmt_info.html">cmtFmtInfo</a>;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">/*--------------------------------结构体定义 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">/*--------------------------------宏定义 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">#define CMT_LOCALE_MAX 64</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="preprocessor">#define CMT_UNICODE_RSV_START 0xd800</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="preprocessor">#define CMT_UNICODE_RSV_END 0xdfff</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="preprocessor">#define CMT_FMT_SIZE_DEFAULT 0</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="preprocessor">#define CMT_FMT_SIZE_HH 1</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="preprocessor">#define CMT_FMT_SIZE_H 2</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="preprocessor">#define CMT_FMT_SIZE_L 3</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="preprocessor">#define CMT_FMT_SIZE_LL 4</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">//10^22</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#define CMT_DOUBLE_MAX_10E 10000000000000000000000.0</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">//10^9</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="preprocessor">#define CMT_FLOAT_MAX_10E 1000000000.0</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
+<div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a3fcc37c802ffaf2d8acf57d5ce0cbd77">  159</a></span>&#160;<span class="preprocessor">#define CMT_CONSTSTR(str) {str,sizeof(str)}</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">/*--------------------------------宏定义 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">/*--------------------------------字符编码处理函数 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint8 <a class="code" href="cmt_string_8h.html#aa2ee552b3e518185f1f84bd49e58d738">cmtANSIchSize</a>(cmtChar* ch, cmtChar* locale);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ad1ad2f15c775d709079a46d8450607ff">cmtANSIstrSize</a>(cmtChar* str);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ae733bff83699e7cef27b6fb1066b565c">cmtANSIlen</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* str);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a43ae70dd431a62afecb510aa025e93e8">cmtANSItoU8size</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#af55f98acc581837df44d334a1501feac">cmtANSItoU8</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#aa580f77549fb0c99584409695bec5783">cmtANSItoU16size</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a7a33d2aa49cdc288592e73489843ef24">cmtANSItoU16</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi, <a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16);</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a8dad90464565276ce2b9410d06bd2b81">cmtANSItoU32size</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#ae8c3f124f41f309a419580417007dd58">cmtANSItoU32</a>(<a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi, <a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32);</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint8 <a class="code" href="cmt_string_8h.html#a8a919af9b24adc9780fc7f4196dbe6f4">cmtU8chSize</a>(cmtChar* ch);</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#afbb81ac788eb9e1454d192ec5203afdb">cmtU8strSize</a>(cmtChar* str);</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a9213064c679dcf987808ac8a50462ada">cmtU8len</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* str);</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a3f472b3c660242b0938b060508b0e262">cmtU8toANSIsize</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8, cmtChar* locale, cmtBool* err);</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtBool <a class="code" href="cmt_string_8h.html#a8cd389a30ed8a148e2a69632e7809931">cmtU8toANSI</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8, <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ab35c33b091b9af1bb88a94169a358b2d">cmtU8toU16size</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8);</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a5e24a8cffbf2e297f4864c2616d83ada">cmtU8toU16</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8, <a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a00fa0eb3abe2eb774b93d0c1bd1bce34">cmtU8toU32size</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8);</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a523eb91bb2b26f0145f39ea61f08bb41">cmtU8toU32</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8, <a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32);</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; </div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint8 <a class="code" href="cmt_string_8h.html#a213951a27260e31b104927e8610638cd">cmtU16chSize</a>(cmtWchar* ch);</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160; </div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a321e0924f1889ac542ce8d632eec6a78">cmtU16strSize</a>(cmtWchar* str);</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; </div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a6e1e1135e1511f8e39d40da4089ba76a">cmtU16len</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* str);</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160; </div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ab0ff748b1822edb1bad2ce06b21d5d6e">cmtU16toANSIsize</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16, cmtChar* locale, cmtBool* err);</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160; </div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtBool <a class="code" href="cmt_string_8h.html#a001c733a422e7151c9aca87328321c72">cmtU16toANSI</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16, <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160; </div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a89d2c4732c6ff95936ec0968db08d67c">cmtU16toU8size</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16);</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160; </div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a1068e20259631040d247e98bb745c6fb">cmtU16toU8</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8);</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160; </div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ab11a370812c74f876627de636bd92df4">cmtU16toU32size</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16);</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160; </div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a33d74963d249800897b778a89083bc89">cmtU16toU32</a>(<a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16, <a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32);</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160; </div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#abdf25fcea4785a6dd7cbe18918029c4d">cmtU32strSize</a>(cmtFchar* str);</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160; </div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a0b2a60fe14e73068b393c300b6e2ff52">cmtU32toANSIsize</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32, cmtChar* locale, cmtBool* err);</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160; </div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtBool <a class="code" href="cmt_string_8h.html#adc37c8a0392b2035714dafaed6d6bf71">cmtU32toANSI</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32, <a class="code" href="struct___c_m_t_a_n_s_i_s_t_r.html">cmtANSIstr</a>* ansi);</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160; </div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a47611ab6e85adf9093cd4073dc76e620">cmtU32toU8size</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32);</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160; </div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a62e503efdb24fad9f1b6b8cb754c858f">cmtU32toU8</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* u8);</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160; </div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#afe362f40debb78e1058afeba1f392a61">cmtU32toU16size</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32);</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160; </div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#ae2bcad4df0a406012b37bc20b0a23515">cmtU32toU16</a>(<a class="code" href="structcmt_u32str.html">cmtU32str</a>* u32, <a class="code" href="structcmt_u16str.html">cmtU16str</a>* u16);</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;<span class="comment">/*--------------------------------字符编码处理函数 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160; </div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;<span class="comment">/*--------------------------------字符串操作函数 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160; </div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a0f16abcc0b99774cddb3167065ccb75e">cmtAnlyFmt</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* fmt, <a class="code" href="structcmt_fmt_info.html">cmtFmtInfo</a>* info, cmtUint64* ArgList);</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160; </div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#aed395d48317b7468625d4648d442460e">cmtStrToBin</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, cmtUint64* out);</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160; </div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#ab1afbad82274a403bde80071efd17323">cmtStrToOct</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, cmtUint64* out);</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160; </div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a7f352d9e9140cc339aff944b4a86fc77">cmtStrToDec</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, cmtUint64* out);</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160; </div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a3c48c19e0a1d7a67b8abbdafd92e9ed8">cmtStrToHex</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, cmtUint64* out);</div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160; </div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;<span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a5f4cb34c1e0a6c080072e8a1ada15675">cmtStrToF32</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, <span class="keywordtype">float</span>* out);</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160; </div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;<span class="comment">//status: PA</span></div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a9627070c4120e02963ed6ff752a98845">cmtStrToF64</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* in, <span class="keywordtype">double</span>* out);</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160; </div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;<span class="comment">//status: NT</span></div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a15e093d3a4fce330ff3c5ba30b76a5a5">cmtBinToStrSize</a>(cmtUint64 in);</div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160; </div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;<span class="comment">//status: NT</span></div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a9571aa299cb613b65131b88f0714941c">cmtBinToStr</a>(cmtUint64 in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out);</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160; </div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00638"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a4eb7c667ae88aa77cbc65bc41dc1689b">  638</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a4eb7c667ae88aa77cbc65bc41dc1689b">cmtOcttoStrSize</a>(cmtUint64 in);</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160; </div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00649"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a450eb67cd935a09447fc9bcd77359849">  649</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a450eb67cd935a09447fc9bcd77359849">cmtOcttoStr</a>(cmtUint64 in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtUint64 digit);</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160; </div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00660"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a5fbdcaaa618a5df86f155b283596b814">  660</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a5fbdcaaa618a5df86f155b283596b814">cmtDectoStrSize</a>(cmtUint64 in);</div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160; </div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00672"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a2517911c676226eda3b72b98fecada77">  672</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a2517911c676226eda3b72b98fecada77">cmtDectoStr</a>(cmtUint64 in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtUint64 digit);</div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160; </div>
+<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00682"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#adb029b005064d361e0843b5432550868">  682</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#adb029b005064d361e0843b5432550868">cmtHextoStrSize</a>(cmtUint64 in);</div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160; </div>
+<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00694"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a729a31bcafce7e3834fdbe58efbad1f0">  694</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a729a31bcafce7e3834fdbe58efbad1f0">cmtHextoStr</a>(cmtUint64 in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtUint64 digit, cmtBool cap);</div>
+<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160; </div>
+<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00705"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a5a27c623b79a138cbff28675104f7864">  705</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtInt64 <a class="code" href="cmt_string_8h.html#a5a27c623b79a138cbff28675104f7864">cmtCalcPofdF32</a>(<span class="keywordtype">float</span> in);</div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160; </div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00716"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a05fafd4c5b207a8cad8c6ec25860fae6">  716</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtInt64 <a class="code" href="cmt_string_8h.html#a05fafd4c5b207a8cad8c6ec25860fae6">cmtCalcPofdF64</a>(<span class="keywordtype">double</span> in);</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160; </div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;<span class="comment">//status: OD</span></div>
+<div class="line"><a name="l00729"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a00277efae20409593c9abe0dc1f11e38">  729</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#a00277efae20409593c9abe0dc1f11e38">cmtFltoStrSize</a>(cmtInt64 pofd, cmtUint64 sigf);</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160; </div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00742"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#af375d24f1381bb7952034f898f91b324">  742</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#af375d24f1381bb7952034f898f91b324">cmtF32toStr</a>(<span class="keywordtype">float</span> in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtInt64 pofd, cmtUint64 sigf);</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160; </div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00755"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a677e1682277cd643a28307d84b972829">  755</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a677e1682277cd643a28307d84b972829">cmtF64toStr</a>(<span class="keywordtype">double</span> in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtInt64 pofd, cmtUint64 sigf);</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160; </div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00768"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#af0dfaa108d4ab8d0ae0b153036f774c3">  768</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_string_8h.html#af0dfaa108d4ab8d0ae0b153036f774c3">cmtFltoStrExSize</a>(cmtInt64 pofd, cmtUint64 sigf);</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160; </div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00782"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a1d2fad6525dddb3cba2894f0e7b65b20">  782</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a1d2fad6525dddb3cba2894f0e7b65b20">cmtF32toStrEx</a>(<span class="keywordtype">float</span> in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);</div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160; </div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00796"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a3b5c37dfaaf8c1d1b6a7979554895c99">  796</a></span>&#160;<span class="comment"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a3b5c37dfaaf8c1d1b6a7979554895c99">cmtF64toStrEx</a>(<span class="keywordtype">double</span> in, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160; </div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;<span class="keyword">extern</span> cmtUint64 cmtSprintfSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* format, ...);</div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160; </div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;<span class="comment">//status: NC</span></div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;<span class="comment">* TODO:</span></div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;<span class="comment">* 浮点数还没有处理错误数据（NAN，0，INFINITY）</span></div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;<span class="comment">* 输出字符串还要增加控制字数模式（由precision给定）</span></div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;<span class="comment">* 遍历输出实现</span></div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00818"></a><span class="lineno"><a class="line" href="cmt_string_8h.html#a9c95049b74517f56aa38020dde7ac319">  818</a></span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_string_8h.html#a9c95049b74517f56aa38020dde7ac319">cmtSprintf</a>(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* out, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* format, ...);</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160; </div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;<span class="keyword">extern</span> cmtBool cmtStrCmp(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* str1, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* str2);</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160; </div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;<span class="keyword">extern</span> cmtUint64 cmtStrFind(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* src, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* tar);</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160; </div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;<span class="keyword">extern</span> cmtUint64 cmtRegexMatch(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* src, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* regex);</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;<span class="comment">/*--------------------------------字符串操作函数 结束--------------------------------*/</span></div>
 <div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160; </div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetStrSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="comment">/*--------------------------------json函数 开始--------------------------------*/</span></div>
 <div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160; </div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetStr(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetBool(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtBool* ret);</div>
 <div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160; </div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetJsonSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetInt(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtInt64* ret);</div>
 <div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160; </div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetJson(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetDouble(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <span class="keywordtype">double</span>* ret);</div>
 <div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160; </div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetArrSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetStrSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
 <div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160; </div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetArr(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetStr(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
 <div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160; </div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetBool(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtBool* ret);</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetJsonSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
 <div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160; </div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetInt(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtInt64* ret);</div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetJson(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
 <div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160; </div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetDouble(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <span class="keywordtype">double</span>* ret);</div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetArrSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
 <div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160; </div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetStrSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonGetArr(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* json, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
 <div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160; </div>
-<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetStr(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetBool(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtBool* ret);</div>
 <div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160; </div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetJsonSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetInt(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtInt64* ret);</div>
 <div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160; </div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetJson(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetDouble(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <span class="keywordtype">double</span>* ret);</div>
 <div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160; </div>
-<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetArrSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetStrSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
 <div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160; </div>
-<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetArr(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
-<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;<span class="comment">/*--------------------------------json函数 结束--------------------------------*/</span></div>
-<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetStr(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160; </div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetJsonSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160; </div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetJson(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160; </div>
+<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetArrSize(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, cmtUint64* ret);</div>
+<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160; </div>
+<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;<span class="keyword">extern</span> cmtBool cmtJsonArrGetArr(<a class="code" href="structcmt_u8str.html">cmtU8str</a>* arr, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* name, <a class="code" href="structcmt_u8str.html">cmtU8str</a>* ret);</div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;<span class="comment">/*--------------------------------json函数 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="acmt_type_8h_html"><div class="ttname"><a href="cmt_type_8h.html">cmtType.h</a></div><div class="ttdoc">cmtType 库的数据类型标准定义文件，这个文件规定了大多数的数据类型的别名</div></div>
 <div class="ttc" id="acmt_string_8h_html_af375d24f1381bb7952034f898f91b324"><div class="ttname"><a href="cmt_string_8h.html#af375d24f1381bb7952034f898f91b324">cmtF32toStr</a></div><div class="ttdeci">void cmtF32toStr(float in, cmtU8str *out, cmtInt64 pofd, cmtUint64 sigf)</div><div class="ttdoc">浮点数转普通小数字符串（32位浮点）</div></div>
@@ -406,8 +405,8 @@ $(function() {
 <div class="ttc" id="acmt_string_8h_html_a33d74963d249800897b778a89083bc89"><div class="ttname"><a href="cmt_string_8h.html#a33d74963d249800897b778a89083bc89">cmtU16toU32</a></div><div class="ttdeci">void cmtU16toU32(cmtU16str *u16, cmtU32str *u32)</div><div class="ttdoc">UTF-16转UTF-32</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00937">cmtString.c:937</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a5a27c623b79a138cbff28675104f7864"><div class="ttname"><a href="cmt_string_8h.html#a5a27c623b79a138cbff28675104f7864">cmtCalcPofdF32</a></div><div class="ttdeci">cmtInt64 cmtCalcPofdF32(float in)</div><div class="ttdoc">计算pofd（32位浮点）</div></div>
 <div class="ttc" id="acmt_string_8h_html_afbb81ac788eb9e1454d192ec5203afdb"><div class="ttname"><a href="cmt_string_8h.html#afbb81ac788eb9e1454d192ec5203afdb">cmtU8strSize</a></div><div class="ttdeci">cmtUint64 cmtU8strSize(cmtChar *str)</div><div class="ttdoc">测量UTF-8字符串总字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00339">cmtString.c:339</a></div></div>
-<div class="ttc" id="astruct___c_m_t_f_m_t_i_n_f_o_html"><div class="ttname"><a href="struct___c_m_t_f_m_t_i_n_f_o.html">_CMTFMTINFO</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00122">cmtString.h:123</a></div></div>
-<div class="ttc" id="astruct___c_m_t_u16_s_t_r_html"><div class="ttname"><a href="struct___c_m_t_u16_s_t_r.html">_CMTU16STR</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00058">cmtString.h:59</a></div></div>
+<div class="ttc" id="astruct___c_m_t_f_m_t_i_n_f_o_html"><div class="ttname"><a href="struct___c_m_t_f_m_t_i_n_f_o.html">_CMTFMTINFO</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00123">cmtString.h:124</a></div></div>
+<div class="ttc" id="astruct___c_m_t_u16_s_t_r_html"><div class="ttname"><a href="struct___c_m_t_u16_s_t_r.html">_CMTU16STR</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00059">cmtString.h:60</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a62e503efdb24fad9f1b6b8cb754c858f"><div class="ttname"><a href="cmt_string_8h.html#a62e503efdb24fad9f1b6b8cb754c858f">cmtU32toU8</a></div><div class="ttdeci">void cmtU32toU8(cmtU32str *u32, cmtU8str *u8)</div><div class="ttdoc">UTF-32转UTF-8</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l01121">cmtString.c:1121</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a4eb7c667ae88aa77cbc65bc41dc1689b"><div class="ttname"><a href="cmt_string_8h.html#a4eb7c667ae88aa77cbc65bc41dc1689b">cmtOcttoStrSize</a></div><div class="ttdeci">cmtUint64 cmtOcttoStrSize(cmtUint64 in)</div><div class="ttdoc">计算有多少位数字（八进制）</div></div>
 <div class="ttc" id="acmt_string_8h_html_a8cd389a30ed8a148e2a69632e7809931"><div class="ttname"><a href="cmt_string_8h.html#a8cd389a30ed8a148e2a69632e7809931">cmtU8toANSI</a></div><div class="ttdeci">cmtBool cmtU8toANSI(cmtU8str *u8, cmtANSIstr *ansi)</div><div class="ttdoc">UTF-8转ANSI</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00442">cmtString.c:442</a></div></div>
@@ -416,21 +415,21 @@ $(function() {
 <div class="ttc" id="astructcmt_fmt_info_html"><div class="ttname"><a href="structcmt_fmt_info.html">cmtFmtInfo</a></div><div class="ttdoc">格式控制字符串解析结果</div></div>
 <div class="ttc" id="astructcmt_fmt_prec_info_html"><div class="ttname"><a href="structcmt_fmt_prec_info.html">cmtFmtPrecInfo</a></div><div class="ttdoc">cmtFmtInfo.precision字段</div></div>
 <div class="ttc" id="acmt_string_8h_html_a8dad90464565276ce2b9410d06bd2b81"><div class="ttname"><a href="cmt_string_8h.html#a8dad90464565276ce2b9410d06bd2b81">cmtANSItoU32size</a></div><div class="ttdeci">cmtUint64 cmtANSItoU32size(cmtANSIstr *ansi)</div><div class="ttdoc">计算ANSI转UTF-32后，UTF-32字符串的字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00277">cmtString.c:277</a></div></div>
-<div class="ttc" id="astruct___c_m_t_a_n_s_i_s_t_r_html"><div class="ttname"><a href="struct___c_m_t_a_n_s_i_s_t_r.html">_CMTANSISTR</a></div><div class="ttdoc">ANSI字符串结构体</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00033">cmtString.h:34</a></div></div>
+<div class="ttc" id="astruct___c_m_t_a_n_s_i_s_t_r_html"><div class="ttname"><a href="struct___c_m_t_a_n_s_i_s_t_r.html">_CMTANSISTR</a></div><div class="ttdoc">ANSI字符串结构体</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00034">cmtString.h:35</a></div></div>
 <div class="ttc" id="astructcmt_fmt_pad_info_html"><div class="ttname"><a href="structcmt_fmt_pad_info.html">cmtFmtPadInfo</a></div><div class="ttdoc">cmtFmtInfo.padding字段</div></div>
-<div class="ttc" id="astruct___c_m_t_a_n_s_i_s_t_r_html_a30fab447484fd7feef6ab3a4cf75eb9f"><div class="ttname"><a href="struct___c_m_t_a_n_s_i_s_t_r.html#a30fab447484fd7feef6ab3a4cf75eb9f">_CMTANSISTR::data</a></div><div class="ttdeci">cmtChar * data</div><div class="ttdoc">字符数组</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00035">cmtString.h:35</a></div></div>
+<div class="ttc" id="astruct___c_m_t_a_n_s_i_s_t_r_html_a30fab447484fd7feef6ab3a4cf75eb9f"><div class="ttname"><a href="struct___c_m_t_a_n_s_i_s_t_r.html#a30fab447484fd7feef6ab3a4cf75eb9f">_CMTANSISTR::data</a></div><div class="ttdeci">cmtChar * data</div><div class="ttdoc">字符数组</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00036">cmtString.h:36</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_ae733bff83699e7cef27b6fb1066b565c"><div class="ttname"><a href="cmt_string_8h.html#ae733bff83699e7cef27b6fb1066b565c">cmtANSIlen</a></div><div class="ttdeci">cmtUint64 cmtANSIlen(cmtANSIstr *str)</div><div class="ttdoc">测量ANSI字符串字符数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00041">cmtString.c:41</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_aa580f77549fb0c99584409695bec5783"><div class="ttname"><a href="cmt_string_8h.html#aa580f77549fb0c99584409695bec5783">cmtANSItoU16size</a></div><div class="ttdeci">cmtUint64 cmtANSItoU16size(cmtANSIstr *ansi)</div><div class="ttdoc">计算ANSI转UTF-16后，UTF-16字符串的字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00199">cmtString.c:199</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a05fafd4c5b207a8cad8c6ec25860fae6"><div class="ttname"><a href="cmt_string_8h.html#a05fafd4c5b207a8cad8c6ec25860fae6">cmtCalcPofdF64</a></div><div class="ttdeci">cmtInt64 cmtCalcPofdF64(double in)</div><div class="ttdoc">计算pofd（64位浮点）</div></div>
 <div class="ttc" id="acmt_string_8h_html_ab11a370812c74f876627de636bd92df4"><div class="ttname"><a href="cmt_string_8h.html#ab11a370812c74f876627de636bd92df4">cmtU16toU32size</a></div><div class="ttdeci">cmtUint64 cmtU16toU32size(cmtU16str *u16)</div><div class="ttdoc">计算UTF-16转UTF-32后，UTF-32字符串的字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00932">cmtString.c:932</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a677e1682277cd643a28307d84b972829"><div class="ttname"><a href="cmt_string_8h.html#a677e1682277cd643a28307d84b972829">cmtF64toStr</a></div><div class="ttdeci">void cmtF64toStr(double in, cmtU8str *out, cmtInt64 pofd, cmtUint64 sigf)</div><div class="ttdoc">浮点数转普通小数字符串（64位浮点）</div></div>
 <div class="ttc" id="acmt_string_8h_html_a3b5c37dfaaf8c1d1b6a7979554895c99"><div class="ttname"><a href="cmt_string_8h.html#a3b5c37dfaaf8c1d1b6a7979554895c99">cmtF64toStrEx</a></div><div class="ttdeci">void cmtF64toStrEx(double in, cmtU8str *out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap)</div><div class="ttdoc">浮点数转科学计数法模式字符串（64位浮点）</div></div>
-<div class="ttc" id="astruct___c_m_t_a_n_s_i_s_t_r_html_a71ed364e74721b9f0c59c2931c99405d"><div class="ttname"><a href="struct___c_m_t_a_n_s_i_s_t_r.html#a71ed364e74721b9f0c59c2931c99405d">_CMTANSISTR::size</a></div><div class="ttdeci">cmtUint64 size</div><div class="ttdoc">总字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00036">cmtString.h:36</a></div></div>
+<div class="ttc" id="astruct___c_m_t_a_n_s_i_s_t_r_html_a71ed364e74721b9f0c59c2931c99405d"><div class="ttname"><a href="struct___c_m_t_a_n_s_i_s_t_r.html#a71ed364e74721b9f0c59c2931c99405d">_CMTANSISTR::size</a></div><div class="ttdeci">cmtUint64 size</div><div class="ttdoc">总字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00037">cmtString.h:37</a></div></div>
 <div class="ttc" id="astructcmt_u32str_html"><div class="ttname"><a href="structcmt_u32str.html">cmtU32str</a></div><div class="ttdoc">UTF-32字符串结构体</div></div>
 <div class="ttc" id="acmt_string_8h_html_afe362f40debb78e1058afeba1f392a61"><div class="ttname"><a href="cmt_string_8h.html#afe362f40debb78e1058afeba1f392a61">cmtU32toU16size</a></div><div class="ttdeci">cmtUint64 cmtU32toU16size(cmtU32str *u32)</div><div class="ttdoc">计算UTF-32转UTF-16后，UTF-16字符串的字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l01181">cmtString.c:1181</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a1068e20259631040d247e98bb745c6fb"><div class="ttname"><a href="cmt_string_8h.html#a1068e20259631040d247e98bb745c6fb">cmtU16toU8</a></div><div class="ttdeci">void cmtU16toU8(cmtU16str *u16, cmtU8str *u8)</div><div class="ttdoc">UTF-16转UTF-8</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00853">cmtString.c:853</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a9627070c4120e02963ed6ff752a98845"><div class="ttname"><a href="cmt_string_8h.html#a9627070c4120e02963ed6ff752a98845">cmtStrToF64</a></div><div class="ttdeci">cmtUint64 cmtStrToF64(cmtU8str *in, double *out)</div><div class="ttdoc">字符串转浮点数（64位）</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l01737">cmtString.c:1737</a></div></div>
-<div class="ttc" id="astruct___c_m_t_f_m_t_i_t_r_i_n_f_o_html"><div class="ttname"><a href="struct___c_m_t_f_m_t_i_t_r_i_n_f_o.html">_CMTFMTITRINFO</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00108">cmtString.h:109</a></div></div>
+<div class="ttc" id="astruct___c_m_t_f_m_t_i_t_r_i_n_f_o_html"><div class="ttname"><a href="struct___c_m_t_f_m_t_i_t_r_i_n_f_o.html">_CMTFMTITRINFO</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00109">cmtString.h:110</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a43ae70dd431a62afecb510aa025e93e8"><div class="ttname"><a href="cmt_string_8h.html#a43ae70dd431a62afecb510aa025e93e8">cmtANSItoU8size</a></div><div class="ttdeci">cmtUint64 cmtANSItoU8size(cmtANSIstr *ansi)</div><div class="ttdoc">计算ANSI转UTF-8后，UTF-8字符串的字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00067">cmtString.c:67</a></div></div>
 <div class="ttc" id="astructcmt_u16str_html"><div class="ttname"><a href="structcmt_u16str.html">cmtU16str</a></div><div class="ttdoc">UTF-16字符串结构体</div></div>
 <div class="ttc" id="acmt_string_8h_html_a3f472b3c660242b0938b060508b0e262"><div class="ttname"><a href="cmt_string_8h.html#a3f472b3c660242b0938b060508b0e262">cmtU8toANSIsize</a></div><div class="ttdeci">cmtUint64 cmtU8toANSIsize(cmtU8str *u8, cmtChar *locale, cmtBool *err)</div><div class="ttdoc">计算UTF-8转ANSI后，ANSI字符串的字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00361">cmtString.c:361</a></div></div>
@@ -444,7 +443,7 @@ $(function() {
 <div class="ttc" id="acmt_string_8h_html_a213951a27260e31b104927e8610638cd"><div class="ttname"><a href="cmt_string_8h.html#a213951a27260e31b104927e8610638cd">cmtU16chSize</a></div><div class="ttdeci">cmtUint8 cmtU16chSize(cmtWchar *ch)</div><div class="ttdoc">测量UTF-16字符字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00686">cmtString.c:686</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a47611ab6e85adf9093cd4073dc76e620"><div class="ttname"><a href="cmt_string_8h.html#a47611ab6e85adf9093cd4073dc76e620">cmtU32toU8size</a></div><div class="ttdeci">cmtUint64 cmtU32toU8size(cmtU32str *u32)</div><div class="ttdoc">计算UTF-32转UTF-8后，UTF-8字符串的字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l01099">cmtString.c:1099</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_ae2bcad4df0a406012b37bc20b0a23515"><div class="ttname"><a href="cmt_string_8h.html#ae2bcad4df0a406012b37bc20b0a23515">cmtU32toU16</a></div><div class="ttdeci">void cmtU32toU16(cmtU32str *u32, cmtU16str *u16)</div><div class="ttdoc">UTF-32转UTF-16</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l01197">cmtString.c:1197</a></div></div>
-<div class="ttc" id="astruct___c_m_t_a_n_s_i_s_t_r_html_aa88ba24f8b32ba7dabe614f1d5f0476d"><div class="ttname"><a href="struct___c_m_t_a_n_s_i_s_t_r.html#aa88ba24f8b32ba7dabe614f1d5f0476d">_CMTANSISTR::locale</a></div><div class="ttdeci">cmtChar * locale</div><div class="ttdoc">使用的代码页（locale字符串注意以\0结尾）</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00037">cmtString.h:37</a></div></div>
+<div class="ttc" id="astruct___c_m_t_a_n_s_i_s_t_r_html_aa88ba24f8b32ba7dabe614f1d5f0476d"><div class="ttname"><a href="struct___c_m_t_a_n_s_i_s_t_r.html#aa88ba24f8b32ba7dabe614f1d5f0476d">_CMTANSISTR::locale</a></div><div class="ttdeci">cmtChar * locale</div><div class="ttdoc">使用的代码页（locale字符串注意以\0结尾）</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00038">cmtString.h:38</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_ab35c33b091b9af1bb88a94169a358b2d"><div class="ttname"><a href="cmt_string_8h.html#ab35c33b091b9af1bb88a94169a358b2d">cmtU8toU16size</a></div><div class="ttdeci">cmtUint64 cmtU8toU16size(cmtU8str *u8)</div><div class="ttdoc">计算UTF-8转UTF-16后，UTF-16字符串的字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00521">cmtString.c:521</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_adc37c8a0392b2035714dafaed6d6bf71"><div class="ttname"><a href="cmt_string_8h.html#adc37c8a0392b2035714dafaed6d6bf71">cmtU32toANSI</a></div><div class="ttdeci">cmtBool cmtU32toANSI(cmtU32str *u32, cmtANSIstr *ansi)</div><div class="ttdoc">UTF-32转ANSI</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l01039">cmtString.c:1039</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_af55f98acc581837df44d334a1501feac"><div class="ttname"><a href="cmt_string_8h.html#af55f98acc581837df44d334a1501feac">cmtANSItoU8</a></div><div class="ttdeci">void cmtANSItoU8(cmtANSIstr *ansi, cmtU8str *u8)</div><div class="ttdoc">ANSI转UTF-8</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00114">cmtString.c:114</a></div></div>
@@ -453,8 +452,8 @@ $(function() {
 <div class="ttc" id="acmt_string_8h_html_ae8c3f124f41f309a419580417007dd58"><div class="ttname"><a href="cmt_string_8h.html#ae8c3f124f41f309a419580417007dd58">cmtANSItoU32</a></div><div class="ttdeci">void cmtANSItoU32(cmtANSIstr *ansi, cmtU32str *u32)</div><div class="ttdoc">ANSI转UTF-32</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00282">cmtString.c:282</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a5f4cb34c1e0a6c080072e8a1ada15675"><div class="ttname"><a href="cmt_string_8h.html#a5f4cb34c1e0a6c080072e8a1ada15675">cmtStrToF32</a></div><div class="ttdeci">cmtUint64 cmtStrToF32(cmtU8str *in, float *out)</div><div class="ttdoc">字符串转浮点数（32位）</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l01453">cmtString.c:1453</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a9213064c679dcf987808ac8a50462ada"><div class="ttname"><a href="cmt_string_8h.html#a9213064c679dcf987808ac8a50462ada">cmtU8len</a></div><div class="ttdeci">cmtUint64 cmtU8len(cmtU8str *str)</div><div class="ttdoc">测量UTF-8字符串字符数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00348">cmtString.c:348</a></div></div>
-<div class="ttc" id="astruct___c_m_t_u8_s_t_r_html"><div class="ttname"><a href="struct___c_m_t_u8_s_t_r.html">_CMTU8STR</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00046">cmtString.h:47</a></div></div>
-<div class="ttc" id="astruct___c_m_t_f_m_t_p_r_e_c_i_n_f_o_html"><div class="ttname"><a href="struct___c_m_t_f_m_t_p_r_e_c_i_n_f_o.html">_CMTFMTPRECINFO</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00095">cmtString.h:96</a></div></div>
+<div class="ttc" id="astruct___c_m_t_u8_s_t_r_html"><div class="ttname"><a href="struct___c_m_t_u8_s_t_r.html">_CMTU8STR</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00047">cmtString.h:48</a></div></div>
+<div class="ttc" id="astruct___c_m_t_f_m_t_p_r_e_c_i_n_f_o_html"><div class="ttname"><a href="struct___c_m_t_f_m_t_p_r_e_c_i_n_f_o.html">_CMTFMTPRECINFO</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00096">cmtString.h:97</a></div></div>
 <div class="ttc" id="astructcmt_u8str_html"><div class="ttname"><a href="structcmt_u8str.html">cmtU8str</a></div><div class="ttdoc">UTF-8字符串结构体</div></div>
 <div class="ttc" id="acmt_string_8h_html_adb029b005064d361e0843b5432550868"><div class="ttname"><a href="cmt_string_8h.html#adb029b005064d361e0843b5432550868">cmtHextoStrSize</a></div><div class="ttdeci">cmtUint64 cmtHextoStrSize(cmtUint64 in)</div><div class="ttdoc">计算有多少位数字（十六进制）</div></div>
 <div class="ttc" id="acmt_string_8h_html_a8a919af9b24adc9780fc7f4196dbe6f4"><div class="ttname"><a href="cmt_string_8h.html#a8a919af9b24adc9780fc7f4196dbe6f4">cmtU8chSize</a></div><div class="ttdeci">cmtUint8 cmtU8chSize(cmtChar *ch)</div><div class="ttdoc">测量UTF-8字符字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00331">cmtString.c:331</a></div></div>
@@ -463,8 +462,8 @@ $(function() {
 <div class="ttc" id="acmt_string_8h_html_a9571aa299cb613b65131b88f0714941c"><div class="ttname"><a href="cmt_string_8h.html#a9571aa299cb613b65131b88f0714941c">cmtBinToStr</a></div><div class="ttdeci">void cmtBinToStr(cmtUint64 in, cmtU8str *out)</div><div class="ttdoc">整数转字符串（二进制）</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l02034">cmtString.c:2034</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a2517911c676226eda3b72b98fecada77"><div class="ttname"><a href="cmt_string_8h.html#a2517911c676226eda3b72b98fecada77">cmtDectoStr</a></div><div class="ttdeci">void cmtDectoStr(cmtUint64 in, cmtU8str *out, cmtUint64 digit)</div><div class="ttdoc">整数转字符串（十进制）</div></div>
 <div class="ttc" id="acmt_string_8h_html_ab0ff748b1822edb1bad2ce06b21d5d6e"><div class="ttname"><a href="cmt_string_8h.html#ab0ff748b1822edb1bad2ce06b21d5d6e">cmtU16toANSIsize</a></div><div class="ttdeci">cmtUint64 cmtU16toANSIsize(cmtU16str *u16, cmtChar *locale, cmtBool *err)</div><div class="ttdoc">计算UTF-16转ANSI后，ANSI字符串的字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00721">cmtString.c:721</a></div></div>
-<div class="ttc" id="astruct___c_m_t_u32_s_t_r_html"><div class="ttname"><a href="struct___c_m_t_u32_s_t_r.html">_CMTU32STR</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00070">cmtString.h:71</a></div></div>
-<div class="ttc" id="astruct___c_m_t_f_m_t_p_a_d_i_n_f_o_html"><div class="ttname"><a href="struct___c_m_t_f_m_t_p_a_d_i_n_f_o.html">_CMTFMTPADINFO</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00082">cmtString.h:83</a></div></div>
+<div class="ttc" id="astruct___c_m_t_u32_s_t_r_html"><div class="ttname"><a href="struct___c_m_t_u32_s_t_r.html">_CMTU32STR</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00071">cmtString.h:72</a></div></div>
+<div class="ttc" id="astruct___c_m_t_f_m_t_p_a_d_i_n_f_o_html"><div class="ttname"><a href="struct___c_m_t_f_m_t_p_a_d_i_n_f_o.html">_CMTFMTPADINFO</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8h_source.html#l00083">cmtString.h:84</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a5fbdcaaa618a5df86f155b283596b814"><div class="ttname"><a href="cmt_string_8h.html#a5fbdcaaa618a5df86f155b283596b814">cmtDectoStrSize</a></div><div class="ttdeci">cmtUint64 cmtDectoStrSize(cmtUint64 in)</div><div class="ttdoc">计算有多少位数字（十进制）</div></div>
 <div class="ttc" id="acmt_string_8h_html_a5e24a8cffbf2e297f4864c2616d83ada"><div class="ttname"><a href="cmt_string_8h.html#a5e24a8cffbf2e297f4864c2616d83ada">cmtU8toU16</a></div><div class="ttdeci">void cmtU8toU16(cmtU8str *u8, cmtU16str *u16)</div><div class="ttdoc">UTF-8转UTF-16</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00560">cmtString.c:560</a></div></div>
 <div class="ttc" id="acmt_string_8h_html_a0b2a60fe14e73068b393c300b6e2ff52"><div class="ttname"><a href="cmt_string_8h.html#a0b2a60fe14e73068b393c300b6e2ff52">cmtU32toANSIsize</a></div><div class="ttdeci">cmtUint64 cmtU32toANSIsize(cmtU32str *u32, cmtChar *locale, cmtBool *err)</div><div class="ttdoc">计算UTF-32转ANSI后，ANSI字符串的字节数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_string_8c_source.html#l00977">cmtString.c:977</a></div></div>

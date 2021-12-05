@@ -67,6 +67,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">结构体</a> &#124;
+<a href="#define-members">宏定义</a> &#124;
 <a href="#typedef-members">类型定义</a> &#124;
 <a href="#func-members">函数</a>  </div>
   <div class="headertitle">
@@ -76,7 +77,9 @@ $(function() {
 
 <p>用于支持跨平台的简化易用版本密码学库 @data 2021-09-13  
 <a href="#details">更多...</a></p>
-
+<div class="textblock"><code>#include &lt;<a class="el" href="cmt_type_8h_source.html">cmtType.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="cmt_core_8h_source.html">cmtCore.h</a>&gt;</code><br />
+</div>
 <p><a href="cmt_cryp_8h_source.html">浏览源代码.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -87,6 +90,86 @@ $(function() {
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct___c_m_t_m_d5.html">_CMTMD5</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+宏定义</h2></td></tr>
+<tr class="memitem:aaa403346e3b7249d5069638e35d16851"><td class="memItemLeft" align="right" valign="top"><a id="aaa403346e3b7249d5069638e35d16851"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_INC_CMTCRYP</b></td></tr>
+<tr class="separator:aaa403346e3b7249d5069638e35d16851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13d33e45a66e31ac1a9e42b3c283e075"><td class="memItemLeft" align="right" valign="top"><a id="a13d33e45a66e31ac1a9e42b3c283e075"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_SHA256_BLOCK_SIZE</b>&#160;&#160;&#160;32</td></tr>
+<tr class="separator:a13d33e45a66e31ac1a9e42b3c283e075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2c512243706c742aa5f91d529d9cfd2"><td class="memItemLeft" align="right" valign="top"><a id="ac2c512243706c742aa5f91d529d9cfd2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_SHA1_BLOCK_SIZE</b>&#160;&#160;&#160;20</td></tr>
+<tr class="separator:ac2c512243706c742aa5f91d529d9cfd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae99ba53645c1685a8dd71aab0fa0594a"><td class="memItemLeft" align="right" valign="top"><a id="ae99ba53645c1685a8dd71aab0fa0594a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_MD5_BLOCK_SIZE</b>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:ae99ba53645c1685a8dd71aab0fa0594a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab84d6685fc61272e5107b75b2ff39c86"><td class="memItemLeft" align="right" valign="top"><a id="ab84d6685fc61272e5107b75b2ff39c86"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_NEWLINE_INVL</b>&#160;&#160;&#160;76</td></tr>
+<tr class="separator:ab84d6685fc61272e5107b75b2ff39c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebe6496bc7f33fc552fd6d2528b46bcc"><td class="memItemLeft" align="right" valign="top"><a id="aebe6496bc7f33fc552fd6d2528b46bcc"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_ROTLEFT</b>(a,  b)&#160;&#160;&#160;(((a) &lt;&lt; (b)) | ((a) &gt;&gt; (32-(b))))</td></tr>
+<tr class="separator:aebe6496bc7f33fc552fd6d2528b46bcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abde36b6be5a191fd04010a59cc7c9140"><td class="memItemLeft" align="right" valign="top"><a id="abde36b6be5a191fd04010a59cc7c9140"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_ROTRIGHT</b>(a,  b)&#160;&#160;&#160;(((a) &gt;&gt; (b)) | ((a) &lt;&lt; (32-(b))))</td></tr>
+<tr class="separator:abde36b6be5a191fd04010a59cc7c9140"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a702935949e3c11af4642b8edf2b5b683"><td class="memItemLeft" align="right" valign="top"><a id="a702935949e3c11af4642b8edf2b5b683"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_KE_ROTWORD</b>(x)&#160;&#160;&#160;(((x) &lt;&lt; 8) | ((x) &gt;&gt; 24))</td></tr>
+<tr class="separator:a702935949e3c11af4642b8edf2b5b683"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aeac87c3e36f0fe1dbfd20fd83aa071"><td class="memItemLeft" align="right" valign="top"><a id="a8aeac87c3e36f0fe1dbfd20fd83aa071"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_CH</b>(x,  y,  z)&#160;&#160;&#160;(((x) &amp; (y)) ^ (~(x) &amp; (z)))</td></tr>
+<tr class="separator:a8aeac87c3e36f0fe1dbfd20fd83aa071"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add1d8201f0047b2010eafe8003691b8e"><td class="memItemLeft" align="right" valign="top"><a id="add1d8201f0047b2010eafe8003691b8e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_MAJ</b>(x,  y,  z)&#160;&#160;&#160;(((x) &amp; (y)) ^ ((x) &amp; (z)) ^ ((y) &amp; (z)))</td></tr>
+<tr class="separator:add1d8201f0047b2010eafe8003691b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24c2fa8bb1779ae272b25ed454328847"><td class="memItemLeft" align="right" valign="top"><a id="a24c2fa8bb1779ae272b25ed454328847"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_EP0</b>(x)&#160;&#160;&#160;(CMT_ROTRIGHT(x,2) ^ CMT_ROTRIGHT(x,13) ^ CMT_ROTRIGHT(x,22))</td></tr>
+<tr class="separator:a24c2fa8bb1779ae272b25ed454328847"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2f70e56d83eaa4d0890544baafc43df"><td class="memItemLeft" align="right" valign="top"><a id="ae2f70e56d83eaa4d0890544baafc43df"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_EP1</b>(x)&#160;&#160;&#160;(CMT_ROTRIGHT(x,6) ^ CMT_ROTRIGHT(x,11) ^ CMT_ROTRIGHT(x,25))</td></tr>
+<tr class="separator:ae2f70e56d83eaa4d0890544baafc43df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadf69b5398ce4bfe2ef85ab1e3372f9d"><td class="memItemLeft" align="right" valign="top"><a id="aadf69b5398ce4bfe2ef85ab1e3372f9d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_SIG0</b>(x)&#160;&#160;&#160;(CMT_ROTRIGHT(x,7) ^ CMT_ROTRIGHT(x,18) ^ ((x) &gt;&gt; 3))</td></tr>
+<tr class="separator:aadf69b5398ce4bfe2ef85ab1e3372f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15098f897aafe701a1397b8de9084068"><td class="memItemLeft" align="right" valign="top"><a id="a15098f897aafe701a1397b8de9084068"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_SIG1</b>(x)&#160;&#160;&#160;(CMT_ROTRIGHT(x,17) ^ CMT_ROTRIGHT(x,19) ^ ((x) &gt;&gt; 10))</td></tr>
+<tr class="separator:a15098f897aafe701a1397b8de9084068"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1d339fd4ed62ea9045af33871698ff5"><td class="memItemLeft" align="right" valign="top"><a id="ad1d339fd4ed62ea9045af33871698ff5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_F</b>(x,  y,  z)&#160;&#160;&#160;((x &amp; y) | (~x &amp; z))</td></tr>
+<tr class="separator:ad1d339fd4ed62ea9045af33871698ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18f91e14ce90625e84b28f13db4f8d48"><td class="memItemLeft" align="right" valign="top"><a id="a18f91e14ce90625e84b28f13db4f8d48"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_G</b>(x,  y,  z)&#160;&#160;&#160;((x &amp; z) | (y &amp; ~z))</td></tr>
+<tr class="separator:a18f91e14ce90625e84b28f13db4f8d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8f527035fdcbcf800d2b2acda6aba6b"><td class="memItemLeft" align="right" valign="top"><a id="ae8f527035fdcbcf800d2b2acda6aba6b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_H</b>(x,  y,  z)&#160;&#160;&#160;(x ^ y ^ z)</td></tr>
+<tr class="separator:ae8f527035fdcbcf800d2b2acda6aba6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fde58c6bab6b2692393cc4b3d03a027"><td class="memItemLeft" align="right" valign="top"><a id="a2fde58c6bab6b2692393cc4b3d03a027"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_I</b>(x,  y,  z)&#160;&#160;&#160;(y ^ (x | ~z))</td></tr>
+<tr class="separator:a2fde58c6bab6b2692393cc4b3d03a027"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d8e448765c7f627e612f105ab51a545"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_FF</b>(a,  b,  c,  d,  m,  s,  t)</td></tr>
+<tr class="separator:a8d8e448765c7f627e612f105ab51a545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a118a5d8cee45842b96ee31083eb1b023"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_GG</b>(a,  b,  c,  d,  m,  s,  t)</td></tr>
+<tr class="separator:a118a5d8cee45842b96ee31083eb1b023"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40da0730992405223f54f837db9d3939"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_HH</b>(a,  b,  c,  d,  m,  s,  t)</td></tr>
+<tr class="separator:a40da0730992405223f54f837db9d3939"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0eda7803bc429b789ad30f2b420bc1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_II</b>(a,  b,  c,  d,  m,  s,  t)</td></tr>
+<tr class="separator:ab0eda7803bc429b789ad30f2b420bc1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7594ddb501d8ecbc6eb471e2b8db9b4"><td class="memItemLeft" align="right" valign="top"><a id="ac7594ddb501d8ecbc6eb471e2b8db9b4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_AES_BLOCK_SIZE</b>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:ac7594ddb501d8ecbc6eb471e2b8db9b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1112985ba8a2889d07d93bebdc56d25e"><td class="memItemLeft" align="right" valign="top"><a id="a1112985ba8a2889d07d93bebdc56d25e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_AES_128_ROUNDS</b>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:a1112985ba8a2889d07d93bebdc56d25e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9be6c21b7004d734aaafa22a9a4ab354"><td class="memItemLeft" align="right" valign="top"><a id="a9be6c21b7004d734aaafa22a9a4ab354"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_AES_192_ROUNDS</b>&#160;&#160;&#160;12</td></tr>
+<tr class="separator:a9be6c21b7004d734aaafa22a9a4ab354"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa69db5d72916f6d4bedaa82efa873382"><td class="memItemLeft" align="right" valign="top"><a id="aa69db5d72916f6d4bedaa82efa873382"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMT_AES_256_ROUNDS</b>&#160;&#160;&#160;14</td></tr>
+<tr class="separator:aa69db5d72916f6d4bedaa82efa873382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6362146f5b97134b1278168fe1c884fe"><td class="memItemLeft" align="right" valign="top"><a id="a6362146f5b97134b1278168fe1c884fe"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>cmtAEScipherSize</b>(PlainSize)&#160;&#160;&#160;((PlainSize) % CMT_AES_BLOCK_SIZE ? (PlainSize) + CMT_AES_BLOCK_SIZE - (PlainSize) % CMT_AES_BLOCK_SIZE : (PlainSize))</td></tr>
+<tr class="separator:a6362146f5b97134b1278168fe1c884fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 类型定义</h2></td></tr>
@@ -265,7 +348,256 @@ GogeBlue @disclaimer: This code is presented "as is" without any guarantees.</dd
            http://csrc.nist.gov/publications/nistpubs/800-38C/SP800-38C_updated-July20_2007.pdf
 </pre> 
 <p class="definition">在文件 <a class="el" href="cmt_cryp_8h_source.html">cmtCryp.h</a> 中定义.</p>
-</div><h2 class="groupheader">函数说明</h2>
+</div><h2 class="groupheader">宏定义说明</h2>
+<a id="a8d8e448765c7f627e612f105ab51a545"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d8e448765c7f627e612f105ab51a545">&#9670;&nbsp;</a></span>CMT_FF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CMT_FF</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">b, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">c, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">d, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">m, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">s, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">t&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>值:</b><div class="fragment"><div class="line">                            { a += CMT_F(b,c,d) + m + t; \</div>
+<div class="line">                            a = b + CMT_ROTLEFT(a,s); }</div>
+</div><!-- fragment -->
+<p class="definition">在文件 <a class="el" href="cmt_cryp_8h_source.html">cmtCryp.h</a> 第 <a class="el" href="cmt_cryp_8h_source.html#l00079">79</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a118a5d8cee45842b96ee31083eb1b023"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a118a5d8cee45842b96ee31083eb1b023">&#9670;&nbsp;</a></span>CMT_GG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CMT_GG</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">b, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">c, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">d, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">m, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">s, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">t&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>值:</b><div class="fragment"><div class="line">                            { a += CMT_G(b,c,d) + m + t; \</div>
+<div class="line">                            a = b + CMT_ROTLEFT(a,s); }</div>
+</div><!-- fragment -->
+<p class="definition">在文件 <a class="el" href="cmt_cryp_8h_source.html">cmtCryp.h</a> 第 <a class="el" href="cmt_cryp_8h_source.html#l00081">81</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a40da0730992405223f54f837db9d3939"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40da0730992405223f54f837db9d3939">&#9670;&nbsp;</a></span>CMT_HH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CMT_HH</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">b, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">c, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">d, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">m, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">s, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">t&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>值:</b><div class="fragment"><div class="line">                            { a += CMT_H(b,c,d) + m + t; \</div>
+<div class="line">                            a = b + CMT_ROTLEFT(a,s); }</div>
+</div><!-- fragment -->
+<p class="definition">在文件 <a class="el" href="cmt_cryp_8h_source.html">cmtCryp.h</a> 第 <a class="el" href="cmt_cryp_8h_source.html#l00083">83</a> 行定义.</p>
+
+</div>
+</div>
+<a id="ab0eda7803bc429b789ad30f2b420bc1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0eda7803bc429b789ad30f2b420bc1c">&#9670;&nbsp;</a></span>CMT_II</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CMT_II</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">b, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">c, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">d, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">m, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">s, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">t&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>值:</b><div class="fragment"><div class="line">                            { a += CMT_I(b,c,d) + m + t; \</div>
+<div class="line">                            a = b + CMT_ROTLEFT(a,s); }</div>
+</div><!-- fragment -->
+<p class="definition">在文件 <a class="el" href="cmt_cryp_8h_source.html">cmtCryp.h</a> 第 <a class="el" href="cmt_cryp_8h_source.html#l00085">85</a> 行定义.</p>
+
+</div>
+</div>
+<h2 class="groupheader">函数说明</h2>
 <a id="abd67d6e9f9904f5df53b4d51b0663bc7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abd67d6e9f9904f5df53b4d51b0663bc7">&#9670;&nbsp;</a></span>cmtAEScbcDec()</h2>
 

@@ -21,6 +21,7 @@
 /**
 * @typedef cmtANSIstr
 * @brief ANSI字符串结构体
+* @see _CMTANSISTR
 * @date 2021-9-23
 * @author dexnab
 */
@@ -38,7 +39,14 @@ typedef struct _CMTANSISTR
 }cmtANSIstr;
 
 /**
-* @struct cmtU8str
+* @typedef cmtU8str
+* @brief UTF-8字符串结构体
+* @see _CMTU8STR
+* @date 2021-9-23
+* @author dexnab
+*/
+/**
+* @struct _CMTU8STR
 * @brief UTF-8字符串结构体
 * @date 2021-9-23
 * @author dexnab
@@ -50,7 +58,14 @@ typedef struct _CMTU8STR
 }cmtU8str;
 
 /**
-* @struct cmtU16str
+* @typedef cmtU16str
+* @brief UTF-16字符串结构体
+* @see _CMTU16STR
+* @date 2021-9-23
+* @author dexnab
+*/
+/**
+* @struct _CMTU16STR
 * @brief UTF-16字符串结构体
 * @date 2021-9-23
 * @author dexnab
@@ -62,7 +77,14 @@ typedef struct _CMTU16STR
 }cmtU16str;
 
 /**
-* @struct cmtU32str
+* @typedef cmtU32str
+* @brief UTF-32字符串结构体
+* @see _CMTU32STR
+* @date 2021-9-23
+* @author dexnab
+*/
+/**
+* @struct _CMTU32STR
 * @brief UTF-32字符串结构体
 * @date 2021-9-23
 * @author dexnab
@@ -74,8 +96,16 @@ typedef struct _CMTU32STR
 }cmtU32str;
 
 /**
-* @struct cmtFmtPadInfo
+* @typedef cmtU32str
+* @brief UTF-32字符串结构体
+* @see _CMTU32STR
+* @date 2021-9-23
+* @author dexnab
+*/
+/**
+* @struct _CMTFMTPADINFO
 * @brief cmtFmtInfo.padding字段
+* @see doc/格式字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
@@ -147,6 +177,14 @@ typedef struct _CMTFMTINFO
 //10^9
 #define CMT_FLOAT_MAX_10E 1000000000.0
 
+/**
+* @brief 字符串结构体初始化宏
+* @param[in] str 字符串
+* @return 用于初始化字符串结构体
+* @test cmtDemoStrToBin() 状态：PA
+* @date 2021-12-05
+* @author dexnab
+*/
 #define CMT_CONSTSTR(str) {str,sizeof(str)}
 /*--------------------------------宏定义 结束--------------------------------*/
 

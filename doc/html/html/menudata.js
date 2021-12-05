@@ -38,4 +38,5 @@ var menudata={children:[
 {text:"c",url:"globals.html#index_c"}]},
 {text:"函数",url:"globals_func.html",children:[
 {text:"c",url:"globals_func.html#index_c"}]},
-{text:"类型定义",url:"globals_type.html"}]}]}]}
+{text:"类型定义",url:"globals_type.html"},
+{text:"宏定义",url:"globals_defs.html"}]}]}]}
