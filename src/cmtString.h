@@ -96,15 +96,15 @@ typedef struct _CMTU32STR
 }cmtU32str;
 
 /**
-* @typedef cmtU32str
-* @brief UTF-32字符串结构体
-* @see _CMTU32STR
-* @date 2021-9-23
+* @typedef cmtFmtPadInfo
+* @brief cmtFmtInfo::padding字段
+* @see _CMTFMTPADINFO
+* @date 2021-12-04
 * @author dexnab
 */
 /**
 * @struct _CMTFMTPADINFO
-* @brief cmtFmtInfo.padding字段
+* @brief cmtFmtInfo::padding字段
 * @see doc/格式字符串.md
 * @date 2021-12-04
 * @author dexnab
@@ -117,8 +117,16 @@ typedef struct _CMTFMTPADINFO
 }cmtFmtPadInfo;
 
 /**
-* @struct cmtFmtPrecInfo
-* @brief cmtFmtInfo.precision字段
+* @typedef cmtFmtPrecInfo
+* @brief cmtFmtInfo::precision字段
+* @see _CMTFMTPRECINFO
+* @date 2021-12-04
+* @author dexnab
+*/
+/**
+* @struct _CMTFMTPRECINFO
+* @brief cmtFmtInfo::precision字段
+* @see doc/格式字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
@@ -130,8 +138,16 @@ typedef struct _CMTFMTPRECINFO
 }cmtFmtPrecInfo;
 
 /**
-* @struct cmtFmtItrInfo
-* @brief cmtFmtInfo.iteration字段
+* @typedef cmtFmtItrInfo
+* @brief cmtFmtInfo::iteration字段
+* @see _CMTFMTITRINFO
+* @date 2021-12-04
+* @author dexnab
+*/
+/**
+* @struct _CMTFMTITRINFO
+* @brief cmtFmtInfo::iteration字段
+* @see doc/格式字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
@@ -144,8 +160,16 @@ typedef struct _CMTFMTITRINFO
 }cmtFmtItrInfo;
 
 /**
-* @struct cmtFmtInfo
+* @typedef cmtFmtInfo
 * @brief 格式控制字符串解析结果
+* @see _CMTFMTINFO
+* @date 2021-12-04
+* @author dexnab
+*/
+/**
+* @struct _CMTFMTINFO
+* @brief 格式控制字符串解析结果
+* @see doc/格式字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
@@ -162,14 +186,67 @@ typedef struct _CMTFMTINFO
 
 /*--------------------------------宏定义 开始--------------------------------*/
 
-#define CMT_LOCALE_MAX 64
+/**
+* @brief locale字符串最大长度（包括结尾'\\0'）
+* @date 2021-12-06
+* @author dexnab
+*/
+#define CMT_LOCALE_MAX 85
+
+/**
+* @brief unicode字符集保留区间起始
+* @see http://www.dexnab.top/blog/charset/charset.html
+* @date 2021-12-06
+* @author dexnab
+*/
 #define CMT_UNICODE_RSV_START 0xd800
+
+/**
+* @brief unicode字符集保留区间结束
+* @see http://www.dexnab.top/blog/charset/charset.html
+* @date 2021-12-06
+* @author dexnab
+*/
 #define CMT_UNICODE_RSV_END 0xdfff
 
+/**
+* @brief cmtFmtInfo::size字段取值
+* @see doc/格式字符串.md
+* @date 2021-12-06
+* @author dexnab
+*/
 #define CMT_FMT_SIZE_DEFAULT 0
+
+/**
+* @brief cmtFmtInfo::size字段取值
+* @see doc/格式字符串.md
+* @date 2021-12-06
+* @author dexnab
+*/
 #define CMT_FMT_SIZE_HH 1
+
+/**
+* @brief cmtFmtInfo::size字段取值
+* @see doc/格式字符串.md
+* @date 2021-12-06
+* @author dexnab
+*/
 #define CMT_FMT_SIZE_H 2
+
+/**
+* @brief cmtFmtInfo::size字段取值
+* @see doc/格式字符串.md
+* @date 2021-12-06
+* @author dexnab
+*/
 #define CMT_FMT_SIZE_L 3
+
+/**
+* @brief cmtFmtInfo::size字段取值
+* @see doc/格式字符串.md
+* @date 2021-12-06
+* @author dexnab
+*/
 #define CMT_FMT_SIZE_LL 4
 
 //10^22
