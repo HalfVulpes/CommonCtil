@@ -25,7 +25,6 @@
 * @author dexnab
 */
 /**
-* @struct _CMTANSISTR
 * @brief ANSI字符串结构体
 * @date 2021-9-23
 * @author dexnab
@@ -38,19 +37,29 @@ typedef struct _CMTANSISTR
 }cmtANSIstr;
 
 /**
-* @struct cmtU8str
+* @typedef cmtU8str
+* @brief UTF-8字符串结构体
+* @date 2021-9-23
+* @author dexnab
+*/
+/**
 * @brief UTF-8字符串结构体
 * @date 2021-9-23
 * @author dexnab
 */
 typedef struct _CMTU8STR
 {
-	cmtChar* data;//<字符数组
-	cmtUint64 size;//<总字节数
+	cmtChar* data;///<字符数组
+	cmtUint64 size;///<总字节数
 }cmtU8str;
 
 /**
-* @struct cmtU16str
+* @typedef cmtU16str
+* @brief UTF-16字符串结构体
+* @date 2021-9-23
+* @author dexnab
+*/
+/**
 * @brief UTF-16字符串结构体
 * @date 2021-9-23
 * @author dexnab
@@ -62,7 +71,12 @@ typedef struct _CMTU16STR
 }cmtU16str;
 
 /**
-* @struct cmtU32str
+* @typedef cmtU32str
+* @brief UTF-32字符串结构体
+* @date 2021-9-23
+* @author dexnab
+*/
+/**
 * @brief UTF-32字符串结构体
 * @date 2021-9-23
 * @author dexnab
@@ -74,7 +88,12 @@ typedef struct _CMTU32STR
 }cmtU32str;
 
 /**
-* @struct cmtFmtPadInfo
+* @typedef cmtFmtPadInfo
+* @brief cmtFmtInfo.padding字段
+* @date 2021-12-04
+* @author dexnab
+*/
+/**
 * @brief cmtFmtInfo.padding字段
 * @date 2021-12-04
 * @author dexnab
@@ -87,7 +106,12 @@ typedef struct _CMTFMTPADINFO
 }cmtFmtPadInfo;
 
 /**
-* @struct cmtFmtPrecInfo
+* @typedef cmtFmtPrecInfo
+* @brief cmtFmtInfo.precision字段
+* @date 2021-12-04
+* @author dexnab
+*/
+/**
 * @brief cmtFmtInfo.precision字段
 * @date 2021-12-04
 * @author dexnab
@@ -100,7 +124,12 @@ typedef struct _CMTFMTPRECINFO
 }cmtFmtPrecInfo;
 
 /**
-* @struct cmtFmtItrInfo
+* @typedef cmtFmtPrecInfo
+* @brief cmtFmtInfo.iteration字段
+* @date 2021-12-04
+* @author dexnab
+*/
+/**
 * @brief cmtFmtInfo.iteration字段
 * @date 2021-12-04
 * @author dexnab
@@ -114,7 +143,12 @@ typedef struct _CMTFMTITRINFO
 }cmtFmtItrInfo;
 
 /**
-* @struct cmtFmtInfo
+* @typedef cmtFmtInfo
+* @brief 格式控制字符串解析结果
+* @date 2021-12-04
+* @author dexnab
+*/
+/**
 * @brief 格式控制字符串解析结果
 * @date 2021-12-04
 * @author dexnab
@@ -132,6 +166,12 @@ typedef struct _CMTFMTINFO
 
 /*--------------------------------宏定义 开始--------------------------------*/
 
+/**
+* @def CMT_LOCALE_MAX
+* @brief locale字符串最大字节数
+* @date 2021-12-16
+* @author dexnab
+*/
 #define CMT_LOCALE_MAX 64
 #define CMT_UNICODE_RSV_START 0xd800
 #define CMT_UNICODE_RSV_END 0xdfff
