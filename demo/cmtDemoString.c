@@ -9,6 +9,7 @@ void cmtDemoANSI()
 {
 	cmtANSIstr ansi1 = CMT_CONSTSTR("\x31\x32\x33\xb2\xe2\xca\xd4\x31\x32\x33");//123测试123
 	ansi1.locale = "zh-cn";
+	cmtUint64 ansi1size, ansi1len;
 	cmtChar ansi2 = '\xb2\xe2';//测
 	cmtUint8 ansi2size;
 	cmtU8str u8;
@@ -40,6 +41,14 @@ void cmtDemoANSI()
 	ansi2size = cmtANSIchSize(&ansi2, ansi1.locale);
 	//标答：ansi2size=2
 
+	//测试5：测量ANSI字符串总字节数
+	ansi1size = cmtANSIstrSize(ansi1.data);
+	//标答：10
+
+	//测试6：测量ANSI字符串字符数
+	ansi1len = cmtANSIlen(&ansi1);
+	//标答：ansi1len=9（因为算上了结尾的结束符）
+
 	free(u8.data);
 	free(u16.data);
 	free(u32.data);
@@ -49,6 +58,9 @@ void cmtDemoU8()
 {
 	cmtU8str u8a = CMT_CONSTSTR("\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33");//123测试123
 	cmtU8str u8b = CMT_CONSTSTR("\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33\xf0\xa3\xb1\x95\x61");//123测试123𣱕a
+	cmtUint64 u8bSize, u8bLen;
+	cmtChar u8c = '\xf0\xa3\xb1\x95';//𣱕
+	cmtUint8 u8cSize;
 	cmtANSIstr ansi;
 	cmtU16str u16;
 	cmtU32str u32;
@@ -76,6 +88,18 @@ void cmtDemoU8()
 	//标答：u32->data="\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x55\x3c\x02\x00\x61\x00\x00\x00"
 	//u32->size=44;
 
+	//测试4：测量UTF-8字符字节数
+	u8cSize = cmtU8chSize(&u8c);
+	//标答：u8cSize=4
+
+	//测试5：测量UTF-8字符串总字节数
+	u8bSize = cmtU8strSize(u8b.data);
+	//标答：u8bSize=17
+
+	//测试6：测量UTF-8字符串字符数
+	u8bLen = cmtU8len(&u8b);
+	//标答：u8bLen=11
+
 	free(ansi.data);
 	free(u16.data);
 	free(u32.data);
@@ -86,8 +110,11 @@ void cmtDemoU16()
 	//UTF-16的字符串正常情况下应写成L"xxx"的形式，但由于这里是直接指定的编码值，所以写成"xxx"的形式避免把8位的数据扩展成16位
 	//如："\x31"写成L"\x31"就会变成0x31 0x00
 	//同时，由于"xxx"字符串结尾只会自动加1个'\0'，所以还要手动加一个（相比之下，L"xxx"的结尾会自动加两个'\0'，也就是一个L'\0'）
-	cmtU8str u16a = CMT_CONSTSTR("\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00\x00");//123测试123
-	cmtU8str u16b = CMT_CONSTSTR("\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00\x4f\xd8\x55\xdc\x61\x00\x00");//123测试123𣱕a
+	cmtU16str u16a = CMT_CONSTSTR("\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00\x00");//123测试123
+	cmtU16str u16b = CMT_CONSTSTR("\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00\x4f\xd8\x55\xdc\x61\x00\x00");//123测试123𣱕a
+	cmtUint64 u16bSize, u16bLen;
+	cmtWchar u16c = '\x4f\xd8\x55\xdc';//𣱕
+	cmtUint8 u16cSize;
 	cmtANSIstr ansi;
 	cmtU8str u8;
 	cmtU32str u32;
@@ -115,6 +142,18 @@ void cmtDemoU16()
 	//标答：u32->data="\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x55\x3c\x02\x00\x61\x00\x00\x00"
 	//u32->size=44;
 
+	//测试4：测量UTF-16字符字节数
+	u16cSize = cmtU16chSize(&u16c);
+	//标答：u16cSize=4
+
+	//测试5：测量UTF-16字符串总字节数
+	u16bSize = cmtU16strSize(u16b.data);
+	//标答：u16bSize=22
+
+	//测试6：测量UTF-16字符串字符数
+	u16bLen = cmtU16len(&u16b);
+	//标答：u16bLen=11
+
 	free(ansi.data);
 	free(u8.data);
 	free(u32.data);
@@ -123,8 +162,9 @@ void cmtDemoU16()
 void cmtDemoU32()
 {
 	//同样，由于"xxx"只会自动在结尾加一个'\0'，所以还要手动再加三个
-	cmtU8str u32a = CMT_CONSTSTR("\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x00\x00\x00");
-	cmtU8str u32b = CMT_CONSTSTR("\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x55\x3c\x02\x00\x61\x00\x00\x00\x00\x00\x00");
+	cmtU32str u32a = CMT_CONSTSTR("\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x00\x00\x00");//123测试123
+	cmtU32str u32b = CMT_CONSTSTR("\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x55\x3c\x02\x00\x61\x00\x00\x00\x00\x00\x00");//123测试123𣱕a
+	cmtUint64 u32bSize, u32bLen;
 	cmtANSIstr ansi;
 	cmtU8str u8;
 	cmtU16str u16;
@@ -152,6 +192,10 @@ void cmtDemoU32()
 	//标答：u16->data="\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00\x4f\xd8\x55\xdc\x61\x00"
 	//u16->size=24;
 
+	//测试4：测量UTF-32字符串总字节数
+	u32bSize = cmtU32strSize(u32b.data);
+	//标答：u32bSize=40
+
 	free(ansi.data);
 	free(u8.data);
 	free(u16.data);
@@ -159,7 +203,7 @@ void cmtDemoU32()
 
 void cmtDemoAnlyFmt()
 {
-	cmtU8str u8 = CMT_CONSTSTR("+-010.=*r2-2-2f\n");
+	cmtU8str u8 = CMT_CONSTSTR("+-010.=*f\n");
 	cmtFmtInfo FmtInfo;
 	cmtUint64 arglist[1];
 	arglist[0] = 12;
@@ -170,6 +214,8 @@ void cmtDemoAnlyFmt()
 	//FmtInfo.padding.content=TRUE
 	//FmtInfo.padding.length=10
 	//FmtInfo.precision.enabled=TRUE;
+	//FmtInfo.precision.flag=TRUE;
+	//FmtInfo.precision.value=12;
 }
 
 void cmtDemoStrToBin()

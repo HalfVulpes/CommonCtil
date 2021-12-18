@@ -12,13 +12,71 @@
 /**
 * @brief 有关ANSI字符编码的一系列测试
 * @see cmtANSIchSize(cmtChar* ch, cmtChar* locale)
+* @see cmtANSIstrSize(cmtChar* str)
+* @see cmtANSIlen(cmtANSIstr* str)
+* @see cmtANSItoU8size(cmtANSIstr* ansi)
+* @see cmtANSItoU8(cmtANSIstr* ansi, cmtU8str* u8)
+* @see cmtANSItoU16size(cmtANSIstr* ansi)
+* @see cmtANSItoU16(cmtANSIstr* ansi, cmtU16str* u16)
+* @see cmtANSItoU32size(cmtANSIstr* ansi)
+* @see cmtANSItoU32(cmtANSIstr* ansi, cmtU32str* u32)
 * @date 2021-12-18
 * @author dexnab
 */
 void cmtDemoANSI();
+
+/**
+* @brief 有关UTF-8字符编码的一系列测试
+* @see cmtU8chSize(cmtChar* ch)
+* @see cmtU8strSize(cmtChar* str)
+* @see cmtU8len(cmtU8str* str)
+* @see cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale, cmtBool* err)
+* @see cmtU8toANSI(cmtU8str* u8, cmtANSIstr* ansi)
+* @see cmtU8toU16size(cmtU8str* u8)
+* @see cmtU8toU16(cmtU8str* u8, cmtU16str* u16)
+* @see cmtU8toU32size(cmtU8str* u8)
+* @see cmtU8toU32(cmtU8str* u8, cmtU32str* u32)
+* @date 2021-12-18
+* @author dexnab
+*/
 void cmtDemoU8();
+
+/**
+* @brief 有关UTF-16字符编码的一系列测试
+* @see cmtU16chSize(cmtWchar* ch)
+* @see cmtU16strSize(cmtWchar* str)
+* @see cmtU16len(cmtU16str* str)
+* @see cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err)
+* @see cmtU16toANSI(cmtU16str* u16, cmtANSIstr* ansi)
+* @see cmtU16toU8size(cmtU16str* u16)
+* @see cmtU16toU8(cmtU16str* u16, cmtU8str* u8)
+* @see cmtU16toU32size(cmtU16str* u16)
+* @see cmtU16toU32(cmtU16str* u16, cmtU32str* u32)
+* @date 2021-12-18
+* @author dexnab
+*/
 void cmtDemoU16();
+
+/**
+* @brief 有关UTF-32字符编码的一系列测试
+* @see cmtU32strSize(cmtFchar* str)
+* @see cmtU32toANSIsize(cmtU32str* u32, cmtChar* locale, cmtBool* err)
+* @see cmtU32toANSI(cmtU32str* u32, cmtANSIstr* ansi)
+* @see cmtU32toU8size(cmtU32str* u32)
+* @see cmtU32toU8(cmtU32str* u32, cmtU8str* u8)
+* @see cmtU32toU16size(cmtU32str* u32)
+* @see cmtU32toU16(cmtU32str* u32, cmtU16str* u16)
+* @date 2021-12-18
+* @author dexnab
+*/
 void cmtDemoU32();
+
+/**
+* @brief 分析格式控制字符串
+* @see cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList)
+* @date 2021-12-19
+* @author dexnab
+*/
 void cmtDemoAnlyFmt();
 
 /**
