@@ -66,8 +66,8 @@ typedef struct _CMTU8STR
 */
 typedef struct _CMTU16STR
 {
-	cmtWchar* data;//<字符数组
-	cmtUint64 size;//<总字节数
+	cmtWchar* data;///<字符数组
+	cmtUint64 size;///<总字节数
 }cmtU16str;
 
 /**
@@ -83,18 +83,20 @@ typedef struct _CMTU16STR
 */
 typedef struct _CMTU32STR
 {
-	cmtFchar* data;//<字符数组
-	cmtUint64 size;//<总字节数
+	cmtFchar* data;///<字符数组
+	cmtUint64 size;///<总字节数
 }cmtU32str;
 
 /**
 * @typedef cmtFmtPadInfo
-* @brief cmtFmtInfo.padding字段
+* @brief cmtFmtInfo::padding字段
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 /**
-* @brief cmtFmtInfo.padding字段
+* @brief cmtFmtInfo::padding字段
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
@@ -107,12 +109,14 @@ typedef struct _CMTFMTPADINFO
 
 /**
 * @typedef cmtFmtPrecInfo
-* @brief cmtFmtInfo.precision字段
+* @brief cmtFmtInfo::precision字段
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 /**
-* @brief cmtFmtInfo.precision字段
+* @brief cmtFmtInfo::precision字段
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
@@ -125,12 +129,14 @@ typedef struct _CMTFMTPRECINFO
 
 /**
 * @typedef cmtFmtPrecInfo
-* @brief cmtFmtInfo.iteration字段
+* @brief cmtFmtInfo::iteration字段
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 /**
-* @brief cmtFmtInfo.iteration字段
+* @brief cmtFmtInfo::iteration字段
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
@@ -145,11 +151,13 @@ typedef struct _CMTFMTITRINFO
 /**
 * @typedef cmtFmtInfo
 * @brief 格式控制字符串解析结果
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 /**
 * @brief 格式控制字符串解析结果
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
@@ -167,26 +175,72 @@ typedef struct _CMTFMTINFO
 /*--------------------------------宏定义 开始--------------------------------*/
 
 /**
-* @def CMT_LOCALE_MAX
 * @brief locale字符串最大字节数
 * @date 2021-12-16
 * @author dexnab
 */
 #define CMT_LOCALE_MAX 64
+/**
+* @brief unicode字符集保留区间起始
+* @date 2021-12-18
+* @author dexnab
+*/
 #define CMT_UNICODE_RSV_START 0xd800
+/**
+* @brief unicode字符集保留区间结束
+* @date 2021-12-18
+* @author dexnab
+*/
 #define CMT_UNICODE_RSV_END 0xdfff
 
+/**
+* @brief cmtFmtInfo::size字段默认值
+* @see doc/格式化字符串.md
+* @date 2021-12-18
+* @author dexnab
+*/
 #define CMT_FMT_SIZE_DEFAULT 0
+/**
+* @brief cmtFmtInfo::size字段hh对应取值
+* @see doc/格式化字符串.md
+* @date 2021-12-18
+* @author dexnab
+*/
 #define CMT_FMT_SIZE_HH 1
+/**
+* @brief cmtFmtInfo::size字段h对应取值
+* @see doc/格式化字符串.md
+* @date 2021-12-18
+* @author dexnab
+*/
 #define CMT_FMT_SIZE_H 2
+/**
+* @brief cmtFmtInfo::size字段l对应取值
+* @see doc/格式化字符串.md
+* @date 2021-12-18
+* @author dexnab
+*/
 #define CMT_FMT_SIZE_L 3
+/**
+* @brief cmtFmtInfo::size字段ll对应取值
+* @see doc/格式化字符串.md
+* @date 2021-12-18
+* @author dexnab
+*/
 #define CMT_FMT_SIZE_LL 4
 
 //10^22
-#define CMT_DOUBLE_MAX_10E 10000000000000000000000.0
+#define CMT_DOUBLE_MAX_10E 1.0e+22
 //10^9
-#define CMT_FLOAT_MAX_10E 1000000000.0
+#define CMT_FLOAT_MAX_10E 1.0e+9
 
+/**
+* @brief 用于初始化字符串结构体
+* @param[in] str 字符串常量
+* @test cmtDemoStrToBin()
+* @date 2021-12-18
+* @author dexnab
+*/
 #define CMT_CONSTSTR(str) {str,sizeof(str)}
 /*--------------------------------宏定义 结束--------------------------------*/
 

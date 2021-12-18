@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.20"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CommonCtil: demo/cmtDemoCryp.c 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">CommonCtil
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.8.20 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','搜索');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_b6c2a257bfab6380ca9b3cb94b12cb25.html">demo</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">cmtDemoCryp.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#define _CRT_SECURE_NO_WARNINGS</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cmt_cryp_8h.html">cmtCryp.h</a>&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keywordtype">void</span> cmtDemoAESctr()</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <span class="comment">//AES-CTR测试代码</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    cmtChar keystr[] = <span class="stringliteral">&quot;abc123abc999!&quot;</span>;<span class="comment">//字符串口令密钥</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="comment">//明文（摘自某一段ACT文法文章 2019-C03 P5）</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    cmtChar data[cmtAEScipherSize(<span class="keyword">sizeof</span>(<span class="stringliteral">&quot;Separating Oregon from Washington, the Columbia River Gorge is eighty-five miles of flowing water, there are tree-covered bluffs, and roaring waterfalls. These striking features daunted would-be road builders until 1913. That year, Samuel Hill and Samuel Lancaster, a businessman and an engineer, respectively, began constructing a road through the gorge to connect the towns along the river. Their design went beyond practicalities it showcased the scenic grandeur of the gorge where the Columbia River is located.&quot;</span>))] =</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <span class="stringliteral">&quot;Separating Oregon from Washington, the Columbia River Gorge is eighty-five miles of flowing water, there are tree-covered bluffs, and roaring waterfalls. These striking features daunted would-be road builders until 1913. That year, Samuel Hill and Samuel Lancaster, a businessman and an engineer, respectively, began constructing a road through the gorge to connect the towns along the river. Their design went beyond practicalities it showcased the scenic grandeur of the gorge where the Columbia River is located.&quot;</span>;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    cmtUint32 key[60];<span class="comment">//计算密钥组矩阵</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    cmtUint8 enced[cmtAEScipherSize(<span class="keyword">sizeof</span>(data))];<span class="comment">//密文</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    cmtChar deced[cmtAEScipherSize(<span class="keyword">sizeof</span>(data))];<span class="comment">//还原明文</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    cmtUint8 iv[CMT_AES_BLOCK_SIZE];</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="comment">//生成 计算密钥组矩阵</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="cmt_cryp_8h.html#a7455ad0d087f078e8757fff994127f8d">cmtAESkeyInit</a>(keystr, <span class="keyword">sizeof</span>(keystr), key, 256);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="comment">//iv</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="cmt_cryp_8h.html#a8e3883e416239e2d4b8ab0c3c8b3f2ef">cmtAESInitialVectorInit</a>(iv);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="comment">//加密</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="cmt_cryp_8h.html#a1a5dac2cedd907ce70a727e53bf5cb0a">cmtAESctrEnc</a>(data, <span class="keyword">sizeof</span>(data), enced, key, 256, iv);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="comment">//解密</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="cmt_cryp_8h.html#ac40285e70b98a7e08f45ecabfb8e43a1">cmtAESctrDec</a>(enced, <span class="keyword">sizeof</span>(enced), deced, key, 256, iv);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    printf(<span class="stringliteral">&quot;AES-CTR:\nplain:\n%hs\ncipher:\n%hs\n&quot;</span>, data, deced);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">void</span> cmtDemoAEScbc()</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">//AES-CBC测试代码</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    cmtChar keystr[] = <span class="stringliteral">&quot;abc123abc999!&quot;</span>;<span class="comment">//字符串口令密钥</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="comment">//明文（摘自某一段ACT文法文章 2019-C03 P5）</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    cmtChar data[cmtAEScipherSize(<span class="keyword">sizeof</span>(<span class="stringliteral">&quot;Separating Oregon from Washington, the Columbia River Gorge is eighty-five miles of flowing water, there are tree-covered bluffs, and roaring waterfalls. These striking features daunted would-be road builders until 1913. That year, Samuel Hill and Samuel Lancaster, a businessman and an engineer, respectively, began constructing a road through the gorge to connect the towns along the river. Their design went beyond practicalities it showcased the scenic grandeur of the gorge where the Columbia River is located.&quot;</span>))] =</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="stringliteral">&quot;Separating Oregon from Washington, the Columbia River Gorge is eighty-five miles of flowing water, there are tree-covered bluffs, and roaring waterfalls. These striking features daunted would-be road builders until 1913. That year, Samuel Hill and Samuel Lancaster, a businessman and an engineer, respectively, began constructing a road through the gorge to connect the towns along the river. Their design went beyond practicalities it showcased the scenic grandeur of the gorge where the Columbia River is located.&quot;</span>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    cmtUint32 key[60];<span class="comment">//计算密钥组矩阵</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    cmtUint8 enced[cmtAEScipherSize(<span class="keyword">sizeof</span>(data))];<span class="comment">//密文</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    cmtChar deced[cmtAEScipherSize(<span class="keyword">sizeof</span>(data))];<span class="comment">//还原明文</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    cmtUint8 iv[CMT_AES_BLOCK_SIZE];</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">//生成 计算密钥组矩阵</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="cmt_cryp_8h.html#a7455ad0d087f078e8757fff994127f8d">cmtAESkeyInit</a>(keystr, <span class="keyword">sizeof</span>(keystr), key, 256);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">//iv</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="cmt_cryp_8h.html#a8e3883e416239e2d4b8ab0c3c8b3f2ef">cmtAESInitialVectorInit</a>(iv);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">//加密</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="cmt_cryp_8h.html#af6563004a894fa765c85167eb86dbd5a">cmtAEScbcEnc</a>(data, <span class="keyword">sizeof</span>(data), enced, key, 256, iv);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">//解密</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="cmt_cryp_8h.html#abd67d6e9f9904f5df53b4d51b0663bc7">cmtAEScbcDec</a>(enced, <span class="keyword">sizeof</span>(enced), deced, key, 256, iv);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    printf(<span class="stringliteral">&quot;AES-CBC:\nplain:\n%hs\ncipher:\n%hs\n&quot;</span>, data, deced);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keywordtype">void</span> cmtDemoAESecb()</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">//AES-ECB测试代码</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    cmtChar keystr[] = <span class="stringliteral">&quot;abc123abc999!&quot;</span>;<span class="comment">//字符串口令密钥</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">//明文（摘自某一段ACT文法文章 2019-C03 P5）</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    cmtChar data[] = <span class="stringliteral">&quot;Separating Oregon from Washington, the Columbia River Gorge is eighty-five miles of flowing water, there are tree-covered bluffs, and roaring waterfalls. These striking features daunted would-be road builders until 1913. That year, Samuel Hill and Samuel Lancaster, a businessman and an engineer, respectively, began constructing a road through the gorge to connect the towns along the river. Their design went beyond practicalities it showcased the scenic grandeur of the gorge where the Columbia River is located.&quot;</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    cmtUint32 key[60];<span class="comment">//计算密钥组矩阵</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    cmtUint8 enced[cmtAEScipherSize(<span class="keyword">sizeof</span>(data))];<span class="comment">//密文</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    cmtChar deced[cmtAEScipherSize(<span class="keyword">sizeof</span>(data))];<span class="comment">//还原明文</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">//生成 计算密钥组矩阵</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="cmt_cryp_8h.html#a7455ad0d087f078e8757fff994127f8d">cmtAESkeyInit</a>(keystr, <span class="keyword">sizeof</span>(keystr), key, 256);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">//加密</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="cmt_cryp_8h.html#af1c1a2ff052fe8ac0b6eaf681bd05716">cmtAESecbEncEx</a>(data, <span class="keyword">sizeof</span>(data), enced, key, 256);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">//解密</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="cmt_cryp_8h.html#a862cf2ed475a65d4b7fa48381c04607d">cmtAESecbDecEx</a>(enced, <span class="keyword">sizeof</span>(enced), deced, key, 256);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    printf(<span class="stringliteral">&quot;AES-ECB:\nplain:\n%hs\ncipher:\n%hs\n&quot;</span>, data, deced);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
+</div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="acmt_cryp_8h_html_af1c1a2ff052fe8ac0b6eaf681bd05716"><div class="ttname"><a href="cmt_cryp_8h.html#af1c1a2ff052fe8ac0b6eaf681bd05716">cmtAESecbEncEx</a></div><div class="ttdeci">void cmtAESecbEncEx(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize)</div><div class="ttdoc">AES-ECB模式加密函数，每次可以处理任意字节</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00788">cmtCryp.c:788</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a1a5dac2cedd907ce70a727e53bf5cb0a"><div class="ttname"><a href="cmt_cryp_8h.html#a1a5dac2cedd907ce70a727e53bf5cb0a">cmtAESctrEnc</a></div><div class="ttdeci">void cmtAESctrEnc(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize, cmtUint8 *iv)</div><div class="ttdoc">AES-CTR模式加密函数，每次可以处理n * CMT_AES_BLOCK_SIZE个字节的数据</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00878">cmtCryp.c:878</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a8e3883e416239e2d4b8ab0c3c8b3f2ef"><div class="ttname"><a href="cmt_cryp_8h.html#a8e3883e416239e2d4b8ab0c3c8b3f2ef">cmtAESInitialVectorInit</a></div><div class="ttdeci">void cmtAESInitialVectorInit(cmtUint8 *iv)</div><div class="ttdoc">AES偏移向量生成函数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00638">cmtCryp.c:638</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_abd67d6e9f9904f5df53b4d51b0663bc7"><div class="ttname"><a href="cmt_cryp_8h.html#abd67d6e9f9904f5df53b4d51b0663bc7">cmtAEScbcDec</a></div><div class="ttdeci">void cmtAEScbcDec(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize, cmtUint8 *iv)</div><div class="ttdoc">AES-CBC模式解密函数，每次可以处理n * CMT_AES_BLOCK_SIZE字节的数据</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00860">cmtCryp.c:860</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html"><div class="ttname"><a href="cmt_cryp_8h.html">cmtCryp.h</a></div><div class="ttdoc">用于支持跨平台的简化易用版本密码学库 @data 2021-09-13</div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a7455ad0d087f078e8757fff994127f8d"><div class="ttname"><a href="cmt_cryp_8h.html#a7455ad0d087f078e8757fff994127f8d">cmtAESkeyInit</a></div><div class="ttdeci">void cmtAESkeyInit(cmtUint8 *keystr, cmtUint8 *sKeystr, cmtUint32 *w, cmtUint16 keysize)</div><div class="ttdoc">AES密钥初始化函数（使用字符串）</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00586">cmtCryp.c:586</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_ac40285e70b98a7e08f45ecabfb8e43a1"><div class="ttname"><a href="cmt_cryp_8h.html#ac40285e70b98a7e08f45ecabfb8e43a1">cmtAESctrDec</a></div><div class="ttdeci">void cmtAESctrDec(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize, cmtUint8 *iv)</div><div class="ttdoc">AES-CBC模式解密函数，每次可以处理n * CMT_AES_BLOCK_SIZE字节的数据</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00901">cmtCryp.c:901</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a862cf2ed475a65d4b7fa48381c04607d"><div class="ttname"><a href="cmt_cryp_8h.html#a862cf2ed475a65d4b7fa48381c04607d">cmtAESecbDecEx</a></div><div class="ttdeci">void cmtAESecbDecEx(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize)</div><div class="ttdoc">AES-ECB模式解密函数，每次可以处理任意字节</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00814">cmtCryp.c:814</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_af6563004a894fa765c85167eb86dbd5a"><div class="ttname"><a href="cmt_cryp_8h.html#af6563004a894fa765c85167eb86dbd5a">cmtAEScbcEnc</a></div><div class="ttdeci">void cmtAEScbcEnc(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize, cmtUint8 *iv)</div><div class="ttdoc">AES-CBC模式加密函数，每次可以处理n * CMT_AES_BLOCK_SIZE个字节的数据</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00822">cmtCryp.c:822</a></div></div>
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
+</small></address>
+</body>
+</html>

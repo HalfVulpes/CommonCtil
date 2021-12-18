@@ -14,6 +14,13 @@ void cmtDemoU8();
 void cmtDemoU16();
 void cmtDemoU32();
 void cmtDemoAnlyFmt();
+
+/**
+* @brief 字符串转整数（二进制格式）
+* @see CMT_CONSTSTR(str)
+* @date 2021-12-18
+* @author dexnab
+*/
 void cmtDemoStrToBin();
 void cmtDemoStrToOct();
 void cmtDemoStrToDec();
