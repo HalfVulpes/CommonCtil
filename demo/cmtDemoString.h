@@ -9,6 +9,12 @@
 #define _INC_CMTDEMOSTRING
 #include <cmtString.h>
 
+/**
+* @brief 有关ANSI字符编码的一系列测试
+* @see cmtANSIchSize(cmtChar* ch, cmtChar* locale)
+* @date 2021-12-18
+* @author dexnab
+*/
 void cmtDemoANSI();
 void cmtDemoU8();
 void cmtDemoU16();

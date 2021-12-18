@@ -246,12 +246,12 @@ typedef struct _CMTFMTINFO
 
 /*--------------------------------字符编码处理函数 开始--------------------------------*/
 
-//status: PA
 /**
 * @brief 测量ANSI字符字节数
 * @param[in] ch 字符首地址
 * @param[in] locale 使用的代码页（locale字符串注意以\\0结尾）
 * @return 字符字节数
+* @test cmtDemoANSI() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */

@@ -7,32 +7,38 @@
 
 void cmtDemoANSI()
 {
-	cmtANSIstr ansi = CMT_CONSTSTR("\x31\x32\x33\xb2\xe2\xca\xd4\x31\x32\x33");//123测试123
-	ansi.locale = "zh-cn";
+	cmtANSIstr ansi1 = CMT_CONSTSTR("\x31\x32\x33\xb2\xe2\xca\xd4\x31\x32\x33");//123测试123
+	ansi1.locale = "zh-cn";
+	cmtChar ansi2 = '\xb2\xe2';//测
+	cmtUint8 ansi2size;
 	cmtU8str u8;
 	cmtU16str u16;
 	cmtU32str u32;
 
 	//测试1：ANSI转UTF-8
-	u8.size = cmtANSItoU8size(&ansi);
+	u8.size = cmtANSItoU8size(&ansi1);
 	u8.data = malloc(u8.size);
-	cmtANSItoU8(&ansi, &u8);
+	cmtANSItoU8(&ansi1, &u8);
 	//标答：u8->data="\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33"
 	//u8->size=13
 
 	//测试2：ANSI转UTF-16
-	u16.size = cmtANSItoU16size(&ansi);
+	u16.size = cmtANSItoU16size(&ansi1);
 	u16.data = malloc(u16.size);
-	cmtANSItoU16(&ansi, &u16);
+	cmtANSItoU16(&ansi1, &u16);
 	//标答：u16->data="\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00"
 	//u16->size=18
 
 	//测试3：ANSI转UTF-32
-	u32.size = cmtANSItoU32size(&ansi);
+	u32.size = cmtANSItoU32size(&ansi1);
 	u32.data = malloc(u32.size);
-	cmtANSItoU32(&ansi, &u32);
+	cmtANSItoU32(&ansi1, &u32);
 	//标答：u32->data="\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00"
 	//u32->size=36
+
+	//测试4：测量ANSI字符字节数
+	ansi2size = cmtANSIchSize(&ansi2, ansi1.locale);
+	//标答：ansi2size=2
 
 	free(u8.data);
 	free(u16.data);
