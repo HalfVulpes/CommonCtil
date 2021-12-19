@@ -2774,6 +2774,18 @@ void cmtBinToStr(cmtUint64 in, cmtU8str* out)
 //	}
 //}
 
+cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+{
+	cmtUint64 rOut = 0;
+	
+	
+}
+
+void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
+{
+
+}
+
 //void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 //{
 //	//通用

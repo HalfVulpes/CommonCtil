@@ -874,24 +874,20 @@ extern void cmtF32toStrEx(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf
 */
 extern void cmtF64toStrEx(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);
 
+extern cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
+
 //status: NC
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 
 //status: NC
-/*
-* TODO:
-* 浮点数还没有处理错误数据（NAN，0，INFINITY）
-* 输出字符串还要增加控制字数模式（由precision给定）
-* 遍历输出实现
-*/
 /**
-* @brief 根据格式字符串生成字符串
+* @brief 根据格式化字符串生成字符串
 * @param[out] out 生成的字符串
-* @param[in] format 格式字符串
-* @param[in] ... 参数列表（与格式字符串匹配）
-* @attention 格式字符串和生成的字符串都是UTF-8编码的
-* @attention 格式字符串具体要求见 doc/格式字符串.md
-* @date 2021-09-23
+* @param[in] format 格式化字符串
+* @param[in] ... 参数列表（与格式化字符串匹配）
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @date 2021-12-20
 * @author dexnab
 */
 extern void cmtSprintf(cmtU8str* out, cmtU8str* format, ...);
