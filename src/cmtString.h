@@ -618,46 +618,45 @@ extern void cmtU32toU16(cmtU32str* u32, cmtU16str* u16);
 */
 extern void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList);
 
-//status: PA
 /**
 * @brief 字符串转整数（二进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
+* @test cmtDemoStrToBin() 状态：PA
 * @date 2021-10-14
 * @author dexnab
 */
 extern cmtUint64 cmtStrToBin(cmtU8str* in, cmtUint64* out);
 
-//status: PA
 /**
 * @brief 字符串转整数（八进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
+* @test cmtDemoStrToOct() 状态：PA
 * @date 2021-10-14
 * @author dexnab
 */
 extern cmtUint64 cmtStrToOct(cmtU8str* in, cmtUint64* out);
 
-//status: PA
 /**
 * @brief 字符串转整数（十进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
-* @note 有没有符号都行。虽然参数out类型是无符号类型，但有符号数也可以直接用，参数out只是很单纯的一个指针而已
+* @test cmtDemoStrToDec() 状态：PA
 * @date 2021-10-14
 * @author dexnab
 */
 extern cmtUint64 cmtStrToDec(cmtU8str* in, cmtUint64* out);
 
-//status: PA
 /**
 * @brief 字符串转整数（十六进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
+* @test cmtDemoStrToHex() 状态：PA
 * @date 2021-11-04
 * @author dexnab
 */
@@ -674,12 +673,12 @@ extern cmtUint64 cmtStrToHex(cmtU8str* in, cmtUint64* out);
 */
 extern cmtUint64 cmtStrToF32(cmtU8str* in, float* out);
 
-//status: PA
 /**
 * @brief 字符串转浮点数（64位）
 * @param[in] in 字符串
 * @param[out] out 浮点数
 * @return 转换了多少字节的字符串
+* @test cmtDemoStrToF64() 状态：PA
 * @date 2021-12-01
 * @author dexnab
 */

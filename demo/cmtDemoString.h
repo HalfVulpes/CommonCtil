@@ -82,12 +82,34 @@ void cmtDemoAnlyFmt();
 /**
 * @brief 字符串转整数（二进制格式）
 * @see CMT_CONSTSTR(str)
+* @see cmtStrToBin(cmtU8str* in, cmtUint64* out)
 * @date 2021-12-18
 * @author dexnab
 */
 void cmtDemoStrToBin();
+
+/**
+* @brief 字符串转整数（八进制格式）
+* @see cmtStrToOct(cmtU8str* in, cmtUint64* out)
+* @date 2021-12-18
+* @author dexnab
+*/
 void cmtDemoStrToOct();
+
+/**
+* @brief 字符串转整数（十进制格式）
+* @see cmtStrToDec(cmtU8str* in, cmtUint64* out)
+* @date 2021-12-18
+* @author dexnab
+*/
 void cmtDemoStrToDec();
+
+/**
+* @brief 字符串转整数（十六进制格式）
+* @see cmtStrToHex(cmtU8str* in, cmtUint64* out)
+* @date 2021-12-18
+* @author dexnab
+*/
 void cmtDemoStrToHex();
 
 /**
@@ -97,6 +119,13 @@ void cmtDemoStrToHex();
 * @author dexnab
 */
 void cmtDemoStrToF32();
+
+/**
+* @brief 字符串转32位浮点
+* @see cmtStrToF64(cmtU8str*, float*)
+* @date 2021-12-04
+* @author dexnab
+*/
 void cmtDemoStrToF64();
 void cmtDemoBinToStr();
 #endif
