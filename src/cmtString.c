@@ -1224,7 +1224,236 @@ void cmtU32toU16(cmtU32str* u32, cmtU16str* u16)
 
 void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList)
 {
+	cmtUint64 rFmt = 0, rArg = 0;
 
+	//TODO: change to cmt native
+	memset(info, 0, sizeof(cmtFmtInfo));
+
+	//start
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == '+') goto _T1;
+	if (fmt->data[rFmt] == '-') goto _T2;
+	if (fmt->data[rFmt] == '0') goto _T3;
+	if (fmt->data[rFmt] >= '1' && fmt->data[rFmt] <= '9') goto _T4;
+	if (fmt->data[rFmt] == '*') goto _T6;
+	if (fmt->data[rFmt] == '.') goto _T7;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'+'
+_T1:
+	info->sign = TRUE;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == '-') goto _T2;
+	if (fmt->data[rFmt] == '0') goto _T3;
+	if (fmt->data[rFmt] >= '1' && fmt->data[rFmt] <= '9') goto _T4;
+	if (fmt->data[rFmt] == '*') goto _T6;
+	if (fmt->data[rFmt] == '.') goto _T7;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'-'
+_T2:
+	info->padding.align = TRUE;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == '0') goto _T3;
+	if (fmt->data[rFmt] >= '1' && fmt->data[rFmt] <= '9') goto _T4;
+	if (fmt->data[rFmt] == '*') goto _T6;
+	goto _Tend;	
+
+	//'0'
+_T3:
+	info->padding.content = TRUE;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] >= '1' && fmt->data[rFmt] <= '9') goto _T4;
+	if (fmt->data[rFmt] == '*') goto _T6;
+	goto _Tend;
+
+	//['1','9']
+_T4:
+	info->padding.length = fmt->data[rFmt] - '0';
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] >= '0' && fmt->data[rFmt] <= '9') goto _T5;
+	if (fmt->data[rFmt] == '.') goto _T7;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//['0','9']
+_T5:
+	info->padding.length = info->padding.length * 10 + fmt->data[rFmt] - '0';
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] >= '0' && fmt->data[rFmt] <= '9') goto _T5;
+	if (fmt->data[rFmt] == '.') goto _T7;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'*'
+_T6:
+	info->padding.length = ArgList[rArg];
+	rArg++;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == '.') goto _T7;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'.'
+_T7:
+	info->precision.enabled = TRUE;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == '=') goto _T8;
+	if (fmt->data[rFmt] >= '0' && fmt->data[rFmt] <= '9') goto _T9;
+	if (fmt->data[rFmt] == '*') goto _T10;
+	goto _Tend;
+
+	//'='
+_T8:
+	info->precision.flag = TRUE;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] >= '0' && fmt->data[rFmt] <= '9') goto _T9;
+	if (fmt->data[rFmt] == '*') goto _T10;
+	goto _Tend;
+
+	//['0','9']
+_T9:
+	info->precision.value = info->precision.value * 10 + fmt->data[rFmt] - '0';
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] >= '0' && fmt->data[rFmt] <= '9') goto _T9;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'*'
+_T10:
+	info->precision.value = ArgList[rArg];
+	rArg++;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'h'
+_T11:
+	info->size = CMT_FMT_SIZE_H;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T12;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'h'
+_T12:
+	info->size = CMT_FMT_SIZE_HH;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'l'
+_T13:
+	info->size = CMT_FMT_SIZE_L;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T14;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'l'
+_T14:
+	info->size = CMT_FMT_SIZE_LL;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//type
+_T15:
+	info->type = fmt->data[rFmt];
+
+	//goto _Tend;
+
+	//end
+_Tend:
+	;
 }
 
 cmtUint64 cmtStrToBin(cmtU8str* in, cmtUint64* out)

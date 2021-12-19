@@ -89,42 +89,42 @@ typedef struct _CMTU32STR
 
 /**
 * @typedef cmtFmtPadInfo
-* @brief cmtFmtInfo::padding字段
+* @brief cmtFmtInfo.padding字段
 * @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 /**
-* @brief cmtFmtInfo::padding字段
+* @brief cmtFmtInfo.padding字段
 * @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 typedef struct _CMTFMTPADINFO
 {
-	cmtBool align;
-	cmtBool content;
-	cmtUint64 length;
+	cmtBool align;///<TRUE：左对齐 FALSE：右对齐
+	cmtBool content;///<TRUE：'0'填充 FALSE：空格填充
+	cmtUint64 length;///<填充后字符串字符数
 }cmtFmtPadInfo;
 
 /**
 * @typedef cmtFmtPrecInfo
-* @brief cmtFmtInfo::precision字段
+* @brief cmtFmtInfo.precision字段
 * @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 /**
-* @brief cmtFmtInfo::precision字段
+* @brief cmtFmtInfo.precision字段
 * @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 typedef struct _CMTFMTPRECINFO
 {
-	cmtBool enabled;
-	cmtBool flag;
-	cmtUint64 value;
+	cmtBool enabled;///<TRUE：设置了精度字段 FALSE：精度字段缺省
+	cmtBool flag;///<TRUE：有效数字模式 FALSE：小数位数保留模式
+	cmtUint64 value;///<精度值
 }cmtFmtPrecInfo;
 
 /**
@@ -142,11 +142,11 @@ typedef struct _CMTFMTPRECINFO
 */
 typedef struct _CMTFMTINFO
 {
-	cmtBool sign;
+	cmtBool sign;///<TRUE：显示正号 FALSE：不显示正号
+	cmtUint8 size;///<参数字节数或字符编码
+	cmtChar type;///<参数类型
 	cmtFmtPadInfo padding;
 	cmtFmtPrecInfo precision;
-	cmtUint8 size;
-	cmtChar type;
 }cmtFmtInfo;
 /*--------------------------------结构体定义 结束--------------------------------*/
 
@@ -610,9 +610,10 @@ extern void cmtU32toU16(cmtU32str* u32, cmtU16str* u16);
 * @param[in] fmt 格式控制字符串
 * @param[out] info 分析结果
 * @param[in] ArgList 参数数组
-* @attention fmt只保留格式控制字符串，从%开始（不含）到type字段结束（包含），如"llf"
-* @attention 本函数不进行边界检查，请保证格式控制字符串绝对符合要求（详见doc/格式字符串），否则会造成溢出
-* @test cmtDemoAnlyFmt() 状态：NC
+* @pre fmt只保留格式控制字符串，从%开始（不含）到type字段结束（包含），如"llf"
+* @pre 本函数不进行边界检查，请保证格式控制字符串绝对符合要求（详见doc/格式字符串），否则会造成溢出
+* @see doc/格式化字符串.md
+* @test cmtDemoAnlyFmt() 状态：PA
 * @date 2021-12-19
 * @author dexnab
 */

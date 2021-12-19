@@ -203,19 +203,22 @@ void cmtDemoU32()
 
 void cmtDemoAnlyFmt()
 {
-	cmtU8str u8 = CMT_CONSTSTR("+-010.=*f\n");
+	cmtU8str u8 = CMT_CONSTSTR("+-010.=*f");
 	cmtFmtInfo FmtInfo;
 	cmtUint64 arglist[1];
 	arglist[0] = 12;
 
 	cmtAnlyFmt(&u8, &FmtInfo, arglist);
-	//标答：FmtInfo.sign=TURE
+	//标答：
+	//FmtInfo.sign=TURE
+	//FmtInfo.size=0
+	//FmtInfo.type='f'
 	//FmtInfo.padding.align=TRUE
 	//FmtInfo.padding.content=TRUE
 	//FmtInfo.padding.length=10
-	//FmtInfo.precision.enabled=TRUE;
-	//FmtInfo.precision.flag=TRUE;
-	//FmtInfo.precision.value=12;
+	//FmtInfo.precision.enabled=TRUE
+	//FmtInfo.precision.flag=TRUE
+	//FmtInfo.precision.value=12
 }
 
 void cmtDemoStrToBin()
