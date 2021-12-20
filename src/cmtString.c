@@ -2776,9 +2776,107 @@ void cmtBinToStr(cmtUint64 in, cmtU8str* out)
 
 cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 {
-	cmtUint64 rOut = 0;
-	
-	
+}
+
+cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
+{
+	cmtChar sign = 0;
+	cmtChar* SignPos = 0;
+	cmtU8str pad, num;
+	cmtUint64 r;
+	cmtUint64 MaxAddr = out->data + out->size;
+	cmtUint64 exp10 = 1;
+
+	//1. 确定符号
+	if (arg < 0) sign = '-';
+	else if (info->sign) sign = '+';
+	arg = -arg;
+
+	//2. 测量数字字符数
+	num.size = 0;
+	while (arg >= exp10)
+	{
+		num.size++;
+		exp10 *= 10;
+		if (num.size == 19) break;//64位有符号整数最多装19位十进制数字
+	}
+
+	//3. 截断
+	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
+
+	//4. 计算填充字符数
+	if (sign)
+	{
+		if (info->padding.length > 1 + num.size) pad.size = info->padding.length - 1 - num.size;
+		else pad.size = 0;
+	}
+	else
+	{
+		if (info->padding.length > num.size) pad.size = info->padding.length - num.size;
+		else pad.size = 0;
+	}
+
+	//5. 定位
+	if (sign)
+	{
+		if (info->padding.align)
+		{
+			SignPos = out->data;
+			num.data = SignPos + 1;
+			pad.data = num.data + num.size;
+		}
+		else
+		{
+			if (info->padding.content)
+			{
+				SignPos = out->data;
+				pad.data = SignPos + 1;
+				num.data = pad.data + pad.size;
+			}
+			else
+			{
+				pad.data = out->data;
+				SignPos = pad.data + pad.size;
+				num.data = SignPos + 1;
+			}
+		}
+	}
+	else
+	{
+		if (info->padding.align)
+		{
+			num.data = out->data;
+			pad.data = num.data + num.size;
+		}
+		else
+		{
+			pad.data = out->data;
+			num.data = pad.data + pad.size;
+		}
+	}
+
+	//6. 写入
+	//6.1. sign
+	if (sign)
+		*SignPos = sign;
+	//6.2. padding
+	if (info->padding.align)
+		for (r = 0; r < pad.size && pad.data + r < MaxAddr; r++)
+			pad.data[r] = ' ';
+	else
+	{
+		if (info->padding.content)
+			for (r = 0; r < pad.size && pad.data + r < MaxAddr; r++)
+				pad.data[r] = '0';
+		else
+			for (r = 0; r < pad.size && pad.data + r < MaxAddr; r++)
+				pad.data[r] = '0';
+	}
+	//6.3. num
+	for (r = 0; r < num.size; r++)
+	{
+		num.data[num.size - r - 1] = 
+	}
 }
 
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
