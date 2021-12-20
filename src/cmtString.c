@@ -2870,13 +2870,16 @@ cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 				pad.data[r] = '0';
 		else
 			for (r = 0; r < pad.size && pad.data + r < MaxAddr; r++)
-				pad.data[r] = '0';
+				pad.data[r] = ' ';
 	}
 	//6.3. num
-	for (r = 0; r < num.size; r++)
+	for (r = 0; r < num.size && num.data + num.size - r - 1 < MaxAddr; r++)
 	{
-		num.data[num.size - r - 1] = 
+		num.data[num.size - r - 1] = arg % 10;
+		arg /= 10;
 	}
+
+
 }
 
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
