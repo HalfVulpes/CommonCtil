@@ -876,6 +876,8 @@ extern void cmtF64toStrEx(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sig
 
 extern cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
 
+extern cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg);
+
 //status: NC
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 

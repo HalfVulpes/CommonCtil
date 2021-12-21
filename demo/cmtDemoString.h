@@ -23,7 +23,7 @@
 * @date 2021-12-18
 * @author dexnab
 */
-void cmtDemoANSI();
+extern void cmtDemoANSI();
 
 /**
 * @brief 有关UTF-8字符编码的一系列测试
@@ -39,7 +39,7 @@ void cmtDemoANSI();
 * @date 2021-12-18
 * @author dexnab
 */
-void cmtDemoU8();
+extern void cmtDemoU8();
 
 /**
 * @brief 有关UTF-16字符编码的一系列测试
@@ -55,7 +55,7 @@ void cmtDemoU8();
 * @date 2021-12-18
 * @author dexnab
 */
-void cmtDemoU16();
+extern void cmtDemoU16();
 
 /**
 * @brief 有关UTF-32字符编码的一系列测试
@@ -69,7 +69,7 @@ void cmtDemoU16();
 * @date 2021-12-18
 * @author dexnab
 */
-void cmtDemoU32();
+extern void cmtDemoU32();
 
 /**
 * @brief 分析格式控制字符串
@@ -77,7 +77,7 @@ void cmtDemoU32();
 * @date 2021-12-19
 * @author dexnab
 */
-void cmtDemoAnlyFmt();
+extern void cmtDemoAnlyFmt();
 
 /**
 * @brief 字符串转整数（二进制格式）
@@ -86,7 +86,7 @@ void cmtDemoAnlyFmt();
 * @date 2021-12-18
 * @author dexnab
 */
-void cmtDemoStrToBin();
+extern void cmtDemoStrToBin();
 
 /**
 * @brief 字符串转整数（八进制格式）
@@ -94,7 +94,7 @@ void cmtDemoStrToBin();
 * @date 2021-12-18
 * @author dexnab
 */
-void cmtDemoStrToOct();
+extern void cmtDemoStrToOct();
 
 /**
 * @brief 字符串转整数（十进制格式）
@@ -102,7 +102,7 @@ void cmtDemoStrToOct();
 * @date 2021-12-18
 * @author dexnab
 */
-void cmtDemoStrToDec();
+extern void cmtDemoStrToDec();
 
 /**
 * @brief 字符串转整数（十六进制格式）
@@ -110,7 +110,7 @@ void cmtDemoStrToDec();
 * @date 2021-12-18
 * @author dexnab
 */
-void cmtDemoStrToHex();
+extern void cmtDemoStrToHex();
 
 /**
 * @brief 字符串转32位浮点
@@ -118,7 +118,7 @@ void cmtDemoStrToHex();
 * @date 2021-12-04
 * @author dexnab
 */
-void cmtDemoStrToF32();
+extern void cmtDemoStrToF32();
 
 /**
 * @brief 字符串转32位浮点
@@ -126,6 +126,14 @@ void cmtDemoStrToF32();
 * @date 2021-12-04
 * @author dexnab
 */
-void cmtDemoStrToF64();
-void cmtDemoBinToStr();
+extern void cmtDemoStrToF64();
+extern void cmtDemoBinToStr();
+
+/**
+* @brief 整数转字符串（有符号十进制模式）
+* @see cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
+* @date 2021-12-21
+* @author dexnab
+*/
+extern void cmtDemoSprintfDec();
 #endif

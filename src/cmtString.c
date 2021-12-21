@@ -2861,25 +2861,37 @@ cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 		*SignPos = sign;
 	//6.2. padding
 	if (info->padding.align)
-		for (r = 0; r < pad.size && pad.data + r < MaxAddr; r++)
-			pad.data[r] = ' ';
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+	}
 	else
 	{
 		if (info->padding.content)
-			for (r = 0; r < pad.size && pad.data + r < MaxAddr; r++)
-				pad.data[r] = '0';
+			for (r = 0; r < pad.size; r++)
+				if (pad.data + r < MaxAddr) pad.data[r] = '0';
 		else
-			for (r = 0; r < pad.size && pad.data + r < MaxAddr; r++)
-				pad.data[r] = ' ';
+			for (r = 0; r < pad.size; r++)
+				if (pad.data + r < MaxAddr) pad.data[r] = ' ';
 	}
 	//6.3. num
-	for (r = 0; r < num.size && num.data + num.size - r - 1 < MaxAddr; r++)
+	for (r = num.size; r > 0; r--)
 	{
-		num.data[num.size - r - 1] = arg % 10;
+		if (num.data + r - 1 < MaxAddr) num.data[r - 1] = arg % 10 + '0';
 		arg /= 10;
 	}
 
-
+	//7. 返回值
+	if (sign)
+	{
+		if (1 + pad.size + num.size > out->size) return out->size;
+		else return 1 + pad.size + num.size;
+	}
+	else
+	{
+		if (pad.size + num.size > out->size) return out->size;
+		else return pad.size + num.size;
+	}
 }
 
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
