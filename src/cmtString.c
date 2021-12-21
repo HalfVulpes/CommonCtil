@@ -2776,6 +2776,9 @@ void cmtBinToStr(cmtUint64 in, cmtU8str* out)
 
 cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 {
+	cmtU8str pad, num;
+	cmtUint64 r;
+	cmtUint64 MaxAddr = out->data + out->size;
 }
 
 cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
@@ -2857,7 +2860,7 @@ cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 
 	//6. 写入
 	//6.1. sign
-	if (sign)
+	if (sign && out->size)
 		*SignPos = sign;
 	//6.2. padding
 	if (info->padding.align)
