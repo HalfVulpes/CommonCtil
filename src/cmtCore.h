@@ -60,6 +60,11 @@ typedef struct _CMTLOCK
 	cmtUint8 value;//<自旋模式下锁变量
 	cmtUint64 handle;//<信号量模式下句柄
 }cmtLock;
+
+typedef struct _CMTCPUIDINFO
+{
+	cmtBool ABM;///<Advanced Bit Manipulation
+}cmtCPUIDinfo;
 /*--------------------------------结构体定义 结束--------------------------------*/
 /*--------------------------------线程/进程操作函数 开始--------------------------------*/
 
@@ -241,4 +246,18 @@ extern void cmtFreeMem(cmtUint8* addr);
 
 extern void cmtReleaseMem(cmtUint8* addr);
 /*--------------------------------内存操作函数 结束--------------------------------*/
+/*--------------------------------CPU特殊指令函数 开始--------------------------------*/
+
+extern void cmtCPUID();
+
+/**
+* @brief 从左往右寻找为1的位，返回其位置
+* @param[in] num 源操作数
+* @return 位置
+* @test cmtDemoBSR();
+* * @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint8 cmtBSR(cmtUint64 num);
+/*--------------------------------CPU特殊指令函数 结束--------------------------------*/
 #endif

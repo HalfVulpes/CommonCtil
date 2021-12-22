@@ -524,6 +524,29 @@ void cmtDemoBinToStr()
 //	printf("%.*s", out.size, out.data);
 //}
 
+void cmtDemoSprintfBin()
+{
+	cmtFmtInfo info;
+	info.sign = FALSE;
+	info.size = CMT_FMT_SIZE_DEFAULT;
+	info.type = 'b';
+	info.padding.align = FALSE;
+	info.padding.content = TRUE;
+	info.padding.length = 30;
+	info.precision.enabled = FALSE;
+	info.precision.flag = FALSE;
+	info.precision.value = 0;
+	cmtU8str u8;
+	u8.size = 1024;
+	u8.data = malloc(u8.size);
+	cmtUint64 ret;
+
+	ret = cmtSprintfBin(&u8, &info, 0x01040224);//0x01040224=0001 0000 0100 0000 0010 0010 0100
+	//标答：
+	//ret=30
+	//u8->data="000000000001000000001000100100"
+}
+
 void cmtDemoSprintfDec()
 {
 	cmtFmtInfo info;
