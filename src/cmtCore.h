@@ -254,8 +254,9 @@ extern void cmtCPUID();
 * @brief 从左往右寻找为1的位，返回其位置
 * @param[in] num 源操作数
 * @return 位置
+* @retval 0 @a num 为1或0
 * @test cmtDemoBSR();
-* * @date 2021-12-22
+* @date 2021-12-22
 * @author dexnab
 */
 extern cmtUint8 cmtBSR(cmtUint64 num);

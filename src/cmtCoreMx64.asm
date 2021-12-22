@@ -58,6 +58,7 @@ cmtSpinLockEnter endp
 ;rcx=num
 ;cmtUint8 cmtBSR(cmtUint64 num)
 cmtBSR proc
+	xor rax, rax
 	bsr rax, rcx
 	ret
 cmtBSR endp
