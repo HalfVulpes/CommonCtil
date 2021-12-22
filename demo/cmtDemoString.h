@@ -138,10 +138,34 @@ extern void cmtDemoBinToStr();
 extern void cmtDemoSprintfBin();
 
 /**
+* @brief 整数转字符串（八进制模式）
+* @see cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+* @date 2021-12-21
+* @author dexnab
+*/
+extern void cmtDemoSprintfOct();
+
+/**
 * @brief 整数转字符串（有符号十进制模式）
 * @see cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 * @date 2021-12-21
 * @author dexnab
 */
 extern void cmtDemoSprintfDec();
+
+/**
+* @brief 整数转字符串（无符号十进制模式）
+* @see cmtSprintfUdec(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+* @date 2021-12-21
+* @author dexnab
+*/
+extern void cmtDemoSprintfUdec();
+
+/**
+* @brief 整数转字符串（十六进制模式）
+* @see cmtSprintfHex(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+* @date 2021-12-21
+* @author dexnab
+*/
+extern void cmtDemoSprintfHex();
 #endif

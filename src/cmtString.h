@@ -889,6 +889,19 @@ extern void cmtF64toStrEx(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sig
 extern cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
 
 /**
+* @brief 整数转字符串（八进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfOct() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
+
+/**
 * @brief 整数转字符串（有符号十进制模式）
 * @param[out] out 生成的字符串
 * @param[in] info 格式
@@ -902,17 +915,30 @@ extern cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
 extern cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg);
 
 /**
-* @brief 整数转字符串（八进制模式）
+* @brief 整数转字符串（无符号十进制模式）
 * @param[out] out 生成的字符串
 * @param[in] info 格式
 * @param[in] arg 整数
 * @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
 * @see doc/格式化字符串.md
-* @test cmtDemoSprintfOct() 状态：NC
+* @test cmtDemoSprintfUdec() 状态：PA
 * @date 2021-12-22
 * @author dexnab
 */
-extern cmtUint64 cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
+extern cmtUint64 cmtSprintfUdec(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
+
+/**
+* @brief 整数转字符串（十六进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfHex() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfHex(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
 
 //status: NC
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);

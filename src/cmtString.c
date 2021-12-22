@@ -2805,7 +2805,7 @@ cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 	}
 
 	//5. 写入
-	//5.1 padding
+	//5.1. padding
 	if (info->padding.content)
 	{
 		for (r = 0; r < pad.size; r++)
@@ -2816,11 +2816,65 @@ cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 		for (r = 0; r < pad.size; r++)
 			if (pad.data + r < MaxAddr) pad.data[r] = ' ';
 	}
-	//5.2 num
+	//5.2. num
 	for (r = num.size; r > 0; r--)
 	{
 		if (num.data + r - 1 < MaxAddr) num.data[r - 1] = (arg & 1) + '0';
 		arg >>= 1;
+	}
+
+	//6. 返回值
+	if (pad.size + num.size > out->size) return out->size;
+	else return pad.size + num.size;
+}
+
+cmtUint64 cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+{
+	cmtU8str pad, num;
+	cmtUint64 r;
+	cmtUint64 MaxAddr = out->data + out->size;
+
+	//1. 测量数字字符数
+	num.size = cmtBSR(arg) / 3 + 1;
+
+	//2. 截断
+	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
+
+	//3. 计算填充字符数
+	if (info->padding.length > num.size)
+		pad.size = info->padding.length - num.size;
+	else
+		pad.size = 0;
+
+	//4. 定位
+	if (info->padding.align)
+	{
+		num.data = out->data;
+		pad.data = num.data + num.size;
+	}
+	else
+	{
+		pad.data = out->data;
+		num.data = pad.data + pad.size;
+	}
+
+	//5. 写入
+	//5.1. padding
+	if (info->padding.content)
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = '0';
+	}
+	else
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+	}
+	//5.2. num
+	for (r = num.size; r > 0; r--)
+	{
+		if (num.data + r - 1 < MaxAddr) num.data[r - 1] = (arg & 7) + '0';
+		arg >>= 3;
 	}
 
 	//6. 返回值
@@ -2848,7 +2902,7 @@ cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 	{
 		num.size++;
 		exp10 *= 10;
-		if (num.size == 19) break;//64位有符号整数最多装19位十进制数字
+		if (num.size == 20) break;//64位有符号整数最多装20位十进制数字
 	}
 
 	//3. 截断
@@ -2944,14 +2998,21 @@ cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 	}
 }
 
-cmtUint64 cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+cmtUint64 cmtSprintfUdec(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 {
 	cmtU8str pad, num;
 	cmtUint64 r;
 	cmtUint64 MaxAddr = out->data + out->size;
+	cmtUint64 exp10 = 1;
 
 	//1. 测量数字字符数
-	num.size = cmtBSR(arg) / 3 + 1;
+	num.size = 0;
+	while (arg >= exp10)
+	{
+		num.size++;
+		exp10 *= 10;
+		if (num.size == 20) break;//64位有符号整数最多装20位十进制数字
+	}
 
 	//2. 截断
 	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
@@ -2975,7 +3036,7 @@ cmtUint64 cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 	}
 
 	//5. 写入
-	//5.1 padding
+	//5.1. padding
 	if (info->padding.content)
 	{
 		for (r = 0; r < pad.size; r++)
@@ -2986,11 +3047,86 @@ cmtUint64 cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 		for (r = 0; r < pad.size; r++)
 			if (pad.data + r < MaxAddr) pad.data[r] = ' ';
 	}
-	//5.2 num
+	//5.2. num
 	for (r = num.size; r > 0; r--)
 	{
-		if (num.data + r - 1 < MaxAddr) num.data[r - 1] = (arg & 7) + '0';
-		arg >>= 3;
+		if (num.data + r - 1 < MaxAddr) num.data[r - 1] = arg % 10 + '0';
+		arg /= 10;
+	}
+
+	//6. 返回值
+	if (pad.size + num.size > out->size) return out->size;
+	else return pad.size + num.size;
+}
+
+cmtUint64 cmtSprintfHex(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+{
+	cmtU8str pad, num;
+	cmtUint64 r;
+	cmtUint64 MaxAddr = out->data + out->size;
+
+	//1. 测量数字字符数
+	num.size = cmtBSR(arg) / 4 + 1;
+
+	//2. 截断
+	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
+
+	//3. 计算填充字符数
+	if (info->padding.length > num.size)
+		pad.size = info->padding.length - num.size;
+	else
+		pad.size = 0;
+
+	//4. 定位
+	if (info->padding.align)
+	{
+		num.data = out->data;
+		pad.data = num.data + num.size;
+	}
+	else
+	{
+		pad.data = out->data;
+		num.data = pad.data + pad.size;
+	}
+
+	//5. 写入
+	//5.1. padding
+	if (info->padding.content)
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = '0';
+	}
+	else
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+	}
+	//5.2. num
+	//5.2.1. 小写
+	if (info->type == 'x')
+	{
+		for (r = num.size; r > 0; r--)
+		{
+			if (num.data + r - 1 < MaxAddr)
+			{
+				if ((arg & 0xf) < 10) num.data[r - 1] = (arg & 0xf) + '0';
+				else num.data[r - 1] = (arg & 0xf) - 10 + 'a';
+			}
+			arg >>= 4;
+		}
+	}
+	//5.2.2. 大写
+	else
+	{
+		for (r = num.size; r > 0; r--)
+		{
+			if (num.data + r - 1 < MaxAddr)
+			{
+				if ((arg & 0xf) < 10) num.data[r - 1] = (arg & 0xf) + '0';
+				else num.data[r - 1] = (arg & 0xf) - 10 + 'A';
+			}
+			arg >>= 4;
+		}
 	}
 
 	//6. 返回值
