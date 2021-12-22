@@ -1,7 +1,6 @@
 ;cmtCore assembly support
 ;amd64 version for masm
 
-extern testtestabc : proc
 .code
 
 ;cx dx r8 r9
@@ -53,8 +52,14 @@ cmtSpinLockEnter proc
 
 	cSLE_EndNormal:
 	xor rax, rax
-	call testtestabc
 	ret
 cmtSpinLockEnter endp
+
+;rcx=num
+;cmtUint8 cmtBSR(cmtUint64 num)
+cmtBSR proc
+	bsr rax, rcx
+	ret
+cmtBSR endp
 
 end
