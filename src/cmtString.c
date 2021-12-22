@@ -2781,7 +2781,7 @@ cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 	cmtUint64 MaxAddr = out->data + out->size;
 
 	//1. 测量数字字符数
-	num.size = cmtBSR(arg);
+	num.size = cmtBSR(arg) + 1;
 
 	//2. 截断
 	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
