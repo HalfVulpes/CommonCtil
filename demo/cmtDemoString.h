@@ -130,6 +130,14 @@ extern void cmtDemoStrToF64();
 extern void cmtDemoBinToStr();
 
 /**
+* @brief 整数转字符串（二进制模式）
+* @see cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+* @date 2021-12-22
+* @author dexnab
+*/
+extern void cmtDemoSprintfBin();
+
+/**
 * @brief 整数转字符串（有符号十进制模式）
 * @see cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 * @date 2021-12-21

@@ -2779,6 +2779,53 @@ cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 	cmtU8str pad, num;
 	cmtUint64 r;
 	cmtUint64 MaxAddr = out->data + out->size;
+
+	//1. 测量数字字符数
+	num.size = cmtBSR(arg);
+
+	//2. 截断
+	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
+
+	//3. 计算填充字符数
+	if (info->padding.length > num.size)
+		pad.size = info->padding.length - num.size;
+	else
+		pad.size = 0;
+
+	//4. 定位
+	if (info->padding.align)
+	{
+		num.data = out->data;
+		pad.data = num.data + num.size;
+	}
+	else
+	{
+		pad.data = out->data;
+		num.data = pad.data + pad.size;
+	}
+
+	//5. 写入
+	//5.1 padding
+	if (info->padding.content)
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = '0';
+	}
+	else
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+	}
+	//5.2 num
+	for (r = num.size; r > 0; r--)
+	{
+		if (num.data + r - 1 < MaxAddr) num.data[r - 1] = (arg & 1) + '0';
+		arg >>= 1;
+	}
+
+	//6. 返回值
+	if (pad.size + num.size > out->size) return out->size;
+	else return pad.size + num.size;
 }
 
 cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)

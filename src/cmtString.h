@@ -11,6 +11,7 @@
 #define _INC_CMTSTRING
 #define _CRT_SECURE_NO_WARNINGS
 #include <cmtType.h>
+#include <cmtCore.h>
 #include <string.h>
 #include <locale.h>
 #include <stdlib.h>
@@ -874,8 +875,30 @@ extern void cmtF32toStrEx(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf
 */
 extern void cmtF64toStrEx(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);
 
+/**
+* @brief 整数转字符串（二进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfBin() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
 extern cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
 
+/**
+* @brief 整数转字符串（有符号十进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfDec() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
 extern cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg);
 
 //status: NC
