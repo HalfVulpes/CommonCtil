@@ -3134,6 +3134,11 @@ cmtUint64 cmtSprintfHex(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 	else return pad.size + num.size;
 }
 
+cmtUint64 cmtSprintfFl64(cmtU8str* out, cmtFmtInfo* info, double arg)
+{
+	
+}
+
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 {
 

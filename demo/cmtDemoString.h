@@ -168,4 +168,12 @@ extern void cmtDemoSprintfUdec();
 * @author dexnab
 */
 extern void cmtDemoSprintfHex();
+
+/**
+* @brief 浮点数转字符串（64位）
+* @see cmtSprintfFl64(cmtU8str* out, cmtFmtInfo* info, double arg)
+* @date 2021-12-21
+* @author dexnab
+*/
+extern void cmtDemoSprintfFl64();
 #endif

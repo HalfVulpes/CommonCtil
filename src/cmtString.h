@@ -940,6 +940,19 @@ extern cmtUint64 cmtSprintfUdec(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
 */
 extern cmtUint64 cmtSprintfHex(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
 
+/**
+* @brief 浮点数转字符串（64位）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfFl64() 状态：NC
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfFl64(cmtU8str* out, cmtFmtInfo* info, double arg);
+
 //status: NC
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 
