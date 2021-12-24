@@ -541,10 +541,33 @@ void cmtDemoSprintfBin()
 	u8.data = malloc(u8.size);
 	cmtUint64 ret;
 
-	ret = cmtSprintfBin(&u8, &info, 0x01040224);//0x01040224=0001 0000 0100 0000 0010 0010 0100
+	ret = cmtSprintfBin(&u8, &info, 0x01040224);//0x01040224=0001 0000 0100 0000 0010 0010 0100b
 	//标答：
 	//ret=30
 	//u8->data="000000000001000000001000100100"
+}
+
+void cmtDemoSprintfOct()
+{
+	cmtFmtInfo info;
+	info.sign = FALSE;
+	info.size = CMT_FMT_SIZE_DEFAULT;
+	info.type = 'o';
+	info.padding.align = TRUE;
+	info.padding.content = FALSE;
+	info.padding.length = 5;
+	info.precision.enabled = FALSE;
+	info.precision.flag = FALSE;
+	info.precision.value = 0;
+	cmtU8str u8;
+	u8.size = 1024;
+	u8.data = malloc(u8.size);
+	cmtUint64 ret;
+	
+	ret = cmtSprintfOct(&u8, &info, 03141643122);
+	//标答：
+	//ret=10
+	//u8->data="3141643122"
 }
 
 void cmtDemoSprintfDec()
@@ -553,8 +576,8 @@ void cmtDemoSprintfDec()
 	info.sign = FALSE;
 	info.size = CMT_FMT_SIZE_DEFAULT;
 	info.type = 'd';
-	info.padding.align = FALSE;
-	info.padding.content = TRUE;
+	info.padding.align = TRUE;
+	info.padding.content = FALSE;
 	info.padding.length = 12;
 	info.precision.enabled = TRUE;
 	info.precision.flag = FALSE;
@@ -564,10 +587,82 @@ void cmtDemoSprintfDec()
 	u8.data = malloc(u8.size);
 	cmtUint64 ret;
 
+	//测试1：非0数
 	ret = cmtSprintfDec(&u8, &info, -123456);
 	//标答：
 	//ret=12
-	//u8->data="-00000002345"
+	//u8->data="-3456       "（有7个空格）
+
+	//测试2：0
+	info.precision.enabled = FALSE;
+	info.padding.length = 0;
+	ret = cmtSprintfDec(&u8, &info, 0);
+	//标答：
+	//ret=1
+	//u8->data="0"
+}
+
+void cmtDemoSprintfUdec()
+{
+	cmtFmtInfo info;
+	info.sign = FALSE;
+	info.size = CMT_FMT_SIZE_DEFAULT;
+	info.type = 'u';
+	info.padding.align = FALSE;
+	info.padding.content = TRUE;
+	info.padding.length = 12;
+	info.precision.enabled = FALSE;
+	info.precision.flag = FALSE;
+	info.precision.value = 0;
+	cmtU8str u8;
+	u8.size = 1024;
+	u8.data = malloc(u8.size);
+	cmtUint64 ret;
+
+	//测试1：非0数
+	ret = cmtSprintfUdec(&u8, &info, 18446744073709551615);//2^64-1
+	//标答：
+	//ret=20
+	//u8->data="18446744073709551615"
+
+	//测试2：0
+	info.precision.enabled = FALSE;
+	info.padding.length = 0;
+	ret = cmtSprintfUdec(&u8, &info, 0);
+	//标答：
+	//ret=1
+	//u8->data="0"
+}
+
+void cmtDemoSprintfHex()
+{
+	cmtFmtInfo info;
+	info.sign = FALSE;
+	info.size = CMT_FMT_SIZE_DEFAULT;
+	info.type = 'x';
+	info.padding.align = FALSE;
+	info.padding.content = TRUE;
+	info.padding.length = 12;
+	info.precision.enabled = FALSE;
+	info.precision.flag = FALSE;
+	info.precision.value = 0;
+	cmtU8str u8;
+	u8.size = 1024;
+	u8.data = malloc(u8.size);
+	cmtUint64 ret;
+
+	//测试1：小写
+	ret = cmtSprintfHex(&u8, &info, 0x3a10df9c5);
+	//标答：
+	//ret=12
+	//u8->data="0003a10df9c5"
+
+	//测试2：大写
+	info.type = 'X';
+	ret = cmtSprintfHex(&u8, &info, 0x3a10df9c5);
+	//标答：
+	//ret=12
+	//u8->data="0003A10DF9C5"
 }
 
 //int main(int argc, char** agrv)
