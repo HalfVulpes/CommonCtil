@@ -6,6 +6,63 @@
 
 #include <cmtString.h>
 
+cmtUint64 cmtBase10ExpFx64[20] = {
+	1,
+	10,
+	100,
+	1000,
+	10000,
+	100000,
+	1000000,
+	10000000,
+	100000000,
+	1000000000,
+	10000000000,
+	100000000000,
+	1000000000000,
+	10000000000000,
+	100000000000000,
+	1000000000000000,
+	10000000000000000,
+	100000000000000000,
+	1000000000000000000,
+	10000000000000000000
+};
+
+double cmtBase10ExpFl64[309] = {
+		1.0e+0, 1.0e+1, 1.0e+2, 1.0e+3, 1.0e+4, 1.0e+5, 1.0e+6, 1.0e+7, 1.0e+8, 1.0e+9,
+		1.0e+10, 1.0e+11, 1.0e+12, 1.0e+13, 1.0e+14, 1.0e+15, 1.0e+16, 1.0e+17, 1.0e+18, 1.0e+19,
+		1.0e+20, 1.0e+21, 1.0e+22, 1.0e+23, 1.0e+24, 1.0e+25, 1.0e+26, 1.0e+27, 1.0e+28, 1.0e+29,
+		1.0e+30, 1.0e+31, 1.0e+32, 1.0e+33, 1.0e+34, 1.0e+35, 1.0e+36, 1.0e+37, 1.0e+38, 1.0e+39,
+		1.0e+40, 1.0e+41, 1.0e+42, 1.0e+43, 1.0e+44, 1.0e+45, 1.0e+46, 1.0e+47, 1.0e+48, 1.0e+49,
+		1.0e+50, 1.0e+51, 1.0e+52, 1.0e+53, 1.0e+54, 1.0e+55, 1.0e+56, 1.0e+57, 1.0e+58, 1.0e+59,
+		1.0e+60, 1.0e+61, 1.0e+62, 1.0e+63, 1.0e+64, 1.0e+65, 1.0e+66, 1.0e+67, 1.0e+68, 1.0e+69,
+		1.0e+70, 1.0e+71, 1.0e+72, 1.0e+73, 1.0e+74, 1.0e+75, 1.0e+76, 1.0e+77, 1.0e+78, 1.0e+79,
+		1.0e+80, 1.0e+81, 1.0e+82, 1.0e+83, 1.0e+84, 1.0e+85, 1.0e+86, 1.0e+87, 1.0e+88, 1.0e+89,
+		1.0e+90, 1.0e+91, 1.0e+92, 1.0e+93, 1.0e+94, 1.0e+95, 1.0e+96, 1.0e+97, 1.0e+98, 1.0e+99,
+		1.0e+100, 1.0e+101, 1.0e+102, 1.0e+103, 1.0e+104, 1.0e+105, 1.0e+106, 1.0e+107, 1.0e+108, 1.0e+109,
+		1.0e+110, 1.0e+111, 1.0e+112, 1.0e+113, 1.0e+114, 1.0e+115, 1.0e+116, 1.0e+117, 1.0e+118, 1.0e+119,
+		1.0e+120, 1.0e+121, 1.0e+122, 1.0e+123, 1.0e+124, 1.0e+125, 1.0e+126, 1.0e+127, 1.0e+128, 1.0e+129,
+		1.0e+130, 1.0e+131, 1.0e+132, 1.0e+133, 1.0e+134, 1.0e+135, 1.0e+136, 1.0e+137, 1.0e+138, 1.0e+139,
+		1.0e+140, 1.0e+141, 1.0e+142, 1.0e+143, 1.0e+144, 1.0e+145, 1.0e+146, 1.0e+147, 1.0e+148, 1.0e+149,
+		1.0e+150, 1.0e+151, 1.0e+152, 1.0e+153, 1.0e+154, 1.0e+155, 1.0e+156, 1.0e+157, 1.0e+158, 1.0e+159,
+		1.0e+160, 1.0e+161, 1.0e+162, 1.0e+163, 1.0e+164, 1.0e+165, 1.0e+166, 1.0e+167, 1.0e+168, 1.0e+169,
+		1.0e+170, 1.0e+171, 1.0e+172, 1.0e+173, 1.0e+174, 1.0e+175, 1.0e+176, 1.0e+177, 1.0e+178, 1.0e+179,
+		1.0e+180, 1.0e+181, 1.0e+182, 1.0e+183, 1.0e+184, 1.0e+185, 1.0e+186, 1.0e+187, 1.0e+188, 1.0e+189,
+		1.0e+190, 1.0e+191, 1.0e+192, 1.0e+193, 1.0e+194, 1.0e+195, 1.0e+196, 1.0e+197, 1.0e+198, 1.0e+199,
+		1.0e+200, 1.0e+201, 1.0e+202, 1.0e+203, 1.0e+204, 1.0e+205, 1.0e+206, 1.0e+207, 1.0e+208, 1.0e+209,
+		1.0e+210, 1.0e+211, 1.0e+212, 1.0e+213, 1.0e+214, 1.0e+215, 1.0e+216, 1.0e+217, 1.0e+218, 1.0e+219,
+		1.0e+220, 1.0e+221, 1.0e+222, 1.0e+223, 1.0e+224, 1.0e+225, 1.0e+226, 1.0e+227, 1.0e+228, 1.0e+229,
+		1.0e+230, 1.0e+231, 1.0e+232, 1.0e+233, 1.0e+234, 1.0e+235, 1.0e+236, 1.0e+237, 1.0e+238, 1.0e+239,
+		1.0e+240, 1.0e+241, 1.0e+242, 1.0e+243, 1.0e+244, 1.0e+245, 1.0e+246, 1.0e+247, 1.0e+248, 1.0e+249,
+		1.0e+250, 1.0e+251, 1.0e+252, 1.0e+253, 1.0e+254, 1.0e+255, 1.0e+256, 1.0e+257, 1.0e+258, 1.0e+259,
+		1.0e+260, 1.0e+261, 1.0e+262, 1.0e+263, 1.0e+264, 1.0e+265, 1.0e+266, 1.0e+267, 1.0e+268, 1.0e+269,
+		1.0e+270, 1.0e+271, 1.0e+272, 1.0e+273, 1.0e+274, 1.0e+275, 1.0e+276, 1.0e+277, 1.0e+278, 1.0e+279,
+		1.0e+280, 1.0e+281, 1.0e+282, 1.0e+283, 1.0e+284, 1.0e+285, 1.0e+286, 1.0e+287, 1.0e+288, 1.0e+289,
+		1.0e+290, 1.0e+291, 1.0e+292, 1.0e+293, 1.0e+294, 1.0e+295, 1.0e+296, 1.0e+297, 1.0e+298, 1.0e+299,
+		1.0e+300, 1.0e+301, 1.0e+302, 1.0e+303, 1.0e+304, 1.0e+305, 1.0e+306, 1.0e+307, 1.0e+308
+};
+
 cmtUint8 cmtANSIchSize(cmtChar* ch, cmtChar* locale)
 {
 	cmtUint8 chsize;
@@ -1275,7 +1332,7 @@ _T2:
 	if (fmt->data[rFmt] == '0') goto _T3;
 	if (fmt->data[rFmt] >= '1' && fmt->data[rFmt] <= '9') goto _T4;
 	if (fmt->data[rFmt] == '*') goto _T6;
-	goto _Tend;	
+	goto _Tend;
 
 	//'0'
 _T3:
@@ -2889,7 +2946,7 @@ cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 	cmtU8str pad, num;
 	cmtUint64 r;
 	cmtUint64 MaxAddr = out->data + out->size;
-	cmtUint64 exp10 = 1;
+	cmtUint64 exp10 = 10;
 
 	//1. 确定符号
 	if (arg < 0) sign = '-';
@@ -2897,13 +2954,8 @@ cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 	arg = -arg;
 
 	//2. 测量数字字符数
-	num.size = 0;
-	while (arg >= exp10)
-	{
-		num.size++;
-		exp10 *= 10;
-		if (num.size == 20) break;//64位有符号整数最多装20位十进制数字
-	}
+	num.size = 1;
+	while (num.size < sizeof(cmtBase10ExpFx64) / sizeof(cmtUint64) && arg >= cmtBase10ExpFx64[num.size]) num.size++;
 
 	//3. 截断
 	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
@@ -2974,9 +3026,9 @@ cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 		if (info->padding.content)
 			for (r = 0; r < pad.size; r++)
 				if (pad.data + r < MaxAddr) pad.data[r] = '0';
-		else
-			for (r = 0; r < pad.size; r++)
-				if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+				else
+					for (r = 0; r < pad.size; r++)
+						if (pad.data + r < MaxAddr) pad.data[r] = ' ';
 	}
 	//6.3. num
 	for (r = num.size; r > 0; r--)
@@ -3003,16 +3055,11 @@ cmtUint64 cmtSprintfUdec(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 	cmtU8str pad, num;
 	cmtUint64 r;
 	cmtUint64 MaxAddr = out->data + out->size;
-	cmtUint64 exp10 = 1;
+	cmtUint64 exp10 = 10;
 
 	//1. 测量数字字符数
-	num.size = 0;
-	while (arg >= exp10)
-	{
-		num.size++;
-		exp10 *= 10;
-		if (num.size == 20) break;//64位有符号整数最多装20位十进制数字
-	}
+	num.size = 1;
+	while (num.size < sizeof(cmtBase10ExpFx64) / sizeof(cmtUint64) && arg >= cmtBase10ExpFx64[num.size]) num.size++;
 
 	//2. 截断
 	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
@@ -3136,7 +3183,22 @@ cmtUint64 cmtSprintfHex(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 
 cmtUint64 cmtSprintfFl64(cmtU8str* out, cmtFmtInfo* info, double arg)
 {
-	
+	cmtU8str pad, itg, dec;
+	cmtChar sign;
+	cmtChar* SignPos = 0;
+	cmtBool dot;
+	cmtChar* DotPos = 0;
+	cmtUint64 r;
+	cmtUint64 MaxAddr = out->data + out->size;
+
+	//1. 确定符号
+	if (arg < 0) sign = '-';
+	else if (info->sign) sign = '+';
+	arg = -arg;
+
+	//2. 测量整数字符数
+	itg.size = 1;
+	while (itg.size < sizeof(cmtBase10ExpFl64) / sizeof(double) && arg >= cmtBase10ExpFl64[itg.size]) itg.size++;
 }
 
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
