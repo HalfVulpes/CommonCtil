@@ -3199,6 +3199,8 @@ cmtUint64 cmtSprintfFl64(cmtU8str* out, cmtFmtInfo* info, double arg)
 	//2. 测量整数字符数
 	itg.size = 1;
 	while (itg.size < sizeof(cmtBase10ExpFl64) / sizeof(double) && arg >= cmtBase10ExpFl64[itg.size]) itg.size++;
+
+	//3. 
 }
 
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
