@@ -592,14 +592,20 @@ void cmtDemoSprintfDec()
 	u8.data = malloc(u8.size);
 	cmtUint64 ret;
 
-	//测试1：非0数
+	//测试1：负数
 	ret = cmtSprintfDec(&u8, &info, -123456);
 	//标答：
 	//ret=12
 	//u8->data="-3456       "（有7个空格）
 
-	//测试2：0
+	//测试2：正数
 	info.precision = 0;
+	ret = cmtSprintfDec(&u8, &info, 1234567);
+	//标答：
+	//ret=12
+	//u8->data="1234567     "（有5个空格）
+
+	//测试3：0
 	info.padding.length = 0;
 	ret = cmtSprintfDec(&u8, &info, 0);
 	//标答：

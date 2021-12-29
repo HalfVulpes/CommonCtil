@@ -2937,7 +2937,7 @@ cmtUint64 cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 
 cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 {
-	cmtChar sign = 0;
+	cmtChar sign;
 	cmtChar* SignPos = 0;
 	cmtU8str pad, num;
 	cmtUint64 r;
@@ -2945,9 +2945,16 @@ cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 	cmtUint64 exp10 = 10;
 
 	//1. 确定符号
-	if (arg < 0) sign = '-';
-	else if (info->sign) sign = '+';
-	arg = -arg;
+	if (arg < 0)
+	{
+		sign = '-';
+		arg = -arg;
+	}
+	else
+	{
+		if (info->sign) sign = '+';
+		else sign = 0;
+	}
 
 	//2. 测量数字字符数
 	num.size = 1;
@@ -3020,11 +3027,15 @@ cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 	else
 	{
 		if (info->padding.content)
+		{
 			for (r = 0; r < pad.size; r++)
 				if (pad.data + r < MaxAddr) pad.data[r] = '0';
-				else
-					for (r = 0; r < pad.size; r++)
-						if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+		}
+		else
+		{
+			for (r = 0; r < pad.size; r++)
+				if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+		}
 	}
 	//6.3. num
 	for (r = num.size; r > 0; r--)
@@ -3182,20 +3193,84 @@ cmtUint64 cmtSprintfFl64(cmtU8str* out, cmtFmtInfo* info, double arg)
 	cmtU8str pad, itg, dec;
 	cmtChar sign;
 	cmtChar* SignPos = 0;
-	cmtBool dot;
-	cmtChar* DotPos = 0;
 	cmtUint64 r;
 	cmtUint64 MaxAddr = out->data + out->size;
 
 	//1. 确定符号
-	if (arg < 0) sign = '-';
-	else if (info->sign) sign = '+';
-	arg = -arg;
+	if (arg < 0)
+	{
+		sign = '-';
+		arg = -arg;
+	}
+	else
+	{
+		if (info->sign) sign = '+';
+		else sign = 0;
+	}
 
 	//2. 测量整数字符数
 	itg.size = 1;
 	while (itg.size < sizeof(cmtBase10ExpFl64) / sizeof(double) && arg >= cmtBase10ExpFl64[itg.size]) itg.size++;
 
+	//3. 确定小数字符数
+	if (info->precision && info->precision > 4) dec.size = info->precision;
+	else dec.size = 4;
+
+	//4. 计算填充字符数
+	if (sign)
+	{
+		if (info->padding.length > 2 + itg.size + dec.size) pad.size = info->padding.length - 2 - itg.size - dec.size;
+		else pad.size = 0;
+	}
+	else
+	{
+		if (info->padding.length > 1 + itg.size + dec.size) pad.size = info->padding.length - 1 - itg.size - dec.size;
+		else pad.size = 0;
+	}
+
+	//5. 定位
+	if (sign)
+	{
+		if (info->padding.align)
+		{
+			SignPos = out->data;
+			itg.data = SignPos + 1;
+			dec.data = itg.data + itg.size + 1;
+			pad.data = dec.data + dec.size;
+		}
+		else
+		{
+			if (info->padding.content)
+			{
+				SignPos = out->data;
+				pad.data = SignPos + 1;
+				itg.data = pad.data + pad.size;
+				dec.data = itg.data + itg.size + 1;
+			}
+			else
+			{
+				pad.data = out->data;
+				SignPos = pad.data + pad.size;
+				itg.data = SignPos + 1;
+				dec.data = itg.data + itg.size + 1;
+			}
+		}
+	}
+	else
+	{
+		if (info->padding.align)
+		{
+			itg.data = out->data;
+			dec.data = itg.data + itg.size + 1;
+			pad.data = dec.data + dec.size;
+		}
+		else
+		{
+			pad.data = out->data;
+			itg.data = pad.data + pad.size;
+			dec.data = itg.data + itg.size + 1;
+		}
+	}
 
 }
 
