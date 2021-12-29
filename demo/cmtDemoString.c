@@ -203,12 +203,14 @@ void cmtDemoU32()
 
 void cmtDemoAnlyFmt()
 {
-	cmtU8str u8 = CMT_CONSTSTR("+-010.=*f");
+	cmtU8str u8a = CMT_CONSTSTR("+-010.*f");
+	cmtU8str u8b = CMT_CONSTSTR("lld");
 	cmtFmtInfo FmtInfo;
 	cmtUint64 arglist[1];
 	arglist[0] = 12;
 
-	cmtAnlyFmt(&u8, &FmtInfo, arglist);
+	//测试1：
+	cmtAnlyFmt(&u8a, &FmtInfo, arglist);
 	//标答：
 	//FmtInfo.sign=TURE
 	//FmtInfo.size=0
@@ -216,9 +218,18 @@ void cmtDemoAnlyFmt()
 	//FmtInfo.padding.align=TRUE
 	//FmtInfo.padding.content=TRUE
 	//FmtInfo.padding.length=10
-	//FmtInfo.precision.enabled=TRUE
-	//FmtInfo.precision.flag=TRUE
 	//FmtInfo.precision.value=12
+
+	//测试2：
+	cmtAnlyFmt(&u8b, &FmtInfo, NULL);
+	//标答：
+	//FmtInfo.sign=FALSE
+	//FmtInfo.size=CMT_FMT_SIZE_LL(4)
+	//FmtInfo.type='d'
+	//FmtInfo.padding.align=FALSE
+	//FmtInfo.padding.content=FALSE
+	//FmtInfo.padding.length=0
+	//FmtInfo.precision.value=0
 }
 
 void cmtDemoStrToBin()
@@ -533,9 +544,7 @@ void cmtDemoSprintfBin()
 	info.padding.align = FALSE;
 	info.padding.content = TRUE;
 	info.padding.length = 30;
-	info.precision.enabled = FALSE;
-	info.precision.flag = FALSE;
-	info.precision.value = 0;
+	info.precision = 0;
 	cmtU8str u8;
 	u8.size = 1024;
 	u8.data = malloc(u8.size);
@@ -544,7 +553,7 @@ void cmtDemoSprintfBin()
 	ret = cmtSprintfBin(&u8, &info, 0x01040224);//0x01040224=0001 0000 0100 0000 0010 0010 0100b
 	//标答：
 	//ret=30
-	//u8->data="000000000001000000001000100100"
+	//u8->data="000001000001000000001000100100"
 }
 
 void cmtDemoSprintfOct()
@@ -556,9 +565,7 @@ void cmtDemoSprintfOct()
 	info.padding.align = TRUE;
 	info.padding.content = FALSE;
 	info.padding.length = 5;
-	info.precision.enabled = FALSE;
-	info.precision.flag = FALSE;
-	info.precision.value = 0;
+	info.precision = 0;
 	cmtU8str u8;
 	u8.size = 1024;
 	u8.data = malloc(u8.size);
@@ -579,9 +586,7 @@ void cmtDemoSprintfDec()
 	info.padding.align = TRUE;
 	info.padding.content = FALSE;
 	info.padding.length = 12;
-	info.precision.enabled = TRUE;
-	info.precision.flag = FALSE;
-	info.precision.value = 4;
+	info.precision = 4;
 	cmtU8str u8;
 	u8.size = 1024;
 	u8.data = malloc(u8.size);
@@ -594,7 +599,7 @@ void cmtDemoSprintfDec()
 	//u8->data="-3456       "（有7个空格）
 
 	//测试2：0
-	info.precision.enabled = FALSE;
+	info.precision = 0;
 	info.padding.length = 0;
 	ret = cmtSprintfDec(&u8, &info, 0);
 	//标答：
@@ -611,9 +616,7 @@ void cmtDemoSprintfUdec()
 	info.padding.align = FALSE;
 	info.padding.content = TRUE;
 	info.padding.length = 12;
-	info.precision.enabled = FALSE;
-	info.precision.flag = FALSE;
-	info.precision.value = 0;
+	info.precision = 0;
 	cmtU8str u8;
 	u8.size = 1024;
 	u8.data = malloc(u8.size);
@@ -626,7 +629,7 @@ void cmtDemoSprintfUdec()
 	//u8->data="18446744073709551615"
 
 	//测试2：0
-	info.precision.enabled = FALSE;
+	info.precision = 0;
 	info.padding.length = 0;
 	ret = cmtSprintfUdec(&u8, &info, 0);
 	//标答：
@@ -643,9 +646,7 @@ void cmtDemoSprintfHex()
 	info.padding.align = FALSE;
 	info.padding.content = TRUE;
 	info.padding.length = 12;
-	info.precision.enabled = FALSE;
-	info.precision.flag = FALSE;
-	info.precision.value = 0;
+	info.precision = 0;
 	cmtU8str u8;
 	u8.size = 1024;
 	u8.data = malloc(u8.size);

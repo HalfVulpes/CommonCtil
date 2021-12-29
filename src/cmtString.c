@@ -1397,28 +1397,24 @@ _T6:
 
 	//'.'
 _T7:
-	info->precision.enabled = TRUE;
-
 	rFmt++;
 	if (rFmt > fmt->size) goto _Tend;
-	if (fmt->data[rFmt] == '=') goto _T8;
-	if (fmt->data[rFmt] >= '0' && fmt->data[rFmt] <= '9') goto _T9;
+	if (fmt->data[rFmt] >= '1' && fmt->data[rFmt] <= '9') goto _T8;
 	if (fmt->data[rFmt] == '*') goto _T10;
 	goto _Tend;
 
-	//'='
+	//['1','9']
 _T8:
-	info->precision.flag = TRUE;
+	info->precision = fmt->data[rFmt] - '0';
 
 	rFmt++;
 	if (rFmt > fmt->size) goto _Tend;
 	if (fmt->data[rFmt] >= '0' && fmt->data[rFmt] <= '9') goto _T9;
-	if (fmt->data[rFmt] == '*') goto _T10;
 	goto _Tend;
 
 	//['0','9']
 _T9:
-	info->precision.value = info->precision.value * 10 + fmt->data[rFmt] - '0';
+	info->precision = info->precision * 10 + fmt->data[rFmt] - '0';
 
 	rFmt++;
 	if (rFmt > fmt->size) goto _Tend;
@@ -1434,7 +1430,7 @@ _T9:
 
 	//'*'
 _T10:
-	info->precision.value = ArgList[rArg];
+	info->precision = ArgList[rArg];
 	rArg++;
 
 	rFmt++;
@@ -2841,7 +2837,7 @@ cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 	num.size = cmtBSR(arg) + 1;
 
 	//2. 截断
-	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
+	if (info->precision && info->precision < num.size) num.size = info->precision;
 
 	//3. 计算填充字符数
 	if (info->padding.length > num.size)
@@ -2895,7 +2891,7 @@ cmtUint64 cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 	num.size = cmtBSR(arg) / 3 + 1;
 
 	//2. 截断
-	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
+	if (info->precision && info->precision < num.size) num.size = info->precision;
 
 	//3. 计算填充字符数
 	if (info->padding.length > num.size)
@@ -2958,7 +2954,7 @@ cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 	while (num.size < sizeof(cmtBase10ExpFx64) / sizeof(cmtUint64) && arg >= cmtBase10ExpFx64[num.size]) num.size++;
 
 	//3. 截断
-	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
+	if (info->precision && info->precision < num.size) num.size = info->precision;
 
 	//4. 计算填充字符数
 	if (sign)
@@ -3062,7 +3058,7 @@ cmtUint64 cmtSprintfUdec(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 	while (num.size < sizeof(cmtBase10ExpFx64) / sizeof(cmtUint64) && arg >= cmtBase10ExpFx64[num.size]) num.size++;
 
 	//2. 截断
-	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
+	if (info->precision && info->precision < num.size) num.size = info->precision;
 
 	//3. 计算填充字符数
 	if (info->padding.length > num.size)
@@ -3116,7 +3112,7 @@ cmtUint64 cmtSprintfHex(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
 	num.size = cmtBSR(arg) / 4 + 1;
 
 	//2. 截断
-	if (info->precision.enabled && info->precision.value < num.size) num.size = info->precision.value;
+	if (info->precision && info->precision < num.size) num.size = info->precision;
 
 	//3. 计算填充字符数
 	if (info->padding.length > num.size)
@@ -3199,6 +3195,8 @@ cmtUint64 cmtSprintfFl64(cmtU8str* out, cmtFmtInfo* info, double arg)
 	//2. 测量整数字符数
 	itg.size = 1;
 	while (itg.size < sizeof(cmtBase10ExpFl64) / sizeof(double) && arg >= cmtBase10ExpFl64[itg.size]) itg.size++;
+
+
 }
 
 void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
