@@ -109,26 +109,6 @@ typedef struct _CMTFMTPADINFO
 }cmtFmtPadInfo;
 
 /**
-* @typedef cmtFmtPrecInfo
-* @brief cmtFmtInfo.precision字段
-* @see doc/格式化字符串.md
-* @date 2021-12-04
-* @author dexnab
-*/
-/**
-* @brief cmtFmtInfo.precision字段
-* @see doc/格式化字符串.md
-* @date 2021-12-04
-* @author dexnab
-*/
-typedef struct _CMTFMTPRECINFO
-{
-	cmtBool enabled;///<TRUE：设置了精度字段 FALSE：精度字段缺省
-	cmtBool flag;///<TRUE：有效数字模式 FALSE：小数位数保留模式
-	cmtUint64 value;///<精度值
-}cmtFmtPrecInfo;
-
-/**
 * @typedef cmtFmtInfo
 * @brief 格式控制字符串解析结果
 * @see doc/格式化字符串.md
@@ -146,8 +126,8 @@ typedef struct _CMTFMTINFO
 	cmtBool sign;///<TRUE：显示正号 FALSE：不显示正号
 	cmtUint8 size;///<参数字节数或字符编码
 	cmtChar type;///<参数类型
+	cmtUint64 precision;///<精度值（0缺省）
 	cmtFmtPadInfo padding;
-	cmtFmtPrecInfo precision;
 }cmtFmtInfo;
 /*--------------------------------结构体定义 结束--------------------------------*/
 
