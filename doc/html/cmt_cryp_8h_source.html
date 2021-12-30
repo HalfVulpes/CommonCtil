@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.20"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CommonCtil: src/cmtCryp.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">CommonCtil
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.8.20 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','搜索');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">cmtCryp.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="cmt_cryp_8h.html">浏览该文件的文档.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//防止重复包含</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#ifndef _INC_CMTCRYP</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#define _INC_CMTCRYP</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cmt_type_8h.html">cmtType.h</a>&gt;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cmt_core_8h.html">cmtCore.h</a>&gt;</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">/*--------------------------------宏定义 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">//SHA256输出摘要长度，32字节（256位）</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#define CMT_SHA256_BLOCK_SIZE 32</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">//SHA1输出的摘要长度，20字节（160位）</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#define CMT_SHA1_BLOCK_SIZE 20</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">//MD5输出的摘要长度，16字节（128位）</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#define CMT_MD5_BLOCK_SIZE 16</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">//在电子邮件中，根据 RFC 822 规定，每 76 个字符需要加上一个回车换行，但是呢由于每个base64编码器的实现问题有些是不带换行的</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#define CMT_NEWLINE_INVL 76</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#define CMT_ROTLEFT(a,b) (((a) &lt;&lt; (b)) | ((a) &gt;&gt; (32-(b))))</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#define CMT_ROTRIGHT(a,b) (((a) &gt;&gt; (b)) | ((a) &lt;&lt; (32-(b))))</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#define CMT_KE_ROTWORD(x) (((x) &lt;&lt; 8) | ((x) &gt;&gt; 24))</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#define CMT_CH(x,y,z) (((x) &amp; (y)) ^ (~(x) &amp; (z)))</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#define CMT_MAJ(x,y,z) (((x) &amp; (y)) ^ ((x) &amp; (z)) ^ ((y) &amp; (z)))</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#define CMT_EP0(x) (CMT_ROTRIGHT(x,2) ^ CMT_ROTRIGHT(x,13) ^ CMT_ROTRIGHT(x,22))</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#define CMT_EP1(x) (CMT_ROTRIGHT(x,6) ^ CMT_ROTRIGHT(x,11) ^ CMT_ROTRIGHT(x,25))</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#define CMT_SIG0(x) (CMT_ROTRIGHT(x,7) ^ CMT_ROTRIGHT(x,18) ^ ((x) &gt;&gt; 3))</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#define CMT_SIG1(x) (CMT_ROTRIGHT(x,17) ^ CMT_ROTRIGHT(x,19) ^ ((x) &gt;&gt; 10))</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#define CMT_F(x,y,z) ((x &amp; y) | (~x &amp; z))</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#define CMT_G(x,y,z) ((x &amp; z) | (y &amp; ~z))</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#define CMT_H(x,y,z) (x ^ y ^ z)</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#define CMT_I(x,y,z) (y ^ (x | ~z))</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#define CMT_FF(a,b,c,d,m,s,t) { a += CMT_F(b,c,d) + m + t; \</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">                            a = b + CMT_ROTLEFT(a,s); }</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#define CMT_GG(a,b,c,d,m,s,t) { a += CMT_G(b,c,d) + m + t; \</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">                            a = b + CMT_ROTLEFT(a,s); }</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#define CMT_HH(a,b,c,d,m,s,t) { a += CMT_H(b,c,d) + m + t; \</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">                            a = b + CMT_ROTLEFT(a,s); }</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#define CMT_II(a,b,c,d,m,s,t) { a += CMT_I(b,c,d) + m + t; \</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">                            a = b + CMT_ROTLEFT(a,s); }</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">//AES加密一次操作16Bytes</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#define CMT_AES_BLOCK_SIZE 16</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#define CMT_AES_128_ROUNDS 10</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#define CMT_AES_192_ROUNDS 12</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#define CMT_AES_256_ROUNDS 14</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">//根据明文大小计算补齐并加密后的密文大小</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#define cmtAEScipherSize(PlainSize) ((PlainSize) % CMT_AES_BLOCK_SIZE ? (PlainSize) + CMT_AES_BLOCK_SIZE - (PlainSize) % CMT_AES_BLOCK_SIZE : (PlainSize))</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">/*--------------------------------宏定义 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">/*--------------------------------结构体定义 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="struct___c_m_t_s_h_a256.html">  108</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_s_h_a256.html">_CMTSHA256</a></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    cmtUint8 data[64];</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    cmtUint32 datalen;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    cmtUint64 bitlen;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    cmtUint32 state[8];</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}<a class="code" href="structcmt_s_h_a256.html">cmtSHA256</a>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="struct___c_m_t_s_h_a1.html">  123</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_s_h_a1.html">_CMTSHA1</a></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;{</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    cmtUint8 data[64];</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    cmtUint32 datalen;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    cmtUint64 bitlen;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    cmtUint32 state[5];</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    cmtUint32 k[4];</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}<a class="code" href="structcmt_s_h_a1.html">cmtSHA1</a>;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="struct___c_m_t_m_d5.html">  139</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_m_d5.html">_CMTMD5</a></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;{</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    cmtUint8 data[64];</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    cmtUint32 datalen;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    cmtUint64 bitlen;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    cmtUint32 state[4];</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;}<a class="code" href="structcmt_m_d5.html">cmtMD5</a>;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">/*--------------------------------结构体定义 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">/*--------------------------------随机数函数 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="cmt_cryp_8h.html#ab530f287dab1d7efaf82835aac529ade">  158</a></span>&#160;<span class="keywordtype">void</span> CMT_FASTCALL <a class="code" href="cmt_cryp_8h.html#ab530f287dab1d7efaf82835aac529ade">cmtRealRand</a>(cmtUint64* buf, cmtUint64 len);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">/*--------------------------------随机数函数 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">/*--------------------------------散列函数 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a8257c9537a1f7915f69490674edc5cc8">cmtSHA256Init</a>(<a class="code" href="structcmt_s_h_a256.html">cmtSHA256</a>* ctx);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a89f7b7f451ecbc60e0ffd46acc49720a">cmtSHA256Update</a>(<a class="code" href="structcmt_s_h_a256.html">cmtSHA256</a>* ctx, cmtUint8* data, cmtUint64 size);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a21ab1f762603908cdaec5c4b5c18f469">cmtSHA256Get</a>(<a class="code" href="structcmt_s_h_a256.html">cmtSHA256</a>* ctx, cmtUint8* hash);</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a85c8a0bf232b347d97a9c03b3c9f56ad">cmtSHA256Transform</a>(<a class="code" href="structcmt_s_h_a256.html">cmtSHA256</a>* ctx, cmtUint8* data);</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#ae897354aee409dbbca65172ff1d17f68">cmtSHA1Init</a>(<a class="code" href="structcmt_s_h_a1.html">cmtSHA1</a>* ctx);</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a3a90da037910a491416bcbf40c5fdaea">cmtSHA1Update</a>(<a class="code" href="structcmt_s_h_a1.html">cmtSHA1</a>* ctx, cmtUint8* data, cmtUint64 size);</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a523758b0f36ca30fdb20e5cdba068561">cmtSHA1Get</a>(<a class="code" href="structcmt_s_h_a1.html">cmtSHA1</a>* ctx, cmtUint8* hash);</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a3d4c21cc9ec57aacd94b818bf13c0f12">cmtSHA1Transform</a>(<a class="code" href="structcmt_s_h_a1.html">cmtSHA1</a>* ctx, cmtUint8* data);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; </div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a0d9e62439862a82a3d1464838013e301">cmtMD5Init</a>(<a class="code" href="structcmt_m_d5.html">cmtMD5</a>* ctx);</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a5a7d632ff6912b5875a6417a20388e89">cmtMD5Update</a>(<a class="code" href="structcmt_m_d5.html">cmtMD5</a>* ctx, cmtUint8* data, cmtUint64 size);</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160; </div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a154fb7abc0cdaeed740747c5dbdec240">cmtMD5Get</a>(<a class="code" href="structcmt_m_d5.html">cmtMD5</a>* ctx, cmtUint8* hash);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a0ed84195cc06e59fc542cb6b45c2773f">cmtMD5Transform</a>(<a class="code" href="structcmt_m_d5.html">cmtMD5</a>* ctx, cmtUint8* data);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">/*--------------------------------散列函数 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="comment">/*--------------------------------对称加密函数 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="comment">* 注意事项</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">1，对于所有的AES函数，其密钥设置函数，必须得在加密解密前执行</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment">2，密钥的位数只能是128位（cmtUint8 key[16]），192位（cmtUint8 key[24]），或者256位（cmtUint8 key[32]）。</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="comment">3，对于控制密钥位数，最方便的方法就是对用户的输入进行hash运算，如：keyInit(sha256(userInput)) //生成一个256位AES密钥。</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment">4，默认的cmtAESKeyInit是最朴素的AES操作方式：ECB模式，这种模式并不是非常的安全，明文中的重复部分在密文中也会重复。推荐使用CBC模式</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="comment">5，ECB模式下不需要使用初始化向量（IV），因为ECB模式下明文是以密码本的形式加密的，但是呢，其他模式下IV就变得重要起来了，它可以给文件增加一个随机偏移量，让相同的文件加密得到不同的密文。</span></div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160; </div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a7455ad0d087f078e8757fff994127f8d">cmtAESkeyInit</a>(cmtUint8* keystr, cmtUint8* sKeystr, cmtUint32* w, cmtUint16 keysize);</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a89ee62522a431ae6a5624478fcafac10">cmtAESRestrictkeyInit</a>(cmtUint8* key, cmtUint32* w, cmtUint16 keysize);</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160; </div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a8e3883e416239e2d4b8ab0c3c8b3f2ef">cmtAESInitialVectorInit</a>(cmtUint8* iv);</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; </div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#ade2fe7cf61af06cb3287181a1769e91c">cmtAESecbEnc</a>(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160; </div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a78c59fb8df837da5dbbe1313acc1d24d">cmtAESecbDec</a>(cmtUint8* in, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160; </div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#af1c1a2ff052fe8ac0b6eaf681bd05716">cmtAESecbEncEx</a>(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160; </div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a862cf2ed475a65d4b7fa48381c04607d">cmtAESecbDecEx</a>(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize);</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160; </div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#af6563004a894fa765c85167eb86dbd5a">cmtAEScbcEnc</a>(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160; </div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#acba30662930346ac09c9b1bb43c5fa2c">cmtAEScbcEncMac</a>(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160; </div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#abd67d6e9f9904f5df53b4d51b0663bc7">cmtAEScbcDec</a>(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160; </div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#a1a5dac2cedd907ce70a727e53bf5cb0a">cmtAESctrEnc</a>(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160; </div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#ac40285e70b98a7e08f45ecabfb8e43a1">cmtAESctrDec</a>(cmtUint8* in, cmtUint64 size, cmtUint8* out, cmtUint32* key, cmtUint16 keysize, cmtUint8* iv);</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160; </div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cmt_cryp_8h.html#adf3cf66e051cf2d94db9046b69c796c0">cmtAESincrIV</a>(cmtUint8 iv[], <span class="keywordtype">int</span> counter_size);</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;<span class="keywordtype">void</span> cmtAESpreFirCTRblock(cmtUint8 counter[], <span class="keyword">const</span> cmtUint8 nonce[], <span class="keywordtype">int</span> nonceLen, <span class="keywordtype">int</span> payloadLenStoreSize);</div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;<span class="keywordtype">void</span> cmtAESccmPreFirFormatBlock(cmtUint8 buf[], <span class="keywordtype">int</span> assocLen, <span class="keywordtype">int</span> payloadLen, <span class="keywordtype">int</span> payloadLenStoreSize, <span class="keywordtype">int</span> macLen, <span class="keyword">const</span> cmtUint8 nonce[], <span class="keywordtype">int</span> nonceLen);</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;<span class="keywordtype">void</span> cmtCCMdataFormat(cmtUint8 buf[], <span class="keywordtype">int</span>* endOfBuffer, <span class="keyword">const</span> cmtUint8 assoc[], <span class="keywordtype">int</span> assocLen);</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;<span class="keywordtype">void</span> cmtCCMdataPreload(cmtUint8 buf[], <span class="keywordtype">int</span>* endOfBuffer, <span class="keyword">const</span> cmtUint8 payload[], <span class="keywordtype">int</span> payloadLen);</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;<span class="keywordtype">void</span> cmtXorBuffer(<span class="keyword">const</span> cmtUint8 in[], cmtUint8 out[], cmtUint64 size);</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;<span class="keywordtype">void</span> cmtAESpreFirCTRblock(cmtUint8 counter[], <span class="keyword">const</span> cmtUint8 nonce[], <span class="keywordtype">int</span> nonceLen, <span class="keywordtype">int</span> payloadLenStoreSize);</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;<span class="keywordtype">void</span> cmtAESccmPreFirFormatBlock(cmtUint8 buf[], <span class="keywordtype">int</span> assocLen, <span class="keywordtype">int</span> payloadLen, <span class="keywordtype">int</span> payloadLenStoreSize, <span class="keywordtype">int</span> macLen, <span class="keyword">const</span> cmtUint8 nonce[], <span class="keywordtype">int</span> nonceLen);</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;<span class="keywordtype">void</span> cmtCCMdataFormat(cmtUint8 buf[], <span class="keywordtype">int</span>* endOfBuffer, <span class="keyword">const</span> cmtUint8 assoc[], <span class="keywordtype">int</span> assocLen);</div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;<span class="keywordtype">void</span> cmtCCMdataPreload(cmtUint8 buf[], <span class="keywordtype">int</span>* endOfBuffer, <span class="keyword">const</span> cmtUint8 payload[], <span class="keywordtype">int</span> payloadLen);</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;cmtUint32 cmtAESSubWord(cmtUint32 word);</div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;<span class="keywordtype">void</span> cmtAESRoundKeyInit(cmtUint8 state[][4], <span class="keyword">const</span> cmtUint32 w[]);</div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;<span class="keywordtype">void</span> cmtAESSubBytes(cmtUint8 state[][4]);</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;<span class="keywordtype">void</span> cmtInvSubBytes(cmtUint8 state[][4]);</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;<span class="keywordtype">void</span> cmtShiftRows(cmtUint8 state[][4]);</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;<span class="keywordtype">void</span> cmtInvShiftRows(cmtUint8 state[][4]);</div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;<span class="keywordtype">void</span> cmtMixColumns(cmtUint8 state[][4]);</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;<span class="keywordtype">void</span> cmtInvMixColumns(cmtUint8 state[][4]);</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160; </div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;cmtInt64 <a class="code" href="cmt_cryp_8h.html#ae1a65e48805c72370eb42b07d54c2f7e">cmtBase64Encode</a>(<span class="keyword">const</span> cmtUint8 in[], cmtUint8 out[], cmtInt64 size, <span class="keywordtype">int</span> newLineFlag);</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160; </div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;cmtInt64 <a class="code" href="cmt_cryp_8h.html#a776abda03fceac3a294d53fa2420102a">cmtBase64Decode</a>(<span class="keyword">const</span> cmtUint8 in[], cmtUint8 out[], cmtInt64 size);</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160; </div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;cmtUint8 <a class="code" href="cmt_cryp_8h.html#a468db7355d6e44d8156746c6c64d7fb7">cmtRevChar</a>(<span class="keywordtype">char</span> ch);</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;<span class="comment">/*--------------------------------对称加密函数 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160; </div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160; </div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;<span class="preprocessor">#endif</span></div>
+</div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="acmt_type_8h_html"><div class="ttname"><a href="cmt_type_8h.html">cmtType.h</a></div><div class="ttdoc">cmtType 库的数据类型标准定义文件，这个文件规定了大多数的数据类型的别名</div></div>
+<div class="ttc" id="astructcmt_s_h_a256_html"><div class="ttname"><a href="structcmt_s_h_a256.html">cmtSHA256</a></div><div class="ttdoc">SHA256结构体</div></div>
+<div class="ttc" id="acmt_core_8h_html"><div class="ttname"><a href="cmt_core_8h.html">cmtCore.h</a></div><div class="ttdoc">用于支持跨平台的核心库 仅提供基本功能，如需调用完整功能，请自行调用系统api</div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a3d4c21cc9ec57aacd94b818bf13c0f12"><div class="ttname"><a href="cmt_cryp_8h.html#a3d4c21cc9ec57aacd94b818bf13c0f12">cmtSHA1Transform</a></div><div class="ttdeci">void cmtSHA1Transform(cmtSHA1 *ctx, cmtUint8 *data)</div><div class="ttdoc">矩阵函数，内部使用</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00377">cmtCryp.c:377</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a8257c9537a1f7915f69490674edc5cc8"><div class="ttname"><a href="cmt_cryp_8h.html#a8257c9537a1f7915f69490674edc5cc8">cmtSHA256Init</a></div><div class="ttdeci">void cmtSHA256Init(cmtSHA256 *ctx)</div><div class="ttdoc">初始化cmtSHA256结构体</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00232">cmtCryp.c:232</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a89f7b7f451ecbc60e0ffd46acc49720a"><div class="ttname"><a href="cmt_cryp_8h.html#a89f7b7f451ecbc60e0ffd46acc49720a">cmtSHA256Update</a></div><div class="ttdeci">void cmtSHA256Update(cmtSHA256 *ctx, cmtUint8 *data, cmtUint64 size)</div><div class="ttdoc">写入数据，更新sha256结构体</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00246">cmtCryp.c:246</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_af1c1a2ff052fe8ac0b6eaf681bd05716"><div class="ttname"><a href="cmt_cryp_8h.html#af1c1a2ff052fe8ac0b6eaf681bd05716">cmtAESecbEncEx</a></div><div class="ttdeci">void cmtAESecbEncEx(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize)</div><div class="ttdoc">AES-ECB模式加密函数，每次可以处理任意字节</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00788">cmtCryp.c:788</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a1a5dac2cedd907ce70a727e53bf5cb0a"><div class="ttname"><a href="cmt_cryp_8h.html#a1a5dac2cedd907ce70a727e53bf5cb0a">cmtAESctrEnc</a></div><div class="ttdeci">void cmtAESctrEnc(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize, cmtUint8 *iv)</div><div class="ttdoc">AES-CTR模式加密函数，每次可以处理n * CMT_AES_BLOCK_SIZE个字节的数据</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00878">cmtCryp.c:878</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a154fb7abc0cdaeed740747c5dbdec240"><div class="ttname"><a href="cmt_cryp_8h.html#a154fb7abc0cdaeed740747c5dbdec240">cmtMD5Get</a></div><div class="ttdeci">void cmtMD5Get(cmtMD5 *ctx, cmtUint8 *hash)</div><div class="ttdoc">计算并取值</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00457">cmtCryp.c:457</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a8e3883e416239e2d4b8ab0c3c8b3f2ef"><div class="ttname"><a href="cmt_cryp_8h.html#a8e3883e416239e2d4b8ab0c3c8b3f2ef">cmtAESInitialVectorInit</a></div><div class="ttdeci">void cmtAESInitialVectorInit(cmtUint8 *iv)</div><div class="ttdoc">AES偏移向量生成函数</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00638">cmtCryp.c:638</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a89ee62522a431ae6a5624478fcafac10"><div class="ttname"><a href="cmt_cryp_8h.html#a89ee62522a431ae6a5624478fcafac10">cmtAESRestrictkeyInit</a></div><div class="ttdeci">void cmtAESRestrictkeyInit(cmtUint8 *key, cmtUint32 *w, cmtUint16 keysize)</div><div class="ttdoc">AES密钥初始化函数（使用定长密钥数组）</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00610">cmtCryp.c:610</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a0d9e62439862a82a3d1464838013e301"><div class="ttname"><a href="cmt_cryp_8h.html#a0d9e62439862a82a3d1464838013e301">cmtMD5Init</a></div><div class="ttdeci">void cmtMD5Init(cmtMD5 *ctx)</div><div class="ttdoc">初始化cmtMD5结构体</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00433">cmtCryp.c:433</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_abd67d6e9f9904f5df53b4d51b0663bc7"><div class="ttname"><a href="cmt_cryp_8h.html#abd67d6e9f9904f5df53b4d51b0663bc7">cmtAEScbcDec</a></div><div class="ttdeci">void cmtAEScbcDec(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize, cmtUint8 *iv)</div><div class="ttdoc">AES-CBC模式解密函数，每次可以处理n * CMT_AES_BLOCK_SIZE字节的数据</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00860">cmtCryp.c:860</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a3a90da037910a491416bcbf40c5fdaea"><div class="ttname"><a href="cmt_cryp_8h.html#a3a90da037910a491416bcbf40c5fdaea">cmtSHA1Update</a></div><div class="ttdeci">void cmtSHA1Update(cmtSHA1 *ctx, cmtUint8 *data, cmtUint64 size)</div><div class="ttdoc">写入数据，更新sha1结构体</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00323">cmtCryp.c:323</a></div></div>
+<div class="ttc" id="astruct___c_m_t_s_h_a1_html"><div class="ttname"><a href="struct___c_m_t_s_h_a1.html">_CMTSHA1</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8h_source.html#l00123">cmtCryp.h:124</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_ade2fe7cf61af06cb3287181a1769e91c"><div class="ttname"><a href="cmt_cryp_8h.html#ade2fe7cf61af06cb3287181a1769e91c">cmtAESecbEnc</a></div><div class="ttdeci">void cmtAESecbEnc(cmtUint8 *in, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize)</div><div class="ttdoc">AES-ECB模式加密函数，每次可以处理16个Bytes</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00658">cmtCryp.c:658</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_adf3cf66e051cf2d94db9046b69c796c0"><div class="ttname"><a href="cmt_cryp_8h.html#adf3cf66e051cf2d94db9046b69c796c0">cmtAESincrIV</a></div><div class="ttdeci">void cmtAESincrIV(cmtUint8 iv[], int counter_size)</div><div class="ttdoc">AES相关函数，仅供内部使用，懒得写注释了，const别去掉</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00907">cmtCryp.c:907</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a7455ad0d087f078e8757fff994127f8d"><div class="ttname"><a href="cmt_cryp_8h.html#a7455ad0d087f078e8757fff994127f8d">cmtAESkeyInit</a></div><div class="ttdeci">void cmtAESkeyInit(cmtUint8 *keystr, cmtUint8 *sKeystr, cmtUint32 *w, cmtUint16 keysize)</div><div class="ttdoc">AES密钥初始化函数（使用字符串）</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00586">cmtCryp.c:586</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a0ed84195cc06e59fc542cb6b45c2773f"><div class="ttname"><a href="cmt_cryp_8h.html#a0ed84195cc06e59fc542cb6b45c2773f">cmtMD5Transform</a></div><div class="ttdeci">void cmtMD5Transform(cmtMD5 *ctx, cmtUint8 *data)</div><div class="ttdoc">矩阵函数，内部使用</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00497">cmtCryp.c:497</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a523758b0f36ca30fdb20e5cdba068561"><div class="ttname"><a href="cmt_cryp_8h.html#a523758b0f36ca30fdb20e5cdba068561">cmtSHA1Get</a></div><div class="ttdeci">void cmtSHA1Get(cmtSHA1 *ctx, cmtUint8 *hash)</div><div class="ttdoc">计算并取值</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00337">cmtCryp.c:337</a></div></div>
+<div class="ttc" id="astructcmt_s_h_a1_html"><div class="ttname"><a href="structcmt_s_h_a1.html">cmtSHA1</a></div><div class="ttdoc">SHA1结构体</div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a21ab1f762603908cdaec5c4b5c18f469"><div class="ttname"><a href="cmt_cryp_8h.html#a21ab1f762603908cdaec5c4b5c18f469">cmtSHA256Get</a></div><div class="ttdeci">void cmtSHA256Get(cmtSHA256 *ctx, cmtUint8 *hash)</div><div class="ttdoc">计算并取值</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00263">cmtCryp.c:263</a></div></div>
+<div class="ttc" id="astruct___c_m_t_s_h_a256_html"><div class="ttname"><a href="struct___c_m_t_s_h_a256.html">_CMTSHA256</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8h_source.html#l00108">cmtCryp.h:109</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_ae897354aee409dbbca65172ff1d17f68"><div class="ttname"><a href="cmt_cryp_8h.html#ae897354aee409dbbca65172ff1d17f68">cmtSHA1Init</a></div><div class="ttdeci">void cmtSHA1Init(cmtSHA1 *ctx)</div><div class="ttdoc">初始化cmtSHA1结构体</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00309">cmtCryp.c:309</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_ae1a65e48805c72370eb42b07d54c2f7e"><div class="ttname"><a href="cmt_cryp_8h.html#ae1a65e48805c72370eb42b07d54c2f7e">cmtBase64Encode</a></div><div class="ttdeci">cmtInt64 cmtBase64Encode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size, int newLineFlag)</div><div class="ttdoc">Base64加编码函数，返回值为加密后的数据长度，如果out为空则只返回加密后的数据长度。</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l01312">cmtCryp.c:1312</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_acba30662930346ac09c9b1bb43c5fa2c"><div class="ttname"><a href="cmt_cryp_8h.html#acba30662930346ac09c9b1bb43c5fa2c">cmtAEScbcEncMac</a></div><div class="ttdeci">void cmtAEScbcEncMac(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize, cmtUint8 *iv)</div><div class="ttdoc">AES-CBC-输出MAC模式加密函数，每次可以处理n * CMT_AES_BLOCK_SIZE个字节的数据</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00840">cmtCryp.c:840</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_ab530f287dab1d7efaf82835aac529ade"><div class="ttname"><a href="cmt_cryp_8h.html#ab530f287dab1d7efaf82835aac529ade">cmtRealRand</a></div><div class="ttdeci">void CMT_FASTCALL cmtRealRand(cmtUint64 *buf, cmtUint64 len)</div><div class="ttdoc">生成真随机数</div></div>
+<div class="ttc" id="astruct___c_m_t_m_d5_html"><div class="ttname"><a href="struct___c_m_t_m_d5.html">_CMTMD5</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8h_source.html#l00139">cmtCryp.h:140</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_ac40285e70b98a7e08f45ecabfb8e43a1"><div class="ttname"><a href="cmt_cryp_8h.html#ac40285e70b98a7e08f45ecabfb8e43a1">cmtAESctrDec</a></div><div class="ttdeci">void cmtAESctrDec(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize, cmtUint8 *iv)</div><div class="ttdoc">AES-CBC模式解密函数，每次可以处理n * CMT_AES_BLOCK_SIZE字节的数据</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00901">cmtCryp.c:901</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a862cf2ed475a65d4b7fa48381c04607d"><div class="ttname"><a href="cmt_cryp_8h.html#a862cf2ed475a65d4b7fa48381c04607d">cmtAESecbDecEx</a></div><div class="ttdeci">void cmtAESecbDecEx(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize)</div><div class="ttdoc">AES-ECB模式解密函数，每次可以处理任意字节</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00814">cmtCryp.c:814</a></div></div>
+<div class="ttc" id="astructcmt_m_d5_html"><div class="ttname"><a href="structcmt_m_d5.html">cmtMD5</a></div><div class="ttdoc">MD5结构体</div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a468db7355d6e44d8156746c6c64d7fb7"><div class="ttname"><a href="cmt_cryp_8h.html#a468db7355d6e44d8156746c6c64d7fb7">cmtRevChar</a></div><div class="ttdeci">cmtUint8 cmtRevChar(char ch)</div><div class="ttdoc">Base相关函数，仅供内部使用</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l01296">cmtCryp.c:1296</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a85c8a0bf232b347d97a9c03b3c9f56ad"><div class="ttname"><a href="cmt_cryp_8h.html#a85c8a0bf232b347d97a9c03b3c9f56ad">cmtSHA256Transform</a></div><div class="ttdeci">void cmtSHA256Transform(cmtSHA256 *ctx, cmtUint8 *data)</div><div class="ttdoc">矩阵函数，内部使用</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00191">cmtCryp.c:191</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a776abda03fceac3a294d53fa2420102a"><div class="ttname"><a href="cmt_cryp_8h.html#a776abda03fceac3a294d53fa2420102a">cmtBase64Decode</a></div><div class="ttdeci">cmtInt64 cmtBase64Decode(const cmtUint8 in[], cmtUint8 out[], cmtInt64 size)</div><div class="ttdoc">Base64解编码函数，返回值为解密后的数据长度，如果out为空则只返回解密后的数据长度。</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l01362">cmtCryp.c:1362</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a5a7d632ff6912b5875a6417a20388e89"><div class="ttname"><a href="cmt_cryp_8h.html#a5a7d632ff6912b5875a6417a20388e89">cmtMD5Update</a></div><div class="ttdeci">void cmtMD5Update(cmtMD5 *ctx, cmtUint8 *data, cmtUint64 size)</div><div class="ttdoc">写入数据，更新MD5结构体</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00443">cmtCryp.c:443</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_a78c59fb8df837da5dbbe1313acc1d24d"><div class="ttname"><a href="cmt_cryp_8h.html#a78c59fb8df837da5dbbe1313acc1d24d">cmtAESecbDec</a></div><div class="ttdeci">void cmtAESecbDec(cmtUint8 *in, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize)</div><div class="ttdoc">AES-ECB模式解密函数，每次可以处理16个Bytes</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00723">cmtCryp.c:723</a></div></div>
+<div class="ttc" id="acmt_cryp_8h_html_af6563004a894fa765c85167eb86dbd5a"><div class="ttname"><a href="cmt_cryp_8h.html#af6563004a894fa765c85167eb86dbd5a">cmtAEScbcEnc</a></div><div class="ttdeci">void cmtAEScbcEnc(cmtUint8 *in, cmtUint64 size, cmtUint8 *out, cmtUint32 *key, cmtUint16 keysize, cmtUint8 *iv)</div><div class="ttdoc">AES-CBC模式加密函数，每次可以处理n * CMT_AES_BLOCK_SIZE个字节的数据</div><div class="ttdef"><b>Definition:</b> <a href="cmt_cryp_8c_source.html#l00822">cmtCryp.c:822</a></div></div>
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
+</small></address>
+</body>
+</html>

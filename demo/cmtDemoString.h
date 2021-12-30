@@ -113,7 +113,7 @@ extern void cmtDemoStrToDec();
 extern void cmtDemoStrToHex();
 
 /**
-* @brief 字符串转32位浮点
+* @brief 字符串转浮点（32位）
 * @see cmtStrToF32(cmtU8str*, float*)
 * @date 2021-12-04
 * @author dexnab
@@ -130,10 +130,50 @@ extern void cmtDemoStrToF64();
 extern void cmtDemoBinToStr();
 
 /**
+* @brief 整数转字符串（二进制模式）
+* @see cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+* @date 2021-12-22
+* @author dexnab
+*/
+extern void cmtDemoSprintfBin();
+
+/**
+* @brief 整数转字符串（八进制模式）
+* @see cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+* @date 2021-12-21
+* @author dexnab
+*/
+extern void cmtDemoSprintfOct();
+
+/**
 * @brief 整数转字符串（有符号十进制模式）
 * @see cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
 * @date 2021-12-21
 * @author dexnab
 */
 extern void cmtDemoSprintfDec();
+
+/**
+* @brief 整数转字符串（无符号十进制模式）
+* @see cmtSprintfUdec(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+* @date 2021-12-21
+* @author dexnab
+*/
+extern void cmtDemoSprintfUdec();
+
+/**
+* @brief 整数转字符串（十六进制模式）
+* @see cmtSprintfHex(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+* @date 2021-12-21
+* @author dexnab
+*/
+extern void cmtDemoSprintfHex();
+
+/**
+* @brief 浮点数转字符串（64位）
+* @see cmtSprintfFl64(cmtU8str* out, cmtFmtInfo* info, double arg)
+* @date 2021-12-21
+* @author dexnab
+*/
+extern void cmtDemoSprintfFl64();
 #endif

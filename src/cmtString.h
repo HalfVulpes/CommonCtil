@@ -11,6 +11,7 @@
 #define _INC_CMTSTRING
 #define _CRT_SECURE_NO_WARNINGS
 #include <cmtType.h>
+#include <cmtCore.h>
 #include <string.h>
 #include <locale.h>
 #include <stdlib.h>
@@ -21,6 +22,7 @@
 /**
 * @typedef cmtANSIstr
 * @brief ANSI字符串结构体
+* @see _CMTANSISTR
 * @date 2021-9-23
 * @author dexnab
 */
@@ -108,26 +110,6 @@ typedef struct _CMTFMTPADINFO
 }cmtFmtPadInfo;
 
 /**
-* @typedef cmtFmtPrecInfo
-* @brief cmtFmtInfo.precision字段
-* @see doc/格式化字符串.md
-* @date 2021-12-04
-* @author dexnab
-*/
-/**
-* @brief cmtFmtInfo.precision字段
-* @see doc/格式化字符串.md
-* @date 2021-12-04
-* @author dexnab
-*/
-typedef struct _CMTFMTPRECINFO
-{
-	cmtBool enabled;///<TRUE：设置了精度字段 FALSE：精度字段缺省
-	cmtBool flag;///<TRUE：有效数字模式 FALSE：小数位数保留模式
-	cmtUint64 value;///<精度值
-}cmtFmtPrecInfo;
-
-/**
 * @typedef cmtFmtInfo
 * @brief 格式控制字符串解析结果
 * @see doc/格式化字符串.md
@@ -145,8 +127,8 @@ typedef struct _CMTFMTINFO
 	cmtBool sign;///<TRUE：显示正号 FALSE：不显示正号
 	cmtUint8 size;///<参数字节数或字符编码
 	cmtChar type;///<参数类型
+	cmtUint64 precision;///<精度值（0缺省）
 	cmtFmtPadInfo padding;
-	cmtFmtPrecInfo precision;
 }cmtFmtInfo;
 /*--------------------------------结构体定义 结束--------------------------------*/
 
@@ -221,6 +203,25 @@ typedef struct _CMTFMTINFO
 */
 #define CMT_CONSTSTR(str) {str,sizeof(str)}
 /*--------------------------------宏定义 结束--------------------------------*/
+
+/*--------------------------------全局变量声明 开始--------------------------------*/
+
+/**
+* @brief 以10为底数的指数（定点64位）
+* @detail @a cmtBase10ExpFx64[n] = 10^n;
+* @date 2021-12-18
+* @author dexnab
+*/
+extern cmtUint64 cmtBase10ExpFx64[20];
+
+/**
+* @brief 以10为底数的指数（浮点64位）
+* @detail @a cmtBase10ExpFl64[n] = 10^n;
+* @date 2021-12-18
+* @author dexnab
+*/
+extern double cmtBase10ExpFl64[309];
+/*--------------------------------全局变量声明 结束--------------------------------*/
 
 /*--------------------------------字符编码处理函数 开始--------------------------------*/
 
@@ -874,9 +875,83 @@ extern void cmtF32toStrEx(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf
 */
 extern void cmtF64toStrEx(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);
 
+/**
+* @brief 整数转字符串（二进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfBin() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
 extern cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
 
+/**
+* @brief 整数转字符串（八进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfOct() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
+
+/**
+* @brief 整数转字符串（有符号十进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfDec() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
 extern cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg);
+
+/**
+* @brief 整数转字符串（无符号十进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfUdec() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfUdec(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
+
+/**
+* @brief 整数转字符串（十六进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfHex() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfHex(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
+
+/**
+* @brief 浮点数转字符串（64位）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfFl64() 状态：NC
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfFl64(cmtU8str* out, cmtFmtInfo* info, double arg);
 
 //status: NC
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
