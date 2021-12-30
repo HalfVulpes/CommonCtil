@@ -11,6 +11,7 @@
 #define _INC_CMTSTRING
 #define _CRT_SECURE_NO_WARNINGS
 #include <cmtType.h>
+#include <cmtCore.h>
 #include <string.h>
 #include <locale.h>
 #include <stdlib.h>
@@ -26,7 +27,6 @@
 * @author dexnab
 */
 /**
-* @struct _CMTANSISTR
 * @brief ANSI字符串结构体
 * @date 2021-9-23
 * @author dexnab
@@ -35,471 +35,441 @@ typedef struct _CMTANSISTR
 {
 	cmtChar* data;///<字符数组
 	cmtUint64 size;///<总字节数
-	cmtChar* locale;///<使用的代码页（locale字符串注意以\\0结尾）
+	cmtChar* locale;///<使用的代码页（locale字符串必须有结束符）
 }cmtANSIstr;
 
 /**
 * @typedef cmtU8str
 * @brief UTF-8字符串结构体
-* @see _CMTU8STR
 * @date 2021-9-23
 * @author dexnab
 */
 /**
-* @struct _CMTU8STR
 * @brief UTF-8字符串结构体
 * @date 2021-9-23
 * @author dexnab
 */
 typedef struct _CMTU8STR
 {
-	cmtChar* data;//<字符数组
-	cmtUint64 size;//<总字节数
+	cmtChar* data;///<字符数组
+	cmtUint64 size;///<总字节数
 }cmtU8str;
 
 /**
 * @typedef cmtU16str
 * @brief UTF-16字符串结构体
-* @see _CMTU16STR
 * @date 2021-9-23
 * @author dexnab
 */
 /**
-* @struct _CMTU16STR
 * @brief UTF-16字符串结构体
 * @date 2021-9-23
 * @author dexnab
 */
 typedef struct _CMTU16STR
 {
-	cmtWchar* data;//<字符数组
-	cmtUint64 size;//<总字节数
+	cmtWchar* data;///<字符数组
+	cmtUint64 size;///<总字节数
 }cmtU16str;
 
 /**
 * @typedef cmtU32str
 * @brief UTF-32字符串结构体
-* @see _CMTU32STR
 * @date 2021-9-23
 * @author dexnab
 */
 /**
-* @struct _CMTU32STR
 * @brief UTF-32字符串结构体
 * @date 2021-9-23
 * @author dexnab
 */
 typedef struct _CMTU32STR
 {
-	cmtFchar* data;//<字符数组
-	cmtUint64 size;//<总字节数
+	cmtFchar* data;///<字符数组
+	cmtUint64 size;///<总字节数
 }cmtU32str;
 
 /**
 * @typedef cmtFmtPadInfo
-* @brief cmtFmtInfo::padding字段
-* @see _CMTFMTPADINFO
+* @brief cmtFmtInfo.padding字段
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 /**
-* @struct _CMTFMTPADINFO
-* @brief cmtFmtInfo::padding字段
-* @see doc/格式字符串.md
+* @brief cmtFmtInfo.padding字段
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 typedef struct _CMTFMTPADINFO
 {
-	cmtBool align;
-	cmtBool content;
-	cmtUint64 length;
+	cmtBool align;///<TRUE：左对齐 FALSE：右对齐
+	cmtBool content;///<TRUE：'0'填充 FALSE：空格填充
+	cmtUint64 length;///<填充后字符串字符数
 }cmtFmtPadInfo;
-
-/**
-* @typedef cmtFmtPrecInfo
-* @brief cmtFmtInfo::precision字段
-* @see _CMTFMTPRECINFO
-* @date 2021-12-04
-* @author dexnab
-*/
-/**
-* @struct _CMTFMTPRECINFO
-* @brief cmtFmtInfo::precision字段
-* @see doc/格式字符串.md
-* @date 2021-12-04
-* @author dexnab
-*/
-typedef struct _CMTFMTPRECINFO
-{
-	cmtBool enabled;
-	cmtBool flag;
-	cmtUint64 value;
-}cmtFmtPrecInfo;
-
-/**
-* @typedef cmtFmtItrInfo
-* @brief cmtFmtInfo::iteration字段
-* @see _CMTFMTITRINFO
-* @date 2021-12-04
-* @author dexnab
-*/
-/**
-* @struct _CMTFMTITRINFO
-* @brief cmtFmtInfo::iteration字段
-* @see doc/格式字符串.md
-* @date 2021-12-04
-* @author dexnab
-*/
-typedef struct _CMTFMTITRINFO
-{
-	cmtBool enabled;
-	cmtUint64 length;
-	cmtUint64 GroupSize;
-	cmtUint64 RowSize;
-}cmtFmtItrInfo;
 
 /**
 * @typedef cmtFmtInfo
 * @brief 格式控制字符串解析结果
-* @see _CMTFMTINFO
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 /**
-* @struct _CMTFMTINFO
 * @brief 格式控制字符串解析结果
-* @see doc/格式字符串.md
+* @see doc/格式化字符串.md
 * @date 2021-12-04
 * @author dexnab
 */
 typedef struct _CMTFMTINFO
 {
-	cmtBool sign;
+	cmtBool sign;///<TRUE：显示正号 FALSE：不显示正号
+	cmtUint8 size;///<参数字节数或字符编码
+	cmtChar type;///<参数类型
+	cmtUint64 precision;///<精度值（0缺省）
 	cmtFmtPadInfo padding;
-	cmtFmtPrecInfo precision;
-	cmtFmtItrInfo iteration;
-	cmtUint8 size;
-	cmtChar type;
 }cmtFmtInfo;
 /*--------------------------------结构体定义 结束--------------------------------*/
 
 /*--------------------------------宏定义 开始--------------------------------*/
 
 /**
-* @brief locale字符串最大长度（包括结尾'\\0'）
-* @date 2021-12-06
+* @brief locale字符串最大字节数
+* @date 2021-12-16
 * @author dexnab
 */
-#define CMT_LOCALE_MAX 85
-
+#define CMT_LOCALE_MAX 64
 /**
 * @brief unicode字符集保留区间起始
-* @see http://www.dexnab.top/blog/charset/charset.html
-* @date 2021-12-06
+* @date 2021-12-18
 * @author dexnab
 */
 #define CMT_UNICODE_RSV_START 0xd800
-
 /**
 * @brief unicode字符集保留区间结束
-* @see http://www.dexnab.top/blog/charset/charset.html
-* @date 2021-12-06
+* @date 2021-12-18
 * @author dexnab
 */
 #define CMT_UNICODE_RSV_END 0xdfff
 
 /**
-* @brief cmtFmtInfo::size字段取值
-* @see doc/格式字符串.md
-* @date 2021-12-06
+* @brief cmtFmtInfo::size字段默认值
+* @see doc/格式化字符串.md
+* @date 2021-12-18
 * @author dexnab
 */
 #define CMT_FMT_SIZE_DEFAULT 0
-
 /**
-* @brief cmtFmtInfo::size字段取值
-* @see doc/格式字符串.md
-* @date 2021-12-06
+* @brief cmtFmtInfo::size字段hh对应取值
+* @see doc/格式化字符串.md
+* @date 2021-12-18
 * @author dexnab
 */
 #define CMT_FMT_SIZE_HH 1
-
 /**
-* @brief cmtFmtInfo::size字段取值
-* @see doc/格式字符串.md
-* @date 2021-12-06
+* @brief cmtFmtInfo::size字段h对应取值
+* @see doc/格式化字符串.md
+* @date 2021-12-18
 * @author dexnab
 */
 #define CMT_FMT_SIZE_H 2
-
 /**
-* @brief cmtFmtInfo::size字段取值
-* @see doc/格式字符串.md
-* @date 2021-12-06
+* @brief cmtFmtInfo::size字段l对应取值
+* @see doc/格式化字符串.md
+* @date 2021-12-18
 * @author dexnab
 */
 #define CMT_FMT_SIZE_L 3
-
 /**
-* @brief cmtFmtInfo::size字段取值
-* @see doc/格式字符串.md
-* @date 2021-12-06
+* @brief cmtFmtInfo::size字段ll对应取值
+* @see doc/格式化字符串.md
+* @date 2021-12-18
 * @author dexnab
 */
 #define CMT_FMT_SIZE_LL 4
 
 //10^22
-#define CMT_DOUBLE_MAX_10E 10000000000000000000000.0
+#define CMT_DOUBLE_MAX_10E 1.0e+22
 //10^9
-#define CMT_FLOAT_MAX_10E 1000000000.0
+#define CMT_FLOAT_MAX_10E 1.0e+9
 
 /**
-* @brief 字符串结构体初始化宏
-* @param[in] str 字符串
-* @return 用于初始化字符串结构体
+* @brief 用于初始化字符串结构体
+* @param[in] str 字符串常量
 * @test cmtDemoStrToBin() 状态：PA
-* @date 2021-12-05
+* @date 2021-12-18
 * @author dexnab
 */
 #define CMT_CONSTSTR(str) {str,sizeof(str)}
 /*--------------------------------宏定义 结束--------------------------------*/
 
+/*--------------------------------全局变量声明 开始--------------------------------*/
+
+/**
+* @brief 以10为底数的指数（定点64位）
+* @detail @a cmtBase10ExpFx64[n] = 10^n;
+* @date 2021-12-18
+* @author dexnab
+*/
+extern cmtUint64 cmtBase10ExpFx64[20];
+
+/**
+* @brief 以10为底数的指数（浮点64位）
+* @detail @a cmtBase10ExpFl64[n] = 10^n;
+* @date 2021-12-18
+* @author dexnab
+*/
+extern double cmtBase10ExpFl64[309];
+/*--------------------------------全局变量声明 结束--------------------------------*/
+
 /*--------------------------------字符编码处理函数 开始--------------------------------*/
 
-//status: PA
 /**
 * @brief 测量ANSI字符字节数
 * @param[in] ch 字符首地址
-* @param[in] locale 使用的代码页（locale字符串注意以\\0结尾）
+* @param[in] locale 使用的代码页
 * @return 字符字节数
+* @pre @a locale 字符串必须有结束符
+* @test cmtDemoANSI() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint8 cmtANSIchSize(cmtChar* ch, cmtChar* locale);
 
-//status: PA
 /**
 * @brief 测量ANSI字符串总字节数
 * @param[in] str 字符串首地址
 * @return 字符串总字节数
+* @pre @a str 必须有结束符
+* @attention 结果不计入结束符
+* @test cmtDemoANSI() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtANSIstrSize(cmtChar* str);
 
-//status: PA
 /**
 * @brief 测量ANSI字符串字符数
 * @param[in] str 字符串结构体
 * @return 字符串字符数
+* @attention 结果计入结束符（一个结束符算一个字符）
+* @test cmtDemoANSI() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtANSIlen(cmtANSIstr* str);
 
-//status: PA
 /**
-* @brief 计算ANSI转UTF-8后，UTF-8字符串的字节数
+* @brief 计算转换后UTF-8字符串的总字节数
 * @param[in] ansi ANSI字符串结构体
 * @return UTF-8字符串的字节数
+* @test cmtDemoANSI() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtANSItoU8size(cmtANSIstr* ansi);
 
-//status: PA
 /**
 * @brief ANSI转UTF-8
 * @param[in] ansi ANSI字符串结构体
 * @param[out] u8 UTF-8字符串结构体
+* @test cmtDemoANSI() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern void cmtANSItoU8(cmtANSIstr* ansi, cmtU8str* u8);
 
-//status: PA
 /**
-* @brief 计算ANSI转UTF-16后，UTF-16字符串的字节数
+* @brief 计算转换后UTF-16字符串的总字节数
 * @param[in] ansi ANSI字符串结构体
 * @return UTF-16字符串的字节数
+* @test cmtDemoANSI() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtANSItoU16size(cmtANSIstr* ansi);
 
-//status: PA
 /**
 * @brief ANSI转UTF-16
 * @param[in] ansi ANSI字符串结构体
 * @param[out] u16 UTF-16字符串结构体
+* @test cmtDemoANSI() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern void cmtANSItoU16(cmtANSIstr* ansi, cmtU16str* u16);
 
-//status: PA
 /**
-* @brief 计算ANSI转UTF-32后，UTF-32字符串的字节数
+* @brief 计算转换后UTF-32字符串的总字节数
 * @param[in] ansi ANSI字符串结构体
 * @return UTF-32字符串的字节数
+* @test cmtDemoANSI() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtANSItoU32size(cmtANSIstr* ansi);
 
-//status: PA
 /**
 * @brief ANSI转UTF-32
 * @param[in] ansi ANSI字符串结构体
 * @param[out] u32 UTF-32字符串结构体
+* @test cmtDemoANSI() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern void cmtANSItoU32(cmtANSIstr* ansi, cmtU32str* u32);
 
-//status: PA
 /**
 * @brief 测量UTF-8字符字节数
 * @param[in] ch 字符首地址
 * @return 字符字节数
+* @test cmtDemoU8() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint8 cmtU8chSize(cmtChar* ch);
 
-//status: PA
 /**
 * @brief 测量UTF-8字符串总字节数
 * @param[in] str 字符串首地址
 * @return 字符串总字节数
+* @pre @a str 字符串必须有结束符
+* @attention 结果不计入结束符
+* @test cmtDemoU8() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU8strSize(cmtChar* str);
 
-//status: PA
 /**
 * @brief 测量UTF-8字符串字符数
 * @param[in] str 字符串结构体
 * @return 字符串字符数
+* @attention 结果计入结束符（一个结束符算一个字符）
+* @test cmtDemoU8() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU8len(cmtU8str* str);
 
-//status: PA
 /**
-* @brief 计算UTF-8转ANSI后，ANSI字符串的字节数
+* @brief 计算转换后ANSI字符串的总字节数
 * @param[in] u8 UTF-8字符串结构体
-* @param[in] locale 使用的代码页（locale字符串注意以\\0结尾）
-* @param[out] err 是否发生错误
+* @param[in] locale 使用的代码页
+* @param[out] err 异常码
 * @return ANSI字符串的字节数
 * @exception FALSE 正常
 * @exception TRUE 发生错误
+* @pre @a locale 字符串必须有结束符
+* @test cmtDemoU8() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU8toANSIsize(cmtU8str* u8, cmtChar* locale, cmtBool* err);
 
-//status: PA
 /**
 * @brief UTF-8转ANSI
 * @param[in] u8 UTF-8字符串结构体
 * @param[out] ansi ANSI字符串结构体
 * @return 是否出错
 * @retval FALSE 正常
-* @retval TRUE 转换失败
+* @retval TRUE 发生错误
+* @test cmtDemoU8() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtBool cmtU8toANSI(cmtU8str* u8, cmtANSIstr* ansi);
 
-//status: PA
 /**
-* @brief 计算UTF-8转UTF-16后，UTF-16字符串的字节数
+* @brief 计算转换后UTF-16字符串的总字节数
 * @param[in] u8 UTF-8字符串结构体
 * @return UTF-16字符串的字节数
+* @retval TRUE 发生错误
+* @test cmtDemoU8() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU8toU16size(cmtU8str* u8);
 
-//status: PA
 /**
 * @brief UTF-8转UTF-16
 * @param[in] u8 UTF-8字符串结构体
 * @param[out] u16 UTF-16字符串结构体
+* @test cmtDemoU8() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern void cmtU8toU16(cmtU8str* u8, cmtU16str* u16);
 
-//status: PA
 /**
-* @brief 计算UTF-8转UTF-32后，UTF-32字符串的字节数
+* @brief 计算转换后UTF-32字符串的总字节数
 * @param[in] u8 UTF-8字符串结构体
 * @return UTF-32字符串的字节数
+* @test cmtDemoU8() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU8toU32size(cmtU8str* u8);
 
-//status: PA
 /**
 * @brief UTF-8转UTF-32
 * @param[in] u8 UTF-8字符串结构体
 * @param[out] u32 UTF-32字符串结构体
+* @test cmtDemoU8() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern void cmtU8toU32(cmtU8str* u8, cmtU32str* u32);
 
-//status: PA
 /**
 * @brief 测量UTF-16字符字节数
 * @param[in] ch 字符首地址
 * @return 字符字节数
+* @test cmtDemoU16() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint8 cmtU16chSize(cmtWchar* ch);
 
-//status: PA
 /**
 * @brief 测量UTF-16字符串总字节数
 * @param[in] str 字符串首地址
 * @return 字符串总字节数
+* @pre @a str 字符串必须有结束符
+* @attention 结果不计入结束符
+* @test cmtDemoU16() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU16strSize(cmtWchar* str);
 
-//status: PA
 /**
 * @brief 测量UTF-16字符串字符数
 * @param[in] str 字符串结构体
 * @return 字符串字符数
+* @attention 结果计入结束符（一个结束符算一个字符）
+* @test cmtDemoU16() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU16len(cmtU16str* str);
 
-//status: PA
 /**
-* @brief 计算UTF-16转ANSI后，ANSI字符串的字节数
+* @brief 计算转换后ANSI字符串的总字节数
 * @param[in] u16 UTF-16字符串结构体
-* @param[in] locale 使用的代码页（locale字符串注意以\\0结尾）
-* @param[out] err 是否发生错误
+* @param[in] locale 使用的代码页
+* @param[out] err 异常码
 * @return ANSI字符串的字节数
 * @exception FALSE 正常
 * @exception TRUE 发生错误
+* @pre @a locale 字符串必须有结束符
+* @test cmtDemoU16() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err);
 
-//status: PA
 /**
 * @brief UTF-16转ANSI
 * @param[in] u16 UTF-16字符串结构体
@@ -507,76 +477,79 @@ extern cmtUint64 cmtU16toANSIsize(cmtU16str* u16, cmtChar* locale, cmtBool* err)
 * @return 是否出错
 * @retval FALSE 正常
 * @retval TRUE 转换失败
+* @test cmtDemoU16() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtBool cmtU16toANSI(cmtU16str* u16, cmtANSIstr* ansi);
 
-//status: PA
 /**
-* @brief 计算UTF-16转UTF-8后，UTF-8字符串的字节数
+* @brief 计算转换后UTF-8字符串的总字节数
 * @param[in] u16 UTF-16字符串结构体
 * @return UTF-8字符串的字节数
+* @test cmtDemoU16() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU16toU8size(cmtU16str* u16);
 
-//status: PA
 /**
 * @brief UTF-16转UTF-8
 * @param[in] u16 UTF-16字符串结构体
 * @param[out] u8 UTF-8字符串结构体
+* @test cmtDemoU16() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern void cmtU16toU8(cmtU16str* u16, cmtU8str* u8);
 
-//status: PA
 /**
-* @brief 计算UTF-16转UTF-32后，UTF-32字符串的字节数
+* @brief 计算转换后UTF-32字符串的总字节数
 * @param[in] u16 UTF-16字符串结构体
 * @return UTF-32字符串的字节数
+* @test cmtDemoU16() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU16toU32size(cmtU16str* u16);
 
-//status: PA
 /**
 * @brief UTF-16转UTF-32
 * @param[in] u16 UTF-16字符串结构体
 * @param[out] u32 UTF-32字符串结构体
+* @test cmtDemoU16() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern void cmtU16toU32(cmtU16str* u16, cmtU32str* u32);
 
-//status: PA
 /**
 * @brief 测量UTF-32字符串总字节数
 * @param[in] str 字符串首地址
 * @return 字符串总字节数
+* @pre @a str 字符串必须有结束符
+* @attention 结果不计入结束符
+* @test cmtDemoU32() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU32strSize(cmtFchar* str);
 
-//status: PA
 /**
-* @brief 计算UTF-32转ANSI后，ANSI字符串的字节数
+* @brief 计算转换后ANSI字符串的总字节数
 * @param[in] u32 UTF-32字符串结构体
-* @param[in] locale 使用的代码页（locale字符串注意以\\0结尾）
-* @param[out] err 是否发生错误
+* @param[in] locale 使用的代码页
+* @param[out] err 异常码
 * @return ANSI字符串的字节数
 * @exception FALSE 正常
 * @exception TRUE 发生错误
+* @pre @a locale 字符串必须有结束符
+* @test cmtDemoU32() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU32toANSIsize(cmtU32str* u32, cmtChar* locale, cmtBool* err);
 
-//status: PA
 /**
 * @brief UTF-32转ANSI
 * @param[in] u32 UTF-32字符串结构体
@@ -584,46 +557,47 @@ extern cmtUint64 cmtU32toANSIsize(cmtU32str* u32, cmtChar* locale, cmtBool* err)
 * @return 是否出错
 * @retval FALSE 正常
 * @retval TRUE 转换失败
+* @test cmtDemoU32() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtBool cmtU32toANSI(cmtU32str* u32, cmtANSIstr* ansi);
 
-//status: PA
 /**
-* @brief 计算UTF-32转UTF-8后，UTF-8字符串的字节数
+* @brief 计算转换后UTF-8字符串的总字节数
 * @param[in] u32 UTF-32字符串结构体
 * @return UTF-8字符串的字节数
+* @test cmtDemoU32() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU32toU8size(cmtU32str* u32);
 
-//status: PA
 /**
 * @brief UTF-32转UTF-8
 * @param[in] u32 UTF-32字符串结构体
 * @param[out] u8 UTF-8字符串结构体
+* @test cmtDemoU32() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern void cmtU32toU8(cmtU32str* u32, cmtU8str* u8);
 
-//status: PA
 /**
-* @brief 计算UTF-32转UTF-16后，UTF-16字符串的字节数
+* @brief 计算转换后UTF-16字符串的总字节数
 * @param[in] u32 UTF-32字符串结构体
 * @return UTF-16字符串的字节数
+* @test cmtDemoU32() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
 extern cmtUint64 cmtU32toU16size(cmtU32str* u32);
 
-//status: PA
 /**
 * @brief UTF-32转UTF-16
 * @param[in] u32 UTF-32字符串结构体
 * @param[out] u16 UTF-16字符串结构体
+* @test cmtDemoU32() 状态：PA
 * @date 2021-09-23
 * @author dexnab
 */
@@ -632,59 +606,59 @@ extern void cmtU32toU16(cmtU32str* u32, cmtU16str* u16);
 
 /*--------------------------------字符串操作函数 开始--------------------------------*/
 
-//status: PA
 /**
-* @brief 分析格式字符串
+* @brief 分析格式控制字符串
 * @param[in] fmt 格式控制字符串
 * @param[out] info 分析结果
 * @param[in] ArgList 参数数组
-* @attention fmt只保留格式控制字符串，从%开始（不含）到type字段结束（包含），如"llf"
-* @attention 本函数不进行边界检查，请保证格式控制字符串绝对符合要求（详见doc/格式字符串），否则会造成溢出
-* @date 2021-11-01
+* @pre fmt只保留格式控制字符串，从%开始（不含）到type字段结束（包含），如"llf"
+* @pre 本函数不进行边界检查，请保证格式控制字符串绝对符合要求（详见doc/格式字符串），否则会造成溢出
+* @see doc/格式化字符串.md
+* @test cmtDemoAnlyFmt() 状态：PA
+* @date 2021-12-19
 * @author dexnab
 */
 extern void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList);
 
-//status: PA
 /**
 * @brief 字符串转整数（二进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
+* @test cmtDemoStrToBin() 状态：PA
 * @date 2021-10-14
 * @author dexnab
 */
 extern cmtUint64 cmtStrToBin(cmtU8str* in, cmtUint64* out);
 
-//status: PA
 /**
 * @brief 字符串转整数（八进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
+* @test cmtDemoStrToOct() 状态：PA
 * @date 2021-10-14
 * @author dexnab
 */
 extern cmtUint64 cmtStrToOct(cmtU8str* in, cmtUint64* out);
 
-//status: PA
 /**
 * @brief 字符串转整数（十进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
-* @note 有没有符号都行。虽然参数out类型是无符号类型，但有符号数也可以直接用，参数out只是很单纯的一个指针而已
+* @test cmtDemoStrToDec() 状态：PA
 * @date 2021-10-14
 * @author dexnab
 */
 extern cmtUint64 cmtStrToDec(cmtU8str* in, cmtUint64* out);
 
-//status: PA
 /**
 * @brief 字符串转整数（十六进制）
 * @param[in] in 字符串
 * @param[out] out 整数
 * @return 转换了多少字节的字符串
+* @test cmtDemoStrToHex() 状态：PA
 * @date 2021-11-04
 * @author dexnab
 */
@@ -701,12 +675,12 @@ extern cmtUint64 cmtStrToHex(cmtU8str* in, cmtUint64* out);
 */
 extern cmtUint64 cmtStrToF32(cmtU8str* in, float* out);
 
-//status: PA
 /**
 * @brief 字符串转浮点数（64位）
 * @param[in] in 字符串
 * @param[out] out 浮点数
 * @return 转换了多少字节的字符串
+* @test cmtDemoStrToF64() 状态：PA
 * @date 2021-12-01
 * @author dexnab
 */
@@ -901,24 +875,96 @@ extern void cmtF32toStrEx(float in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf
 */
 extern void cmtF64toStrEx(double in, cmtU8str* out, cmtInt64 pofd, cmtUint64 sigf, cmtBool cap);
 
+/**
+* @brief 整数转字符串（二进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfBin() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
+
+/**
+* @brief 整数转字符串（八进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfOct() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
+
+/**
+* @brief 整数转字符串（有符号十进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfDec() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg);
+
+/**
+* @brief 整数转字符串（无符号十进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfUdec() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfUdec(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
+
+/**
+* @brief 整数转字符串（十六进制模式）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfHex() 状态：PA
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfHex(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg);
+
+/**
+* @brief 浮点数转字符串（64位）
+* @param[out] out 生成的字符串
+* @param[in] info 格式
+* @param[in] arg 整数
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @test cmtDemoSprintfFl64() 状态：NC
+* @date 2021-12-22
+* @author dexnab
+*/
+extern cmtUint64 cmtSprintfFl64(cmtU8str* out, cmtFmtInfo* info, double arg);
+
 //status: NC
 extern cmtUint64 cmtSprintfSize(cmtU8str* format, ...);
 
 //status: NC
-/*
-* TODO:
-* 浮点数还没有处理错误数据（NAN，0，INFINITY）
-* 输出字符串还要增加控制字数模式（由precision给定）
-* 遍历输出实现
-*/
 /**
-* @brief 根据格式字符串生成字符串
+* @brief 根据格式化字符串生成字符串
 * @param[out] out 生成的字符串
-* @param[in] format 格式字符串
-* @param[in] ... 参数列表（与格式字符串匹配）
-* @attention 格式字符串和生成的字符串都是UTF-8编码的
-* @attention 格式字符串具体要求见 doc/格式字符串.md
-* @date 2021-09-23
+* @param[in] format 格式化字符串
+* @param[in] ... 参数列表（与格式化字符串匹配）
+* @pre @a out 字符串的size字段必须填写，以限制输出缓冲区大小
+* @see doc/格式化字符串.md
+* @date 2021-12-20
 * @author dexnab
 */
 extern void cmtSprintf(cmtU8str* out, cmtU8str* format, ...);

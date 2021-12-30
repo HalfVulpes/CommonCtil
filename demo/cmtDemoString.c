@@ -7,32 +7,47 @@
 
 void cmtDemoANSI()
 {
-	cmtANSIstr ansi = CMT_CONSTSTR("\x31\x32\x33\xb2\xe2\xca\xd4\x31\x32\x33");//123测试123
-	ansi.locale = "zh-cn";
+	cmtANSIstr ansi1 = CMT_CONSTSTR("\x31\x32\x33\xb2\xe2\xca\xd4\x31\x32\x33");//123测试123
+	ansi1.locale = "zh-cn";
+	cmtUint64 ansi1size, ansi1len;
+	cmtChar ansi2 = '\xb2\xe2';//测
+	cmtUint8 ansi2size;
 	cmtU8str u8;
 	cmtU16str u16;
 	cmtU32str u32;
 
 	//测试1：ANSI转UTF-8
-	u8.size = cmtANSItoU8size(&ansi);
+	u8.size = cmtANSItoU8size(&ansi1);
 	u8.data = malloc(u8.size);
-	cmtANSItoU8(&ansi, &u8);
+	cmtANSItoU8(&ansi1, &u8);
 	//标答：u8->data="\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33"
 	//u8->size=13
 
 	//测试2：ANSI转UTF-16
-	u16.size = cmtANSItoU16size(&ansi);
+	u16.size = cmtANSItoU16size(&ansi1);
 	u16.data = malloc(u16.size);
-	cmtANSItoU16(&ansi, &u16);
+	cmtANSItoU16(&ansi1, &u16);
 	//标答：u16->data="\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00"
 	//u16->size=18
 
 	//测试3：ANSI转UTF-32
-	u32.size = cmtANSItoU32size(&ansi);
+	u32.size = cmtANSItoU32size(&ansi1);
 	u32.data = malloc(u32.size);
-	cmtANSItoU32(&ansi, &u32);
+	cmtANSItoU32(&ansi1, &u32);
 	//标答：u32->data="\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00"
 	//u32->size=36
+
+	//测试4：测量ANSI字符字节数
+	ansi2size = cmtANSIchSize(&ansi2, ansi1.locale);
+	//标答：ansi2size=2
+
+	//测试5：测量ANSI字符串总字节数
+	ansi1size = cmtANSIstrSize(ansi1.data);
+	//标答：10
+
+	//测试6：测量ANSI字符串字符数
+	ansi1len = cmtANSIlen(&ansi1);
+	//标答：ansi1len=9（因为算上了结尾的结束符）
 
 	free(u8.data);
 	free(u16.data);
@@ -43,6 +58,9 @@ void cmtDemoU8()
 {
 	cmtU8str u8a = CMT_CONSTSTR("\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33");//123测试123
 	cmtU8str u8b = CMT_CONSTSTR("\x31\x32\x33\xe6\xb5\x8b\xe8\xaf\x95\x31\x32\x33\xf0\xa3\xb1\x95\x61");//123测试123𣱕a
+	cmtUint64 u8bSize, u8bLen;
+	cmtChar u8c = '\xf0\xa3\xb1\x95';//𣱕
+	cmtUint8 u8cSize;
 	cmtANSIstr ansi;
 	cmtU16str u16;
 	cmtU32str u32;
@@ -70,6 +88,18 @@ void cmtDemoU8()
 	//标答：u32->data="\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x55\x3c\x02\x00\x61\x00\x00\x00"
 	//u32->size=44;
 
+	//测试4：测量UTF-8字符字节数
+	u8cSize = cmtU8chSize(&u8c);
+	//标答：u8cSize=4
+
+	//测试5：测量UTF-8字符串总字节数
+	u8bSize = cmtU8strSize(u8b.data);
+	//标答：u8bSize=17
+
+	//测试6：测量UTF-8字符串字符数
+	u8bLen = cmtU8len(&u8b);
+	//标答：u8bLen=11
+
 	free(ansi.data);
 	free(u16.data);
 	free(u32.data);
@@ -80,8 +110,11 @@ void cmtDemoU16()
 	//UTF-16的字符串正常情况下应写成L"xxx"的形式，但由于这里是直接指定的编码值，所以写成"xxx"的形式避免把8位的数据扩展成16位
 	//如："\x31"写成L"\x31"就会变成0x31 0x00
 	//同时，由于"xxx"字符串结尾只会自动加1个'\0'，所以还要手动加一个（相比之下，L"xxx"的结尾会自动加两个'\0'，也就是一个L'\0'）
-	cmtU8str u16a = CMT_CONSTSTR("\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00\x00");//123测试123
-	cmtU8str u16b = CMT_CONSTSTR("\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00\x4f\xd8\x55\xdc\x61\x00\x00");//123测试123𣱕a
+	cmtU16str u16a = CMT_CONSTSTR("\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00\x00");//123测试123
+	cmtU16str u16b = CMT_CONSTSTR("\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00\x4f\xd8\x55\xdc\x61\x00\x00");//123测试123𣱕a
+	cmtUint64 u16bSize, u16bLen;
+	cmtWchar u16c = '\x4f\xd8\x55\xdc';//𣱕
+	cmtUint8 u16cSize;
 	cmtANSIstr ansi;
 	cmtU8str u8;
 	cmtU32str u32;
@@ -109,6 +142,18 @@ void cmtDemoU16()
 	//标答：u32->data="\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x55\x3c\x02\x00\x61\x00\x00\x00"
 	//u32->size=44;
 
+	//测试4：测量UTF-16字符字节数
+	u16cSize = cmtU16chSize(&u16c);
+	//标答：u16cSize=4
+
+	//测试5：测量UTF-16字符串总字节数
+	u16bSize = cmtU16strSize(u16b.data);
+	//标答：u16bSize=22
+
+	//测试6：测量UTF-16字符串字符数
+	u16bLen = cmtU16len(&u16b);
+	//标答：u16bLen=11
+
 	free(ansi.data);
 	free(u8.data);
 	free(u32.data);
@@ -117,8 +162,9 @@ void cmtDemoU16()
 void cmtDemoU32()
 {
 	//同样，由于"xxx"只会自动在结尾加一个'\0'，所以还要手动再加三个
-	cmtU8str u32a = CMT_CONSTSTR("\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x00\x00\x00");
-	cmtU8str u32b = CMT_CONSTSTR("\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x55\x3c\x02\x00\x61\x00\x00\x00\x00\x00\x00");
+	cmtU32str u32a = CMT_CONSTSTR("\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x00\x00\x00");//123测试123
+	cmtU32str u32b = CMT_CONSTSTR("\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x4b\x6d\x00\x00\xd5\x8b\x00\x00\x31\x00\x00\x00\x32\x00\x00\x00\x33\x00\x00\x00\x55\x3c\x02\x00\x61\x00\x00\x00\x00\x00\x00");//123测试123𣱕a
+	cmtUint64 u32bSize, u32bLen;
 	cmtANSIstr ansi;
 	cmtU8str u8;
 	cmtU16str u16;
@@ -146,6 +192,10 @@ void cmtDemoU32()
 	//标答：u16->data="\x31\x00\x32\x00\x33\x00\x4b\x6d\xd5\x8b\x31\x00\x32\x00\x33\x00\x4f\xd8\x55\xdc\x61\x00"
 	//u16->size=24;
 
+	//测试4：测量UTF-32字符串总字节数
+	u32bSize = cmtU32strSize(u32b.data);
+	//标答：u32bSize=40
+
 	free(ansi.data);
 	free(u8.data);
 	free(u16.data);
@@ -153,17 +203,33 @@ void cmtDemoU32()
 
 void cmtDemoAnlyFmt()
 {
-	cmtU8str u8 = CMT_CONSTSTR("+-010.=*r2-2-2f\n");
+	cmtU8str u8a = CMT_CONSTSTR("+-010.*f");
+	cmtU8str u8b = CMT_CONSTSTR("lld");
 	cmtFmtInfo FmtInfo;
 	cmtUint64 arglist[1];
 	arglist[0] = 12;
 
-	cmtAnlyFmt(&u8, &FmtInfo, arglist);
-	//标答：FmtInfo.sign=TURE
+	//测试1：
+	cmtAnlyFmt(&u8a, &FmtInfo, arglist);
+	//标答：
+	//FmtInfo.sign=TURE
+	//FmtInfo.size=0
+	//FmtInfo.type='f'
 	//FmtInfo.padding.align=TRUE
 	//FmtInfo.padding.content=TRUE
 	//FmtInfo.padding.length=10
-	//FmtInfo.precision.enabled=TRUE;
+	//FmtInfo.precision.value=12
+
+	//测试2：
+	cmtAnlyFmt(&u8b, &FmtInfo, NULL);
+	//标答：
+	//FmtInfo.sign=FALSE
+	//FmtInfo.size=CMT_FMT_SIZE_LL(4)
+	//FmtInfo.type='d'
+	//FmtInfo.padding.align=FALSE
+	//FmtInfo.padding.content=FALSE
+	//FmtInfo.padding.length=0
+	//FmtInfo.precision.value=0
 }
 
 void cmtDemoStrToBin()
@@ -468,6 +534,143 @@ void cmtDemoBinToStr()
 //	cmtSprintf(&out, &str, 0x76ad, 0x76ad, 0x76ad, 0x76ad, 0x76ad, 0x76ad, 1234.12345678, -1234.12345678f, 1234.12345678, 0.01234f, -1234.12345678, 1234.0f, 1234.12345678, 0.0000123f, -1234.12345678, 1234.0f, &u16);
 //	printf("%.*s", out.size, out.data);
 //}
+
+void cmtDemoSprintfBin()
+{
+	cmtFmtInfo info;
+	info.sign = FALSE;
+	info.size = CMT_FMT_SIZE_DEFAULT;
+	info.type = 'b';
+	info.padding.align = FALSE;
+	info.padding.content = TRUE;
+	info.padding.length = 30;
+	info.precision = 0;
+	cmtU8str u8;
+	u8.size = 1024;
+	u8.data = malloc(u8.size);
+	cmtUint64 ret;
+
+	ret = cmtSprintfBin(&u8, &info, 0x01040224);//0x01040224=0001 0000 0100 0000 0010 0010 0100b
+	//标答：
+	//ret=30
+	//u8->data="000001000001000000001000100100"
+}
+
+void cmtDemoSprintfOct()
+{
+	cmtFmtInfo info;
+	info.sign = FALSE;
+	info.size = CMT_FMT_SIZE_DEFAULT;
+	info.type = 'o';
+	info.padding.align = TRUE;
+	info.padding.content = FALSE;
+	info.padding.length = 5;
+	info.precision = 0;
+	cmtU8str u8;
+	u8.size = 1024;
+	u8.data = malloc(u8.size);
+	cmtUint64 ret;
+	
+	ret = cmtSprintfOct(&u8, &info, 03141643122);
+	//标答：
+	//ret=10
+	//u8->data="3141643122"
+}
+
+void cmtDemoSprintfDec()
+{
+	cmtFmtInfo info;
+	info.sign = FALSE;
+	info.size = CMT_FMT_SIZE_DEFAULT;
+	info.type = 'd';
+	info.padding.align = TRUE;
+	info.padding.content = FALSE;
+	info.padding.length = 12;
+	info.precision = 4;
+	cmtU8str u8;
+	u8.size = 1024;
+	u8.data = malloc(u8.size);
+	cmtUint64 ret;
+
+	//测试1：负数
+	ret = cmtSprintfDec(&u8, &info, -123456);
+	//标答：
+	//ret=12
+	//u8->data="-3456       "（有7个空格）
+
+	//测试2：正数
+	info.precision = 0;
+	ret = cmtSprintfDec(&u8, &info, 1234567);
+	//标答：
+	//ret=12
+	//u8->data="1234567     "（有5个空格）
+
+	//测试3：0
+	info.padding.length = 0;
+	ret = cmtSprintfDec(&u8, &info, 0);
+	//标答：
+	//ret=1
+	//u8->data="0"
+}
+
+void cmtDemoSprintfUdec()
+{
+	cmtFmtInfo info;
+	info.sign = FALSE;
+	info.size = CMT_FMT_SIZE_DEFAULT;
+	info.type = 'u';
+	info.padding.align = FALSE;
+	info.padding.content = TRUE;
+	info.padding.length = 12;
+	info.precision = 0;
+	cmtU8str u8;
+	u8.size = 1024;
+	u8.data = malloc(u8.size);
+	cmtUint64 ret;
+
+	//测试1：非0数
+	ret = cmtSprintfUdec(&u8, &info, 18446744073709551615);//2^64-1
+	//标答：
+	//ret=20
+	//u8->data="18446744073709551615"
+
+	//测试2：0
+	info.precision = 0;
+	info.padding.length = 0;
+	ret = cmtSprintfUdec(&u8, &info, 0);
+	//标答：
+	//ret=1
+	//u8->data="0"
+}
+
+void cmtDemoSprintfHex()
+{
+	cmtFmtInfo info;
+	info.sign = FALSE;
+	info.size = CMT_FMT_SIZE_DEFAULT;
+	info.type = 'x';
+	info.padding.align = FALSE;
+	info.padding.content = TRUE;
+	info.padding.length = 12;
+	info.precision = 0;
+	cmtU8str u8;
+	u8.size = 1024;
+	u8.data = malloc(u8.size);
+	cmtUint64 ret;
+
+	//测试1：小写
+	ret = cmtSprintfHex(&u8, &info, 0x3a10df9c5);
+	//标答：
+	//ret=12
+	//u8->data="0003a10df9c5"
+
+	//测试2：大写
+	info.type = 'X';
+	ret = cmtSprintfHex(&u8, &info, 0x3a10df9c5);
+	//标答：
+	//ret=12
+	//u8->data="0003A10DF9C5"
+}
 
 //int main(int argc, char** agrv)
 //{
