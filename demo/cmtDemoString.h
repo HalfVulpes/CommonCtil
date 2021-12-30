@@ -113,7 +113,7 @@ extern void cmtDemoStrToDec();
 extern void cmtDemoStrToHex();
 
 /**
-* @brief 字符串转32位浮点
+* @brief 字符串转浮点（32位）
 * @see cmtStrToF32(cmtU8str*, float*)
 * @date 2021-12-04
 * @author dexnab
