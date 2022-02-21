@@ -1,10 +1,67 @@
 /**
-* @file cmtCore.c
-* @date 2021-09-23
+* @file cmtString.c
+* @date 2021-12-04
 * @author Dexnab
 */
 
 #include <cmtString.h>
+
+cmtUint64 cmtBase10ExpFx64[20] = {
+	1,
+	10,
+	100,
+	1000,
+	10000,
+	100000,
+	1000000,
+	10000000,
+	100000000,
+	1000000000,
+	10000000000,
+	100000000000,
+	1000000000000,
+	10000000000000,
+	100000000000000,
+	1000000000000000,
+	10000000000000000,
+	100000000000000000,
+	1000000000000000000,
+	10000000000000000000
+};
+
+double cmtBase10ExpFl64[309] = {
+		1.0e+0, 1.0e+1, 1.0e+2, 1.0e+3, 1.0e+4, 1.0e+5, 1.0e+6, 1.0e+7, 1.0e+8, 1.0e+9,
+		1.0e+10, 1.0e+11, 1.0e+12, 1.0e+13, 1.0e+14, 1.0e+15, 1.0e+16, 1.0e+17, 1.0e+18, 1.0e+19,
+		1.0e+20, 1.0e+21, 1.0e+22, 1.0e+23, 1.0e+24, 1.0e+25, 1.0e+26, 1.0e+27, 1.0e+28, 1.0e+29,
+		1.0e+30, 1.0e+31, 1.0e+32, 1.0e+33, 1.0e+34, 1.0e+35, 1.0e+36, 1.0e+37, 1.0e+38, 1.0e+39,
+		1.0e+40, 1.0e+41, 1.0e+42, 1.0e+43, 1.0e+44, 1.0e+45, 1.0e+46, 1.0e+47, 1.0e+48, 1.0e+49,
+		1.0e+50, 1.0e+51, 1.0e+52, 1.0e+53, 1.0e+54, 1.0e+55, 1.0e+56, 1.0e+57, 1.0e+58, 1.0e+59,
+		1.0e+60, 1.0e+61, 1.0e+62, 1.0e+63, 1.0e+64, 1.0e+65, 1.0e+66, 1.0e+67, 1.0e+68, 1.0e+69,
+		1.0e+70, 1.0e+71, 1.0e+72, 1.0e+73, 1.0e+74, 1.0e+75, 1.0e+76, 1.0e+77, 1.0e+78, 1.0e+79,
+		1.0e+80, 1.0e+81, 1.0e+82, 1.0e+83, 1.0e+84, 1.0e+85, 1.0e+86, 1.0e+87, 1.0e+88, 1.0e+89,
+		1.0e+90, 1.0e+91, 1.0e+92, 1.0e+93, 1.0e+94, 1.0e+95, 1.0e+96, 1.0e+97, 1.0e+98, 1.0e+99,
+		1.0e+100, 1.0e+101, 1.0e+102, 1.0e+103, 1.0e+104, 1.0e+105, 1.0e+106, 1.0e+107, 1.0e+108, 1.0e+109,
+		1.0e+110, 1.0e+111, 1.0e+112, 1.0e+113, 1.0e+114, 1.0e+115, 1.0e+116, 1.0e+117, 1.0e+118, 1.0e+119,
+		1.0e+120, 1.0e+121, 1.0e+122, 1.0e+123, 1.0e+124, 1.0e+125, 1.0e+126, 1.0e+127, 1.0e+128, 1.0e+129,
+		1.0e+130, 1.0e+131, 1.0e+132, 1.0e+133, 1.0e+134, 1.0e+135, 1.0e+136, 1.0e+137, 1.0e+138, 1.0e+139,
+		1.0e+140, 1.0e+141, 1.0e+142, 1.0e+143, 1.0e+144, 1.0e+145, 1.0e+146, 1.0e+147, 1.0e+148, 1.0e+149,
+		1.0e+150, 1.0e+151, 1.0e+152, 1.0e+153, 1.0e+154, 1.0e+155, 1.0e+156, 1.0e+157, 1.0e+158, 1.0e+159,
+		1.0e+160, 1.0e+161, 1.0e+162, 1.0e+163, 1.0e+164, 1.0e+165, 1.0e+166, 1.0e+167, 1.0e+168, 1.0e+169,
+		1.0e+170, 1.0e+171, 1.0e+172, 1.0e+173, 1.0e+174, 1.0e+175, 1.0e+176, 1.0e+177, 1.0e+178, 1.0e+179,
+		1.0e+180, 1.0e+181, 1.0e+182, 1.0e+183, 1.0e+184, 1.0e+185, 1.0e+186, 1.0e+187, 1.0e+188, 1.0e+189,
+		1.0e+190, 1.0e+191, 1.0e+192, 1.0e+193, 1.0e+194, 1.0e+195, 1.0e+196, 1.0e+197, 1.0e+198, 1.0e+199,
+		1.0e+200, 1.0e+201, 1.0e+202, 1.0e+203, 1.0e+204, 1.0e+205, 1.0e+206, 1.0e+207, 1.0e+208, 1.0e+209,
+		1.0e+210, 1.0e+211, 1.0e+212, 1.0e+213, 1.0e+214, 1.0e+215, 1.0e+216, 1.0e+217, 1.0e+218, 1.0e+219,
+		1.0e+220, 1.0e+221, 1.0e+222, 1.0e+223, 1.0e+224, 1.0e+225, 1.0e+226, 1.0e+227, 1.0e+228, 1.0e+229,
+		1.0e+230, 1.0e+231, 1.0e+232, 1.0e+233, 1.0e+234, 1.0e+235, 1.0e+236, 1.0e+237, 1.0e+238, 1.0e+239,
+		1.0e+240, 1.0e+241, 1.0e+242, 1.0e+243, 1.0e+244, 1.0e+245, 1.0e+246, 1.0e+247, 1.0e+248, 1.0e+249,
+		1.0e+250, 1.0e+251, 1.0e+252, 1.0e+253, 1.0e+254, 1.0e+255, 1.0e+256, 1.0e+257, 1.0e+258, 1.0e+259,
+		1.0e+260, 1.0e+261, 1.0e+262, 1.0e+263, 1.0e+264, 1.0e+265, 1.0e+266, 1.0e+267, 1.0e+268, 1.0e+269,
+		1.0e+270, 1.0e+271, 1.0e+272, 1.0e+273, 1.0e+274, 1.0e+275, 1.0e+276, 1.0e+277, 1.0e+278, 1.0e+279,
+		1.0e+280, 1.0e+281, 1.0e+282, 1.0e+283, 1.0e+284, 1.0e+285, 1.0e+286, 1.0e+287, 1.0e+288, 1.0e+289,
+		1.0e+290, 1.0e+291, 1.0e+292, 1.0e+293, 1.0e+294, 1.0e+295, 1.0e+296, 1.0e+297, 1.0e+298, 1.0e+299,
+		1.0e+300, 1.0e+301, 1.0e+302, 1.0e+303, 1.0e+304, 1.0e+305, 1.0e+306, 1.0e+307, 1.0e+308
+};
 
 cmtUint8 cmtANSIchSize(cmtChar* ch, cmtChar* locale)
 {
@@ -1225,155 +1282,234 @@ void cmtU32toU16(cmtU32str* u32, cmtU16str* u16)
 void cmtAnlyFmt(cmtU8str* fmt, cmtFmtInfo* info, cmtUint64* ArgList)
 {
 	cmtUint64 rFmt = 0, rArg = 0;
-	cmtU8str TempStr;
 
-	//一、sign字段
-	if (fmt->data[rFmt] == '+')
-	{
-		info->sign = TRUE;
-		rFmt++;
-	}
-	else
-		info->sign = FALSE;
+	//TODO: change to cmt native
+	memset(info, 0, sizeof(cmtFmtInfo));
 
-	//二、padding字段
-	//（一）align
-	if (fmt->data[rFmt] == '-')
-	{
-		info->padding.align = TRUE;
-		rFmt++;
-	}
-	else
-		info->padding.align = FALSE;
-	//（二）content
-	if (fmt->data[rFmt] == '0')
-	{
-		info->padding.content = TRUE;
-		rFmt++;
-	}
-	else
-		info->padding.content = FALSE;
-	//（三）length
-	if (fmt->data[rFmt] == '*')
-	{
-		info->padding.length = ArgList[rArg];
-		rArg++;
-		rFmt++;
-	}
-	else
-	{
-		TempStr.data = fmt->data + rFmt;
-		TempStr.size = fmt->size - rFmt;
-		rFmt += cmtStrtoDec(&TempStr, &info->padding.length);
-	}
+	//start
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == '+') goto _T1;
+	if (fmt->data[rFmt] == '-') goto _T2;
+	if (fmt->data[rFmt] == '0') goto _T3;
+	if (fmt->data[rFmt] >= '1' && fmt->data[rFmt] <= '9') goto _T4;
+	if (fmt->data[rFmt] == '*') goto _T6;
+	if (fmt->data[rFmt] == '.') goto _T7;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
 
-	//三、precision字段
-	if (fmt->data[rFmt] == '.')
-	{
-		info->precision.enabled = TRUE;
-		rFmt++;
-		//（一）flag
-		if (fmt->data[rFmt] == '=')
-		{
-			info->precision.flag = TRUE;
-			rFmt++;
-		}
-		else
-			info->precision.flag = FALSE;
-		//（二）value
-		if (fmt->data[rFmt] == '*')
-		{
-			info->precision.value = ArgList[rArg];
-			rArg++;
-			rFmt++;
-		}
-		else
-		{
-			TempStr.data = fmt->data + rFmt;
-			TempStr.size = fmt->size - rFmt;
-			rFmt += cmtStrtoDec(&TempStr, &info->precision.value);
-		}
-	}
-	else
-		info->precision.enabled = FALSE;
+	//'+'
+_T1:
+	info->sign = TRUE;
 
-	//四、iteration字段
-	if (fmt->data[rFmt] == 'r')
-	{
-		info->iteration.enabled = TRUE;
-		rFmt++;
-		//（一）length
-		if (fmt->data[rFmt] == '*')
-		{
-			info->iteration.length = ArgList[rArg];
-			rArg++;
-			rFmt++;
-		}
-		else
-		{
-			TempStr.data = fmt->data + rFmt;
-			TempStr.size = fmt->size - rFmt;
-			rFmt += cmtStrtoDec(&TempStr, &info->iteration.length);
-		}
-		//（二）group size
-		if (fmt->data[rFmt] == '-')
-		{
-			rFmt++;
-			if (fmt->data[rFmt] == '*')
-			{
-				info->iteration.GroupSize = ArgList[rArg];
-				rArg++;
-				rFmt++;
-			}
-			else
-			{
-				TempStr.data = fmt->data + rFmt;
-				TempStr.size = fmt->size - rFmt;
-				rFmt += cmtStrtoDec(&TempStr, &info->iteration.GroupSize);
-			}
-		}
-		//（三）row size
-		if (fmt->data[rFmt] == '-')
-		{
-			rFmt++;
-			if (fmt->data[rFmt] == '*')
-			{
-				info->iteration.RowSize = ArgList[rArg];
-				rArg++;
-				rFmt++;
-			}
-			else
-			{
-				TempStr.data = fmt->data + rFmt;
-				TempStr.size = fmt->size - rFmt;
-				rFmt += cmtStrtoDec(&TempStr, &info->iteration.RowSize);
-			}
-		}
-	}
-	else
-		info->iteration.enabled = FALSE;
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == '-') goto _T2;
+	if (fmt->data[rFmt] == '0') goto _T3;
+	if (fmt->data[rFmt] >= '1' && fmt->data[rFmt] <= '9') goto _T4;
+	if (fmt->data[rFmt] == '*') goto _T6;
+	if (fmt->data[rFmt] == '.') goto _T7;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
 
-	//五、size字段
-	if (fmt->data[rFmt] == 'h')
-	{
-		rFmt++;
-		if (fmt->data[rFmt] == 'h') info->size = CMT_FMT_SIZE_HH;
-		else info->size = CMT_FMT_SIZE_H;
-	}
-	else if (fmt->data[rFmt] == 'l')
-	{
-		rFmt++;
-		if (fmt->data[rFmt] == 'l') info->size = CMT_FMT_SIZE_LL;
-		else info->size = CMT_FMT_SIZE_L;
-	}
-	else
-		info->size = CMT_FMT_SIZE_DEFAULT;
+	//'-'
+_T2:
+	info->padding.align = TRUE;
 
-	//六、type字段
-	info->type = fmt->data[fmt->size - 1];
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == '0') goto _T3;
+	if (fmt->data[rFmt] >= '1' && fmt->data[rFmt] <= '9') goto _T4;
+	if (fmt->data[rFmt] == '*') goto _T6;
+	goto _Tend;
+
+	//'0'
+_T3:
+	info->padding.content = TRUE;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] >= '1' && fmt->data[rFmt] <= '9') goto _T4;
+	if (fmt->data[rFmt] == '*') goto _T6;
+	goto _Tend;
+
+	//['1','9']
+_T4:
+	info->padding.length = fmt->data[rFmt] - '0';
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] >= '0' && fmt->data[rFmt] <= '9') goto _T5;
+	if (fmt->data[rFmt] == '.') goto _T7;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//['0','9']
+_T5:
+	info->padding.length = info->padding.length * 10 + fmt->data[rFmt] - '0';
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] >= '0' && fmt->data[rFmt] <= '9') goto _T5;
+	if (fmt->data[rFmt] == '.') goto _T7;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'*'
+_T6:
+	info->padding.length = ArgList[rArg];
+	rArg++;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == '.') goto _T7;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'.'
+_T7:
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] >= '1' && fmt->data[rFmt] <= '9') goto _T8;
+	if (fmt->data[rFmt] == '*') goto _T10;
+	goto _Tend;
+
+	//['1','9']
+_T8:
+	info->precision = fmt->data[rFmt] - '0';
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] >= '0' && fmt->data[rFmt] <= '9') goto _T9;
+	goto _Tend;
+
+	//['0','9']
+_T9:
+	info->precision = info->precision * 10 + fmt->data[rFmt] - '0';
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] >= '0' && fmt->data[rFmt] <= '9') goto _T9;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'*'
+_T10:
+	info->precision = ArgList[rArg];
+	rArg++;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T11;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T13;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'h'
+_T11:
+	info->size = CMT_FMT_SIZE_H;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == 'h' || fmt->data[rFmt] == 'H') goto _T12;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'h'
+_T12:
+	info->size = CMT_FMT_SIZE_HH;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'l'
+_T13:
+	info->size = CMT_FMT_SIZE_L;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == 'l' || fmt->data[rFmt] == 'L') goto _T14;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//'l'
+_T14:
+	info->size = CMT_FMT_SIZE_LL;
+
+	rFmt++;
+	if (rFmt > fmt->size) goto _Tend;
+	if (fmt->data[rFmt] == 'b' || fmt->data[rFmt] == 'B' || fmt->data[rFmt] == 'o' || fmt->data[rFmt] == 'O' ||
+		fmt->data[rFmt] == 'd' || fmt->data[rFmt] == 'D' || fmt->data[rFmt] == 'u' || fmt->data[rFmt] == 'U' ||
+		fmt->data[rFmt] == 'x' || fmt->data[rFmt] == 'X' || fmt->data[rFmt] == 'c' || fmt->data[rFmt] == 'C' ||
+		fmt->data[rFmt] == 's' || fmt->data[rFmt] == 'S' || fmt->data[rFmt] == 'f' || fmt->data[rFmt] == 'F' ||
+		fmt->data[rFmt] == 'e' || fmt->data[rFmt] == 'E') goto _T15;
+	goto _Tend;
+
+	//type
+_T15:
+	info->type = fmt->data[rFmt];
+
+	//goto _Tend;
+
+	//end
+_Tend:
+	;
 }
 
-cmtUint64 cmtStrtoBin(cmtU8str* in, cmtUint64* out)
+cmtUint64 cmtStrToBin(cmtU8str* in, cmtUint64* out)
 {
 	cmtUint64 r = 0;
 
@@ -1388,7 +1524,7 @@ cmtUint64 cmtStrtoBin(cmtU8str* in, cmtUint64* out)
 	return r;
 }
 
-cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out)
+cmtUint64 cmtStrToOct(cmtU8str* in, cmtUint64* out)
 {
 	cmtUint64 r = 0;
 
@@ -1403,22 +1539,36 @@ cmtUint64 cmtStrtoOct(cmtU8str* in, cmtUint64* out)
 	return r;
 }
 
-cmtUint64 cmtStrtoDec(cmtU8str* in, cmtUint64* out)
+cmtUint64 cmtStrToDec(cmtU8str* in, cmtUint64* out)
 {
 	cmtUint64 r = 0;
 
 	*out = 0;
-	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
+	if (in->size && in->data[0] == '-')
 	{
-		*out *= 10;
-		*out += in->data[r] - '0';
 		r++;
+		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
+		{
+			*out *= 10;
+			*out -= in->data[r] - '0';
+			r++;
+		}
+	}
+	else
+	{
+		if (in->size && in->data[0] == '+') r++;
+		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
+		{
+			*out *= 10;
+			*out += in->data[r] - '0';
+			r++;
+		}
 	}
 
 	return r;
 }
 
-cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out)
+cmtUint64 cmtStrToHex(cmtU8str* in, cmtUint64* out)
 {
 	cmtUint64 r = 0;
 
@@ -1436,105 +1586,600 @@ cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out)
 	return r;
 }
 
-//cmtUint64 cmtStrtoF32(cmtU8str* in, float* out)
-//{
-//	float integer = 0.0f, decimal = 0.0f;
-//	cmtU8str DecStr;
-//	cmtUint64 r = 0;
-//
-//	//整数部分
-//	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
-//	{
-//		integer *= 10.0f;
-//		integer += in->data[r] - '0';
-//		r++;
-//	}
-//	//小数部分
-//	if (in->data[r] == '.')
-//	{
-//		//计算小数数据字符串大小
-//		DecStr.data = in->data + r;
-//		r++;
-//		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9') r++;
-//		DecStr.size = in->data + r - DecStr.data;
-//		//转换
-//		r = DecStr.size;
-//		while (r > 0)
-//		{
-//			decimal += in->data[r] - '0';
-//			decimal /= 10.0f;
-//			r--;
-//		}
-//	}
-//
-//	*out = integer + decimal;
-//	return DecStr.data + DecStr.size - in->data;
-//}
-//
-//cmtUint64 cmtStrtoF64(cmtU8str* in, double* out)
-//{
-//	double integer = 0.0f, decimal = 0.0f;
-//	cmtU8str DecStr;
-//	cmtUint64 r = 0;
-//
-//	//整数部分
-//	while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9')
-//	{
-//		integer *= 10.0;
-//		integer += in->data[r] - '0';
-//		r++;
-//	}
-//	//小数部分
-//	if (in->data[r] == '.')
-//	{
-//		//计算小数数据字符串大小
-//		DecStr.data = in->data + r;
-//		r++;
-//		while (r < in->size && in->data[r] >= '0' && in->data[r] <= '9') r++;
-//		DecStr.size = in->data + r - DecStr.data;
-//		//转换
-//		r = DecStr.size;
-//		while (r > 0)
-//		{
-//			decimal += in->data[r] - '0';
-//			decimal /= 10.0;
-//			r--;
-//		}
-//		//使用的大小
-//		r = DecStr.data + DecStr.size - in->data;
-//	}
-//
-//	*out = integer + decimal;
-//	return r;
-//}
-//
-//cmtUint64 cmtBintoStrSize(cmtUint64 in)
-//{
-//	cmtUint64 size = 0;
-//
-//	while (in > 0)
-//	{
-//		in /= 2;
-//		size++;
-//	}
-//
-//	return size;
-//}
-//
-//void cmtBintoStr(cmtUint64 in, cmtU8str* out, cmtUint64 digit)
-//{
-//	cmtUint64 r;
-//
-//	r = digit;
-//	while (r > 0)
-//	{
-//		if (r <= out->size)
-//			out->data[r - 1] = in % 2;
-//		in /= 2;
-//		r--;
-//	}
-//}
-//
+cmtUint64 cmtStrToF32(cmtU8str* in, float* out)
+{
+	//自动机图请参考"/doc/cmtStrToFxx.svg"
+	cmtBool sign = 0, ExpSign = 0;//'-': 1; '+': 0
+	float integer = 0.0f, decimal = 0.0f, multiple1 = 1.0f, multiple2;
+	cmtUint64 exponent = 0;
+	cmtUint64 r = 0, rExp = 0;
+
+	//start
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '+')
+		goto _T1;
+	if (in->data[r] == '-')
+		goto _T2;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'+'
+_T1:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'-'
+_T2:
+	sign = TRUE;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T3:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T4:
+	integer = in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T5;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['0','9']
+_T5:
+	integer *= 10.0f;
+	integer += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T5;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'.'
+_T6:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T7;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	goto _Tend;
+
+	//'0'
+_T7:
+	multiple1 *= 10.0f;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T7;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T8:
+	multiple1 *= 10.0f;
+	decimal *= 10.0f;
+	decimal += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == '0')
+		goto _T9;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T9:
+	multiple2 = multiple1;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T10;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T10:
+	multiple2 *= 10.0f;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T10;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T11:
+	multiple1 = multiple2;
+	multiple1 *= 10.0f;
+	decimal *= 10.0f;
+	decimal += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == '0')
+		goto _T9;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//{'e','E'}
+_T12:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '+')
+		goto _T13;
+	if (in->data[r] == '-')
+		goto _T14;
+	goto _Tend;
+
+	//'+'
+_T13:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//'-'
+_T14:
+	ExpSign = TRUE;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//'0'
+_T15:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//n['1','9']
+_T16:
+	exponent = in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T17;
+	goto _Tend;
+
+	//n['0','9']
+_T17:
+	exponent *= 10;
+	exponent += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T17;
+	goto _Tend;
+
+	//end
+_Tend:
+	//multiple2 = 10 ^ exponent;
+	multiple2 = 1.0f;
+	while (rExp < exponent)
+	{
+		multiple2 *= 10.0f;
+		rExp++;
+	}
+
+	//xxx.xxxe-xxx
+	//result = (integer + decimal / multiple1) / multiple2;
+	if (ExpSign) *out = (integer + decimal / multiple1) / multiple2;
+	//xxx.xxxe+xxx
+	//result = (integer + decimal / multiple1) * multiple2;
+	else *out = (integer + decimal / multiple1) * multiple2;
+
+	//负数
+	if (sign) *out = -*out;
+
+	return r;
+}
+
+cmtUint64 cmtStrToF64(cmtU8str* in, double* out)
+{
+	//自动机图请参考"/doc/cmtStrToFxx.svg"
+	cmtBool sign = 0, ExpSign = 0;//'-': 1; '+': 0
+	double integer = 0.0, decimal = 0.0, multiple1 = 1.0, multiple2;
+	cmtUint64 exponent = 0;
+	cmtUint64 r = 0, rExp = 0;
+
+	//start
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '+')
+		goto _T1;
+	if (in->data[r] == '-')
+		goto _T2;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'+'
+_T1:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'-'
+_T2:
+	sign = TRUE;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T3:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T3;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T4;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T4:
+	integer = in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T5;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['0','9']
+_T5:
+	integer *= 10.0;
+	integer += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T5;
+	if (in->data[r] == '.')
+		goto _T6;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'.'
+_T6:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T7;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	goto _Tend;
+
+	//'0'
+_T7:
+	multiple1 *= 10.0;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T7;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T8:
+	multiple1 *= 10.0;
+	decimal *= 10.0;
+	decimal += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == '0')
+		goto _T9;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T9:
+	multiple2 = multiple1;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T10;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//'0'
+_T10:
+	multiple2 *= 10.0;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T10;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//n['1','9']
+_T11:
+	multiple1 = multiple2;
+	multiple1 *= 10.0;
+	decimal *= 10.0;
+	decimal += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T8;
+	if (in->data[r] == '0')
+		goto _T9;
+	if (in->data[r] == 'e' || in->data[r] == 'E')
+		goto _T12;
+	goto _Tend;
+
+	//{'e','E'}
+_T12:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '+')
+		goto _T13;
+	if (in->data[r] == '-')
+		goto _T14;
+	goto _Tend;
+
+	//'+'
+_T13:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//'-'
+_T14:
+	ExpSign = TRUE;
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//'0'
+_T15:
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] == '0')
+		goto _T15;
+	if (in->data[r] >= '1' && in->data[r] <= '9')
+		goto _T16;
+	goto _Tend;
+
+	//n['1','9']
+_T16:
+	exponent = in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T17;
+	goto _Tend;
+
+	//n['0','9']
+_T17:
+	exponent *= 10;
+	exponent += in->data[r] - '0';
+
+	r++;
+	if (r >= in->size)
+		goto _Tend;
+	if (in->data[r] >= '0' && in->data[r] <= '9')
+		goto _T17;
+	goto _Tend;
+
+	//end
+_Tend:
+	//multiple2 = 10 ^ exponent;
+	multiple2 = 1.0f;
+	while (rExp < exponent)
+	{
+		multiple2 *= 10.0;
+		rExp++;
+	}
+
+	//xxx.xxxe-xxx
+	//result = (integer + decimal / multiple1) / multiple2;
+	if (ExpSign) *out = (integer + decimal / multiple1) / multiple2;
+	//xxx.xxxe+xxx
+	//result = (integer + decimal / multiple1) * multiple2;
+	else *out = (integer + decimal / multiple1) * multiple2;
+
+	//负数
+	if (sign) *out = -*out;
+
+	return r;
+}
+
+cmtUint64 cmtBinToStrSize(cmtUint64 in)
+{
+	cmtUint64 size = 0;
+
+	while (in > 0)
+	{
+		in /= 2;
+		size++;
+	}
+
+	return size;
+}
+
+void cmtBinToStr(cmtUint64 in, cmtU8str* out)
+{
+	cmtUint64 r;
+
+	r = out->size;
+	while (r > 0)
+	{
+		out->data[r - 1] = in % 2;
+		in /= 2;
+		r--;
+	}
+}
+
 //cmtUint64 cmtOcttoStrSize(cmtUint64 in)
 //{
 //	cmtUint64 size = 0;
@@ -2181,6 +2826,458 @@ cmtUint64 cmtStrtoHex(cmtU8str* in, cmtUint64* out)
 //		if (out->size) out->data[0] = '0' + (cmtUint64)in;
 //	}
 //}
+
+cmtUint64 cmtSprintfBin(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+{
+	cmtU8str pad, num;
+	cmtUint64 r;
+	cmtUint64 MaxAddr = out->data + out->size;
+
+	//1. 测量数字字符数
+	num.size = cmtBSR(arg) + 1;
+
+	//2. 截断
+	if (info->precision && info->precision < num.size) num.size = info->precision;
+
+	//3. 计算填充字符数
+	if (info->padding.length > num.size)
+		pad.size = info->padding.length - num.size;
+	else
+		pad.size = 0;
+
+	//4. 定位
+	if (info->padding.align)
+	{
+		num.data = out->data;
+		pad.data = num.data + num.size;
+	}
+	else
+	{
+		pad.data = out->data;
+		num.data = pad.data + pad.size;
+	}
+
+	//5. 写入
+	//5.1. padding
+	if (info->padding.content)
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = '0';
+	}
+	else
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+	}
+	//5.2. num
+	for (r = num.size; r > 0; r--)
+	{
+		if (num.data + r - 1 < MaxAddr) num.data[r - 1] = (arg & 1) + '0';
+		arg >>= 1;
+	}
+
+	//6. 返回值
+	if (pad.size + num.size > out->size) return out->size;
+	else return pad.size + num.size;
+}
+
+cmtUint64 cmtSprintfOct(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+{
+	cmtU8str pad, num;
+	cmtUint64 r;
+	cmtUint64 MaxAddr = out->data + out->size;
+
+	//1. 测量数字字符数
+	num.size = cmtBSR(arg) / 3 + 1;
+
+	//2. 截断
+	if (info->precision && info->precision < num.size) num.size = info->precision;
+
+	//3. 计算填充字符数
+	if (info->padding.length > num.size)
+		pad.size = info->padding.length - num.size;
+	else
+		pad.size = 0;
+
+	//4. 定位
+	if (info->padding.align)
+	{
+		num.data = out->data;
+		pad.data = num.data + num.size;
+	}
+	else
+	{
+		pad.data = out->data;
+		num.data = pad.data + pad.size;
+	}
+
+	//5. 写入
+	//5.1. padding
+	if (info->padding.content)
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = '0';
+	}
+	else
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+	}
+	//5.2. num
+	for (r = num.size; r > 0; r--)
+	{
+		if (num.data + r - 1 < MaxAddr) num.data[r - 1] = (arg & 7) + '0';
+		arg >>= 3;
+	}
+
+	//6. 返回值
+	if (pad.size + num.size > out->size) return out->size;
+	else return pad.size + num.size;
+}
+
+cmtUint64 cmtSprintfDec(cmtU8str* out, cmtFmtInfo* info, cmtInt64 arg)
+{
+	cmtChar sign;
+	cmtChar* SignPos = 0;
+	cmtU8str pad, num;
+	cmtUint64 r;
+	cmtUint64 MaxAddr = out->data + out->size;
+	cmtUint64 exp10 = 10;
+
+	//1. 确定符号
+	if (arg < 0)
+	{
+		sign = '-';
+		arg = -arg;
+	}
+	else
+	{
+		if (info->sign) sign = '+';
+		else sign = 0;
+	}
+
+	//2. 测量数字字符数
+	num.size = 1;
+	while (num.size < sizeof(cmtBase10ExpFx64) / sizeof(cmtUint64) && arg >= cmtBase10ExpFx64[num.size]) num.size++;
+
+	//3. 截断
+	if (info->precision && info->precision < num.size) num.size = info->precision;
+
+	//4. 计算填充字符数
+	if (sign)
+	{
+		if (info->padding.length > 1 + num.size) pad.size = info->padding.length - 1 - num.size;
+		else pad.size = 0;
+	}
+	else
+	{
+		if (info->padding.length > num.size) pad.size = info->padding.length - num.size;
+		else pad.size = 0;
+	}
+
+	//5. 定位
+	if (sign)
+	{
+		if (info->padding.align)
+		{
+			SignPos = out->data;
+			num.data = SignPos + 1;
+			pad.data = num.data + num.size;
+		}
+		else
+		{
+			if (info->padding.content)
+			{
+				SignPos = out->data;
+				pad.data = SignPos + 1;
+				num.data = pad.data + pad.size;
+			}
+			else
+			{
+				pad.data = out->data;
+				SignPos = pad.data + pad.size;
+				num.data = SignPos + 1;
+			}
+		}
+	}
+	else
+	{
+		if (info->padding.align)
+		{
+			num.data = out->data;
+			pad.data = num.data + num.size;
+		}
+		else
+		{
+			pad.data = out->data;
+			num.data = pad.data + pad.size;
+		}
+	}
+
+	//6. 写入
+	//6.1. sign
+	if (sign && out->size)
+		*SignPos = sign;
+	//6.2. padding
+	if (info->padding.align)
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+	}
+	else
+	{
+		if (info->padding.content)
+		{
+			for (r = 0; r < pad.size; r++)
+				if (pad.data + r < MaxAddr) pad.data[r] = '0';
+		}
+		else
+		{
+			for (r = 0; r < pad.size; r++)
+				if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+		}
+	}
+	//6.3. num
+	for (r = num.size; r > 0; r--)
+	{
+		if (num.data + r - 1 < MaxAddr) num.data[r - 1] = arg % 10 + '0';
+		arg /= 10;
+	}
+
+	//7. 返回值
+	if (sign)
+	{
+		if (1 + pad.size + num.size > out->size) return out->size;
+		else return 1 + pad.size + num.size;
+	}
+	else
+	{
+		if (pad.size + num.size > out->size) return out->size;
+		else return pad.size + num.size;
+	}
+}
+
+cmtUint64 cmtSprintfUdec(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+{
+	cmtU8str pad, num;
+	cmtUint64 r;
+	cmtUint64 MaxAddr = out->data + out->size;
+	cmtUint64 exp10 = 10;
+
+	//1. 测量数字字符数
+	num.size = 1;
+	while (num.size < sizeof(cmtBase10ExpFx64) / sizeof(cmtUint64) && arg >= cmtBase10ExpFx64[num.size]) num.size++;
+
+	//2. 截断
+	if (info->precision && info->precision < num.size) num.size = info->precision;
+
+	//3. 计算填充字符数
+	if (info->padding.length > num.size)
+		pad.size = info->padding.length - num.size;
+	else
+		pad.size = 0;
+
+	//4. 定位
+	if (info->padding.align)
+	{
+		num.data = out->data;
+		pad.data = num.data + num.size;
+	}
+	else
+	{
+		pad.data = out->data;
+		num.data = pad.data + pad.size;
+	}
+
+	//5. 写入
+	//5.1. padding
+	if (info->padding.content)
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = '0';
+	}
+	else
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+	}
+	//5.2. num
+	for (r = num.size; r > 0; r--)
+	{
+		if (num.data + r - 1 < MaxAddr) num.data[r - 1] = arg % 10 + '0';
+		arg /= 10;
+	}
+
+	//6. 返回值
+	if (pad.size + num.size > out->size) return out->size;
+	else return pad.size + num.size;
+}
+
+cmtUint64 cmtSprintfHex(cmtU8str* out, cmtFmtInfo* info, cmtUint64 arg)
+{
+	cmtU8str pad, num;
+	cmtUint64 r;
+	cmtUint64 MaxAddr = out->data + out->size;
+
+	//1. 测量数字字符数
+	num.size = cmtBSR(arg) / 4 + 1;
+
+	//2. 截断
+	if (info->precision && info->precision < num.size) num.size = info->precision;
+
+	//3. 计算填充字符数
+	if (info->padding.length > num.size)
+		pad.size = info->padding.length - num.size;
+	else
+		pad.size = 0;
+
+	//4. 定位
+	if (info->padding.align)
+	{
+		num.data = out->data;
+		pad.data = num.data + num.size;
+	}
+	else
+	{
+		pad.data = out->data;
+		num.data = pad.data + pad.size;
+	}
+
+	//5. 写入
+	//5.1. padding
+	if (info->padding.content)
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = '0';
+	}
+	else
+	{
+		for (r = 0; r < pad.size; r++)
+			if (pad.data + r < MaxAddr) pad.data[r] = ' ';
+	}
+	//5.2. num
+	//5.2.1. 小写
+	if (info->type == 'x')
+	{
+		for (r = num.size; r > 0; r--)
+		{
+			if (num.data + r - 1 < MaxAddr)
+			{
+				if ((arg & 0xf) < 10) num.data[r - 1] = (arg & 0xf) + '0';
+				else num.data[r - 1] = (arg & 0xf) - 10 + 'a';
+			}
+			arg >>= 4;
+		}
+	}
+	//5.2.2. 大写
+	else
+	{
+		for (r = num.size; r > 0; r--)
+		{
+			if (num.data + r - 1 < MaxAddr)
+			{
+				if ((arg & 0xf) < 10) num.data[r - 1] = (arg & 0xf) + '0';
+				else num.data[r - 1] = (arg & 0xf) - 10 + 'A';
+			}
+			arg >>= 4;
+		}
+	}
+
+	//6. 返回值
+	if (pad.size + num.size > out->size) return out->size;
+	else return pad.size + num.size;
+}
+
+cmtUint64 cmtSprintfFl64(cmtU8str* out, cmtFmtInfo* info, double arg)
+{
+	cmtU8str pad, itg, dec;
+	cmtChar sign;
+	cmtChar* SignPos = 0;
+	cmtUint64 r;
+	cmtUint64 MaxAddr = out->data + out->size;
+
+	//1. 确定符号
+	if (arg < 0)
+	{
+		sign = '-';
+		arg = -arg;
+	}
+	else
+	{
+		if (info->sign) sign = '+';
+		else sign = 0;
+	}
+
+	//2. 测量整数字符数
+	itg.size = 1;
+	while (itg.size < sizeof(cmtBase10ExpFl64) / sizeof(double) && arg >= cmtBase10ExpFl64[itg.size]) itg.size++;
+
+	//3. 确定小数字符数
+	if (info->precision && info->precision > 4) dec.size = info->precision;
+	else dec.size = 4;
+
+	//4. 计算填充字符数
+	if (sign)
+	{
+		if (info->padding.length > 2 + itg.size + dec.size) pad.size = info->padding.length - 2 - itg.size - dec.size;
+		else pad.size = 0;
+	}
+	else
+	{
+		if (info->padding.length > 1 + itg.size + dec.size) pad.size = info->padding.length - 1 - itg.size - dec.size;
+		else pad.size = 0;
+	}
+
+	//5. 定位
+	if (sign)
+	{
+		if (info->padding.align)
+		{
+			SignPos = out->data;
+			itg.data = SignPos + 1;
+			dec.data = itg.data + itg.size + 1;
+			pad.data = dec.data + dec.size;
+		}
+		else
+		{
+			if (info->padding.content)
+			{
+				SignPos = out->data;
+				pad.data = SignPos + 1;
+				itg.data = pad.data + pad.size;
+				dec.data = itg.data + itg.size + 1;
+			}
+			else
+			{
+				pad.data = out->data;
+				SignPos = pad.data + pad.size;
+				itg.data = SignPos + 1;
+				dec.data = itg.data + itg.size + 1;
+			}
+		}
+	}
+	else
+	{
+		if (info->padding.align)
+		{
+			itg.data = out->data;
+			dec.data = itg.data + itg.size + 1;
+			pad.data = dec.data + dec.size;
+		}
+		else
+		{
+			pad.data = out->data;
+			itg.data = pad.data + pad.size;
+			dec.data = itg.data + itg.size + 1;
+		}
+	}
+
+}
+
+void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
+{
+
+}
 
 //void cmtSprintf(cmtU8str* out, cmtU8str* format, ...)
 //{

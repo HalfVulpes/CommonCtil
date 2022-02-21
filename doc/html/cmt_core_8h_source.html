@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.20"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CommonCtil: src/cmtCore.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">CommonCtil
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.8.20 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','搜索');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">cmtCore.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="cmt_core_8h.html">浏览该文件的文档.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#ifndef _INC_CMTCORE</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define _INC_CMTCORE</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cmt_type_8h.html">cmtType.h</a>&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#if defined(CMT_ENV_WINDOWS)</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;Windows.h&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#elif defined(CMT_ENV_LINUX)</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;pthread.h&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">/*--------------------------------结构体定义 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="struct___c_m_t_t_h_r_e_a_d_i_n_f_o.html">   29</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_t_h_r_e_a_d_i_n_f_o.html">_CMTTHREADINFO</a></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    cmtBool CreateSuspend;<span class="comment">//&lt;创建后挂起线程</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    cmtUint64 StackSize;<span class="comment">//&lt;初始栈大小</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    cmtUint32 priority;<span class="comment">//&lt;优先级</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    cmtBool inherit;<span class="comment">//&lt;是否继承句柄</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}<a class="code" href="structcmt_thread_info.html">cmtThreadInfo</a>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="struct___c_m_t_p_r_o_c_e_s_s_i_n_f_o.html">   43</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_p_r_o_c_e_s_s_i_n_f_o.html">_CMTPROCESSINFO</a></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    cmtUint32 priority;<span class="comment">//&lt;优先级</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    cmtBool hide;<span class="comment">//&lt;是否隐藏窗口并禁用输出</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    cmtBool inherit;<span class="comment">//&lt;是否继承句柄</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}<a class="code" href="structcmt_process_info.html">cmtProcessInfo</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="struct___c_m_t_l_o_c_k.html">   56</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct___c_m_t_l_o_c_k.html">_CMTLOCK</a></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    cmtUint64 MaxSpin;<span class="comment">//&lt;最大自旋数</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    cmtBool state;<span class="comment">//&lt;状态（0：自旋模式；1：信号量模式）</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    cmtUint8 value;<span class="comment">//&lt;自旋模式下锁变量</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    cmtUint64 handle;<span class="comment">//&lt;信号量模式下句柄</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}<a class="code" href="structcmt_lock.html">cmtLock</a>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">/*--------------------------------结构体定义 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">/*--------------------------------线程/进程操作函数 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">extern</span> cmtUint64 cmtCreateProcess(cmtWchar* cmd, <a class="code" href="structcmt_process_info.html">cmtProcessInfo</a>* info);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">extern</span> cmtUint8 cmtTerminateProcess(cmtWchar* cmd);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#a9550238e98cd8f54baff800d72da8212">   81</a></span>&#160;<span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_core_8h.html#a9550238e98cd8f54baff800d72da8212">cmtCreateThread</a>(cmtUint32(CMT_STDCALL* proc)(<span class="keywordtype">void</span>*), <span class="keywordtype">void</span>* param, <a class="code" href="structcmt_thread_info.html">cmtThreadInfo</a>* info);</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#ad2adefaec25545ad14bdc68433a3844d">   91</a></span>&#160;<span class="keyword">extern</span> cmtUint8 <a class="code" href="cmt_core_8h.html#ad2adefaec25545ad14bdc68433a3844d">cmtTerminateThread</a>(cmtUint64 handle);</div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#a5dc92ef091dafab3e974c12030023ef6">  101</a></span>&#160;<span class="keyword">extern</span> cmtUint8 <a class="code" href="cmt_core_8h.html#a5dc92ef091dafab3e974c12030023ef6">cmtSuspendThread</a>(cmtUint64 handle);</div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#a327d16555d9879d8d52dc871cc14bf49">  111</a></span>&#160;<span class="keyword">extern</span> cmtUint8 <a class="code" href="cmt_core_8h.html#a327d16555d9879d8d52dc871cc14bf49">cmtResumeThread</a>(cmtUint64 handle);</div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#abe58d85c0550f91da5aeec57d2a71493">  120</a></span>&#160;<span class="keyword">extern</span> cmtUint32 <a class="code" href="cmt_core_8h.html#abe58d85c0550f91da5aeec57d2a71493">cmtWaitForThread</a>(cmtUint64 handle, cmtUint64 time);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">/*--------------------------------线程/进程操作函数 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">/*--------------------------------句柄（文件描述符）操作函数 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keyword">extern</span> cmtUint8 cmtDupHandle(cmtUint64 dst, cmtUint64 src);</div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#a4252fe6a9c3cdef63d90af42caf9d3af">  131</a></span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_core_8h.html#a4252fe6a9c3cdef63d90af42caf9d3af">cmtCloseHandle</a>(cmtUint64 handle);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">/*--------------------------------句柄（文件描述符）操作函数 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">/*--------------------------------原子操作函数 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">//INC</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> cmtAtomInc8(cmtUint8* num);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> cmtAtomInc16(cmtUint16* num);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> cmtAtomInc32(cmtUint32* num);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> cmtAtomInc64(cmtUint64* num);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">//DEC</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> cmtAtomDec8(cmtUint8* num);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> cmtAtomDec16(cmtUint16* num);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> cmtAtomDec32(cmtUint32* num);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> cmtAtomDec64(cmtUint64* num);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">/*--------------------------------原子操作函数 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">/*--------------------------------锁操作函数 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#ae226ab52594d972189d7ce657ef0655e">  166</a></span>&#160;<span class="keyword">extern</span> BOOL CMT_FASTCALL <a class="code" href="cmt_core_8h.html#ae226ab52594d972189d7ce657ef0655e">cmtSpinLockEnter</a>(cmtUint8* value, cmtUint64 MaxSpin);</div>
+<div class="line"><a name="l00173"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#a0cc0ce8a08d03804e5b9520f5fdb47aa">  173</a></span>&#160;<span class="preprocessor">#define cmtSpinLockLeave(value) value = 0</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#ac3e1e2ae1a74aefead70296723638e3d">  182</a></span>&#160;<span class="keyword">extern</span> cmtUint64 <a class="code" href="cmt_core_8h.html#ac3e1e2ae1a74aefead70296723638e3d">cmtSysLockInit</a>();</div>
+<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#aaf7c3a77402f54d6aee737d2117c5d95">  189</a></span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_core_8h.html#aaf7c3a77402f54d6aee737d2117c5d95">cmtSysLockEnter</a>(cmtUint64 handle);</div>
+<div class="line"><a name="l00196"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#ad2e85fff5b760f93f7eb09789d1414d4">  196</a></span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_core_8h.html#ad2e85fff5b760f93f7eb09789d1414d4">cmtSysLockLeave</a>(cmtUint64 handle);</div>
+<div class="line"><a name="l00203"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#a3e40f010c742f5fb8df9bdbcef09b40b">  203</a></span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_core_8h.html#a3e40f010c742f5fb8df9bdbcef09b40b">cmtSysLockFree</a>(cmtUint64 handle);</div>
+<div class="line"><a name="l00211"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#addb326cf655f8889c640ce4b0b326656">  211</a></span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_core_8h.html#addb326cf655f8889c640ce4b0b326656">cmtLockInit</a>(<a class="code" href="structcmt_lock.html">cmtLock</a>* lock, cmtUint64 MaxSpin);</div>
+<div class="line"><a name="l00218"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#a1f71831e28fd69740e15eed9119f2fc7">  218</a></span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_core_8h.html#a1f71831e28fd69740e15eed9119f2fc7">cmtLockEnter</a>(<a class="code" href="structcmt_lock.html">cmtLock</a>* lock);</div>
+<div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#af195c52fc6a7030740383cb790b2efbe">  225</a></span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_core_8h.html#af195c52fc6a7030740383cb790b2efbe">cmtLockLeave</a>(<a class="code" href="structcmt_lock.html">cmtLock</a>* lock);</div>
+<div class="line"><a name="l00232"></a><span class="lineno"><a class="line" href="cmt_core_8h.html#a96f497e4f463d6762c19602f3baebb8b">  232</a></span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="cmt_core_8h.html#a96f497e4f463d6762c19602f3baebb8b">cmtLockFree</a>(<a class="code" href="structcmt_lock.html">cmtLock</a>* lock);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment">/*--------------------------------锁操作函数 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment">/*--------------------------------内存操作函数 开始--------------------------------*/</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="keyword">extern</span> cmtUint8* cmtReserveMem(cmtUint8* addr, cmtUint64 size);</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="keyword">extern</span> cmtUint8 cmtCommitMem(cmtUint8* addr, cmtUint64 size);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> cmtFreeMem(cmtUint8* addr);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> cmtReleaseMem(cmtUint8* addr);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="comment">/*--------------------------------内存操作函数 结束--------------------------------*/</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="preprocessor">#endif</span></div>
+</div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="acmt_type_8h_html"><div class="ttname"><a href="cmt_type_8h.html">cmtType.h</a></div><div class="ttdoc">cmtType 库的数据类型标准定义文件，这个文件规定了大多数的数据类型的别名</div></div>
+<div class="ttc" id="acmt_core_8h_html_ae226ab52594d972189d7ce657ef0655e"><div class="ttname"><a href="cmt_core_8h.html#ae226ab52594d972189d7ce657ef0655e">cmtSpinLockEnter</a></div><div class="ttdeci">BOOL CMT_FASTCALL cmtSpinLockEnter(cmtUint8 *value, cmtUint64 MaxSpin)</div><div class="ttdoc">进入自旋锁</div></div>
+<div class="ttc" id="acmt_core_8h_html_af195c52fc6a7030740383cb790b2efbe"><div class="ttname"><a href="cmt_core_8h.html#af195c52fc6a7030740383cb790b2efbe">cmtLockLeave</a></div><div class="ttdeci">void cmtLockLeave(cmtLock *lock)</div><div class="ttdoc">离开自动锁</div></div>
+<div class="ttc" id="acmt_core_8h_html_a96f497e4f463d6762c19602f3baebb8b"><div class="ttname"><a href="cmt_core_8h.html#a96f497e4f463d6762c19602f3baebb8b">cmtLockFree</a></div><div class="ttdeci">void cmtLockFree(cmtLock *lock)</div><div class="ttdoc">释放自动锁</div></div>
+<div class="ttc" id="astructcmt_process_info_html"><div class="ttname"><a href="structcmt_process_info.html">cmtProcessInfo</a></div><div class="ttdoc">进程额外信息</div></div>
+<div class="ttc" id="acmt_core_8h_html_aaf7c3a77402f54d6aee737d2117c5d95"><div class="ttname"><a href="cmt_core_8h.html#aaf7c3a77402f54d6aee737d2117c5d95">cmtSysLockEnter</a></div><div class="ttdeci">void cmtSysLockEnter(cmtUint64 handle)</div><div class="ttdoc">进入重锁</div></div>
+<div class="ttc" id="acmt_core_8h_html_abe58d85c0550f91da5aeec57d2a71493"><div class="ttname"><a href="cmt_core_8h.html#abe58d85c0550f91da5aeec57d2a71493">cmtWaitForThread</a></div><div class="ttdeci">cmtUint32 cmtWaitForThread(cmtUint64 handle, cmtUint64 time)</div><div class="ttdoc">等待线程结束</div></div>
+<div class="ttc" id="acmt_core_8h_html_a1f71831e28fd69740e15eed9119f2fc7"><div class="ttname"><a href="cmt_core_8h.html#a1f71831e28fd69740e15eed9119f2fc7">cmtLockEnter</a></div><div class="ttdeci">void cmtLockEnter(cmtLock *lock)</div><div class="ttdoc">进入自动锁</div></div>
+<div class="ttc" id="astructcmt_thread_info_html"><div class="ttname"><a href="structcmt_thread_info.html">cmtThreadInfo</a></div><div class="ttdoc">线程额外信息</div></div>
+<div class="ttc" id="acmt_core_8h_html_a327d16555d9879d8d52dc871cc14bf49"><div class="ttname"><a href="cmt_core_8h.html#a327d16555d9879d8d52dc871cc14bf49">cmtResumeThread</a></div><div class="ttdeci">cmtUint8 cmtResumeThread(cmtUint64 handle)</div><div class="ttdoc">启动线程</div></div>
+<div class="ttc" id="acmt_core_8h_html_ac3e1e2ae1a74aefead70296723638e3d"><div class="ttname"><a href="cmt_core_8h.html#ac3e1e2ae1a74aefead70296723638e3d">cmtSysLockInit</a></div><div class="ttdeci">cmtUint64 cmtSysLockInit()</div><div class="ttdoc">初始化重锁</div></div>
+<div class="ttc" id="astruct___c_m_t_t_h_r_e_a_d_i_n_f_o_html"><div class="ttname"><a href="struct___c_m_t_t_h_r_e_a_d_i_n_f_o.html">_CMTTHREADINFO</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_core_8h_source.html#l00029">cmtCore.h:30</a></div></div>
+<div class="ttc" id="astruct___c_m_t_l_o_c_k_html"><div class="ttname"><a href="struct___c_m_t_l_o_c_k.html">_CMTLOCK</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_core_8h_source.html#l00056">cmtCore.h:57</a></div></div>
+<div class="ttc" id="astructcmt_lock_html"><div class="ttname"><a href="structcmt_lock.html">cmtLock</a></div><div class="ttdoc">自动锁结构体</div></div>
+<div class="ttc" id="acmt_core_8h_html_ad2e85fff5b760f93f7eb09789d1414d4"><div class="ttname"><a href="cmt_core_8h.html#ad2e85fff5b760f93f7eb09789d1414d4">cmtSysLockLeave</a></div><div class="ttdeci">void cmtSysLockLeave(cmtUint64 handle)</div><div class="ttdoc">离开重锁</div></div>
+<div class="ttc" id="acmt_core_8h_html_a4252fe6a9c3cdef63d90af42caf9d3af"><div class="ttname"><a href="cmt_core_8h.html#a4252fe6a9c3cdef63d90af42caf9d3af">cmtCloseHandle</a></div><div class="ttdeci">void cmtCloseHandle(cmtUint64 handle)</div><div class="ttdoc">关闭句柄</div></div>
+<div class="ttc" id="acmt_core_8h_html_addb326cf655f8889c640ce4b0b326656"><div class="ttname"><a href="cmt_core_8h.html#addb326cf655f8889c640ce4b0b326656">cmtLockInit</a></div><div class="ttdeci">void cmtLockInit(cmtLock *lock, cmtUint64 MaxSpin)</div><div class="ttdoc">初始化自动锁</div></div>
+<div class="ttc" id="acmt_core_8h_html_a5dc92ef091dafab3e974c12030023ef6"><div class="ttname"><a href="cmt_core_8h.html#a5dc92ef091dafab3e974c12030023ef6">cmtSuspendThread</a></div><div class="ttdeci">cmtUint8 cmtSuspendThread(cmtUint64 handle)</div><div class="ttdoc">挂起线程</div></div>
+<div class="ttc" id="acmt_core_8h_html_a3e40f010c742f5fb8df9bdbcef09b40b"><div class="ttname"><a href="cmt_core_8h.html#a3e40f010c742f5fb8df9bdbcef09b40b">cmtSysLockFree</a></div><div class="ttdeci">void cmtSysLockFree(cmtUint64 handle)</div><div class="ttdoc">释放重锁</div></div>
+<div class="ttc" id="acmt_core_8h_html_ad2adefaec25545ad14bdc68433a3844d"><div class="ttname"><a href="cmt_core_8h.html#ad2adefaec25545ad14bdc68433a3844d">cmtTerminateThread</a></div><div class="ttdeci">cmtUint8 cmtTerminateThread(cmtUint64 handle)</div><div class="ttdoc">强制终止线程</div></div>
+<div class="ttc" id="astruct___c_m_t_p_r_o_c_e_s_s_i_n_f_o_html"><div class="ttname"><a href="struct___c_m_t_p_r_o_c_e_s_s_i_n_f_o.html">_CMTPROCESSINFO</a></div><div class="ttdef"><b>Definition:</b> <a href="cmt_core_8h_source.html#l00043">cmtCore.h:44</a></div></div>
+<div class="ttc" id="acmt_core_8h_html_a9550238e98cd8f54baff800d72da8212"><div class="ttname"><a href="cmt_core_8h.html#a9550238e98cd8f54baff800d72da8212">cmtCreateThread</a></div><div class="ttdeci">cmtUint64 cmtCreateThread(cmtUint32(CMT_STDCALL *proc)(void *), void *param, cmtThreadInfo *info)</div><div class="ttdoc">创建线程</div></div>
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
+</small></address>
+</body>
+</html>

@@ -1,5 +1,6 @@
 ;cmtCore assembly support
 ;amd64 version for masm
+
 .code
 
 ;cx dx r8 r9
@@ -53,5 +54,12 @@ cmtSpinLockEnter proc
 	xor rax, rax
 	ret
 cmtSpinLockEnter endp
+
+;rcx=num
+;cmtUint8 cmtBSR(cmtUint64 num)
+cmtBSR proc
+	bsr rax, rcx
+	ret
+cmtBSR endp
 
 end
