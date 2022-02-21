@@ -1,4 +1,5 @@
 #include <cmtType.h>
+#include <CommonCtil.h>
 #include <cmtString.h>
 
 #pragma once
@@ -12,11 +13,11 @@ typedef struct _CMTBIGNUM
 }cmtBigNum;
 
 //配置器
-extern void cmtBignConf()
+extern void cmtBignConfInit(cmtConf* conf);
 
 //操作
 extern void (*cmtStr2Bign)(cmtU8str* in, cmtBigNum* out);
-extern void cmtStr2BignSoft(cmtU8str* in, cmtBigNum* out);
+extern void cmtStr2BignSoft64(cmtU8str* in, cmtBigNum* out);
 
 //算术运算
 cmtUint64 cmtBignNeg(cmtBigNum* op1);
