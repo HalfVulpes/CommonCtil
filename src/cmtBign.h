@@ -1,3 +1,5 @@
+#include <cmtType.h>
+
 #pragma once
 #ifndef _INC_CMTBIGN
 #define _INC_CMTBIGN
