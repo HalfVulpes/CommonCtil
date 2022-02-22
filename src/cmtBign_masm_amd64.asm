@@ -19,6 +19,8 @@ cmtBignNegSoft64 proc
 	xor rsi, rsi
 	xor rdi, rdi
 	stc
+	pushf
+
 	cBNS64_NegLoopStart:
 	;rax = in->data[rsi] //read
 		;check offset
@@ -31,7 +33,9 @@ cmtBignNegSoft64 proc
 	inc rsi
 	;rax = ~rax + carry //按位取反再加一
 	not rax ;~rax
+	popf ;restore flags
 	adc rax, 0 ;rax += CF
+	pushf ;save flags
 	;out->data[rdi] = rax //write
 		;check offset
 		mov rdx, qword ptr [rbx+8] ;rdx = out->size
@@ -46,7 +50,7 @@ cmtBignNegSoft64 proc
 	cBNS64_NegLoopEnd:
 
 	;restore context
-	;lea rsp, [rbp-8h] //rsp not change (no local var)
+	lea rsp, [rbp-8h]
 	pop rbx
 	mov rsp, rbp
 	pop rbp

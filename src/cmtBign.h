@@ -45,13 +45,21 @@ extern void (*cmtStr2Bign)(cmtU8str* in, cmtBigNum* out);
 extern void cmtStr2BignSoft64(cmtU8str* in, cmtBigNum* out);
 
 //算术运算
-extern void (*cmtBignNeg)(cmtBigNum* in, cmtBigNum* out);
-
 /**
 * @brief 取相反数
 * @param[in] in 输入
 * @param[out] out 输出
-* @test cmtDemocmtBignNegSoft64() 状态：NT
+* @test cmtDemoBignNeg() 状态：NT
+* @date 2022-02-22
+* @author dexnab
+*/
+extern void (*cmtBignNeg)(cmtBigNum* in, cmtBigNum* out);
+
+/**
+* @brief 取相反数-64位软件实现版本
+* @param[in] in 输入
+* @param[out] out 输出
+* @test cmtDemoBignNegSoft64() 状态：NT
 * @date 2022-02-22
 * @author dexnab
 */
