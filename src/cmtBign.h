@@ -1,3 +1,9 @@
+/**
+* @file cmtBign.h
+* @brief 大数运算库
+* @date 2022-02-22
+* @author dexnab
+*/
 #include <cmtType.h>
 #include <CommonCtil.h>
 #include <cmtString.h>
@@ -6,13 +12,32 @@
 #ifndef _INC_CMTBIGN
 #define _INC_CMTBIGN
 
+/**
+* @typedef cmtBigNum
+* @brief 大数
+* @see _CMTBIGNUM
+* @date 2022-02-22
+* @author dexnab
+*/
+/**
+* @brief 大数
+* @date 2022-02-22
+* @author dexnab
+*/
 typedef struct _CMTBIGNUM
 {
-	cmtUint8* data;
+	cmtUint64* data;
 	cmtUint64 size;
 }cmtBigNum;
 
 //配置器
+/**
+* @brief cmtBign模块配置器
+* @param[in] conf 库配置
+* @test cmtConf() 状态：NT
+* @date 2022-02-22
+* @author dexnab
+*/
 extern void cmtBignConfInit(cmtConf* conf);
 
 //操作
@@ -20,7 +45,17 @@ extern void (*cmtStr2Bign)(cmtU8str* in, cmtBigNum* out);
 extern void cmtStr2BignSoft64(cmtU8str* in, cmtBigNum* out);
 
 //算术运算
-cmtUint64 cmtBignNeg(cmtBigNum* op1);
+extern void (*cmtBignNeg)(cmtBigNum* in, cmtBigNum* out);
+
+/**
+* @brief 取相反数
+* @param[in] in 输入
+* @param[out] out 输出
+* @test cmtDemocmtBignNegSoft64() 状态：NT
+* @date 2022-02-22
+* @author dexnab
+*/
+extern void cmtBignNegSoft64(cmtBigNum* in, cmtBigNum* out);
 cmtUint64 cmtBignAdd(cmtBigNum* op1, cmtBigNum* op2);
 cmtUint64 cmtBignSub(cmtBigNum* op1, cmtBigNum* op2);
 cmtUint64 cmtBignMul(cmtBigNum* op1, cmtBigNum* op2);
