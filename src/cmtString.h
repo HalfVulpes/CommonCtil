@@ -669,7 +669,7 @@ extern cmtUint64 cmtStrToHex(cmtU8str* in, cmtUint64* out);
 * @param[in] in 字符串
 * @param[out] out 浮点数
 * @return 转换了多少字节的字符串
-* @test cmtDemoStrToF32() 状态：PA
+* @test cmtDemoStrToF32() 状态：NC
 * @date 2021-12-01
 * @author dexnab
 */
@@ -680,7 +680,7 @@ extern cmtUint64 cmtStrToF32(cmtU8str* in, float* out);
 * @param[in] in 字符串
 * @param[out] out 浮点数
 * @return 转换了多少字节的字符串
-* @test cmtDemoStrToF64() 状态：PA
+* @test cmtDemoStrToF64() 状态：NC
 * @date 2021-12-01
 * @author dexnab
 */
